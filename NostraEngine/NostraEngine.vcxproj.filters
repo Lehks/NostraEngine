@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\header\core\StdIncludes.hpp">
+    <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
