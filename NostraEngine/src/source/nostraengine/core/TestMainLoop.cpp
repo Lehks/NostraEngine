@@ -2,5 +2,10 @@
 
 namespace NOE
 {
+	__declspec(dllexport) void start()
+	{
+		glfwInit();
 
+		glfwTerminate();
+	}
 }

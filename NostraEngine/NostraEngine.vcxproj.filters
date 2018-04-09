@@ -18,22 +18,34 @@
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\header\nostraengine\core\TestMainLoop.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="dependencies\include\glad\glad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\GLFW\glfw3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\GLFW\glfw3native.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\include\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\header\nostraengine\core\TestMainLoop.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dependencies\lib\GLAD\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\source\nostraengine\core\TestMainLoop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\source\glad\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="dependencies\lib\GLFW\Win32\glfw3.lib" />
+    <Library Include="dependencies\lib\GLFW\Win32\glfw3dll.lib" />
+    <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
+    <Library Include="dependencies\lib\GLFW\x64\glfw3dll.lib" />
   </ItemGroup>
 </Project>
