@@ -39,11 +39,52 @@
     <ClInclude Include="dependencies\include\GLFW\glfw3.h" />
     <ClInclude Include="dependencies\include\GLFW\glfw3native.h" />
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
+    <ClInclude Include="dependencies\include\nostrautils\core\Assertions.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\core\ErrorHandler.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\core\Meta.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\core\StdIncludes.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\core\SystemInformation.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\core\Utils.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\core\Version.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\BinaryHeap.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\BinarySearch.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Comparator.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\FastQueue.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Hashing.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\HashMap.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\LazyEvaluationProperty.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\ObjectPool.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Quicksort.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Random.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\String.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\StringView.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Uninitialized.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Utils.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Vector.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\file_mngt\File.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\file_mngt\Path.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\AllocationCallback.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\GeneralPurposeAllocator.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\Pointer.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\PoolAllocator.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\Utils.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\NostraUtils.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\AsyncTaskResult.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\ConditionVariable.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\Lock.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\Mutex.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\Task.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\TaskQueue.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\ThreadManager.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\Threads.hpp" />
+    <ClInclude Include="dependencies\include\nostrautils\thread\ThreadWrapper.hpp" />
+    <ClInclude Include="src\header\nostraengine\core\NostraEngine.hpp" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
     <ClInclude Include="src\header\nostraengine\core\TestMainLoop.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c" />
+    <ClCompile Include="src\source\nostraengine\core\NostraEngine.cpp" />
     <ClCompile Include="src\source\nostraengine\core\TestMainLoop.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +92,18 @@
     <Library Include="dependencies\lib\GLFW\x64\glfw3dll.lib" />
     <Library Include="dependencies\lib\GLFW\x86\glfw3.lib" />
     <Library Include="dependencies\lib\GLFW\x86\glfw3dll.lib" />
+    <Library Include="dependencies\lib\nostrautils\Debug\x64\NostraUtils_STATIC.lib" />
+    <Library Include="dependencies\lib\nostrautils\Debug\x86\NostraUtils_STATIC.lib" />
+    <Library Include="dependencies\lib\nostrautils\Release\x64\NostraUtils_STATIC.lib" />
+    <Library Include="dependencies\lib\nostrautils\Release\x86\NostraUtils_STATIC.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dependencies\include\nostrautils\core\.gitignore" />
+    <None Include="dependencies\include\nostrautils\dat_alg\.gitignore" />
+    <None Include="dependencies\include\nostrautils\file_mngt\.gitignore" />
+    <None Include="dependencies\include\nostrautils\math\.gitignore" />
+    <None Include="dependencies\include\nostrautils\mem_mngt\.gitignore" />
+    <None Include="dependencies\include\nostrautils\thread\.gitignore" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -33,6 +33,126 @@
     <ClInclude Include="dependencies\include\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\header\nostraengine\core\NostraEngine.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\NostraUtils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\AsyncTaskResult.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\ConditionVariable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\Lock.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\Mutex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\Task.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\TaskQueue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\ThreadManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\Threads.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\thread\ThreadWrapper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\AllocationCallback.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\GeneralPurposeAllocator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\Pointer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\PoolAllocator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\mem_mngt\Utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\file_mngt\File.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\file_mngt\Path.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\BinaryHeap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\BinarySearch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Comparator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\FastQueue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Hashing.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\HashMap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\LazyEvaluationProperty.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\ObjectPool.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Quicksort.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Random.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\String.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\StringView.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Uninitialized.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\dat_alg\Vector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\core\Assertions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\core\ErrorHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\core\Meta.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\core\StdIncludes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\core\SystemInformation.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\core\Utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\nostrautils\core\Version.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\nostraengine\core\TestMainLoop.cpp">
@@ -41,11 +161,26 @@
     <ClCompile Include="src\source\glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\source\nostraengine\core\NostraEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
     <Library Include="dependencies\lib\GLFW\x64\glfw3dll.lib" />
     <Library Include="dependencies\lib\GLFW\x86\glfw3.lib" />
     <Library Include="dependencies\lib\GLFW\x86\glfw3dll.lib" />
+    <Library Include="dependencies\lib\nostrautils\Release\x86\NostraUtils_STATIC.lib" />
+    <Library Include="dependencies\lib\nostrautils\Release\x64\NostraUtils_STATIC.lib" />
+    <Library Include="dependencies\lib\nostrautils\Debug\x64\NostraUtils_STATIC.lib" />
+    <Library Include="dependencies\lib\nostrautils\Debug\x86\NostraUtils_STATIC.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dependencies\include\nostrautils\core\.gitignore" />
+    <None Include="dependencies\include\nostrautils\dat_alg\.gitignore" />
+    <None Include="dependencies\include\nostrautils\file_mngt\.gitignore" />
+    <None Include="dependencies\include\nostrautils\math\.gitignore" />
+    <None Include="dependencies\include\nostrautils\mem_mngt\.gitignore" />
+    <None Include="dependencies\include\nostrautils\thread\.gitignore" />
   </ItemGroup>
 </Project>
