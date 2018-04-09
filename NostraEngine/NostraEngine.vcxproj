@@ -39,6 +39,7 @@
     <ClInclude Include="dependencies\include\GLFW\glfw3.h" />
     <ClInclude Include="dependencies\include\GLFW\glfw3native.h" />
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
+    <ClInclude Include="src\header\nostraengine\core\ResourceManagement.hpp" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
     <ClInclude Include="src\header\nostraengine\core\TestMainLoop.hpp" />
   </ItemGroup>

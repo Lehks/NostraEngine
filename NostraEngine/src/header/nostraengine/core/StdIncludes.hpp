@@ -11,8 +11,20 @@
 \brief A file that is usually included by all other files of the Nostra Engine.
 */
 
+#include "nostrautils/NostraUtils.hpp"
+
+/**
+\brief The name of the main namespace of the Nostra Engine.
+*/
 #ifndef NOE
 #define NOE nostra::engine
+#endif
+
+/**
+\brief The name of the core namespace of the Nostra Engine.
+*/
+#ifndef NOE_CORE
+#define NOE_CORE core
 #endif
 
 #endif
