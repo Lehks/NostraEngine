@@ -52,6 +52,9 @@
     <Library Include="dependencies\lib\GLFW\x86\glfw3.lib" />
     <Library Include="dependencies\lib\GLFW\x86\glfw3dll.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F961917A-9573-4A2C-9FD0-F13A1133614B}</ProjectGuid>

@@ -48,4 +48,7 @@
     <Library Include="dependencies\lib\GLFW\x86\glfw3.lib" />
     <Library Include="dependencies\lib\GLFW\x86\glfw3dll.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
 </Project>
