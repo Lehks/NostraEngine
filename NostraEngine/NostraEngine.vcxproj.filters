@@ -43,9 +43,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="dependencies\lib\GLFW\Win32\glfw3.lib" />
-    <Library Include="dependencies\lib\GLFW\Win32\glfw3dll.lib" />
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
     <Library Include="dependencies\lib\GLFW\x64\glfw3dll.lib" />
+    <Library Include="dependencies\lib\GLFW\x86\glfw3.lib" />
+    <Library Include="dependencies\lib\GLFW\x86\glfw3dll.lib" />
   </ItemGroup>
 </Project>

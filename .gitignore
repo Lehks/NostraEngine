@@ -18,6 +18,8 @@ bin/
 
 #Ignore Test Project
 /Test/*
+!/Test/*.vcxproj*
+/Test/*.vcxproj.user
 
 #VSCode settings
 /.vscode/
