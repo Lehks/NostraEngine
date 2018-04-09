@@ -26,7 +26,7 @@ NOU::int8 NOE::NostraEngine::init()
 
 	//------------------------------------------------------------
 	//
-	//DO YOUR STANDARD INIT METHODE'S HERE !
+	//DO YOUR STANDARD INIT METHOD'S HERE !
 	//
 
 
@@ -59,7 +59,7 @@ NOU::int8 NOE::NostraEngine::terminate()
 
 	//------------------------------------------------------------
 	//
-	//DO YOUR STANDARD TERMINATE METHODE'S HERE !
+	//DO YOUR STANDARD TERMINATE METHOD'S HERE !
 	//
 	return 0;
 }
