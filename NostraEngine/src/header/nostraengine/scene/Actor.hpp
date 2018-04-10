@@ -1,7 +1,7 @@
 #ifndef NOE_SCENE_ACTOR_HPP
 #define NOE_SCENE_ACTOR_HPP
 
-
+#include "nostrautils/NostraUtils.hpp"
 
 namespace NOE
 {
@@ -51,7 +51,7 @@ namespace NOE
 		\ a vector from type actor that safes the children from a parent actor
 		*/
 
-		vector<Actor> child;
+		NOU::NOU_DAT_ALG::Vector<Actor> m_children;
 
 
 	public :
@@ -106,15 +106,15 @@ namespace NOE
 		\return all children in a vector
 		*/
 
-		NOE::NOU_DAT_ALG_VECTOR::Vector<Actor> getChild();
+		const NOU::NOU_DAT_ALG::Vector<Actor> & getChildren() const;
 
 		/*
-		\brief A function that allows you to set new children for a parent actor
-		\param "child" child is a vector from type actor 
+		\brief A function that allows you to set new children for a parent  
 		\ return new children for a parent 
 		*/
 
-		void setChild(NOE::NOU_DAT_ALG_VECTOR::Vector<Actor> child);
+		NOU::NOU_DAT_ALG::Vector<Actor> & getChildren();
+		
 
 	};
 }
