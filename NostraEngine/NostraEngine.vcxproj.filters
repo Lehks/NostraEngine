@@ -18,5 +18,8 @@
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\header\nostraengine\scene\Actor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
