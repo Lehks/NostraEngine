@@ -41,11 +41,9 @@
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
     <ClInclude Include="src\header\nostraengine\core\ResourceManagement.hpp" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
-    <ClInclude Include="src\header\nostraengine\core\TestMainLoop.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c" />
-    <ClCompile Include="src\source\nostraengine\core\TestMainLoop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
