@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{472BB637-B107-4C01-A722-C43479CF9098}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		DLL Debug|x64 = DLL Debug|x64
@@ -39,6 +41,22 @@ Global
 		{F961917A-9573-4A2C-9FD0-F13A1133614B}.LIB Release|x64.Build.0 = LIB Release|x64
 		{F961917A-9573-4A2C-9FD0-F13A1133614B}.LIB Release|x86.ActiveCfg = LIB Release|Win32
 		{F961917A-9573-4A2C-9FD0-F13A1133614B}.LIB Release|x86.Build.0 = LIB Release|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Debug|x64.ActiveCfg = DLL Debug|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Debug|x64.Build.0 = DLL Debug|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Debug|x86.ActiveCfg = DLL Debug|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Debug|x86.Build.0 = DLL Debug|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Release|x64.ActiveCfg = DLL Release|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Release|x64.Build.0 = DLL Release|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Release|x86.ActiveCfg = LIB Release|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.DLL Release|x86.Build.0 = LIB Release|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Debug|x64.ActiveCfg = LIB Debug|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Debug|x64.Build.0 = LIB Debug|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Debug|x86.ActiveCfg = LIB Debug|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Debug|x86.Build.0 = LIB Debug|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Release|x64.ActiveCfg = LIB Release|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Release|x64.Build.0 = LIB Release|x64
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Release|x86.ActiveCfg = LIB Release|Win32
+		{472BB637-B107-4C01-A722-C43479CF9098}.LIB Release|x86.Build.0 = LIB Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

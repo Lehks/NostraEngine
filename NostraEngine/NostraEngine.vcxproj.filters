@@ -18,6 +18,32 @@
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dependencies\include\glad\glad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\GLFW\glfw3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\GLFW\glfw3native.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\include\KHR\khrplatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\source\glad\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
+    <Library Include="dependencies\lib\GLFW\x64\glfw3dll.lib" />
+    <Library Include="dependencies\lib\GLFW\x86\glfw3.lib" />
+    <Library Include="dependencies\lib\GLFW\x86\glfw3dll.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
     <ClInclude Include="src\header\nostraengine\scene\Actor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
