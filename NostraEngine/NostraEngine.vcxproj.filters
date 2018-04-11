@@ -35,11 +35,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\source\glad\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
     <Library Include="dependencies\lib\GLFW\x64\glfw3dll.lib" />
     <Library Include="dependencies\lib\GLFW\x86\glfw3.lib" />
@@ -47,5 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\source\nostraengine\glad\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

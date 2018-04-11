@@ -43,7 +43,7 @@
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\source\glad\glad.c" />
+    <ClCompile Include="src\source\nostraengine\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
