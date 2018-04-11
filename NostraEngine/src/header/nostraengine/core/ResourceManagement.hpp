@@ -20,7 +20,7 @@ namespace NOE::NOE_CORE
 		using ResourceType = NOU::NOU_DAT_ALG::String8;
 
 	private:
-
+		
 	public:
 		/**
 		\return The type of the resource.
@@ -44,31 +44,171 @@ namespace NOE::NOE_CORE
 		NOU::boolean isCached() const;
 
 		/**
-		\return The path the the cache file. 
+		\return The path the cache file. 
 
 		\brief Returns the path to the cache file.
 
 		\warning 
-		The resoult of this method is only valid if <tt>isCached()</tt> returns true.
+		The result of this method is only valid if <tt>isCached()</tt> returns true.
 		*/
-		const NOU::NOU_DAT_ALG::String8& getCachePath();
+		const NOU::NOU_DAT_ALG::String8& getCachePath() const;
 	
 		/**
 		\return The ID of the resource.
 
-		\brief 
+		\brief Returns the ID of the resource.
 		*/
 		ResourceID getID() const;
 	};
 
+	class Resource
+	{
+	private:
+
+	public:
+		/**
+		\return The meta data of the resource.
+
+		\brief Returns the meta data of the resource.
+		*/
+		const ResourceMetadata& getMetadata() const;
+	
+		/**
+		\return The name of the resource loader that this resource was loaded with.
+
+		\brief Returns the name of the resource loader that this resource was loaded with.
+
+		\details
+		Returns the name of the resource loader that this resource was loaded with. Since it is a requirement
+		to a resource loader that it must be able to store a resource that it loaded, it is always possible to
+		store the resource with this loader (unless another error occurs, e.g. the process does not have the
+		permission to write the source file of the resource).
+		*/
+		const NOU::NOU_DAT_ALG::StringView8& getLoaderName() const;
+
+		/**
+		\return True, if the resource was successfully stored, false if not.
+
+		\brief Stores the resource using the loader that it was loaded with.
+
+		\details
+		Stores the resource using the loader that it was loaded with. Calling this method is similar to 
+		\code{.cpp}
+		ResourceManager::get().getLoader(this->getLoaderName()).store(this->getMetadata().getID())
+		\endcode
+		*/
+		NOU::boolean store();
+
+		/**
+		\param enableCache If true, caching will be enables for this resource, if false, caching will be 
+		                   disabled.
+		\param path        If \p enableCache is true, this will be the path to the cache file, otherwise the
+		                   parameter will be ignored.
+
+		\brief Enables or disables caching for this resource.
+
+		\details
+		Stores the resource using the loader that it was loaded with. Calling this method is similar to 
+		\code{.cpp}
+		ResourceManager::get().cache(this->getMetadata().getID(), enableCache, path)
+		\endcode
+
+		Since this method calls ResourceManager::cache(), the same errors can occur in this method.
+		*/
+		NOU::boolean cache(NOU::boolean enableCache = true, const NOU::NOU_FILE_MNGT::Path &path = "./");
+		
+		/**
+		\brief Deletes the cache file of the resource.
+
+		\details
+		Deletes the cache file of the resource. This can be used to force to regenerate a cache.
+
+		Calling this method is similar to
+		\code{.cpp}
+		ResourceManager::get().deleteCache(this->getMetadata().getID())
+		\endcode
+
+		\note
+		If the resource is not cached, this method will not do anything.
+		*/
+		void deleteCache();
+	};
+
 	class NOU_CLASS ResourceLoader
 	{
+	private:
 
+	public:
+		/**
+		\return The name of the loader.
+
+		\brief Returns the name of this loader.
+
+		\note
+		It required for a resource loader class that all instances of that class share the same name.
+		*/
+		const NOU::NOU_DAT_ALG::StringView8& getName() const;
+
+		/**
+		\param enable If true, caching will be enabled, if false, caching will be disabled.
+
+		\brief Enables or disables caching for that loader.
+
+		\details
+		Enables or disables caching for that loader. This method allows it, to overwrite a resource's cache 
+		setting. By disabling caching for a loader, the loader will never load from or store to a cache - even
+		if caching is enabled for a certain resource. However, it is not possible to make a resource loader 
+		cache a resource if that resource should not be cached.
+
+		For simpler understanding, here is a chart that shows when a resource will be stored to or loader from
+		a cache:
+
+		Resource Caching | Loader caching | Will be cached?
+		---------------- | -------------- | ---------------
+		No               | No             | No
+		Yes              | No             | No
+		No               | Yes            | No
+		Yes              | Yes            | Yes
+
+		By default, caching is enabled for a loader (but this may be overwritten by the resource loader's 
+		constructor).
+		*/
+		void enableCaching(NOU::boolean enable);
+
+		/**
+		\return Whether caching is enabled or disabled for this resource loader.
+
+		\brief Returns whether caching is enabled or disabled for this resource loader.
+		*/
+		NOU::boolean isCachingEnabled();
+
+		/**
+		\param id The ID of the resource to load.
+
+		\return A pointer to the loaded resource, or \p nullptr if the loading failed.
+
+		\brief Loads and returns the resource with the passed ID.
+
+		\note
+		It is only valid to load a resource from a loader when isValidResource() returns true.
+		*/
+		Resource* load(ResourceMetadata::ResourceID id);
+
+		/**
+		\param resource The resource to store.
+
+		\return True, if storing was successful and false if not.
+
+		\brief Stores the passed resource.
+
+		\note
+		It is only valid to store a resource using a loader when isValidResource() returns true.
+		*/
+		NOU::boolean store(Resource *resource);
 	};
 
 	class NOU_CLASS ResourceManager final
 	{
-	public:
 	private:
 
 	public:
@@ -86,10 +226,9 @@ namespace NOE::NOE_CORE
 		/**
 		\param name The name of the resource loader to get.
 
-		\brief Returns the loader with the passed name.
+		\return The loader with the passed name, or \p nullptr if there is no such loader.
 
-		\warning
-		If there is no loader with the passed name, ResourceManager::NULL_LOADER will be returned.
+		\brief Returns the loader with the passed name.
 		*/
 		ResourceLoader& getLoader(const NOU::NOU_DAT_ALG::StringView8 &name);
 
@@ -182,7 +321,7 @@ namespace NOE::NOE_CORE
 		/**
 		\param id The ID of the resource.
 
-		\return True, if the resource was removed, false if not. The operation fails if there is no resouce
+		\return True, if the resource was removed, false if not. The operation fails if there is no resource
 		with the passed ID.
 
 		\brief Deletes the cache file of the resource with the passed ID.
@@ -207,12 +346,12 @@ namespace NOE::NOE_CORE
 		/**
 		\param id The ID of the resource.
 
-		\return The meta data of the resource with the passed ID, or ResourceManager::NULL_RESOURCE_METADATA 
-		        if the resource does not exist.
+		\return The meta data of the resource with the passed ID, or \p nullptr if the resource does not 
+		        exist.
 
 		\brief Returns the meta data of a single resource.
 		*/
-		const ResourceMetadata& getMetadata(typename ResourceMetadata::ResourceID id) const;
+		const ResourceMetadata* getMetadata(typename ResourceMetadata::ResourceID id) const;
 	};
 }
 
