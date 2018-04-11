@@ -43,6 +43,7 @@
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\source\nostraengine\core\ResourceManagement.cpp" />
     <ClCompile Include="src\source\nostraengine\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>

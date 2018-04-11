@@ -47,5 +47,8 @@
     <ClCompile Include="src\source\nostraengine\glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\source\nostraengine\core\ResourceManagement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

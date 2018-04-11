@@ -20,8 +20,51 @@ namespace NOE::NOE_CORE
 		using ResourceType = NOU::NOU_DAT_ALG::String8;
 
 	private:
-		
+		/**
+		\brief The ID of the resource.
+		*/
+		ResourceID m_id;
+
+		/**
+		\brief The path to the source file of the resource.
+		*/
+		NOU::NOU_FILE_MNGT::Path m_path;
+
+		/**
+		\brief The ID of the resource.
+		*/
+		ResourceType m_type;
+
+		/**
+		\brief True, if the resource is cached, false if not.
+		*/
+		NOU::boolean m_isCached;
+
+		/**
+		\brief The ID of the resource.
+		*/
+		NOU::NOU_FILE_MNGT::Path m_cachePath;
+
 	public:
+		/**
+		\param id          The ID.
+		\param type        The type.
+		\param path        The path.
+		\param enableCache The cache state.
+		\param cachePath   The cache path.
+
+		\brief Constructs a new instance and initialized the member attributes with the passed parameters.
+		*/
+		ResourceMetadata(ResourceID id, const NOU::NOU_FILE_MNGT::Path &path, const ResourceType &type,
+			NOU::boolean isCached, const NOU::NOU_FILE_MNGT::Path &cachePath);
+
+		/**
+		\return The ID of the resource.
+
+		\brief Returns the ID of the resource.
+		*/
+		ResourceID getID() const;
+
 		/**
 		\return The type of the resource.
 
@@ -51,21 +94,36 @@ namespace NOE::NOE_CORE
 		\warning 
 		The result of this method is only valid if <tt>isCached()</tt> returns true.
 		*/
-		const NOU::NOU_DAT_ALG::String8& getCachePath() const;
-	
-		/**
-		\return The ID of the resource.
-
-		\brief Returns the ID of the resource.
-		*/
-		ResourceID getID() const;
+		const NOU::NOU_FILE_MNGT::Path& getCachePath() const;
 	};
 
 	class Resource
 	{
 	private:
+		/**
+		\brief The meta data of the resource. 
+
+		\details
+		The meta data of the resource. This is stored in the resource manager and this member only references
+		that meta data in the resource manager.
+		*/
+		const ResourceMetadata &m_metaData;
+
+		/**
+		\brief The name of the loader that this resource was loaded with.
+
+		\details
+		The name of the loader that this resource was loaded with. This is stored in the resource loader 
+		itself and this member only references that name in the resource loader.
+		*/
+		const NOU::NOU_DAT_ALG::StringView8 &m_name;
 
 	public:
+		/**
+		\brief Constructs a new instance.
+		*/
+		Resource(const ResourceMetadata &metaData, const NOU::NOU_DAT_ALG::StringView8& name);
+
 		/**
 		\return The meta data of the resource.
 
@@ -138,7 +196,73 @@ namespace NOE::NOE_CORE
 	{
 	private:
 
+	protected:
+		/**
+		\param resource The resource to store.
+		\param path     The path to store the resource to.
+
+		\return True, if the resource was stored successfully, false if not.
+
+		\brief Stores the passed resource to its source (and not to a cache).
+
+		\details
+		Stores the passed resource to its source (and not to a cache). This method is defined by an actual 
+		loader (and not this abstract parent class) and will be called by store() when a resource should be
+		stored to its actual source file.
+		*/
+		virtual NOU::boolean storeImpl(Resource *resource, const NOU::NOU_FILE_MNGT::Path& path) = 0;
+
+		/**
+		\param resource The resource to cache.
+		\param path     The path to store the resource to.
+
+		\return True, if the resource was cached successfully, false if not.
+
+		\brief Stores the passed resource to its cache (and not to a cache).
+
+		\details
+		Stores the passed resource to its cache. This method is defined by an actual loader (and not this 
+		abstract parent class) and will be called by store() when a resource should cached. This method will 
+		only be called if a resource is stored that has caching enabled.
+		*/
+		virtual NOU::boolean storeCacheImpl(Resource *resource, const NOU::NOU_FILE_MNGT::Path& path) = 0;
+
+		/**
+		\param metaData The meta data of the resource to load.
+		\param path     The path to the source of the resource to load.
+
+		\return The loaded resource if it could be loaded, or \p nullptr if it could not be.
+
+		\brief Loads the resource with the passed meta data from the passed file (which is its source file).
+
+		\details
+		Loads the resource with the passed meta data from the passed file. This method is defined by an 
+		actual loader (and not this abstract parent class) and will be called by load() when a resource should
+		be from its actual source file.
+		*/
+		virtual Resource* loadImpl(const ResourceMetadata &metaData, 
+			const NOU::NOU_FILE_MNGT::Path& path) = 0;
+
+		/**
+		\param metaData The meta data of the resource to load.
+		\param path     The path to the cache of the resource to load.
+
+		\return The loaded resource if it could be loaded, or \p nullptr if it could not be.
+
+		\brief Loads the resource with the passed meta data from the passed file (which is its cache file).
+
+		\details
+		Loads the resource with the passed meta data from the passed file. This method is defined by an
+		actual loader (and not this abstract parent class) and will be called by load() when a resource should
+		be from its cache file.
+		*/
+		virtual Resource* loadCacheImpl(const ResourceMetadata &metaData, 
+			const NOU::NOU_FILE_MNGT::Path& path) = 0;
+
 	public:
+		ResourceLoader(const ResourceLoader &) = delete;
+		ResourceLoader(ResourceLoader &&) = delete;
+
 		/**
 		\return The name of the loader.
 
@@ -191,6 +315,9 @@ namespace NOE::NOE_CORE
 
 		\note
 		It is only valid to load a resource from a loader when isValidResource() returns true.
+
+		\note
+		A resource that has been loaded, needs to be closed with close() after it is not used anymore.
 		*/
 		Resource* load(ResourceMetadata::ResourceID id);
 
@@ -205,6 +332,29 @@ namespace NOE::NOE_CORE
 		It is only valid to store a resource using a loader when isValidResource() returns true.
 		*/
 		NOU::boolean store(Resource *resource);
+
+		/**
+		\param resource The resource to close.
+
+		\brief Closes a resource. If the resource needs to be stored, this has to be done before closing it.
+
+		\details
+		Closes a resource. If the resource needs to be stored, this has to be done before closing it. This is
+		required, because internally, the resources are dynamically allocated and therefore have to be deleted
+		again.
+
+		\note
+		After a resource is closed, it is not usable anymore.
+		*/
+		void close(Resource *resource);
+
+		/**
+		\return True, if the resource is valid, false if not.
+
+		\brief Returns whether the loader can load and store the resource with the passed ID. If the resource
+		       does not exist, false is returned.
+		*/
+		virtual NOU::boolean isResourceValid(typename ResourceMetadata::ResourceID id) const = 0;
 	};
 
 	class NOU_CLASS ResourceManager final
@@ -269,7 +419,7 @@ namespace NOE::NOE_CORE
 		will, change).
 		*/
 		typename ResourceMetadata::ResourceID addResource(const NOU::NOU_FILE_MNGT::Path &path, 
-			const NOU::NOU_DAT_ALG::StringView8 &type, NOU::boolean enableCache = false, 
+			const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache = false,
 			const NOU::NOU_FILE_MNGT::Path &cachePath = "./");
 
 		/**
