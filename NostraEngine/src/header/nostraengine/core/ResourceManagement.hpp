@@ -7,7 +7,58 @@ namespace NOE::NOE_CORE
 {
 	class NOU_CLASS ResourceMetadata
 	{
+	public:
 
+		/**
+		\brief The type of a resource ID.
+		*/
+		using ResourceID = NOU::int32;
+
+		/**
+		\brief The type of a resource type.
+		*/
+		using ResourceType = NOU::NOU_DAT_ALG::String8;
+
+	private:
+
+	public:
+		/**
+		\return The type of the resource.
+
+		\brief Returns the type of a resource.
+		*/
+		const ResourceType& getType() const;
+
+		/**
+		\return The path to the source file of the resource.
+
+		\brief Returns the path to the source file of the resource.
+		*/
+		const NOU::NOU_FILE_MNGT::Path& getPath() const;
+
+		/**
+		\return True, if the resource is cached and false if not.
+
+		\brief Returns whether the resource is cached or not.
+		*/
+		NOU::boolean isCached() const;
+
+		/**
+		\return The path the the cache file. 
+
+		\brief Returns the path to the cache file.
+
+		\warning 
+		The resoult of this method is only valid if <tt>isCached()</tt> returns true.
+		*/
+		const NOU::NOU_DAT_ALG::String8& getCachePath();
+	
+		/**
+		\return The ID of the resource.
+
+		\brief 
+		*/
+		ResourceID getID() const;
 	};
 
 	class NOU_CLASS ResourceLoader
@@ -18,8 +69,6 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS ResourceManager final
 	{
 	public:
-		using ResourceID = NOU::int32;
-
 	private:
 
 	public:
@@ -80,7 +129,7 @@ namespace NOE::NOE_CORE
 		over multiple executions (if a resource is removed and then added again, the ID may, and most likely 
 		will, change).
 		*/
-		ResourceID addResource(const NOU::NOU_FILE_MNGT::Path &path, 
+		typename ResourceMetadata::ResourceID addResource(const NOU::NOU_FILE_MNGT::Path &path, 
 			const NOU::NOU_DAT_ALG::StringView8 &type, NOU::boolean enableCache = false, 
 			const NOU::NOU_FILE_MNGT::Path &cachePath = "./");
 
@@ -96,7 +145,7 @@ namespace NOE::NOE_CORE
 		This method does not delete the files that were associated with that resource (that is the source and
 		a possible cache file).
 		*/
-		NOU::boolean removeResource(ResourceID id);
+		NOU::boolean removeResource(typename ResourceMetadata::ResourceID id);
 
 		/**
 		\return The amount of resources that were removed.
@@ -127,7 +176,7 @@ namespace NOE::NOE_CORE
 		- ErrorCodes::RESOURCE_NOT_PRESENT: A resource with the passed ID does not exist.
 		(Note that this list does not include errors that may be pushed be e.g. an underlying container)
 		*/
-		NOU::boolean cache(ResourceID id, NOU::boolean enableCache, 
+		NOU::boolean cache(typename ResourceMetadata::ResourceID id, NOU::boolean enableCache,
 			const NOU::NOU_FILE_MNGT::Path &path = "./");
 
 		/**
@@ -146,7 +195,7 @@ namespace NOE::NOE_CORE
 		If the resource exists but is not cached, this method will not do anything (but it will still return 
 		true).
 		*/
-		NOU::boolean deleteCache(ResourceID id);
+		NOU::boolean deleteCache(typename ResourceMetadata::ResourceID id);
 
 		/**
 		\return A list that contains the meta data of all resources in the database.
@@ -163,7 +212,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the meta data of a single resource.
 		*/
-		const ResourceMetadata& getMetadata(ResourceID id) const;
+		const ResourceMetadata& getMetadata(typename ResourceMetadata::ResourceID id) const;
 	};
 }
 
