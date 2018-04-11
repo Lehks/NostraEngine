@@ -40,9 +40,12 @@
     <ClInclude Include="dependencies\include\GLFW\glfw3native.h" />
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
+    <ClInclude Include="src\header\nostraengine\window\Device.hpp" />
+    <ClInclude Include="src\header\nostraengine\window\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c" />
+    <ClCompile Include="src\source\nostraengine\window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
