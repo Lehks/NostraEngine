@@ -195,6 +195,15 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS ResourceLoader
 	{
 	private:
+		/**
+		\brief The name of the loader.
+		*/
+		NOU::NOU_DAT_ALG::String8 m_name;
+
+		/**
+		\brief True, if the loader should work with caches, false if not.
+		*/
+		NOU::boolean  m_enableCaching;
 
 	protected:
 		/**
@@ -259,7 +268,23 @@ namespace NOE::NOE_CORE
 		virtual Resource* loadCacheImpl(const ResourceMetadata &metaData, 
 			const NOU::NOU_FILE_MNGT::Path& path) = 0;
 
+		/**
+		\param id The ID of the resource to check.
+
+		\return True if the resource is valid, false if not.
+
+		\brief Returns whether a resouce is valid (= can be loaded and stored) for this loader.
+		*/
+		virtual NOU::boolean isValidResource(ResourceMetadata::ResourceID id) = 0;
+
 	public:
+		/**
+		\param name The name of the loader.
+
+		\brief Constructs a new resource loader with the passed name.
+		*/
+		ResourceLoader(const NOU::NOU_DAT_ALG::String8 &name);
+		
 		ResourceLoader(const ResourceLoader &) = delete;
 		ResourceLoader(ResourceLoader &&) = delete;
 
@@ -360,8 +385,17 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS ResourceManager final
 	{
 	private:
-
 	public:
+		/**
+		\return The static instance of the resource manager.
+
+		\brief Returns the instance of the resource manager.
+
+		\details
+		Returns the instance of the resource manager. This method also stores the instance as a static local variable.
+		*/
+		static ResourceManager& get();
+
 		/**
 		\param loader The ResourceLoader to add.
 
@@ -502,6 +536,10 @@ namespace NOE::NOE_CORE
 		\brief Returns the meta data of a single resource.
 		*/
 		const ResourceMetadata* getMetadata(typename ResourceMetadata::ResourceID id) const;
+	
+		void initalize();
+
+		void shutdown();
 	};
 }
 

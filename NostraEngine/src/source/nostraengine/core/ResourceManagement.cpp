@@ -56,19 +56,149 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean Resource::store()
 	{
-		///\todo implement
-		return false;
+		ResourceManager::get().getLoader(getLoaderName()).store(this);
 	}
 
 	NOU::boolean Resource::cache(NOU::boolean enableCache = true,
 		const NOU::NOU_FILE_MNGT::Path &path = "./")
 	{
-		///\todo implement
-		return false;
+		return ResourceManager::get().cache(getMetadata().getID(), enableCache, path);
 	}
 
 	void Resource::deleteCache()
 	{
+		ResourceManager::get().deleteCache(getMetadata().getID());
+	}
+
+
+
+	ResourceLoader::ResourceLoader(const NOU::NOU_DAT_ALG::String8 &name) :
+		m_name(name)
+	{}
+
+	const NOU::NOU_DAT_ALG::StringView8& ResourceLoader::getName() const
+	{
+		return m_name;
+	}
+
+	void ResourceLoader::enableCaching(NOU::boolean enable)
+	{
+		m_enableCaching = enable;
+	}
+
+	NOU::boolean ResourceLoader::isCachingEnabled()
+	{
+		return m_enableCaching;
+	}
+
+	Resource* ResourceLoader::load(ResourceMetadata::ResourceID id)
+	{
+		const ResourceMetadata *metadata = ResourceManager::get().getMetadata(id);
+
+		if (metadata != nullptr && !isValidResource(id))
+			return nullptr;
+
+		Resource *ret = nullptr;
+
+		if (isCachingEnabled())
+			ret = loadCacheImpl(*metadata, metadata->getCachePath());
+
+		if (ret == nullptr)
+			return loadImpl(*metadata, metadata->getPath());
+	}
+
+	NOU::boolean ResourceLoader::store(Resource *resource)
+	{
+		const ResourceMetadata *metadata = &resource->getMetadata();
+
+		if (metadata != nullptr && !isValidResource(metadata->getID()))
+			return false;
+
+		NOU::boolean ret;
+
+		if (isCachingEnabled())
+			ret = storeCacheImpl(resource, metadata->getCachePath());
+
+		if (!ret)
+			return storeImpl(resource, metadata->getPath());
+	}
+
+	void ResourceLoader::close(Resource *resource)
+	{
+		if (resource == nullptr)
+			return;
+
 		///\todo implement
+	}
+
+
+
+	ResourceManager& ResourceManager::get()
+	{
+		static ResourceManager instance;
+		return instance;
+	}
+
+	void ResourceManager::addLoader(const ResourceLoader &loader)
+	{
+
+	}
+
+	ResourceLoader& ResourceManager::getLoader(const NOU::NOU_DAT_ALG::StringView8 &name)
+	{
+
+	}
+
+	void ResourceManager::deleteCaches()
+	{
+
+	}
+
+	typename ResourceMetadata::ResourceID ResourceManager::addResource(const NOU::NOU_FILE_MNGT::Path &path,
+		const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache = false,
+		const NOU::NOU_FILE_MNGT::Path &cachePath = "./")
+	{
+
+	}
+
+	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ResourceID id)
+	{
+
+	}
+
+	NOU::uint32 ResourceManager::cleanupResources()
+	{
+
+	}
+
+	NOU::boolean ResourceManager::cache(typename ResourceMetadata::ResourceID id, NOU::boolean enableCache,
+		const NOU::NOU_FILE_MNGT::Path &path = "./")
+	{
+
+	}
+
+	NOU::boolean ResourceManager::deleteCache(typename ResourceMetadata::ResourceID id)
+	{
+		
+	}
+
+	NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ResourceManager::listMetadata() const
+	{
+
+	}
+
+	const ResourceMetadata* ResourceManager::getMetadata(typename ResourceMetadata::ResourceID id) const
+	{
+
+	}
+
+	void ResourceManager::initalize()
+	{
+
+	}
+
+	void ResourceManager::shutdown()
+	{
+
 	}
 }
