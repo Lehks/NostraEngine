@@ -80,7 +80,6 @@
     <ClInclude Include="dependencies\include\nostrautils\thread\ThreadWrapper.hpp" />
     <ClInclude Include="src\header\nostraengine\core\NostraEngine.hpp" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
-    <ClInclude Include="src\header\nostraengine\core\TestMainLoop.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c" />
@@ -104,6 +103,9 @@
     <None Include="dependencies\include\nostrautils\math\.gitignore" />
     <None Include="dependencies\include\nostrautils\mem_mngt\.gitignore" />
     <None Include="dependencies\include\nostrautils\thread\.gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
