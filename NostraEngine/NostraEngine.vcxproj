@@ -203,7 +203,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -223,7 +223,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -239,7 +239,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -259,7 +259,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -277,7 +277,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -301,7 +301,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -321,7 +321,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -345,7 +345,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
