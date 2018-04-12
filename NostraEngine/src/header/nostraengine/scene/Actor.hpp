@@ -1,6 +1,7 @@
 #ifndef NOE_SCENE_ACTOR_HPP
 #define NOE_SCENE_ACTOR_HPP
 
+#include "nostraengine/core/StdIncludes.hpp"
 #include "nostrautils/NostraUtils.hpp"
 
 namespace NOE
@@ -29,7 +30,7 @@ namespace NOE
 	{
 	private : 
 
-		Actor();
+
 		/*
 		\ id number of the Actor
 		*/

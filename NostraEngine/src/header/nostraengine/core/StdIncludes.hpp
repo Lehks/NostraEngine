@@ -15,4 +15,9 @@
 #define NOE nostra::engine
 #endif
 
+#ifndef NOE_SCENE
+#define NOE_SCENE scene
+#endif
+
+
 #endif
