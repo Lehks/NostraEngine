@@ -36,6 +36,9 @@
     <ClInclude Include="src\header\nostraengine\window\Device.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\header\nostraengine\window\GLFWWindow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c">

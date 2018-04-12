@@ -41,6 +41,7 @@
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
     <ClInclude Include="src\header\nostraengine\window\Device.hpp" />
+    <ClInclude Include="src\header\nostraengine\window\GLFWWindow.hpp" />
     <ClInclude Include="src\header\nostraengine\window\Window.hpp" />
   </ItemGroup>
   <ItemGroup>

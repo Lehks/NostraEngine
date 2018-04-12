@@ -15,4 +15,11 @@
 #define NOE nostra::engine
 #endif
 
+/**
+\brief The name of the namespace that contains all components that are related for operating a window.
+*/
+#ifndef NOE_WINDOW
+#define NOE_WINDOW window
+#endif
+
 #endif

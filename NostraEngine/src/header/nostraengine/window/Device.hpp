@@ -2,7 +2,6 @@
 #define NOE_WINDOW_DEVICE_HPP
 
 #include "GLFW/glfw3.h"
-#include "GLFW/glfw3native.h"
 
 #include "nostrautils/NostraUtils.hpp"
 
@@ -17,14 +16,13 @@
 
 \brief A file that provides the functionality for accessing monitor meta data.
 */
-namespace NOE_WINDOW
+namespace NOE::NOE_WINDOW
 {
-	class Device
+	class NOU_CLASS Device 
 	{
 	private:
-		using sizeType = NOU::sizeType;
-		sizeType width;
-		sizeType height;
+		NOU::sizeType width;
+		NOU::sizeType height;
 
 	public:
 
