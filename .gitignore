@@ -1,10 +1,10 @@
-#CMake build directory (which is in the root directory of the repository)
-/Build/
-
 #VSCode settings
-/.vscode/
+/.vscode
 
 # Visual Studio 2015 cache/options directory
 .vs/
 
 /testmain.cpp
+
+#Directory that, according to the README.md, should be used as build directory for CMake
+/Build
