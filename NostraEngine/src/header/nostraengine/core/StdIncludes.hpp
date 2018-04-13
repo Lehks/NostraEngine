@@ -1,6 +1,8 @@
 #ifndef NOE_CORE_STD_INCLUDES_HPP
 #define NOE_CORE_STD_INCLUDES_HPP
 
+#include "nostrautils/core/StdIncludes.hpp"
+
 /**
 \file core/StdIncludes.hpp
 
@@ -26,5 +28,14 @@
 #ifndef NOE_CORE
 #define NOE_CORE core
 #endif
+
+namespace NOE::internal
+{
+	/**
+	\brief A function that has no functionality, but because of StdIncludes.cpp will always force a compiler
+	       to generate a library file.
+	*/
+	NOU_FUNC void forceLibGen();
+}
 
 #endif
