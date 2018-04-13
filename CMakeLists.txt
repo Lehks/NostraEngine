@@ -31,27 +31,40 @@ set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
 
 #=== Include directory variables
 set(NOE_GLFW_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLFW/include")
+set(NOE_GLAD_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLAD/include")
 #===
 
 #=== Vaiables for GLFW 
 set(NOE_GLFW_LIB_NAME "glfw")
 #===
 
+#=== Variables for GLAD
+set(NOE_GLAD_LIB_NAME "glad")
+#===
+
 #Build GLFW
 add_subdirectory ("GLFW")
 
-#Add GLFW include directories
+#Build GLAD
+add_subdirectory("GLAD")
+
+#Add include directories
 include_directories("${NOE_GLFW_INCLUDE_DIR}")
+include_directories("${NOE_GLAD_INCLUDE_DIR}")
 
 #=== Build NostraEngine target
 add_executable("${NOE_EXECUTABLE}" "${NOE_EXECUTABLE_SOURCE}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 #===
 
 
 #=== Build Test target
 add_executable("${NOE_TEST_EXECUTABLE}" "${NOE_TEST_EXECUTABLE_SOURCE}")
 target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 #=== 
