@@ -19,21 +19,39 @@ if (${NOE_COMPILE_AS_DEBUG})
 endif()
 #===
 
-set (NOE_GCC_IDENTIFICATION_MACRO_REM "-U__GNUC__")
-set (NOE_MSVC_IDENTIFICATION_MACRO_REM "-U_MSC_VER")
-
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	add_definitions(${NOE_GCC_IDENTIFICATION_MACRO_REM})
-	add_definitions(${NOE_MSVC_IDENTIFICATION_MACRO_REM})
-endif()
-
+#=== Variables for NostraEngine target
 set(NOE_EXECUTABLE "NostraEngine")
 set(NOE_EXECUTABLE_SOURCE "main.cpp")
+#===
 
+#=== Variables for Test target
 set(NOE_TEST_EXECUTABLE "Test")
 set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
+#===
 
+#=== Include directory variables
+set(NOE_GLFW_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLFW/include")
+#===
+
+#=== Vaiables for GLFW 
+set(NOE_GLFW_LIB_NAME "glfw")
+#===
+
+#Build GLFW
+add_subdirectory ("GLFW")
+
+#Add GLFW include directories
+include_directories("${NOE_GLFW_INCLUDE_DIR}")
+
+#=== Build NostraEngine target
 add_executable("${NOE_EXECUTABLE}" "${NOE_EXECUTABLE_SOURCE}")
+target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+#===
 
 
+#=== Build Test target
 add_executable("${NOE_TEST_EXECUTABLE}" "${NOE_TEST_EXECUTABLE_SOURCE}")
+target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+#=== 

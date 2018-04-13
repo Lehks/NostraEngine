@@ -20,10 +20,10 @@ set(LIB_SUFFIX "" CACHE STRING "Takes an empty string or 64. Directory where lib
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
-option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" ON)
-option(GLFW_BUILD_TESTS "Build the GLFW test programs" ON)
-option(GLFW_BUILD_DOCS "Build the GLFW documentation" ON)
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" OFF)
+option(GLFW_BUILD_TESTS "Build the GLFW test programs" OFF)
+option(GLFW_BUILD_DOCS "Build the GLFW documentation" OFF)
 option(GLFW_INSTALL "Generate installation target" ON)
 option(GLFW_VULKAN_STATIC "Use the Vulkan loader statically linked into application" OFF)
 option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
@@ -375,18 +375,6 @@ configure_file(src/glfw3.pc.in src/glfw3.pc @ONLY)
 # Add subdirectories
 #--------------------------------------------------------------------
 add_subdirectory(src)
-
-if (GLFW_BUILD_EXAMPLES)
-    add_subdirectory(examples)
-endif()
-
-if (GLFW_BUILD_TESTS)
-    add_subdirectory(tests)
-endif()
-
-if (DOXYGEN_FOUND AND GLFW_BUILD_DOCS)
-    add_subdirectory(docs)
-endif()
 
 #--------------------------------------------------------------------
 # Install files other than the library
