@@ -36,6 +36,7 @@ set(NOE_GLAD_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLAD/include")
 
 #=== Vaiables for GLFW 
 set(NOE_GLFW_LIB_NAME "glfw")
+set(NOE_GLFW_LIB_CONFIG "SHARED") #Either STATIC or SHARED
 #===
 
 #=== Variables for GLAD
