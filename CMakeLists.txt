@@ -27,19 +27,4 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	add_definitions(${MSVC_IDENTIFICATION_MACRO_REM})
 endif()
 
-#add_subdirectory(NostraEngine)
-
-set(NOE_GLFW_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLFW/include")
-
-set(NOE_GLFW_LIB_NAME "glfw")
-set(NOE_TEST_EXE_NAME "Test")
-
-#Build GLFW
-add_subdirectory ("GLFW")
-
-include_directories("${NOE_GLFW_INCLUDE_DIR}")
-
-add_executable("${NOE_TEST_EXE_NAME}" "main.cpp")
-target_link_libraries("${NOE_TEST_EXE_NAME}" "${NOE_GLFW_LIB_NAME}")
-
-#add_subdirectory ("Test")
+add_subdirectory(NostraEngine)
