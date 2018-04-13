@@ -150,6 +150,9 @@
     <ClInclude Include="dependencies\include\nostrautils\core\Version.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\header\nostraengine\core\Initializable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c">

@@ -78,6 +78,7 @@
     <ClInclude Include="dependencies\include\nostrautils\thread\ThreadManager.hpp" />
     <ClInclude Include="dependencies\include\nostrautils\thread\Threads.hpp" />
     <ClInclude Include="dependencies\include\nostrautils\thread\ThreadWrapper.hpp" />
+    <ClInclude Include="src\header\nostraengine\core\Initializable.hpp" />
     <ClInclude Include="src\header\nostraengine\core\NostraEngine.hpp" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
   </ItemGroup>
