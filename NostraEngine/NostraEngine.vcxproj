@@ -84,7 +84,6 @@
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c" />
     <ClCompile Include="src\source\nostraengine\core\NostraEngine.cpp" />
-    <ClCompile Include="src\source\nostraengine\core\TestMainLoop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />
@@ -255,7 +254,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;NOSTRAENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Lukas Reichmann\Documents\Visual Studio 2017\Projects\NostraEngine\NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)NostraEngine\dependencies\include;$(ProjectDir)src\header\;$(ProjectDir)dependencies\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

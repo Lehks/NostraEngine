@@ -25,7 +25,7 @@ Terminate-Method:	If the window gets closed , the terminate method will clean up
 */
 namespace NOE
 {
-	class NostraEngine
+	class NOU_CLASS NostraEngine
 	{
 	private:
 		/**
@@ -48,19 +48,19 @@ namespace NOE
 
 		\brief Initialization-Method. Everything put in here will be initialized for later usage.
 		*/
-		NOU::int8 init();
+		NOU::int32 init();
 		/**
 		/return		NOU::int8
 
 		\brief Start-Method. Holds the main loop of the engine. 
 		*/
-		NOU::int8 start();
+		NOU::int32 start();
 		/**
 		/return		NOU::int8
 
 		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
 		*/
-		NOU::int8 terminate();
+		NOU::int32 terminate();
 	};
 }
 
