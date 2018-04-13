@@ -48,9 +48,35 @@ extern "C" {
 #ifndef SQLITE_EXTERN
 # define SQLITE_EXTERN extern
 #endif
+
+//Code copied from GLAD and slightly modified afterwards
 #ifndef SQLITE_API
-# define SQLITE_API
+# if defined(NOU_SQLITE3_EXPORT)
+#  if defined(_WIN32) || defined(__CYGWIN__)
+#   if defined(NOU_SQLITE3_EXPORT_BUILD)
+#    if defined(__GNUC__)
+#     define SQLITE_API __attribute__ ((dllexport))
+#    else
+#     define SQLITE_API __declspec(dllexport)
+#    endif
+#   else
+#    if defined(__GNUC__)
+#     define SQLITE_API __attribute__ ((dllimport))
+#    else
+#     define SQLITE_API __declspec(dllimport)
+#    endif
+#   endif
+#  elif defined(__GNUC__) && defined(NOU_SQLITE3_EXPORT_BUILD)
+#   define SQLITE_API __attribute__ ((visibility ("default")))
+#  else
+#   define SQLITE_API
+#  endif
+# else
+#  define SQLITE_API
+# endif
 #endif
+//End of copy from GLAD
+
 #ifndef SQLITE_CDECL
 # define SQLITE_CDECL
 #endif
