@@ -43,11 +43,18 @@ set(NOE_GLFW_LIB_CONFIG "SHARED") #Either STATIC or SHARED
 set(NOE_GLAD_LIB_NAME "glad")
 #===
 
+#=== Variables for SQLite3
+set(NOE_SQLITE3_LIB_NAME "sqlite3")
+#===
+
 #Build GLFW
 add_subdirectory ("GLFW")
 
 #Build GLAD
 add_subdirectory("GLAD")
+
+#Build SQLite3
+add_subdirectory("SQLite3")
 
 #Add include directories
 include_directories("${NOE_GLFW_INCLUDE_DIR}")
@@ -57,8 +64,10 @@ include_directories("${NOE_GLAD_INCLUDE_DIR}")
 add_executable("${NOE_EXECUTABLE}" "${NOE_EXECUTABLE_SOURCE}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
+target_link_libraries("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
+add_dependencies("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 #===
 
 
@@ -66,6 +75,8 @@ add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 add_executable("${NOE_TEST_EXECUTABLE}" "${NOE_TEST_EXECUTABLE_SOURCE}")
 target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
-add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
-add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
+target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
+add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
+add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
+add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 #=== 
