@@ -4,8 +4,9 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
+#include "nostrautils/NostraUtils.hpp"
+
 #include "nostraengine/core/StdIncludes.hpp"
-#include "nostrautils/core/StdIncludes.hpp"
 #include <iostream>
 
 /**
