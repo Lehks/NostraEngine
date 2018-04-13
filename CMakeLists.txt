@@ -37,7 +37,8 @@ set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
 #=== Include directory variables
 set(NOE_GLFW_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLFW/include")
 set(NOE_GLAD_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLAD/include")
-set(NOE_NOU_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraEngine/src/header")
+set(NOE_NOE_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraEngine/src/header")
+set(NOE_NOU_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraUtils/src/header")
 #===
 
 #=== Variables for GLFW 
@@ -57,6 +58,10 @@ set(NOE_SQLITE3_LIB_NAME "sqlite3")
 set(NOE_NOE_LIB_NAME "NostraEngine")
 #==
 
+#== Variables for Nostra Utils
+set(NOE_NOU_LIB_NAME "NostraUtils")
+#==
+
 #Build GLFW
 add_subdirectory ("GLFW")
 
@@ -69,9 +74,13 @@ add_subdirectory("SQLite3")
 #Build Nostra Engine
 add_subdirectory("NostraEngine")
 
+#Build Nostra Utils
+add_subdirectory("NostraUtils")
+
 #Add include directories
 include_directories("${NOE_GLFW_INCLUDE_DIR}")
 include_directories("${NOE_GLAD_INCLUDE_DIR}")
+include_directories("${NOE_NOE_INCLUDE_DIR}")
 include_directories("${NOE_NOU_INCLUDE_DIR}")
 
 #=== Build NostraEngine target
@@ -81,11 +90,13 @@ target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
+target_link_libraries("${NOE_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
+add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 #===
 
 #=== Build Test target
@@ -106,11 +117,13 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
+	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
+	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 else()
 	message(STATUS "NOE:  Building in Release mode, Test-executable will not be generated.")
 endif()
