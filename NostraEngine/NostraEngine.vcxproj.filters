@@ -18,9 +18,6 @@
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\header\nostraengine\core\TestMainLoop.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dependencies\include\glad\glad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -153,11 +150,11 @@
     <ClInclude Include="dependencies\include\nostrautils\core\Version.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\header\nostraengine\core\Initializable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\source\nostraengine\core\TestMainLoop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\source\glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -182,5 +179,8 @@
     <None Include="dependencies\include\nostrautils\math\.gitignore" />
     <None Include="dependencies\include\nostrautils\mem_mngt\.gitignore" />
     <None Include="dependencies\include\nostrautils\thread\.gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>

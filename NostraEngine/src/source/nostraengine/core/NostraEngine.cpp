@@ -12,7 +12,7 @@ NOE::NostraEngine::NostraEngine(NOU::int32 ID) :
 	ID(ID)
 {}
 
-NOU::int8 NOE::NostraEngine::init()
+NOU::int32 NOE::NostraEngine::init()
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -33,11 +33,10 @@ NOU::int8 NOE::NostraEngine::init()
 	return 0;
 }
 
-NOU::int8 NOE::NostraEngine::start()
+NOU::int32 NOE::NostraEngine::start()
 {
 
-	init();
-	if (init != 0)
+	if (init() != 0)
 	{
 		std::cout << "An error occurred during initialization."  << std::endl;
 		return 1;
@@ -53,7 +52,7 @@ NOU::int8 NOE::NostraEngine::start()
 	return 0;
 }
 
-NOU::int8 NOE::NostraEngine::terminate()
+NOU::int32 NOE::NostraEngine::terminate()
 {
 	glfwTerminate();
 
