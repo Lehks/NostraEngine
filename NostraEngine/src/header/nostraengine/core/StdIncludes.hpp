@@ -1,8 +1,6 @@
 #ifndef NOE_CORE_STD_INCLUDES_HPP
 #define NOE_CORE_STD_INCLUDES_HPP
 
-#include "nostrautils/core/StdIncludes.hpp"
-
 /**
 \file core/StdIncludes.hpp
 

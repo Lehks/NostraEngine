@@ -2,6 +2,8 @@
 #define NOE_CORE_RESOURCE_LOADER_HPP
 
 #include "nostraengine/core/StdIncludes.hpp"
+#include "nostrautils/dat_alg/HashMap.hpp"
+#include "nostrautils/core/Utils.hpp"
 
 namespace NOE::NOE_CORE
 {
@@ -273,7 +275,7 @@ namespace NOE::NOE_CORE
 
 		\return True if the resource is valid, false if not.
 
-		\brief Returns whether a resouce is valid (= can be loaded and stored) for this loader.
+		\brief Returns whether a resource is valid (= can be loaded and stored) for this loader.
 		*/
 		virtual NOU::boolean isValidResource(ResourceMetadata::ResourceID id) = 0;
 
@@ -385,6 +387,29 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS ResourceManager final
 	{
 	private:
+		NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, ResourceLoader*> m_loaders;
+
+		/**
+		\tparam T    The type resource loader to add. This must be a child class of ResourceLoader.
+		\tparam ARGS The types of the parameters that will be passed to the constructor of the resource
+		loader.
+
+		\param args The parameters that will be passed to the constructor of the resource loader.
+
+		\return The constructed loader.
+
+		\brief Allocates a new ResourceLoader of the type T.
+		*/
+		template<typename T, typename ...ARGS>
+		static ResourceLoader* allocResourceLoader(ARGS&&... args);
+
+		/**
+		\param loader The loader to deallocate
+
+		\brief Deallocates the passed loader.
+		*/
+		static void allocResourceLoader(ResourceLoader *loader);
+
 	public:
 		/**
 		\return The static instance of the resource manager.
@@ -397,15 +422,27 @@ namespace NOE::NOE_CORE
 		static ResourceManager& get();
 
 		/**
-		\param loader The ResourceLoader to add.
+		\tparam T    The type resource loader to add. This must be a child class of ResourceLoader.
+		\tparam ARGS The types of the parameters that will be passed to the constructor of the resource 
+		             loader.
+
+		\param args The parameters that will be passed to the constructor of the resource loader.
+
+		\return True, if the loader was added and false if it was not (in that case, a loader with the same
+		        name already exists). 
 
 		\brief Adds a new ResourceLoader.
 		
 		\details 
 		Adds a new ResourceLoader. It is only possible to get a ResourceLoader using getLoader() after it has 
 		been added using this method.
+
+		\note
+		The loader names need to be unique and there can never be two loaders added to the manager with the
+		same name at the same time.
 		*/
-		void addLoader(const ResourceLoader &loader);
+		template<typename T, typename ...ARGS>
+		NOU::boolean addLoader(ARGS&&... args);
 
 		/**
 		\param name The name of the resource loader to get.
@@ -414,7 +451,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the loader with the passed name.
 		*/
-		ResourceLoader& getLoader(const NOU::NOU_DAT_ALG::StringView8 &name);
+		ResourceLoader* getLoader(const NOU::NOU_DAT_ALG::StringView8 &name);
 
 		/**
 		\brief Deletes the cache files of all resources.
@@ -541,6 +578,31 @@ namespace NOE::NOE_CORE
 
 		void shutdown();
 	};
+
+	template<typename T, typename ...ARGS>
+	static ResourceLoader* ResourceManager::allocResourceLoader(ARGS&&... args)
+	{
+		static_assert(std::is_base_of<ResourceLoader, T>::value) ///\todo Replace with NOU::NOU_CORE::IsBaseOf
+
+		return new T(NOU_CORE::forward<ARGS>(args)...);
+	}
+
+	template<typename T, typename ...ARGS>
+	NOU::boolean ResourceManager::addLoader(ARGS&&... args)
+	{
+		ResourceLoader *loader = allocResourceLoader(NOU_CORE::forward<ARGS>(args)...);
+
+		if (!m_loaders.containsKey(loader->getName()))
+		{
+			m_loaders.map(loader->getName(), loader);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 }
 
 #endif
