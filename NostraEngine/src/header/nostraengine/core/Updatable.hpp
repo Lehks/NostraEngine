@@ -1,5 +1,5 @@
 #ifndef NOE_CORE_UPDATABLE_HPP
-#def NOE_CORE_UPDATABLE_HPP
+#define NOE_CORE_UPDATABLE_HPP
 
 class Updatable{
 public:
@@ -7,7 +7,5 @@ public:
     virtual void update() = 0;
     virtual void lateUpdate() = 0;
 };
-
-
 
 #endif
