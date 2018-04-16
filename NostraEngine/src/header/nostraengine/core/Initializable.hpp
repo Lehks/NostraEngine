@@ -7,12 +7,19 @@
 
 namespace NOE {
 
-	class NOU_CLASS Initializable {
+	class NOU_CLASS Initializable 
+	{
+		private:
+			NOU::uint32 m_priority;
 
-		Initializable();
+		public:
+			Initializable(NOU::uint32 priority = 0);
 
-		virtual NOU::int32 initialize() = 0;
-		virtual NOU::int32 terminate()  = 0;
+			virtual NOU::int32 initialize() = 0;
+			virtual NOU::int32 terminate()  = 0;
+
+			void setPriority(NOU::uint32 priority);
+			NOU::uint32 getPriority();
 	};
 }
 #endif

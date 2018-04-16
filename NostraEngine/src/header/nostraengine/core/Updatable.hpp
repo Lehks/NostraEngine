@@ -7,11 +7,12 @@
 namespace NOE
 {
 
-    class NOU_CLASS Updatable{
-    public:
-        virtual void earlyUpdate();
-        virtual void update() = 0;
-        virtual void lateUpdate();
+    class NOU_CLASS Updatable
+    {
+        public:
+            virtual void earlyUpdate();
+            virtual void update() = 0;
+            virtual void lateUpdate();
     };
 }
 #endif
