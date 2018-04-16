@@ -1,9 +1,9 @@
 #include "nostraengine/core/Updatable.hpp"
 
-void earlyUpdate(){
+void NOE::Updatable::earlyUpdate(){
 
 }
 
-void lateUpdate(){
+void NOE::Updatable::lateUpdate(){
     
 }
