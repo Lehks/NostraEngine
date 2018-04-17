@@ -44,7 +44,10 @@
     <ClCompile Include="src\source\glad\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\source\nostraengine\window\Window.cpp">
+    <ClCompile Include="src\source\nostraengine\window\GLFWWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\source\nostraengine\window\Device.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

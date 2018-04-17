@@ -46,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c" />
-    <ClCompile Include="src\source\nostraengine\window\Window.cpp" />
+    <ClCompile Include="src\source\nostraengine\window\Device.cpp" />
+    <ClCompile Include="src\source\nostraengine\window\GLFWWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\GLFW\x64\glfw3.lib" />

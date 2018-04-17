@@ -8,7 +8,6 @@
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/window/Window.hpp"
-#include "nostraengine/window/Device.hpp"
 
 /**
 \file window/GLFWWindow.hpp

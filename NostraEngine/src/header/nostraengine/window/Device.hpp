@@ -6,7 +6,6 @@
 #include "nostrautils/NostraUtils.hpp"
 
 #include "nostraengine/core/StdIncludes.hpp"
-
 /**
 \file window/Device.hpp
 
