@@ -18,3 +18,5 @@ target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
 add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLFW_LIB_NAME}")
 add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
+
+install(TARGETS "${NOE_NOE_LIB_NAME}" DESTINATION "bin")
