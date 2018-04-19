@@ -25,7 +25,7 @@ endif()
 
 #=== Set name of the NostraUtils library file(s)
 if(NOT DEFINED NOU_LIB_NAME)
-	set(NOU_LIB_NAME "NostraUtils")
+	set(NOU_LIB_NAME "${NOE_NOU_LIB_NAME}")
 endif()
 #=== 
 
