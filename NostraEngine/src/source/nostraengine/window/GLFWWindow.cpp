@@ -3,8 +3,10 @@
 namespace NOE::NOE_WINDOW
 {
 
-	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow()
+	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType m_sizeWidth, NOU::sizeType m_sizeHeight, 
+		NOU::NOU_DAT_ALG::String8 m_title, GLFWmonitor* monitor, GLFWwindow* share)
 	{
+		m_window = glfwCreateWindow(m_sizeWidth, m_sizeHeight, m_title.rawStr(), monitor, share);
 	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::setTitle()

@@ -2,5 +2,12 @@
 
 namespace NOE::NOE_WINDOW
 {
+	Device::Device()
+	{
 
+	}
+	//Device& Device::getResolution()
+	//{
+	//	
+	//}
 }

@@ -27,15 +27,11 @@ namespace NOE::NOE_WINDOW
 	{
 	private:
 		GLFWwindow * m_window;
-		NOU::NOU_DAT_ALG::String8 m_title;
-		NOU::NOU_DAT_ALG::String8 m_name;
-		NOU::sizeType m_sizeWidth;
-		NOU::sizeType m_sizeHeight;
-		NOU::sizeType m_posWidth;
-		NOU::sizeType m_posHeight;
 	public:
 
-		GLFWWindow();
+		virtual void createWindow(NOU::sizeType m_sizeWidth, NOU::sizeType m_sizeHeight,
+			NOU::NOU_DAT_ALG::String8 m_title, GLFWmonitor* monitor = NULL, 
+			GLFWwindow* share = NULL) override;
 		virtual void setTitle() override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) override;

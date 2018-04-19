@@ -26,6 +26,8 @@ namespace NOE::NOE_WINDOW
 	public:
 		
 		virtual ~Window() = default;
+		virtual void createWindow(NOU::sizeType m_sizeWidth, NOU::sizeType m_sizeHeight, 
+			NOU::NOU_DAT_ALG::String8 m_title, GLFWmonitor* monitor = NULL, GLFWwindow* share = NULL);
 		virtual void setTitle() = 0;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) = 0;
 		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) = 0;
