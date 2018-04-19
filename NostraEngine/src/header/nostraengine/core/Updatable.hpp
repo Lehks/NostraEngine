@@ -2,7 +2,7 @@
 #define NOE_CORE_UPDATABLE_HPP
 
 #include "nostrautils/NostraUtils.hpp"
-#include "nostrautils/StdIncludes.hpp"
+#include "nostraengine/core/StdIncludes.hpp"
 
 /**
 \author  Leslie Marxen
