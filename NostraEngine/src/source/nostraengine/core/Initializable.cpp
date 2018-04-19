@@ -2,10 +2,10 @@
 
 namespace NOE
 {
-    Initializable::Initializable() : 
+    Initializable::Initializable(NOU:uint32 priority) : 
         m_priority(priority){}
 
-    void Initializable::setPriority(NOU::uint32 priority)
+    Initializable::Initializable(NOU::uint32 priority)
     {
         m_priority = priority;
     }
