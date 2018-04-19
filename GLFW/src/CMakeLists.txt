@@ -114,7 +114,5 @@ if (MSVC)
     target_compile_definitions(glfw PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
 
-if (GLFW_INSTALL)
-    install(TARGETS glfw EXPORT glfwTargets DESTINATION lib${LIB_SUFFIX})
-endif()
+install(TARGETS glfw EXPORT glfwTargets DESTINATION "bin")
 

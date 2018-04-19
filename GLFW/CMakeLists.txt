@@ -16,17 +16,13 @@ set(GLFW_VERSION_PATCH "1")
 set(GLFW_VERSION_EXTRA "")
 set(GLFW_VERSION "${GLFW_VERSION_MAJOR}.${GLFW_VERSION_MINOR}")
 set(GLFW_VERSION_FULL "${GLFW_VERSION}.${GLFW_VERSION_PATCH}${GLFW_VERSION_EXTRA}")
-set(LIB_SUFFIX "" CACHE STRING "Takes an empty string or 64. Directory where lib will be installed: lib or lib64")
+set(LIB_SUFFIX "")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" OFF)
-option(GLFW_BUILD_TESTS "Build the GLFW test programs" OFF)
-option(GLFW_BUILD_DOCS "Build the GLFW documentation" OFF)
-option(GLFW_INSTALL "Generate installation target" ON)
+set(BUILD_SHARED_LIBS ON)
+set(GLFW_INSTALL ON)
 option(GLFW_VULKAN_STATIC "Use the Vulkan loader statically linked into application" OFF)
-option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 
 if (WIN32)
     option(GLFW_USE_HYBRID_HPG "Force use of high-performance GPU on hybrid systems" OFF)
@@ -381,27 +377,27 @@ add_subdirectory(src)
 # The library is installed by src/CMakeLists.txt
 #--------------------------------------------------------------------
 if (GLFW_INSTALL)
-    install(DIRECTORY include/GLFW DESTINATION include
-            FILES_MATCHING PATTERN glfw3.h PATTERN glfw3native.h)
-
-    install(FILES "${GLFW_BINARY_DIR}/src/glfw3Config.cmake"
-                  "${GLFW_BINARY_DIR}/src/glfw3ConfigVersion.cmake"
-            DESTINATION "${GLFW_CONFIG_PATH}")
-
-    install(EXPORT glfwTargets FILE glfw3Targets.cmake
-            EXPORT_LINK_INTERFACE_LIBRARIES
-            DESTINATION "${GLFW_CONFIG_PATH}")
-    install(FILES "${GLFW_BINARY_DIR}/src/glfw3.pc"
-            DESTINATION "lib${LIB_SUFFIX}/pkgconfig")
-
-    # Only generate this target if no higher-level project already has
-    if (NOT TARGET uninstall)
-        configure_file(cmake_uninstall.cmake.in
-                       cmake_uninstall.cmake IMMEDIATE @ONLY)
-
-        add_custom_target(uninstall
-                          "${CMAKE_COMMAND}" -P
-                          "${GLFW_BINARY_DIR}/cmake_uninstall.cmake")
-    endif()
+    #install(DIRECTORY include/GLFW DESTINATION include
+    #        FILES_MATCHING PATTERN glfw3.h PATTERN glfw3native.h)
+    #
+    #install(FILES "${GLFW_BINARY_DIR}/src/glfw3Config.cmake"
+    #              "${GLFW_BINARY_DIR}/src/glfw3ConfigVersion.cmake"
+    #        DESTINATION "${GLFW_CONFIG_PATH}")
+    #
+    #install(EXPORT glfwTargets FILE glfw3Targets.cmake
+    #        EXPORT_LINK_INTERFACE_LIBRARIES
+    #        DESTINATION "${GLFW_CONFIG_PATH}")
+    #install(FILES "${GLFW_BINARY_DIR}/src/glfw3.pc"
+    #        DESTINATION "lib${LIB_SUFFIX}/pkgconfig")
+    #
+    ## Only generate this target if no higher-level project already has
+    #if (NOT TARGET uninstall)
+    #    configure_file(cmake_uninstall.cmake.in
+    #                   cmake_uninstall.cmake IMMEDIATE @ONLY)
+    #
+    #    add_custom_target(uninstall
+    #                      "${CMAKE_COMMAND}" -P
+    #                      "${GLFW_BINARY_DIR}/cmake_uninstall.cmake")
+    #endif()
 endif()
 

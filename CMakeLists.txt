@@ -2,14 +2,17 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 project("NostraEngine" CXX)
 
-# set C++17 as language standard
-set (CMAKE_CXX_STANDARD 17)
+option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
 
-#=== set bin/ as output directory
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-#===
+# Set language standard
+if ("${NOE_CPP14_COMPATIBLILTY_MODE}")
+	set (CMAKE_CXX_STANDARD 14)
+	message(STATUS "NOE:  Generating for C++14 compatibility mode.")
+	add_definitions(-DNOE_CPP14_COMPATIBILITY)
+else()
+	set (CMAKE_CXX_STANDARD 17)
+	message(STATUS "NOE:  Generating without C++14 compatibility mode.")
+endif()
 
 #=== If COMPILE_AS_DEBUG is True, NOE_DEBUG will be defined during the compilation. 
 #COMPILE_AS_DEBUG will be False if in Release mode and True in Debug mode by default.
@@ -23,6 +26,14 @@ if (${NOE_COMPILE_AS_DEBUG})
 	add_definitions (-DNOE_DEBUG)
 endif()
 #===
+
+#=== Set RPATH
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/bin")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+#===
+
 
 #=== Variables for NostraEngine target
 set(NOE_EXECUTABLE "NostraEngineExe")
@@ -38,7 +49,7 @@ set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
 set(NOE_GLFW_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLFW/include")
 set(NOE_GLAD_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLAD/include")
 set(NOE_NOE_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraEngine/src/header")
-set(NOE_NOU_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraUtils/src/header")
+set(NOE_NOU_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraUtils/Nostra Utils/src/header")
 #===
 
 #=== Variables for GLFW 
@@ -97,6 +108,8 @@ add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
+
+install(TARGETS ${NOE_EXECUTABLE} DESTINATION "bin")
 #===
 
 #=== Build Test target
@@ -124,6 +137,8 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
+	
+	install(TARGETS ${NOE_TEST_EXECUTABLE} DESTINATION "bin")
 else()
 	message(STATUS "NOE:  Building in Release mode, Test-executable will not be generated.")
 endif()
