@@ -22,7 +22,9 @@ namespace NOE
         public:
             
             /**
-            \brief Abstract function that defines behaivour that needs to be executed before every render frame
+            \brief  Abstract function that defines behaivour that needs to be executed before every render frame.
+                    Defaults to an enmpty function, so nothing will be done by default. Can be overwritten to add 
+                    unique behaviour
             */
             virtual void earlyUpdate();
             /**
@@ -31,6 +33,11 @@ namespace NOE
                     frame
             */
             virtual void update() = 0;
+            /**
+            \brief  Abstract function that defines behaivour that needs to be executed after every render frame.
+                    Defaults to an enmpty function, so nothing will be done by default. Can be overwritten to add 
+                    unique behaviour
+            */
             virtual void lateUpdate();
     };
 }
