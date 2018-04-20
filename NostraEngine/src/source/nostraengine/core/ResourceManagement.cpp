@@ -56,11 +56,11 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean Resource::store()
 	{
-		ResourceManager::get().getLoader(getLoaderName()).store(this);
+		return ResourceManager::get().getLoader(getLoaderName())->store(this);
 	}
 
-	NOU::boolean Resource::cache(NOU::boolean enableCache = true,
-		const NOU::NOU_FILE_MNGT::Path &path = "./")
+	NOU::boolean Resource::cache(NOU::boolean enableCache,
+		const NOU::NOU_FILE_MNGT::Path &path)
 	{
 		return ResourceManager::get().cache(getMetadata().getID(), enableCache, path);
 	}
@@ -132,6 +132,10 @@ namespace NOE::NOE_CORE
 	}
 
 
+	void ResourceManager::allocResourceLoader(ResourceLoader *loader)
+	{
+		delete loader;
+	}
 
 	ResourceManager& ResourceManager::get()
 	{
@@ -139,14 +143,12 @@ namespace NOE::NOE_CORE
 		return instance;
 	}
 
-	void ResourceManager::addLoader(const ResourceLoader &loader)
+	ResourceLoader* ResourceManager::getLoader(const NOU::NOU_DAT_ALG::StringView8 &name)
 	{
-
-	}
-
-	ResourceLoader& ResourceManager::getLoader(const NOU::NOU_DAT_ALG::StringView8 &name)
-	{
-
+		if (!m_loaders.containsKey(name))
+			return m_loaders.get(name);
+		else
+			return nullptr;
 	}
 
 	void ResourceManager::deleteCaches()
@@ -155,41 +157,41 @@ namespace NOE::NOE_CORE
 	}
 
 	typename ResourceMetadata::ResourceID ResourceManager::addResource(const NOU::NOU_FILE_MNGT::Path &path,
-		const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache = false,
-		const NOU::NOU_FILE_MNGT::Path &cachePath = "./")
+		const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache,
+		const NOU::NOU_FILE_MNGT::Path &cachePath)
 	{
-
+		return 0;
 	}
 
 	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ResourceID id)
 	{
-
+		return false;
 	}
 
 	NOU::uint32 ResourceManager::cleanupResources()
 	{
-
+		return 0;
 	}
 
 	NOU::boolean ResourceManager::cache(typename ResourceMetadata::ResourceID id, NOU::boolean enableCache,
-		const NOU::NOU_FILE_MNGT::Path &path = "./")
+		const NOU::NOU_FILE_MNGT::Path &path)
 	{
-
+		return false;
 	}
 
 	NOU::boolean ResourceManager::deleteCache(typename ResourceMetadata::ResourceID id)
 	{
-		
+		return false;
 	}
 
 	NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ResourceManager::listMetadata() const
 	{
-
+		return NOU::NOU_DAT_ALG::Vector<ResourceMetadata>();
 	}
 
 	const ResourceMetadata* ResourceManager::getMetadata(typename ResourceMetadata::ResourceID id) const
 	{
-
+		return nullptr;
 	}
 
 	void ResourceManager::initalize()
