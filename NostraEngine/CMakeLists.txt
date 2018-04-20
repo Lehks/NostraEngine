@@ -8,6 +8,7 @@ include_directories("${NOE_NOE_INCLUDE_DIR}")
 include_directories("${NOE_GLFW_INCLUDE_DIR}")
 include_directories("${NOE_GLAD_INCLUDE_DIR}")
 include_directories("${NOE_NOU_INCLUDE_DIR}")
+include_directories("${CMAKE_SOURCE_DIR}")
 
 add_library("${NOE_NOE_LIB_NAME}" SHARED "${NOE_NOE_SOURCE_FILES}")
 
