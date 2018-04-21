@@ -2,8 +2,7 @@
 #define NOE_CORE_RESOURCE_LOADER_HPP
 
 #include "nostraengine/core/StdIncludes.hpp"
-#include "nostrautils/dat_alg/HashMap.hpp"
-#include "nostrautils/core/Utils.hpp"
+#include "nostraengine/utility/SQLite.hpp"
 
 namespace NOE::NOE_CORE
 {
@@ -21,44 +20,29 @@ namespace NOE::NOE_CORE
 		*/
 		using ResourceType = NOU::NOU_DAT_ALG::String8;
 
+		static constexpr ResourceID INVALID_ID = 0;
+
 	private:
 		/**
 		\brief The ID of the resource.
 		*/
 		ResourceID m_id;
 
-		/**
-		\brief The path to the source file of the resource.
-		*/
-		NOU::NOU_FILE_MNGT::Path m_path;
-
-		/**
-		\brief The ID of the resource.
-		*/
 		ResourceType m_type;
 
-		/**
-		\brief True, if the resource is cached, false if not.
-		*/
+		NOU::NOU_FILE_MNGT::Path m_path;
+
 		NOU::boolean m_isCached;
 
-		/**
-		\brief The ID of the resource.
-		*/
 		NOU::NOU_FILE_MNGT::Path m_cachePath;
 
 	public:
 		/**
-		\param id          The ID.
-		\param type        The type.
-		\param path        The path.
-		\param enableCache The cache state.
-		\param cachePath   The cache path.
+		\param id The ID.
 
-		\brief Constructs a new instance and initialized the member attributes with the passed parameters.
+		\brief Constructs a new instance and initialized the member attributes with the passed ID.
 		*/
-		ResourceMetadata(ResourceID id, const NOU::NOU_FILE_MNGT::Path &path, const ResourceType &type,
-			NOU::boolean isCached, const NOU::NOU_FILE_MNGT::Path &cachePath);
+		ResourceMetadata(ResourceID id = INVALID_ID);
 
 		/**
 		\return The ID of the resource.
@@ -97,19 +81,29 @@ namespace NOE::NOE_CORE
 		The result of this method is only valid if <tt>isCached()</tt> returns true.
 		*/
 		const NOU::NOU_FILE_MNGT::Path& getCachePath() const;
+
+		/**
+		\return True, if the meta data is valid, false if not.
+
+		\brief Returns whether the meta data is valid or not.
+		*/
+		NOU::boolean isValid() const;
+
+		/**
+		\return isValid()
+
+		\brief Same as isValid()
+		*/
+		operator NOU::boolean () const;
 	};
 
 	class Resource
 	{
 	private:
 		/**
-		\brief The meta data of the resource. 
-
-		\details
-		The meta data of the resource. This is stored in the resource manager and this member only references
-		that meta data in the resource manager.
+		\brief The ID of the resource.
 		*/
-		const ResourceMetadata &m_metaData;
+		ResourceMetadata::ResourceID m_id;
 
 		/**
 		\brief The name of the loader that this resource was loaded with.
@@ -122,16 +116,19 @@ namespace NOE::NOE_CORE
 
 	public:
 		/**
+		\param id   The ID of the resource.
+		\param name The name of the loader that this resource was loaded with.
+
 		\brief Constructs a new instance.
 		*/
-		Resource(const ResourceMetadata &metaData, const NOU::NOU_DAT_ALG::StringView8& name);
+		Resource(ResourceMetadata::ResourceID id, const NOU::NOU_DAT_ALG::StringView8& name);
 
 		/**
 		\return The meta data of the resource.
 
 		\brief Returns the meta data of the resource.
 		*/
-		const ResourceMetadata& getMetadata() const;
+		ResourceMetadata getMetadata() const;
 	
 		/**
 		\return The name of the resource loader that this resource was loaded with.
@@ -387,6 +384,12 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS ResourceManager final
 	{
 	private:
+		static const NOU::NOU_FILE_MNGT::Path DATABASE_PATH;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_LIST_IDS;
+
+		NOE::NOE_UTILITY::sqlite::Database m_database;
+
 		NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, ResourceLoader*> m_loaders;
 
 		/**
@@ -411,6 +414,11 @@ namespace NOE::NOE_CORE
 		static void allocResourceLoader(ResourceLoader *loader);
 
 	public:
+		//no default argument possible, DATABASE_PATH is not defined yet
+		ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath); 
+
+		ResourceManager();
+
 		/**
 		\return The static instance of the resource manager.
 
@@ -562,7 +570,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns a list that contains the meta data of all resources in the database.
 		*/
-		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> listMetadata() const;
+		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> listMetadata();
 
 		/**
 		\param id The ID of the resource.
@@ -572,17 +580,19 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the meta data of a single resource.
 		*/
-		const ResourceMetadata* getMetadata(typename ResourceMetadata::ResourceID id) const;
+		ResourceMetadata getMetadata(typename ResourceMetadata::ResourceID id) const;
 	
 		void initalize();
 
 		void shutdown();
+
+		NOE::NOE_UTILITY::sqlite::Database& getUnderlying();
 	};
 
 	template<typename T, typename ...ARGS>
 	static ResourceLoader* ResourceManager::allocResourceLoader(ARGS&&... args)
 	{
-		static_assert(std::is_base_of<ResourceLoader, T>::value) ///\todo Replace with NOU::NOU_CORE::IsBaseOf
+		static_assert(NOU::NOU_CORE::IsBaseOf<ResourceLoader, T>::value);
 
 		return new T(NOU_CORE::forward<ARGS>(args)...);
 	}
@@ -594,7 +604,7 @@ namespace NOE::NOE_CORE
 
 		if (!m_loaders.containsKey(loader->getName()))
 		{
-			m_loaders.map(loader->getName(), loader);
+			m_loaders.map(loader->getName(), loader);     
 			return true;
 		}
 		else

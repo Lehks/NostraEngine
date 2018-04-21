@@ -1,3 +1,6 @@
+#ifndef NOE_UTILITY_SQLITE
+#define NOE_UTILITY_SQLITE
+
 #include "nostraengine/core/StdIncludes.hpp"
 
 namespace NOE::NOE_UTILITY
@@ -179,3 +182,5 @@ namespace NOE::NOE_UTILITY
 		};
 	}
 }
+
+#endif
