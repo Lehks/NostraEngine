@@ -33,6 +33,34 @@ namespace NOE
 		\brief an ID for the Engine.
 		*/
 		NOU::int32 ID;
+
+		/**
+		\brief current FPS of the renderer
+		*/
+		NOU::uint64 m_currFPS;
+
+		/**
+		\brief the time in ms a frame took to render;
+		*/
+		NOU::uint32 m_frameTime;
+
+		/**
+		\brief the maximum Frames that are rendered per second. If the value is zero, the frame limiter gets disabled
+		*/
+		NOU::uint64 m_maxFPS;
+
+		/**
+		\brief uprates the FPS and frametime
+		\param begin the begintime of the current render iteration
+		\param end the end time of the current render iteration
+		*/
+		void updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end);
+
+		/**
+		\brief limits the fps measured by the set maxFPS
+		*/
+		void fpsLimitStart();
+
 		/**
 		\return		void
 
@@ -62,8 +90,31 @@ namespace NOE
 		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
 		*/
 		NOU::int32 terminate();
+
+		/**
+		\brief sets the maximum frames that are rendered per second.
+		\param maXFPS sets the maximum FPS to the given value, if the value is zero, the frame limiter gets disabled
+		*/
+		void setMaxFPS(const NOU::uint64 maxFPS = 0);
+
+		/**
+		\brief getter for m_currFPS
+		\return returns the current FPS
+		*/
+		const NOU::uint64& getCurrFPS();
+
+		/**
+		\brief getter for m_maxFPS
+		\return returns the maximum set FPS
+		*/
+		const NOU::uint64& getMaxFPS();
+
+		/**
+		\brief getter for m_frameTime
+		\return returns the current FrameTime
+		*/
+		const NOU::uint32& getFrameTime();
 	};
 }
 
 #endif
-

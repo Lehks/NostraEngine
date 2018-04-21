@@ -28,13 +28,14 @@ NOU::int32 NOE::NostraEngine::init()
 	//
 	//DO YOUR STANDARD INIT METHOD'S HERE !
 	//
-
+	setMaxFPS();		//disable the FPS limiter
 
 	return 0;
 }
 
 NOU::int32 NOE::NostraEngine::start()
 {
+	NOU::uint32 renderBeginTime, renderEndTime;
 
 	if (init() != 0)
 	{
@@ -42,9 +43,13 @@ NOU::int32 NOE::NostraEngine::start()
 		return 1;
 	}
 
+
 	while (true)			//DON'T RUN IT !!!!
-	{
+	{	
+		renderBeginTime = NOU::NOU_CORE::currentTimeMillis();
 		render();
+		renderEndTime   = NOU::NOU_CORE::currentTimeMillis();
+		updateFrameInformations(renderBeginTime, renderEndTime);
 	}
 
 	terminate();
@@ -62,3 +67,49 @@ NOU::int32 NOE::NostraEngine::terminate()
 	//
 	return 0;
 }
+
+void NOE::NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
+{
+	m_frameTime = end - begin;
+	m_currFPS   = 1000 / m_frameTime;
+}
+
+void NOE::NostraEngine::setMaxFPS(const NOU::uint64 maxFPS)
+{
+	m_maxFPS = maxFPS;
+}
+
+const NOU::uint64& NOE::NostraEngine::getCurrFPS()
+{
+	return m_currFPS;
+}
+
+const NOU::uint64& NOE::NostraEngine::getMaxFPS()
+{
+	return m_maxFPS;
+}
+
+const NOU::uint32& NOE::NostraEngine::getFrameTime()
+{
+	return m_frameTime;
+}
+
+void NOE::NostraEngine::fpsLimitStart()
+{
+	if(getMaxFPS() > 0)
+	{
+		NOU::uint64 minFrameTime, timeDiff;
+
+		minFrameTime = 1000/getCurrFPS();
+		if(getFrameTime() < minFrameTime)
+		{	
+			timeDiff = minFrameTime - getFrameTime();
+			//need to implement a sleep call that sleeps for `timeDiff`;
+		}
+	}
+}
+
+
+// 1000 / ms = fps | /fps
+// 1000 / ms * fps = 1 | *ms
+// 1000 / fps = ms
