@@ -6,6 +6,24 @@ namespace NOE::NOE_UTILITY
 {
 	namespace sqlite
 	{
+		RowEntry::RowEntry(const NOU::char8 *value, const NOU::NOU_DAT_ALG::StringView8 &name) :
+			//do not initialize m_value here
+			m_name(name)
+		{
+			if (value != nullptr)
+				m_value = value;
+		}
+
+		const NOU::NOU_DAT_ALG::String8* RowEntry::getValue() const
+		{
+			return m_value.isValid() ? m_value.data() : nullptr;
+		}
+
+		const NOU::NOU_DAT_ALG::String8& RowEntry::getName() const
+		{
+			return m_name;
+		}
+
 		void Row::addEntry(const RowEntry &entry)
 		{
 			m_entires.pushBack(entry);

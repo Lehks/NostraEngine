@@ -8,21 +8,44 @@ namespace NOE::NOE_UTILITY
 	namespace sqlite
 	{
 		/**
-		\brief Defines a value-name pair.
+		\brief A class that represents a single cell in a database table. It stores the value of the cell and
+		       the name of the column that the cell is in.
 		*/
-		NOU_DEFINE_PAIR(RowEntryTempl, value, name);
+		class NOU_CLASS RowEntry
+		{
+		private:
+			/**
+			\brief The value of the cell. If the value is NULL in the database, the member will not be
+			       initialized.
+			*/
+			NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_DAT_ALG::String8> m_value;
 
-		/**
-		\brief Instantiates the RowEntryTempl template with a String8 as both parameters.
+			/**
+			\brief The name of the column.
+			*/
+			NOU::NOU_DAT_ALG::String8 m_name;
 
-		\details
-		Instantiates the RowEntryTempl template with a String8 as both parameters. 
+		public:
+			/**
+			\param value The value of the self. It will be copied, unless the value is \p nullptr.
+			*/
+			RowEntry(const NOU::char8 *value, const NOU::NOU_DAT_ALG::StringView8 &name);
 
-		The single parameters are:
-		- value: The value of the cell
-		- name: The name of the column that the cell is in.
-		*/
-		using RowEntry = RowEntryTempl<NOU::NOU_DAT_ALG::String8, NOU::NOU_DAT_ALG::String8>;
+			/**
+			\return The value of the cell.
+
+			\brief Returns a pointer to the value of the cell. If the value is NULL in the database, \p
+			       nullptr is returned.
+			*/
+			const NOU::NOU_DAT_ALG::String8* getValue() const;
+
+			/**
+			\return The name of the column that this cell is in.
+
+			\brief Returns the name of the column that this cell is in.
+			*/
+			const NOU::NOU_DAT_ALG::String8& getName() const;
+		};
 
 		/**
 		\brief Represents a single row of a SQL query. A row consists single RowEntries.

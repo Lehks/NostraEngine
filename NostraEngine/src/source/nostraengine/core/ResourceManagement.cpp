@@ -220,7 +220,7 @@ namespace NOE::NOE_CORE
 		for (auto &row : result.getRows())
 		{
 			ResourceMetadata::ResourceID id = 
-				NOU::NOU_DAT_ALG::String8::stringToInt32(row.getEntries()[0].value);
+				NOU::NOU_DAT_ALG::String8::stringToInt32(*row.getEntries()[0].getValue());
 
 			ResourceMetadata metadata(id);
 
