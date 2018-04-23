@@ -54,9 +54,8 @@ NOU::int32 NOE::NostraEngine::start()
 		renderBeginTime = NOU::NOU_CORE::currentTimeMillis();
 		render();
 		renderEndTime   = NOU::NOU_CORE::currentTimeMillis();
-		//updateFrameInformations(renderBeginTime, renderEndTime); WE need nanotime 
-
-		std::cout << "HAllo" << std::endl;
+		//updateFrameInformations(renderBeginTime, renderEndTime); WE need nanotime
+        
 		//this loop runs 1 time because of this methode.
 		terminateEngine();
 	}
