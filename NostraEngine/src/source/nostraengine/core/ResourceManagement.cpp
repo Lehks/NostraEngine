@@ -1,4 +1,5 @@
 #include "nostraengine/core/ResourceManagement.hpp"
+#include "nostraengine/core/ErrorCodes.hpp"
 
 namespace NOE::NOE_CORE
 {
@@ -19,7 +20,8 @@ namespace NOE::NOE_CORE
 
 		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
 
-		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Nope");
+		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), 
+			NOE::NOE_CORE::ErrorCodes::SQL_EXECUTION_ERROR, "The attribute 'cached' could not be queried.");
 
 		auto val = result.getRows()[0].getEntries()[0].getValue();
 
@@ -46,7 +48,8 @@ namespace NOE::NOE_CORE
 
 		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
 
-		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Nope");
+		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(),
+			NOE::NOE_CORE::ErrorCodes::SQL_EXECUTION_ERROR, "The attribute 'type' could not be queried.");
 
 		return *result.getRows()[0].getEntries()[0].getValue();
 	}
@@ -59,7 +62,8 @@ namespace NOE::NOE_CORE
 
 		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
 
-		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Nope");
+		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(),
+			NOE::NOE_CORE::ErrorCodes::SQL_EXECUTION_ERROR, "The attribute 'path' could not be queried.");
 
 		return NOU::NOU_FILE_MNGT::Path(*result.getRows()[0].getEntries()[0].getValue());
 	}

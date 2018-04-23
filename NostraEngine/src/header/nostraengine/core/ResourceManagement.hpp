@@ -4,8 +4,19 @@
 #include "nostraengine/core/StdIncludes.hpp"
 #include "nostraengine/utility/SQLite.hpp"
 
+/**
+\author  Lukas Reichmann
+\version 1.0.0
+\since   0.0.1
+
+\brief A file that contains the entire resource management system of the Nostra Engine.
+*/
+
 namespace NOE::NOE_CORE
 {
+	/**
+	\brief A class that can be used to read the meta data of a single resource. 
+	*/
 	class NOU_CLASS ResourceMetadata
 	{
 	public:
@@ -20,12 +31,30 @@ namespace NOE::NOE_CORE
 		*/
 		using ResourceType = NOU::NOU_DAT_ALG::String8;
 
+		/**
+		\brief An ID that is invalid. An ID with this type must never be stored in a database.
+		*/
 		static constexpr ResourceID INVALID_ID = 0;
 
+		/**
+		\brief A generic SQL command that gathers the value of an attribute of an object with a specified ID. 
+		       The attribute's name and the object's ID can be modified.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_GENERIC;
 
+		/**
+		\brief The name of the "type" attribute in the Resources database.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_TYPE_NAME;
+
+		/**
+		\brief The name of the "path" attribute in the Resources database.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_PATH_NAME;
+
+		/**
+		\brief The name of the "cached" attribute in the Resources database.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_CACHED_PATH_NAME;
 
 	private:
@@ -34,6 +63,11 @@ namespace NOE::NOE_CORE
 		*/
 		ResourceID m_id;
 
+		/**
+		\return The cache path.
+
+		\brief Returns the cache path. If the path is NULL, the returned value will be invalid.
+		*/
 		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path> getCachePathImp() const;
 
 	public:
