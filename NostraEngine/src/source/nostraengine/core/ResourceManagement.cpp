@@ -4,6 +4,13 @@ namespace NOE::NOE_CORE
 {
 	constexpr ResourceMetadata::ResourceID ResourceMetadata::INVALID_ID;
 
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_GENERIC = 
+																"SELECT %s FROM Resources WHERE ID = %d;";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_TYPE_NAME = "path";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_PATH_NAME = "type";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_CACHED_PATH_NAME = "cached";
+
 	ResourceMetadata::ResourceMetadata(ResourceID id) :
 		m_id(id),
 		m_path(""),
@@ -17,12 +24,30 @@ namespace NOE::NOE_CORE
 
 	const typename ResourceMetadata::ResourceType& ResourceMetadata::getType() const
 	{
-		return m_type;
+		NOU::char8 sql[128] = { 0 };
+
+		sprintf(sql, SQL_GENERIC.rawStr(), SQL_TYPE_NAME.rawStr(), m_id);
+
+		std::cout << sql << std::endl;
+		std::cout << SQL_TYPE_NAME.rawStr() << " "  << sql << std::endl;
+
+		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+
+		return NOU::NOU_CORE::move(*result.getRows()[0].getEntries()[0].getValue());
 	}
 
 	const NOU::NOU_FILE_MNGT::Path& ResourceMetadata::getPath() const
 	{
-		return m_path;
+		NOU::char8 sql[128] = {0};
+
+		sprintf(sql, SQL_GENERIC.rawStr(), SQL_PATH_NAME.rawStr(), m_id);
+
+		std::cout << sql << std::endl;
+		std::cout << SQL_PATH_NAME.rawStr() << " " << sql << std::endl;
+
+		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+
+		return NOU::NOU_FILE_MNGT::Path(*result.getRows()[0].getEntries()[0].getValue());
 	}
 
 	NOU::boolean ResourceMetadata::isCached() const

@@ -22,6 +22,12 @@ namespace NOE::NOE_CORE
 
 		static constexpr ResourceID INVALID_ID = 0;
 
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_GENERIC;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_TYPE_NAME;
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_PATH_NAME;
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_CACHED_PATH_NAME;
+
 	private:
 		/**
 		\brief The ID of the resource.
