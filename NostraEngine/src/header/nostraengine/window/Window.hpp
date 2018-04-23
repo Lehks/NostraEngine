@@ -28,7 +28,7 @@ namespace NOE::NOE_WINDOW
 		virtual ~Window() = default;
 		virtual void createWindow(NOU::sizeType m_sizeWidth, NOU::sizeType m_sizeHeight, 
 			NOU::NOU_DAT_ALG::String8 m_title, GLFWmonitor* monitor = NULL, GLFWwindow* share = NULL);
-		virtual void setTitle() = 0;
+		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) = 0;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) = 0;
 		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) = 0;
 		virtual void close() = 0;
@@ -39,7 +39,7 @@ namespace NOE::NOE_WINDOW
 		virtual void setFullscreen(NOU::boolean state) = 0;
 		virtual void update() = 0;
 		virtual NOE::NOE_WINDOW::Device getDevices() = 0;
-		virtual NOU::NOU_DAT_ALG::String8 getName() = 0;
+		virtual NOU::NOU_DAT_ALG::String8 getTitle() = 0;
 		virtual void* getUnderlying() = 0;
 	};
 }

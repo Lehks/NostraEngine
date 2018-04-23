@@ -9,7 +9,7 @@ namespace NOE::NOE_WINDOW
 		m_window = glfwCreateWindow(m_sizeWidth, m_sizeHeight, m_title.rawStr(), monitor, share);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setTitle()
+	void NOE::NOE_WINDOW::GLFWWindow::setTitle(NOU::NOU_DAT_ALG::String8 title)
 	{
 	}
 
@@ -54,7 +54,7 @@ namespace NOE::NOE_WINDOW
 		return NOE_WINDOW::Device();
 	}
 
-	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWWindow::getName()
+	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWWindow::getTitle()
 	{
 		return NOU::NOU_DAT_ALG::String8();
 	}

@@ -32,7 +32,7 @@ namespace NOE::NOE_WINDOW
 		virtual void createWindow(NOU::sizeType m_sizeWidth, NOU::sizeType m_sizeHeight,
 			NOU::NOU_DAT_ALG::String8 m_title, GLFWmonitor* monitor = NULL, 
 			GLFWwindow* share = NULL) override;
-		virtual void setTitle() override;
+		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void close() override;
@@ -43,7 +43,7 @@ namespace NOE::NOE_WINDOW
 		virtual void setFullscreen(NOU::boolean state) override;
 		virtual void update() override;
 		virtual NOE_WINDOW::Device getDevices() override;
-		virtual NOU::NOU_DAT_ALG::String8 getName() override;
+		virtual NOU::NOU_DAT_ALG::String8 getTitle() override;
 		virtual void* getUnderlying() override;				 //return unterliegendes handle
 
 	};
