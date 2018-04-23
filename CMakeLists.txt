@@ -8,7 +8,7 @@ option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
 if ("${NOE_CPP14_COMPATIBLILTY_MODE}")
 	set (CMAKE_CXX_STANDARD 14)
 	message(STATUS "NOE:  Generating for C++14 compatibility mode.")
-	add_definitions(-DNOE_CPP14_COMPATIBILITY)
+	add_definitions(-DNOU_CPP14_COMPATIBILITY)
 else()
 	set (CMAKE_CXX_STANDARD 17)
 	message(STATUS "NOE:  Generating without C++14 compatibility mode.")
@@ -34,6 +34,12 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/bin")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #===
 
+#=== Set stdlib++ for AppleClang
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+	add_definitions("-stdlib=libc++ -lc++experimental")
+	
+endif()
+#===
 
 #=== Variables for NostraEngine target
 set(NOE_EXECUTABLE "NostraEngineExe")
