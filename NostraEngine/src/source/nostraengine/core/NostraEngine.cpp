@@ -13,7 +13,9 @@ void NOE::NostraEngine::render()
 
 NOE::NostraEngine::NostraEngine(NOU::int32 ID) :
 	ID(ID)
-{}
+{
+	m_runState = 0;
+}
 
 NOU::int32 NOE::NostraEngine::init()
 {
@@ -47,12 +49,16 @@ NOU::int32 NOE::NostraEngine::start()
 	}
 
 
-	while (true)			//DON'T RUN IT !!!!
-	{	
+	while (!m_runState == -1)			//DON'T RUN IT !!!!
+	{
 		renderBeginTime = NOU::NOU_CORE::currentTimeMillis();
 		render();
 		renderEndTime   = NOU::NOU_CORE::currentTimeMillis();
 		updateFrameInformations(renderBeginTime, renderEndTime);
+
+		std::cout << "HAllo" << std::endl;
+		//this loop runs 1 time because of this methode.
+		terminateEngine();
 	}
 
 	terminate();
@@ -80,6 +86,11 @@ void NOE::NostraEngine::updateFrameInformations(const NOU::uint32 begin, const N
 void NOE::NostraEngine::setMaxFPS(const NOU::uint64 maxFPS)
 {
 	m_maxFPS = maxFPS;
+}
+
+void NOE::NostraEngine::terminateEngine()
+{
+	m_runState = -1;
 }
 
 const NOU::uint64& NOE::NostraEngine::getCurrFPS()
@@ -112,7 +123,6 @@ void NOE::NostraEngine::fpsLimitStart()
 		}
 	}
 }
-
 
 // 1000 / ms = fps | /fps
 // 1000 / ms * fps = 1 | *ms
