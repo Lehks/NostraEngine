@@ -117,6 +117,11 @@ install(TARGETS ${NOE_EXECUTABLE} DESTINATION "bin")
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	message(STATUS "NOE:  Building in Debug mode, Test-executable will be generated.")
 
+	#Enable gdb debugging if g++ is selected
+	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+		target_compile_options(install PRIVATE -g)
+	endif()
+	
 	#Create testmain.cpp if it does not exist
 	if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}")
 		message(STATUS "NOE:  ${NOE_TEST_EXECUTABLE_SOURCE} was not found. A default one will be generated.")
