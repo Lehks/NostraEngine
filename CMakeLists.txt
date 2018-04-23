@@ -93,6 +93,7 @@ include_directories("${NOE_GLFW_INCLUDE_DIR}")
 include_directories("${NOE_GLAD_INCLUDE_DIR}")
 include_directories("${NOE_NOE_INCLUDE_DIR}")
 include_directories("${NOE_NOU_INCLUDE_DIR}")
+include_directories("${CMAKE_SOURCE_DIR}")
 
 #=== Build NostraEngine target
 add_executable("${NOE_EXECUTABLE}" "${NOE_EXECUTABLE_SOURCE}")
