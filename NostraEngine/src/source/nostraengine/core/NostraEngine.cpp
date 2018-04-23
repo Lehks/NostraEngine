@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "nostraengine/core/NostraEngine.hpp"
 
 void NOE::NostraEngine::render()
@@ -104,7 +107,8 @@ void NOE::NostraEngine::fpsLimitStart()
 		if(getFrameTime() < minFrameTime)
 		{	
 			timeDiff = minFrameTime - getFrameTime();
-			//need to implement a sleep call that sleeps for `timeDiff`;
+			std::chrono::milliseconds msDuration(timeDiff);
+			std::this_thread::sleep_for<>(msDuration);
 		}
 	}
 }
