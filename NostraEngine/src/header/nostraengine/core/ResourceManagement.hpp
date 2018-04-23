@@ -34,13 +34,7 @@ namespace NOE::NOE_CORE
 		*/
 		ResourceID m_id;
 
-		ResourceType m_type;
-
-		NOU::NOU_FILE_MNGT::Path m_path;
-
-		NOU::boolean m_isCached;
-
-		NOU::NOU_FILE_MNGT::Path m_cachePath;
+		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path> getCachePathImp() const;
 
 	public:
 		/**
@@ -62,14 +56,14 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the type of a resource.
 		*/
-		const ResourceType& getType() const;
+		ResourceType getType() const;
 
 		/**
 		\return The path to the source file of the resource.
 
 		\brief Returns the path to the source file of the resource.
 		*/
-		const NOU::NOU_FILE_MNGT::Path& getPath() const;
+		NOU::NOU_FILE_MNGT::Path getPath() const;
 
 		/**
 		\return True, if the resource is cached and false if not.
@@ -86,7 +80,7 @@ namespace NOE::NOE_CORE
 		\warning 
 		The result of this method is only valid if <tt>isCached()</tt> returns true.
 		*/
-		const NOU::NOU_FILE_MNGT::Path& getCachePath() const;
+		NOU::NOU_FILE_MNGT::Path getCachePath() const;
 
 		/**
 		\return True, if the meta data is valid, false if not.

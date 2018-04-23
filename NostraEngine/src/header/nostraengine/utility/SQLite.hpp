@@ -85,13 +85,37 @@ namespace NOE::NOE_UTILITY
 			*/
 			NOU::NOU_DAT_ALG::Vector<Row> m_rows;
 
+			/**
+			\brief True, if the result is valid, false if not.
+			*/
+			NOU::boolean m_valid;
+
 		public:
+			/**
+			\brief Constructs a new instance.
+			*/
+			QueryResult();
+
+			/**
+			\param valid The new valid state.
+
+			\brief Sets the valid state.
+			*/
+			void setValid(NOU::boolean valid);
+
 			/**
 			\param row The row to add.
 
 			\brief Adds a row to the row. This method is usually not used by a user.
 			*/
 			void addRow(const Row &row);
+
+			/**
+			\return True, if the result is valid, false if not.
+
+			\brief Returns whether the result is valid.
+			*/
+			NOU::boolean isValid() const;
 
 			/**
 			\return The rows.

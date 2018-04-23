@@ -34,9 +34,23 @@ namespace NOE::NOE_UTILITY
 			return m_entires;
 		}
 
+		QueryResult::QueryResult() :
+			m_valid(true)
+		{}
+
+		void QueryResult::setValid(NOU::boolean valid)
+		{
+			m_valid = valid;
+		}
+
 		void QueryResult::addRow(const Row &row)
 		{
 			m_rows.pushBack(row);
+		}
+
+		NOU::boolean QueryResult::isValid() const
+		{
+			return m_valid;
 		}
 
 		const NOU::NOU_DAT_ALG::Vector<Row>& QueryResult::getRows() const
@@ -51,7 +65,9 @@ namespace NOE::NOE_UTILITY
 			Row row;
 
 			for (NOU::sizeType i = 0; i < cellCount; i++)
+			{
 				row.addEntry(RowEntry(values[i], names[i]));
+			}
 
 			result->addRow(row);
 
@@ -147,10 +163,15 @@ namespace NOE::NOE_UTILITY
 
 			QueryResult ret;
 
-			int error = sqlite3_exec(reinterpret_cast<sqlite3*>(m_dbPtr), sql.rawStr(), sqlCallback, 
-				&ret, nullptr);
+			NOU::char8 *errmsg;
 
-			///\todo Proper setting of different error codes.
+			int error = sqlite3_exec(reinterpret_cast<sqlite3*>(m_dbPtr), sql.rawStr(), sqlCallback, 
+				&ret, &errmsg);
+
+			if (errmsg != nullptr) //if an error happened
+			{
+				ret.setValid(false);
+			}
 
 			if (error != SQLITE_OK)
 			{

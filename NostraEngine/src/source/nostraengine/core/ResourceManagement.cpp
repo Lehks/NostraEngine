@@ -7,14 +7,30 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_GENERIC = 
 																"SELECT %s FROM Resources WHERE ID = %d;";
 
-	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_TYPE_NAME = "path";
-	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_PATH_NAME = "type";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_TYPE_NAME = "type";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_PATH_NAME = "path";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_CACHED_PATH_NAME = "cached";
 
+	NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path> ResourceMetadata::getCachePathImp() const
+	{
+		NOU::char8 sql[128] = { 0 };
+
+		sprintf(sql, SQL_GENERIC.rawStr(), SQL_CACHED_PATH_NAME.rawStr(), m_id);
+
+		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+
+		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Nope");
+
+		auto val = result.getRows()[0].getEntries()[0].getValue();
+
+		if (val != nullptr)
+			return *val;
+		else
+			return NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path>();
+	}
+
 	ResourceMetadata::ResourceMetadata(ResourceID id) :
-		m_id(id),
-		m_path(""),
-		m_cachePath("")
+		m_id(id)
 	{}
 
 	typename ResourceMetadata::ResourceID ResourceMetadata::getID() const
@@ -22,42 +38,40 @@ namespace NOE::NOE_CORE
 		return m_id;
 	}
 
-	const typename ResourceMetadata::ResourceType& ResourceMetadata::getType() const
+	typename ResourceMetadata::ResourceType ResourceMetadata::getType() const
 	{
 		NOU::char8 sql[128] = { 0 };
 
 		sprintf(sql, SQL_GENERIC.rawStr(), SQL_TYPE_NAME.rawStr(), m_id);
 
-		std::cout << sql << std::endl;
-		std::cout << SQL_TYPE_NAME.rawStr() << " "  << sql << std::endl;
-
 		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
 
-		return NOU::NOU_CORE::move(*result.getRows()[0].getEntries()[0].getValue());
+		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Nope");
+
+		return *result.getRows()[0].getEntries()[0].getValue();
 	}
 
-	const NOU::NOU_FILE_MNGT::Path& ResourceMetadata::getPath() const
+	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getPath() const
 	{
 		NOU::char8 sql[128] = {0};
 
 		sprintf(sql, SQL_GENERIC.rawStr(), SQL_PATH_NAME.rawStr(), m_id);
 
-		std::cout << sql << std::endl;
-		std::cout << SQL_PATH_NAME.rawStr() << " " << sql << std::endl;
-
 		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+
+		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Nope");
 
 		return NOU::NOU_FILE_MNGT::Path(*result.getRows()[0].getEntries()[0].getValue());
 	}
 
 	NOU::boolean ResourceMetadata::isCached() const
 	{
-		return m_isCached;
+		return getCachePathImp().isValid();
 	}
 
-	const NOU::NOU_FILE_MNGT::Path& ResourceMetadata::getCachePath() const
+	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getCachePath() const
 	{
-		return m_cachePath;
+		return *getCachePathImp();
 	}
 
 	NOU::boolean ResourceMetadata::isValid() const
