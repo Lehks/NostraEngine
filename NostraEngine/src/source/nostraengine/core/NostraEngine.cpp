@@ -49,12 +49,12 @@ NOU::int32 NOE::NostraEngine::start()
 	}
 
 
-	while (!m_runState == -1)			//DON'T RUN IT !!!!
+	while (m_runState != -1)			//DON'T RUN IT !!!!
 	{
 		renderBeginTime = NOU::NOU_CORE::currentTimeMillis();
 		render();
 		renderEndTime   = NOU::NOU_CORE::currentTimeMillis();
-		updateFrameInformations(renderBeginTime, renderEndTime);
+		//updateFrameInformations(renderBeginTime, renderEndTime); WE need nanotime 
 
 		std::cout << "HAllo" << std::endl;
 		//this loop runs 1 time because of this methode.
