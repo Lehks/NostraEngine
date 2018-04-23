@@ -12,6 +12,9 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_PATH_NAME = "path";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_CACHED_PATH_NAME = "cached";
 
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_EXISTS_RESOURCE = 
+															"SELECT COUNT(*) FROM Resource WHERE ID = %d";
+
 	NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path> ResourceMetadata::getCachePathImp() const
 	{
 		NOU::char8 sql[128] = { 0 };
@@ -33,7 +36,25 @@ namespace NOE::NOE_CORE
 
 	ResourceMetadata::ResourceMetadata(ResourceID id) :
 		m_id(id)
-	{}
+	{
+		//Check if the ID even exists in the database. If not, 
+
+		if (id != 0)
+		{
+			NOU::char8 sql[256] = { 0 };
+			sprintf(sql, SQL_EXISTS_RESOURCE.rawStr(), id);
+
+			auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+
+			NOU::int32 count = 
+				NOU::NOU_DAT_ALG::StringView8::stringToInt32(*result.getRows()[0].getEntries()[0].getValue());
+
+			if (count == 0)
+			{
+				m_id = 0;
+			}
+		}
+	}
 
 	typename ResourceMetadata::ResourceID ResourceMetadata::getID() const
 	{
@@ -42,6 +63,9 @@ namespace NOE::NOE_CORE
 
 	typename ResourceMetadata::ResourceType ResourceMetadata::getType() const
 	{
+		if (!isValid())
+			return "NULL";
+
 		NOU::char8 sql[128] = { 0 };
 
 		sprintf(sql, SQL_GENERIC.rawStr(), SQL_TYPE_NAME.rawStr(), m_id);
@@ -56,6 +80,9 @@ namespace NOE::NOE_CORE
 
 	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getPath() const
 	{
+		if (!isValid())
+			return "NULL";
+
 		NOU::char8 sql[128] = {0};
 
 		sprintf(sql, SQL_GENERIC.rawStr(), SQL_PATH_NAME.rawStr(), m_id);
@@ -70,6 +97,9 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceMetadata::isCached() const
 	{
+		if (!isValid())
+			return false;
+
 		return getCachePathImp().isValid();
 	}
 
@@ -91,13 +121,13 @@ namespace NOE::NOE_CORE
 
 
 	Resource::Resource(ResourceMetadata::ResourceID id, const NOU::NOU_DAT_ALG::StringView8 &name) :
-		m_id(id),
+		m_metadata(id),
 		m_name(name)
 	{}
 
-	ResourceMetadata Resource::getMetadata() const
+	const ResourceMetadata& Resource::getMetadata() const
 	{
-		return ResourceManager::get().getMetadata(m_id);
+		return m_metadata;
 	}
 
 	const NOU::NOU_DAT_ALG::StringView8& Resource::getLoaderName() const
@@ -146,7 +176,7 @@ namespace NOE::NOE_CORE
 	{
 		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
 
-		if (metadata && !isValidResource(id))
+		if (ResourceManager::get().getMetadata(id) && !isResourceValid(id))
 			return nullptr;
 
 		Resource *ret = nullptr;
@@ -162,32 +192,30 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceLoader::store(Resource *resource)
 	{
-		const ResourceMetadata *metadata = &resource->getMetadata();
+		ResourceMetadata metadata = resource->getMetadata();
 
-		if (metadata != nullptr && !isValidResource(metadata->getID()))
+		if (metadata.isValid() && !isResourceValid(metadata.getID()))
 			return false;
 
 		NOU::boolean ret;
 
 		if (isCachingEnabled())
-			ret = storeCacheImpl(resource, metadata->getCachePath());
+			ret = storeCacheImpl(resource, metadata.getCachePath());
 
 		if (!ret)
-			return storeImpl(resource, metadata->getPath());
+			return storeImpl(resource, metadata.getPath());
 
 		return false;
 	}
 
 	void ResourceLoader::close(Resource *resource)
 	{
-		if (resource == nullptr)
-			return;
-
-		///\todo implement
+		ResourceManager::get().deallocateResource(resource);
 	}
 
 
-	void ResourceManager::allocResourceLoader(ResourceLoader *loader)
+
+	void ResourceManager::deallocateResourceLoader(ResourceLoader *loader)
 	{
 		delete loader;
 	}
@@ -203,6 +231,11 @@ namespace NOE::NOE_CORE
 	ResourceManager::ResourceManager() :
 		m_database(DATABASE_PATH)
 	{}
+
+	void ResourceManager::deallocateResource(Resource *resource)
+	{
+		delete resource;
+	}
 
 	ResourceManager& ResourceManager::get()
 	{
@@ -220,7 +253,15 @@ namespace NOE::NOE_CORE
 
 	void ResourceManager::deleteCaches()
 	{
+		auto metadata = listMetadata();
 
+		for (auto &mdata : metadata)
+		{
+			if (mdata.isCached())
+			{
+				//delete cache file
+			}
+		}
 	}
 
 	typename ResourceMetadata::ResourceID ResourceManager::addResource(const NOU::NOU_FILE_MNGT::Path &path,

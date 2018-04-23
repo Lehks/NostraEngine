@@ -57,6 +57,13 @@ namespace NOE::NOE_CORE
 		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_CACHED_PATH_NAME;
 
+		/**
+		\brief A SQL statement that is able to check whether a resource with a specified ID exists. (Or to be
+		more precise, the statement returns the amount of resources with the specified ID, which will either 
+		be one or zero).
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_EXISTS_RESOURCE;
+
 	private:
 		/**
 		\brief The ID of the resource.
@@ -75,6 +82,11 @@ namespace NOE::NOE_CORE
 		\param id The ID.
 
 		\brief Constructs a new instance and initialized the member attributes with the passed ID.
+
+		\note
+		If the passed ID does not exist in the database, the ID will be set to INVALID_ID. If a resource with
+		the original ID is created afterwards, the instances of this class that were before that will NOT be
+		updated.
 		*/
 		ResourceMetadata(ResourceID id = INVALID_ID);
 
@@ -137,7 +149,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The ID of the resource.
 		*/
-		ResourceMetadata::ResourceID m_id;
+		ResourceMetadata m_metadata;
 
 		/**
 		\brief The name of the loader that this resource was loaded with.
@@ -162,7 +174,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the meta data of the resource.
 		*/
-		ResourceMetadata getMetadata() const;
+		const ResourceMetadata& getMetadata() const;
 	
 		/**
 		\return The name of the resource loader that this resource was loaded with.
@@ -301,15 +313,6 @@ namespace NOE::NOE_CORE
 		virtual Resource* loadCacheImpl(const ResourceMetadata &metaData, 
 			const NOU::NOU_FILE_MNGT::Path& path) = 0;
 
-		/**
-		\param id The ID of the resource to check.
-
-		\return True if the resource is valid, false if not.
-
-		\brief Returns whether a resource is valid (= can be loaded and stored) for this loader.
-		*/
-		virtual NOU::boolean isValidResource(ResourceMetadata::ResourceID id) = 0;
-
 	public:
 		/**
 		\param name The name of the loader.
@@ -438,20 +441,25 @@ namespace NOE::NOE_CORE
 		\brief Allocates a new ResourceLoader of the type T.
 		*/
 		template<typename T, typename ...ARGS>
-		static ResourceLoader* allocResourceLoader(ARGS&&... args);
+		static ResourceLoader* alloatecResourceLoader(ARGS&&... args);
 
 		/**
 		\param loader The loader to deallocate
 
 		\brief Deallocates the passed loader.
 		*/
-		static void allocResourceLoader(ResourceLoader *loader);
+		static void deallocateResourceLoader(ResourceLoader *loader);
 
 	public:
 		//no default argument possible, DATABASE_PATH is not defined yet
-		ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath); 
+		ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath);
 
 		ResourceManager();
+
+		template<typename T, typename... ARGS>
+		Resource* allocateResource(ARGS&&... args);
+
+		void deallocateResource(Resource *resource);
 
 		/**
 		\return The static instance of the resource manager.
@@ -623,8 +631,16 @@ namespace NOE::NOE_CORE
 		NOE::NOE_UTILITY::sqlite::Database& getUnderlying();
 	};
 
+	template<typename T, typename... ARGS>
+	Resource* ResourceManager::allocateResource(ARGS&&... args)
+	{
+		static_assert(NOU::NOU_CORE::IsBaseOf<Resource, T>::value);
+
+		return new T(NOU::NOU_CORE::forward<ARGS>(args)...);
+	}
+
 	template<typename T, typename ...ARGS>
-	static ResourceLoader* ResourceManager::allocResourceLoader(ARGS&&... args)
+	static ResourceLoader* ResourceManager::alloatecResourceLoader(ARGS&&... args)
 	{
 		static_assert(NOU::NOU_CORE::IsBaseOf<ResourceLoader, T>::value);
 
