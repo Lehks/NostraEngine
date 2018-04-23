@@ -2,14 +2,19 @@
 
 namespace NOE::NOE_CORE
 {
-	ResourceMetadata::ResourceMetadata(ResourceID id, const NOU::NOU_FILE_MNGT::Path &path,
-		const ResourceType &type, NOU::boolean isCached,
-		const NOU::NOU_FILE_MNGT::Path &cachePath) :
+	constexpr ResourceMetadata::ResourceID ResourceMetadata::INVALID_ID;
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_GENERIC = 
+																"SELECT %s FROM Resources WHERE ID = %d;";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_TYPE_NAME = "path";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_PATH_NAME = "type";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_CACHED_PATH_NAME = "cached";
+
+	ResourceMetadata::ResourceMetadata(ResourceID id) :
 		m_id(id),
-		m_type(type),
-		m_path(path),
-		m_isCached(isCached),
-		m_cachePath(cachePath)
+		m_path(""),
+		m_cachePath("")
 	{}
 
 	typename ResourceMetadata::ResourceID ResourceMetadata::getID() const
@@ -19,12 +24,30 @@ namespace NOE::NOE_CORE
 
 	const typename ResourceMetadata::ResourceType& ResourceMetadata::getType() const
 	{
-		return m_type;
+		NOU::char8 sql[128] = { 0 };
+
+		sprintf(sql, SQL_GENERIC.rawStr(), SQL_TYPE_NAME.rawStr(), m_id);
+
+		std::cout << sql << std::endl;
+		std::cout << SQL_TYPE_NAME.rawStr() << " "  << sql << std::endl;
+
+		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+
+		return NOU::NOU_CORE::move(*result.getRows()[0].getEntries()[0].getValue());
 	}
 
 	const NOU::NOU_FILE_MNGT::Path& ResourceMetadata::getPath() const
 	{
-		return m_path;
+		NOU::char8 sql[128] = {0};
+
+		sprintf(sql, SQL_GENERIC.rawStr(), SQL_PATH_NAME.rawStr(), m_id);
+
+		std::cout << sql << std::endl;
+		std::cout << SQL_PATH_NAME.rawStr() << " " << sql << std::endl;
+
+		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+
+		return NOU::NOU_FILE_MNGT::Path(*result.getRows()[0].getEntries()[0].getValue());
 	}
 
 	NOU::boolean ResourceMetadata::isCached() const
@@ -37,16 +60,26 @@ namespace NOE::NOE_CORE
 		return m_cachePath;
 	}
 
+	NOU::boolean ResourceMetadata::isValid() const
+	{
+		return m_id != 0;
+	}
+
+	ResourceMetadata::operator NOU::boolean() const
+	{
+		return isValid();
+	}
 
 
-	Resource::Resource(const ResourceMetadata &metaData, const NOU::NOU_DAT_ALG::StringView8 &name) :
-		m_metaData(metaData),
+
+	Resource::Resource(ResourceMetadata::ResourceID id, const NOU::NOU_DAT_ALG::StringView8 &name) :
+		m_id(id),
 		m_name(name)
 	{}
 
-	const ResourceMetadata& Resource::getMetadata() const
+	ResourceMetadata Resource::getMetadata() const
 	{
-		return m_metaData;
+		return ResourceManager::get().getMetadata(m_id);
 	}
 
 	const NOU::NOU_DAT_ALG::StringView8& Resource::getLoaderName() const
@@ -93,18 +126,20 @@ namespace NOE::NOE_CORE
 
 	Resource* ResourceLoader::load(ResourceMetadata::ResourceID id)
 	{
-		const ResourceMetadata *metadata = ResourceManager::get().getMetadata(id);
+		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
 
-		if (metadata != nullptr && !isValidResource(id))
+		if (metadata && !isValidResource(id))
 			return nullptr;
 
 		Resource *ret = nullptr;
 
 		if (isCachingEnabled())
-			ret = loadCacheImpl(*metadata, metadata->getCachePath());
+			ret = loadCacheImpl(metadata, metadata.getCachePath());
 
 		if (ret == nullptr)
-			return loadImpl(*metadata, metadata->getPath());
+			return loadImpl(metadata, metadata.getPath());
+
+		return nullptr;
 	}
 
 	NOU::boolean ResourceLoader::store(Resource *resource)
@@ -121,6 +156,8 @@ namespace NOE::NOE_CORE
 
 		if (!ret)
 			return storeImpl(resource, metadata->getPath());
+
+		return false;
 	}
 
 	void ResourceLoader::close(Resource *resource)
@@ -136,6 +173,18 @@ namespace NOE::NOE_CORE
 	{
 		delete loader;
 	}
+
+	const NOU::NOU_FILE_MNGT::Path ResourceManager::DATABASE_PATH = "./Resources.db";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_LIST_IDS = "SELECT ID FROM Resources;";
+
+	ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
+		m_database(databasePath)
+	{}
+
+	ResourceManager::ResourceManager() :
+		m_database(DATABASE_PATH)
+	{}
 
 	ResourceManager& ResourceManager::get()
 	{
@@ -184,23 +233,45 @@ namespace NOE::NOE_CORE
 		return false;
 	}
 
-	NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ResourceManager::listMetadata() const
+	NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ResourceManager::listMetadata()
 	{
-		return NOU::NOU_DAT_ALG::Vector<ResourceMetadata>();
+		//Check if the sizeof ID and int32 match; otherwise stringToInt32() needs to be changed
+		static_assert(sizeof(ResourceMetadata::ResourceID) == sizeof(NOU::int32));
+
+		auto result = getUnderlying().executeSQL(SQL_LIST_IDS);
+
+		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ret;
+
+		for (auto &row : result.getRows())
+		{
+			ResourceMetadata::ResourceID id = 
+				NOU::NOU_DAT_ALG::String8::stringToInt32(*row.getEntries()[0].getValue());
+
+			ResourceMetadata metadata(id);
+
+			ret.push(metadata);
+		}
+
+		return ret;
 	}
 
-	const ResourceMetadata* ResourceManager::getMetadata(typename ResourceMetadata::ResourceID id) const
+	ResourceMetadata ResourceManager::getMetadata(typename ResourceMetadata::ResourceID id) const
 	{
-		return nullptr;
+		return ResourceMetadata(id);
 	}
 
 	void ResourceManager::initalize()
 	{
-
+		m_database.open(); ///\todo add error handling
 	}
 
 	void ResourceManager::shutdown()
 	{
+		m_database.close(); ///\todo add error handling
+	}
 
+	NOE::NOE_UTILITY::sqlite::Database& ResourceManager::getUnderlying()
+	{
+		return m_database;
 	}
 }
