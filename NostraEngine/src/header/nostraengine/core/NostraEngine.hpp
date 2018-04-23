@@ -29,6 +29,7 @@ namespace NOE
 	class NOU_CLASS NostraEngine
 	{
 	private:
+		NOU::int8 m_runState;
 		/**
 		\brief an ID for the Engine.
 		*/
@@ -97,6 +98,7 @@ namespace NOE
 		*/
 		void setMaxFPS(const NOU::uint64 maxFPS = 0);
 
+		void terminateEngine();
 		/**
 		\brief getter for m_currFPS
 		\return returns the current FPS
@@ -114,6 +116,7 @@ namespace NOE
 		\return returns the current FrameTime
 		*/
 		const NOU::uint32& getFrameTime();
+
 	};
 }
 
