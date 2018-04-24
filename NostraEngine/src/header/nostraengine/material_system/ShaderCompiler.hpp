@@ -16,8 +16,14 @@
 class ShaderCompiler
 {
 public:
-    virtual compile()  = 0;
-    virtual generate() = 0;
+    /**
+    \brief a method that compiles the generated source shader.
+    */
+    virtual void compile()  = 0;
+    /**
+    \brief a method that generates the source shader based on the used material and the default shader
+    */
+    virtual void generate() = 0;
 };
 
 #endif
