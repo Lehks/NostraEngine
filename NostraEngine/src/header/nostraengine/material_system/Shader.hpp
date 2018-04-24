@@ -8,8 +8,8 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include <nostraengine/core/StdIncludes.hpp>
-#include <nostrautils/NostraUtils.hpp>
+#include "nostraengine/core/StdIncludes.hpp"
+#include "nostrautils/NostraUtils.hpp"
 
 namespace NOE::NOE_MATSYS
 {
@@ -20,7 +20,7 @@ namespace NOE::NOE_MATSYS
     public:
         NOU::uint32 ID;
 
-        Shader(const GLchar* vertexShaderPath, const GLchar fragmentShaderPath);
+        Shader(const GLchar *vertexShaderPath, const GLchar *fragmentShaderPath);
 
         void use();
         void setBool();
