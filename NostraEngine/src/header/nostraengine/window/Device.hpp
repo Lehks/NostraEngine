@@ -26,6 +26,7 @@ namespace NOE::NOE_WINDOW
 	public:
 
 		Device();
+		Device& getPrimaryDevice();
 		Device& getResolution();
 	};
 }

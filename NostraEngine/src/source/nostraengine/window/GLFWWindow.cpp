@@ -3,11 +3,41 @@
 namespace NOE::NOE_WINDOW
 {
 
-	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType m_sizeWidth, NOU::sizeType m_sizeHeight, 
-		NOU::NOU_DAT_ALG::String8 m_title, GLFWmonitor* monitor, GLFWwindow* share)
-	{
-		m_window = glfwCreateWindow(m_sizeWidth, m_sizeHeight, m_title.rawStr(), monitor, share);
-	}
+	//NOE::NOE_WINDOW::GLFWWindow::GLFWWindow(NOU::sizeType sizeWidth, NOU::sizeType sizeHeight, 
+	//	NOU::NOU_DAT_ALG::String8 title, GLFWmonitor* monitor, GLFWwindow* share)
+	//{
+	//	if (!glfwInit())
+	//	{
+	//		exit(EXIT_FAILURE);
+	//	}
+	//	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
+	//	glfwWindowHint(GLFW_VERSION_MINOR, 0);
+	//	m_window = glfwCreateWindow(sizeWidth, sizeHeight, title.rawStr(), monitor, share);
+	//	if (!m_window)
+	//	{
+	//		glfwTerminate();
+	//		exit(EXIT_FAILURE);
+	//	}
+	//	glfwMakeContextCurrent(m_window);
+	//	glfwSwapInterval(1);
+	//
+	//	while (!glfwWindowShouldClose(m_window))
+	//	{
+	//		NOU::float32 ratio;
+	//		NOU::int32 width, height;
+	//		glfwGetFramebufferSize(m_window, &width, &height);
+	//		ratio = width / (float)height;
+	//		glViewport(0, 0, width, height);
+	//		glClear(GL_COLOR_BUFFER_BIT);
+	//
+	//		glfwSwapBuffers(m_window);
+	//		glfwPollEvents();
+	//	}
+	//
+	//	glfwDestroyWindow(m_window);
+	//	glfwTerminate();
+	//	exit(EXIT_SUCCESS);
+	//}
 
 	void NOE::NOE_WINDOW::GLFWWindow::setTitle(NOU::NOU_DAT_ALG::String8 title)
 	{
@@ -21,8 +51,9 @@ namespace NOE::NOE_WINDOW
 	{
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::close()
+	void NOE::NOE_WINDOW::GLFWWindow::close(GLFWwindow* window)
 	{
+		glfwDestroyWindow(window);
 	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::minimize()

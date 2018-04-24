@@ -6,6 +6,10 @@ namespace NOE::NOE_WINDOW
 	{
 
 	}
+	//Device& Device::getPrimaryDevice()
+	//{
+	//	return glfwGetPrimaryMonitor();
+	//}
 	//Device& Device::getResolution()
 	//{
 	//	

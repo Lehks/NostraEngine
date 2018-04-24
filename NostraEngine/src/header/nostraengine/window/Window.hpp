@@ -25,13 +25,13 @@ namespace NOE::NOE_WINDOW
 	{
 	public:
 		
+		//Window() = default;
 		virtual ~Window() = default;
-		virtual void createWindow(NOU::sizeType m_sizeWidth, NOU::sizeType m_sizeHeight, 
-			NOU::NOU_DAT_ALG::String8 m_title, GLFWmonitor* monitor = NULL, GLFWwindow* share = NULL);
+		Window() = default;
 		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) = 0;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) = 0;
 		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) = 0;
-		virtual void close() = 0;
+		virtual void close(GLFWwindow* window) = 0;
 		virtual void minimize() = 0;
 		virtual void maximize() = 0;
 		virtual void makeWindowed() = 0;
