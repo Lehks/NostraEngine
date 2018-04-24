@@ -421,9 +421,21 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS ResourceManager final
 	{
 	private:
-		static const NOU::NOU_FILE_MNGT::Path DATABASE_PATH;
+		static NOU::NOU_FILE_MNGT::Path DATABASE_PATH;
 
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_LIST_IDS;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_RESOURCE;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_RESOURCE_NO_CACHE;
+		
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_GET_ID;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_REMOVE;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_UPDATE_CACHE;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_UPDATE_CACHE_NULL;
 
 		NOE::NOE_UTILITY::sqlite::Database m_database;
 

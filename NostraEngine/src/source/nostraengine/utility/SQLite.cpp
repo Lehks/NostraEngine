@@ -34,8 +34,10 @@ namespace NOE::NOE_UTILITY
 			return m_entires;
 		}
 
-		QueryResult::QueryResult() :
-			m_valid(true)
+		QueryResult::QueryResult(NOU::int32 affectedRows, NOU::char8 *error) :
+			m_valid(true),
+			m_error(error == nullptr ? "" : error),
+			m_affectedRows(affectedRows)
 		{}
 
 		void QueryResult::setValid(NOU::boolean valid)
@@ -57,6 +59,23 @@ namespace NOE::NOE_UTILITY
 		{
 			return m_rows;
 		}
+
+		NOU::NOU_DAT_ALG::StringView8 QueryResult::getErrorMsg() const
+		{
+			return m_error;
+		}
+
+		void QueryResult::setAffectedRows(NOU::int32 rows)
+		{
+			m_affectedRows = rows;
+		}
+
+		NOU::int32 QueryResult::getAffectedRows() const
+		{
+			return m_affectedRows;
+		}
+
+
 
 		int Database::sqlCallback(void *data, int cellCount, char **values, char **names)
 		{
@@ -158,29 +177,39 @@ namespace NOE::NOE_UTILITY
 				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 					NOU::NOU_CORE::ErrorCodes::INVALID_STATE,
 					"Database is not opened.");
-				return QueryResult();
+
+				QueryResult ret(-1);
+				ret.setValid(false);
+				return NOU::NOU_CORE::move(ret);
 			}
 
-			QueryResult ret;
+			QueryResult ret(-1);
 
 			NOU::char8 *errmsg;
 
 			int error = sqlite3_exec(reinterpret_cast<sqlite3*>(m_dbPtr), sql.rawStr(), sqlCallback, 
 				&ret, &errmsg);
 
+			ret.setAffectedRows(sqlite3_changes(reinterpret_cast<sqlite3*>(m_dbPtr)));
+
 			if (errmsg != nullptr) //if an error happened
 			{
-				ret.setValid(false);
-			}
+				QueryResult errRet(-1, errmsg);
 
+				sqlite3_free(errmsg);
+
+				errRet.setValid(false);
+				return NOU::NOU_CORE::move(errRet);
+			}
+			
 			if (error != SQLITE_OK)
 			{
 				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 					NOU::NOU_CORE::ErrorCodes::UNKNOWN_ERROR,
-					"An unknown error occurred while opening a database.");
+					"An unknown error occurred while executing an SQL statement.");
 			}
 
-			return ret;
+			return NOU::NOU_CORE::move(ret);
 		}
 
 		const NOU::NOU_FILE_MNGT::Path & Database::getPath() const

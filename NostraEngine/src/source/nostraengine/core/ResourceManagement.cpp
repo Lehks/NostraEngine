@@ -13,7 +13,7 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_CACHED_PATH_NAME = "cached";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_EXISTS_RESOURCE = 
-															"SELECT COUNT(*) FROM Resource WHERE ID = %d";
+															"SELECT COUNT(*) FROM Resources WHERE ID = %d";
 
 	NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path> ResourceMetadata::getCachePathImp() const
 	{
@@ -46,12 +46,18 @@ namespace NOE::NOE_CORE
 
 			auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
 
+			if (!result.isValid() || result.getRows().size() == 0)
+			{
+				m_id = INVALID_ID;
+				return;
+			}
+
 			NOU::int32 count = 
 				NOU::NOU_DAT_ALG::StringView8::stringToInt32(*result.getRows()[0].getEntries()[0].getValue());
 
 			if (count == 0)
 			{
-				m_id = 0;
+				m_id = INVALID_ID;
 			}
 		}
 	}
@@ -220,9 +226,26 @@ namespace NOE::NOE_CORE
 		delete loader;
 	}
 
-	const NOU::NOU_FILE_MNGT::Path ResourceManager::DATABASE_PATH = "./Resources.db";
+	NOU::NOU_FILE_MNGT::Path ResourceManager::DATABASE_PATH = "./Resources.db";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_LIST_IDS = "SELECT ID FROM Resources;";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_RESOURCE =
+										"INSERT INTO Resources(path, type, cached) VALUES('%s', '%s', '%s')";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_RESOURCE_NO_CACHE =
+										"INSERT INTO Resources(path, type, cached) VALUES('%s', '%s', NULL)";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_GET_ID = 
+											"SELECT ID FROM Resources WHERE path = '%s';";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE =
+																	"DELETE FROM Resources WHERE ID = %d;";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE =
+														"UPDATE Resources SET cached = '%s' WHERE ID = %d;";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE_NULL =
+														"UPDATE Resources SET cached = NULL WHERE ID = %d;";
 
 	ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
 		m_database(databasePath)
@@ -257,10 +280,7 @@ namespace NOE::NOE_CORE
 
 		for (auto &mdata : metadata)
 		{
-			if (mdata.isCached())
-			{
-				//delete cache file
-			}
+			deleteCache(mdata.getID());
 		}
 	}
 
@@ -268,27 +288,87 @@ namespace NOE::NOE_CORE
 		const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache,
 		const NOU::NOU_FILE_MNGT::Path &cachePath)
 	{
-		return 0;
+		NOU::char8 sql[1024] = { 0 };
+
+		if(enableCache)
+			sprintf(sql, SQL_ADD_RESOURCE.rawStr(), path.getRelativePath().rawStr(), type.rawStr(), 
+																cachePath.getRelativePath().rawStr());
+		else
+			sprintf(sql, SQL_ADD_RESOURCE_NO_CACHE.rawStr(), path.getRelativePath().rawStr(), type.rawStr());
+
+		auto result = getUnderlying().executeSQL(sql);
+
+		if (result.isValid())
+		{
+			memset(sql, 0, sizeof(sql) / sizeof(sql[0]));
+
+			sprintf(sql, SQL_GET_ID.rawStr(), path.getRelativePath().rawStr());
+
+			auto result = getUnderlying().executeSQL(sql);
+
+			auto val = result.getRows()[0].getEntries()[0].getValue();
+
+			return NOU::NOU_DAT_ALG::StringView8::stringToInt32(*val);
+		}
+		else
+		{
+			std::cout << result.getErrorMsg().rawStr() << std::endl;
+			return ResourceMetadata::INVALID_ID;
+		}
 	}
 
 	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ResourceID id)
 	{
-		return false;
+		NOU::char8 sql[128] = { 0 };
+
+		sprintf(sql, SQL_REMOVE.rawStr(), id);
+
+		auto result = getUnderlying().executeSQL(sql);
+
+		return result.getAffectedRows() > 0;
 	}
 
 	NOU::uint32 ResourceManager::cleanupResources()
 	{
-		return 0;
+		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> metadata = listMetadata();
+
+		for (auto &data : metadata)
+		{
+			NOU::NOU_FILE_MNGT::File file(data.getPath());
+
+			if (!file.exists())
+				removeResource(data.getID());
+		}
 	}
 
 	NOU::boolean ResourceManager::cache(typename ResourceMetadata::ResourceID id, NOU::boolean enableCache,
 		const NOU::NOU_FILE_MNGT::Path &path)
 	{
-		return false;
+		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
+
+		NOU::char8 sql[1024] = { 0 };
+
+		if (enableCache)
+			sprintf(sql, SQL_UPDATE_CACHE.rawStr(), path.getRelativePath().rawStr(), id);
+		else
+			sprintf(sql, SQL_UPDATE_CACHE_NULL.rawStr(), id);
+		
+		auto result = getUnderlying().executeSQL(sql);
+
+		return result.getAffectedRows() > 0;
 	}
 
 	NOU::boolean ResourceManager::deleteCache(typename ResourceMetadata::ResourceID id)
 	{
+		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
+
+		if (metadata.isCached())
+		{
+			NOU::NOU_FILE_MNGT::File file(metadata.getCachePath());
+
+			//delete file
+		}
+
 		return false;
 	}
 

@@ -11,7 +11,7 @@ namespace NOE::NOE_UTILITY
 		\brief A class that represents a single cell in a database table. It stores the value of the cell and
 		       the name of the column that the cell is in.
 		*/
-		class NOU_CLASS RowEntry
+		class NOU_CLASS RowEntry final
 		{
 		private:
 			/**
@@ -50,7 +50,7 @@ namespace NOE::NOE_UTILITY
 		/**
 		\brief Represents a single row of a SQL query. A row consists single RowEntries.
 		*/
-		class NOU_CLASS Row
+		class NOU_CLASS Row final
 		{
 		private:
 			/**
@@ -77,7 +77,7 @@ namespace NOE::NOE_UTILITY
 		/**
 		\brief Represents the result of an entire SQL query as a list of the queried rows.
 		*/
-		class NOU_CLASS QueryResult
+		class NOU_CLASS QueryResult final
 		{
 		private:
 			/**
@@ -90,11 +90,22 @@ namespace NOE::NOE_UTILITY
 			*/
 			NOU::boolean m_valid;
 
+			/**
+			\brief If the result is invalid, this string will contain further information about the error.
+			*/
+			NOU::NOU_DAT_ALG::String8 m_error;
+
+			/**
+			\brief The amount of rows that were affected by the query. Only valid for INSERT, UPDATE or DELETE
+			       operations.
+			*/
+			NOU::int32 m_affectedRows;
+
 		public:
 			/**
 			\brief Constructs a new instance.
 			*/
-			QueryResult();
+			QueryResult(NOU::int32 affectedRows, NOU::char8 *error = nullptr);
 
 			/**
 			\param valid The new valid state.
@@ -123,6 +134,32 @@ namespace NOE::NOE_UTILITY
 			\brief Returns the rows.
 			*/
 			const NOU::NOU_DAT_ALG::Vector<Row>& getRows() const;
+
+			/**
+			\return The error message that was produced by the database on failure.
+
+			\brief Returns the error message that was produced by the database on failure, or an empty string 
+			       if there was no error.
+			*/
+			NOU::NOU_DAT_ALG::StringView8 getErrorMsg() const;
+
+			/**
+			\param rows The new amount of affected rows.
+
+			\brief Sets the affected rows. 
+			*/
+			void setAffectedRows(NOU::int32 rows);
+
+			/**
+			\return The amount of rows that were affected by the query.
+
+			\brief Returns the amount of rows that were affected by the query that produced this result. 
+
+			\note
+			This value is only valid for INSERT, UPDATE or DELETE operations, otherwise the value is 
+			undefined.
+			*/
+			NOU::int32 getAffectedRows() const;
 		};
 
 		/**
