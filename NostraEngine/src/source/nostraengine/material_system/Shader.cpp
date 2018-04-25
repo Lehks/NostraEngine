@@ -20,5 +20,17 @@ namespace NOE::NOE_MATSYS
 
 
     }
+
+    Shader::use()
+    {}
+
+    Shader::setBool()
+    {}
+
+    Shader::seInt()
+    {}
+
+    setFloat()
+    {}
 }
 
