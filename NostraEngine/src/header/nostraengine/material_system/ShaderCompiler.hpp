@@ -33,6 +33,10 @@ namespace NOE::NOE_MATSYS
         \brief a method that generates the source shader based on the used material and the default shader
         */
         virtual void generate() = 0;
+        /**
+        \brief sets the internal Material attributes for later generation/compilation
+        */
+        virtual void setMaterial() = 0;
     };
 }
 #endif
