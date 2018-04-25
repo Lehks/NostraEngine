@@ -7,6 +7,30 @@ namespace NOE::NOE_UTILITY
 {
 	namespace sqlite
 	{
+		class ErrorCodes
+		{
+		public:
+			enum
+			{
+				FIRST_ELEMENT = 5000,
+
+				SQL_SYNTAX_ERROR,
+				SQL_INVALID_PARAMETER_INDEX,
+
+				LAST_ELEMENT
+			};
+		};
+
+		class ErrorPool : public NOU::NOU_CORE::ErrorPool
+		{
+			NOU::NOU_CORE::Error m_errors[ErrorCodes::LAST_ELEMENT - ErrorCodes::FIRST_ELEMENT - 1];
+
+		public:
+			ErrorPool();
+
+			virtual const NOU::NOU_CORE::Error* queryError(NOU::NOU_CORE::ErrorPool::ErrorType id) const;
+		};
+
 		/**
 		\brief A class that represents a single cell in a database table. It stores the value of the cell and
 		       the name of the column that the cell is in.
@@ -162,6 +186,116 @@ namespace NOE::NOE_UTILITY
 			NOU::int32 getAffectedRows() const;
 		};
 
+		struct INTEGER {};
+		struct INTEGER_64 {};
+		struct FLOAT {};
+		struct FLOAT_64 {};
+		struct STRING {};
+
+		enum class Type
+		{
+			INTEGER,
+			FLOAT,
+			STRING,
+			UNKNOWN
+		};
+
+		///\cond
+		class SQLStatement;
+		///\endcond
+
+		class NOU_CLASS Row2
+		{
+		private:
+			SQLStatement *m_stmt;
+			NOU::boolean m_valid;
+
+		public:
+			Row2(SQLStatement &stmt);
+
+			NOU::int32 valueAs(NOU::sizeType index, INTEGER);
+
+			NOU::int64 valueAs(NOU::sizeType index, INTEGER_64);
+
+			NOU::float32 valueAs(NOU::sizeType index, FLOAT);
+
+			NOU::float64 valueAs(NOU::sizeType index, FLOAT_64);
+
+			NOU::NOU_DAT_ALG::StringView8 valueAs(NOU::sizeType index, STRING);
+
+			NOU::boolean isNull(NOU::sizeType index);
+
+			Type getType(NOU::sizeType index);
+
+			NOU::sizeType size() const;
+
+			void setValid(NOU::boolean valid);
+
+			NOU::boolean isValid() const;
+		};
+
+		///\cond
+		class Database;
+		///\endcond
+
+		class NOU_CLASS SQLStatement
+		{
+		private:
+			enum class State
+			{
+				NOT_STARTED,
+				IN_PROGRESS,
+				DONE
+			};
+
+			Database *m_db;
+			void *m_sql;
+			NOU::sizeType m_nextIndex;
+			State m_state;
+			Row2 m_row;
+
+		public:
+			SQLStatement(Database &db, const NOU::NOU_DAT_ALG::StringView8 &sql);
+			SQLStatement(Database &db);
+
+			SQLStatement(const SQLStatement &other) = delete;
+			SQLStatement(SQLStatement &&other);
+
+			~SQLStatement();
+
+			NOU::boolean isValid() const;
+			
+			void SQLStatement::bind(std::nullptr_t);
+
+			void SQLStatement::bind(NOU::int32 i);
+
+			void SQLStatement::bind(NOU::int32 *i);
+
+			void SQLStatement::bind(NOU::int64 i);
+
+			void SQLStatement::bind(NOU::int64 *i);
+
+			void SQLStatement::bind(NOU::float32 f);
+
+			void SQLStatement::bind(NOU::float32 *f);
+
+			void SQLStatement::bind(NOU::float64 f);
+
+			void SQLStatement::bind(NOU::float64 *f);
+
+			void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 &str);
+
+			void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 *str);
+
+			Row2& next();
+
+			NOU::boolean hasNext();
+
+			void* get();
+
+			SQLStatement& operator = (SQLStatement &&other);
+		};
+
 		/**
 		\brief A class that is capable of connecting to a SQLite3 database.
 		*/
@@ -250,6 +384,10 @@ namespace NOE::NOE_UTILITY
 			*/
 			const QueryResult executeSQL(const NOU::NOU_DAT_ALG::StringView8 &sql);
 
+			SQLStatement execute(const NOU::NOU_DAT_ALG::StringView8 &sql);
+
+			//const QueryResult executeSQL(SQLStatement &sql);
+
 			/**
 			\return The path to the database file.
 
@@ -263,6 +401,13 @@ namespace NOE::NOE_UTILITY
 			\brief Returns whether the connection to the database is established or not.
 			*/
 			NOU::boolean isOpen() const;
+
+			/**
+			\return The underlying database handle.
+
+			\brief Returns the underlying database handle.
+			*/
+			void* getUnderlying();
 		};
 	}
 }
