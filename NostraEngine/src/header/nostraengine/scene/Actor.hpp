@@ -31,7 +31,8 @@ namespace NOE
 	private : 
 
 
-		/*
+		/*']
+
 		\ id number of the Actor
 		*/
 		long m_id ;
@@ -56,15 +57,26 @@ namespace NOE
 
 
 	public :
+		 /*
+		 \ brief A constructor with 4 param 
+		 \ param id is from type long and identified an actor with a special id.
+		 \ param m_static is from type bool and shows is an actor static or is not static {static means is an actor authorized to move}.
+		 \ param m_parent is from type actor indicates where the parent is from the current actor .
+		 \ param m _children is a vector from type actor and safes the children's .
+		 */
+
+
+
+		Actor(long m_id, bool m_static, Actor & m_parent, NOU::NOU_DAT_ALG::Vector<Actor> m_children);
 
 		/*
-		\ A function 
+		\ brief  A function 
 		*/
 
 		void init();
 
 		/*
-		\ A function that shutdowns the scene 
+		\ brief A function that shutdowns the scene 
 		*/
 
 		void shutdown();

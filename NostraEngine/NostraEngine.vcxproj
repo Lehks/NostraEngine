@@ -41,6 +41,7 @@
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
     <ClInclude Include="src\header\nostraengine\core\StdIncludes.hpp" />
     <ClInclude Include="src\header\nostraengine\scene\Actor.hpp" />
+    <ClInclude Include="src\header\nostraengine\scene\Tranformation.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\source\glad\glad.c" />
