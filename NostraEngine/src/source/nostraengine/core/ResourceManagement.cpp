@@ -332,13 +332,20 @@ namespace NOE::NOE_CORE
 	{
 		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> metadata = listMetadata();
 
+		NOU::int32 counter = 0;
+
 		for (auto &data : metadata)
 		{
 			NOU::NOU_FILE_MNGT::File file(data.getPath());
 
 			if (!file.exists())
+			{
 				removeResource(data.getID());
+				counter++;
+			}
 		}
+
+		return counter;
 	}
 
 	NOU::boolean ResourceManager::cache(typename ResourceMetadata::ResourceID id, NOU::boolean enableCache,
