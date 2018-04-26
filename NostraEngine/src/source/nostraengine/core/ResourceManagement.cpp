@@ -30,7 +30,7 @@ namespace NOE::NOE_CORE
 		stmt.bind(m_id);
 
 		//there should always be a next
-		NOE::NOE_UTILITY::sqlite::Row2 &row = stmt.next();
+		NOE::NOE_UTILITY::sqlite::Row &row = stmt.next();
 
 		if (!row.isNull(0))
 			return row.valueAs(0, NOE::NOE_UTILITY::sqlite::STRING());
@@ -46,7 +46,7 @@ namespace NOE::NOE_CORE
 			auto stmt = ResourceManager::get().getUnderlying().execute(SQL_EXISTS_RESOURCE);
 			stmt.bind(id);
 
-			NOE::NOE_UTILITY::sqlite::Row2 *row;
+			NOE::NOE_UTILITY::sqlite::Row *row;
 
 			if (stmt.hasNext())
 			{
@@ -94,7 +94,7 @@ namespace NOE::NOE_CORE
 		stmt.bind(m_id);
 
 		//there should always be a next
-		NOE::NOE_UTILITY::sqlite::Row2 &row = stmt.next();
+		NOE::NOE_UTILITY::sqlite::Row &row = stmt.next();
 
 		return !row.isNull(0);
 	}
@@ -290,7 +290,7 @@ namespace NOE::NOE_CORE
 		auto stmt = getUnderlying().execute(SQL_REMOVE);
 		stmt.bind(id);
 
-		auto row = stmt.next();
+		NOE::NOE_UTILITY::sqlite::Row &row = stmt.next();
 
 		return row.affectedRows() > 0;
 	}
@@ -329,7 +329,7 @@ namespace NOE::NOE_CORE
 
 		stmt.bind(id);
 
-		auto row = stmt.next();
+		NOE::NOE_UTILITY::sqlite::Row &row = stmt.next();
 
 		return row.affectedRows() > 0;
 	}
@@ -353,18 +353,20 @@ namespace NOE::NOE_CORE
 		//Check if the sizeof ID and int32 match; otherwise stringToInt32() needs to be changed
 		static_assert(sizeof(ResourceMetadata::ResourceID) == sizeof(NOU::int32));
 
-		auto result = getUnderlying().executeSQL(SQL_LIST_IDS);
+		auto result = getUnderlying().execute(SQL_LIST_IDS);
 
 		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ret;
 
-		for (auto &row : result.getRows())
+		while(result.hasNext())
 		{
-			ResourceMetadata::ResourceID id = 
-				NOU::NOU_DAT_ALG::String8::stringToInt32(*row.getEntries()[0].getValue());
+			NOE::NOE_UTILITY::sqlite::Row &row = result.next();
 
-			ResourceMetadata metadata(id);
+			if (result.hasNext())
+			{
+				ResourceMetadata::ResourceID id = row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
 
-			ret.push(metadata);
+				ret.push(ResourceMetadata(id));
+			}
 		}
 
 		return ret;

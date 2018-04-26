@@ -32,116 +32,47 @@ namespace NOE::NOE_UTILITY
 			}
 		}
 
-		RowEntry::RowEntry(const NOU::char8 *value, const NOU::NOU_DAT_ALG::StringView8 &name) :
-			//do not initialize m_value here
-			m_name(name)
-		{
-			if (value != nullptr)
-				m_value = value;
-		}
-
-		const NOU::NOU_DAT_ALG::String8* RowEntry::getValue() const
-		{
-			return m_value.isValid() ? m_value.data() : nullptr;
-		}
-
-		const NOU::NOU_DAT_ALG::String8& RowEntry::getName() const
-		{
-			return m_name;
-		}
-
-		void Row::addEntry(const RowEntry &entry)
-		{
-			m_entires.pushBack(entry);
-		}
-
-		const NOU::NOU_DAT_ALG::Vector<RowEntry>& Row::getEntries() const
-		{
-			return m_entires;
-		}
-
-		QueryResult::QueryResult(NOU::int32 affectedRows, NOU::char8 *error) :
-			m_valid(true),
-			m_error(error == nullptr ? "" : error),
-			m_affectedRows(affectedRows)
-		{}
-
-		void QueryResult::setValid(NOU::boolean valid)
-		{
-			m_valid = valid;
-		}
-
-		void QueryResult::addRow(const Row &row)
-		{
-			m_rows.pushBack(row);
-		}
-
-		NOU::boolean QueryResult::isValid() const
-		{
-			return m_valid;
-		}
-
-		const NOU::NOU_DAT_ALG::Vector<Row>& QueryResult::getRows() const
-		{
-			return m_rows;
-		}
-
-		NOU::NOU_DAT_ALG::StringView8 QueryResult::getErrorMsg() const
-		{
-			return m_error;
-		}
-
-		void QueryResult::setAffectedRows(NOU::int32 rows)
-		{
-			m_affectedRows = rows;
-		}
-
-		NOU::int32 QueryResult::getAffectedRows() const
-		{
-			return m_affectedRows;
-		}
 
 
-
-		Row2::Row2(SQLStatement &stmt) :
+		Row::Row(SQLStatement &stmt) :
 			m_stmt(&stmt),
 			m_valid(false)
 		{}
 
-		NOU::int32 Row2::valueAs(NOU::sizeType index, INTEGER) const
+		NOU::int32 Row::valueAs(NOU::sizeType index, INTEGER) const
 		{
 			return sqlite3_column_int(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::int64 Row2::valueAs(NOU::sizeType index, INTEGER_64) const
+		NOU::int64 Row::valueAs(NOU::sizeType index, INTEGER_64) const
 		{
 			return sqlite3_column_int64(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::float32 Row2::valueAs(NOU::sizeType index, FLOAT) const
+		NOU::float32 Row::valueAs(NOU::sizeType index, FLOAT) const
 		{
 			return sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::float64 Row2::valueAs(NOU::sizeType index, FLOAT_64) const
+		NOU::float64 Row::valueAs(NOU::sizeType index, FLOAT_64) const
 		{
 			return sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::NOU_DAT_ALG::StringView8 Row2::valueAs(NOU::sizeType index, STRING) const
+		NOU::NOU_DAT_ALG::StringView8 Row::valueAs(NOU::sizeType index, STRING) const
 		{
 			auto rawText = sqlite3_column_text(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 
 			return reinterpret_cast<const NOU::char8*>(rawText);
 		}
 
-		NOU::boolean Row2::isNull(NOU::sizeType index) const
+		NOU::boolean Row::isNull(NOU::sizeType index) const
 		{
 			return sqlite3_column_type(
 				reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index) == SQLITE_NULL;
 		}
 
-		Type Row2::getType(NOU::sizeType index) const
+		Type Row::getType(NOU::sizeType index) const
 		{
 			int type = sqlite3_column_type(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 
@@ -158,27 +89,27 @@ namespace NOE::NOE_UTILITY
 			}
 		}
 
-		NOU::sizeType Row2::size() const
+		NOU::sizeType Row::size() const
 		{
 			return sqlite3_column_count(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()));
 		}
 
-		void Row2::setValid(NOU::boolean valid)
+		void Row::setValid(NOU::boolean valid)
 		{
 			m_valid = valid;
 		}
 
-		NOU::boolean Row2::isValid() const
+		NOU::boolean Row::isValid() const
 		{
 			return m_valid;
 		}
 
-		NOU::int64 Row2::affectedRows() const
+		NOU::int64 Row::affectedRows() const
 		{
 			return sqlite3_changes(reinterpret_cast<sqlite3*>(m_stmt->getDatabase().getUnderlying()));
 		}
 
-		NOU::int64 Row2::lastRowId() const
+		NOU::int64 Row::lastRowId() const
 		{
 			return sqlite3_last_insert_rowid(
 				reinterpret_cast<sqlite3*>(m_stmt->getDatabase().getUnderlying()));
@@ -195,8 +126,6 @@ namespace NOE::NOE_UTILITY
 		{
 			int error = sqlite3_prepare_v2(reinterpret_cast<sqlite3*>(m_db->getUnderlying()), sql.rawStr(),
 				sql.size(), reinterpret_cast<sqlite3_stmt**>(&m_sql), nullptr);
-
-			std::cout << sqlite3_errmsg(reinterpret_cast<sqlite3*>(m_db->getUnderlying())) << std::endl;
 
 			if (error != SQLITE_OK)
 			{
@@ -359,7 +288,7 @@ namespace NOE::NOE_UTILITY
 				bind(*str); 
 		}
 
-		Row2& SQLStatement::next()
+		Row& SQLStatement::next()
 		{
 			int error = sqlite3_step(reinterpret_cast<sqlite3_stmt*>(m_sql));
 
@@ -408,22 +337,6 @@ namespace NOE::NOE_UTILITY
 		}
 
 
-
-		int Database::sqlCallback(void *data, int cellCount, char **values, char **names)
-		{
-			QueryResult *result = reinterpret_cast<QueryResult*>(data);
-
-			Row row;
-
-			for (NOU::sizeType i = 0; i < cellCount; i++)
-			{
-				row.addEntry(RowEntry(values[i], names[i]));
-			}
-
-			result->addRow(row);
-
-			return 0;
-		}
 
 		Database::Database(const NOU::NOU_FILE_MNGT::Path &path) :
 			m_dbPtr(nullptr),
@@ -511,48 +424,6 @@ namespace NOE::NOE_UTILITY
 			}
 		}
 
-		const QueryResult Database::executeSQL(const NOU::NOU_DAT_ALG::StringView8 &sql)
-		{
-			if (!isOpen())
-			{
-				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-					NOU::NOU_CORE::ErrorCodes::INVALID_STATE,
-					"Database is not opened.");
-
-				QueryResult ret(-1);
-				ret.setValid(false);
-				return NOU::NOU_CORE::move(ret);
-			}
-
-			QueryResult ret(-1);
-
-			NOU::char8 *errmsg;
-
-			int error = sqlite3_exec(reinterpret_cast<sqlite3*>(m_dbPtr), sql.rawStr(), sqlCallback, 
-				&ret, &errmsg);
-
-			ret.setAffectedRows(sqlite3_changes(reinterpret_cast<sqlite3*>(m_dbPtr)));
-
-			if (errmsg != nullptr) //if an error happened
-			{
-				QueryResult errRet(-1, errmsg);
-
-				sqlite3_free(errmsg);
-
-				errRet.setValid(false);
-				return NOU::NOU_CORE::move(errRet);
-			}
-			
-			if (error != SQLITE_OK)
-			{
-				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-					NOU::NOU_CORE::ErrorCodes::UNKNOWN_ERROR,
-					"An unknown error occurred while executing an SQL statement.");
-			}
-
-			return NOU::NOU_CORE::move(ret);
-		}
-
 		SQLStatement Database::execute(const NOU::NOU_DAT_ALG::StringView8 &sql)
 		{
 			if (!isOpen())
@@ -566,28 +437,6 @@ namespace NOE::NOE_UTILITY
 
 			return SQLStatement(*this, sql);
 		}
-
-		/*const QueryResult Database::executeSQL(SQLStatement &sql)
-		{
-			sqlite3_stmt *stmt = reinterpret_cast<sqlite3_stmt*>(sql.get());
-
-			QueryResult result(-1, nullptr);
-
-			int error;
-
-			while ((error = sqlite3_step(stmt)) != SQLITE_DONE)
-			{
-				if (error == SQLITE_ROW)
-				{
-					NOU::sizeType colCount = sqlite3_column_count(stmt);
-
-					for (NOU::sizeType i = 0; i < colCount; i++)
-					{
-
-					}
-				}
-			}
-		}*/
 
 		const NOU::NOU_FILE_MNGT::Path & Database::getPath() const
 		{

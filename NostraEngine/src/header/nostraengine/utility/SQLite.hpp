@@ -31,161 +31,6 @@ namespace NOE::NOE_UTILITY
 			virtual const NOU::NOU_CORE::Error* queryError(NOU::NOU_CORE::ErrorPool::ErrorType id) const;
 		};
 
-		/**
-		\brief A class that represents a single cell in a database table. It stores the value of the cell and
-		       the name of the column that the cell is in.
-		*/
-		class NOU_CLASS RowEntry final
-		{
-		private:
-			/**
-			\brief The value of the cell. If the value is NULL in the database, the member will not be
-			       initialized.
-			*/
-			NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_DAT_ALG::String8> m_value;
-
-			/**
-			\brief The name of the column.
-			*/
-			NOU::NOU_DAT_ALG::String8 m_name;
-
-		public:
-			/**
-			\param value The value of the self. It will be copied, unless the value is \p nullptr.
-			*/
-			RowEntry(const NOU::char8 *value, const NOU::NOU_DAT_ALG::StringView8 &name);
-
-			/**
-			\return The value of the cell.
-
-			\brief Returns a pointer to the value of the cell. If the value is NULL in the database, \p
-			       nullptr is returned.
-			*/
-			const NOU::NOU_DAT_ALG::String8* getValue() const;
-
-			/**
-			\return The name of the column that this cell is in.
-
-			\brief Returns the name of the column that this cell is in.
-			*/
-			const NOU::NOU_DAT_ALG::String8& getName() const;
-		};
-
-		/**
-		\brief Represents a single row of a SQL query. A row consists single RowEntries.
-		*/
-		class NOU_CLASS Row final
-		{
-		private:
-			/**
-			\brief The single entries in the row.
-			*/
-			NOU::NOU_DAT_ALG::Vector<RowEntry> m_entires;
-
-		public:
-			/**
-			\param entry The entry to add.
-
-			\brief Adds an entry to the row. This method is usually not used by a user.
-			*/
-			void addEntry(const RowEntry &entry);
-
-			/**
-			\return The entries.
-
-			\brief Returns the entires.
-			*/
-			const NOU::NOU_DAT_ALG::Vector<RowEntry>& getEntries() const;
-		};
-
-		/**
-		\brief Represents the result of an entire SQL query as a list of the queried rows.
-		*/
-		class NOU_CLASS QueryResult final
-		{
-		private:
-			/**
-			\brief The single rows in the result.
-			*/
-			NOU::NOU_DAT_ALG::Vector<Row> m_rows;
-
-			/**
-			\brief True, if the result is valid, false if not.
-			*/
-			NOU::boolean m_valid;
-
-			/**
-			\brief If the result is invalid, this string will contain further information about the error.
-			*/
-			NOU::NOU_DAT_ALG::String8 m_error;
-
-			/**
-			\brief The amount of rows that were affected by the query. Only valid for INSERT, UPDATE or DELETE
-			       operations.
-			*/
-			NOU::int32 m_affectedRows;
-
-		public:
-			/**
-			\brief Constructs a new instance.
-			*/
-			QueryResult(NOU::int32 affectedRows, NOU::char8 *error = nullptr);
-
-			/**
-			\param valid The new valid state.
-
-			\brief Sets the valid state.
-			*/
-			void setValid(NOU::boolean valid);
-
-			/**
-			\param row The row to add.
-
-			\brief Adds a row to the row. This method is usually not used by a user.
-			*/
-			void addRow(const Row &row);
-
-			/**
-			\return True, if the result is valid, false if not.
-
-			\brief Returns whether the result is valid.
-			*/
-			NOU::boolean isValid() const;
-
-			/**
-			\return The rows.
-
-			\brief Returns the rows.
-			*/
-			const NOU::NOU_DAT_ALG::Vector<Row>& getRows() const;
-
-			/**
-			\return The error message that was produced by the database on failure.
-
-			\brief Returns the error message that was produced by the database on failure, or an empty string 
-			       if there was no error.
-			*/
-			NOU::NOU_DAT_ALG::StringView8 getErrorMsg() const;
-
-			/**
-			\param rows The new amount of affected rows.
-
-			\brief Sets the affected rows. 
-			*/
-			void setAffectedRows(NOU::int32 rows);
-
-			/**
-			\return The amount of rows that were affected by the query.
-
-			\brief Returns the amount of rows that were affected by the query that produced this result. 
-
-			\note
-			This value is only valid for INSERT, UPDATE or DELETE operations, otherwise the value is 
-			undefined.
-			*/
-			NOU::int32 getAffectedRows() const;
-		};
-
 		struct INTEGER {};
 		struct INTEGER_64 {};
 		struct FLOAT {};
@@ -204,14 +49,14 @@ namespace NOE::NOE_UTILITY
 		class SQLStatement;
 		///\endcond
 
-		class NOU_CLASS Row2
+		class NOU_CLASS Row
 		{
 		private:
 			SQLStatement *m_stmt;
 			NOU::boolean m_valid;
 
 		public:
-			Row2(SQLStatement &stmt);
+			Row(SQLStatement &stmt);
 
 			NOU::int32 valueAs(NOU::sizeType index, INTEGER) const;
 
@@ -256,7 +101,7 @@ namespace NOE::NOE_UTILITY
 			void *m_sql;
 			NOU::sizeType m_nextIndex;
 			State m_state;
-			Row2 m_row;
+			Row m_row;
 
 		public:
 			SQLStatement(Database &db, const NOU::NOU_DAT_ALG::StringView8 &sql);
@@ -291,7 +136,7 @@ namespace NOE::NOE_UTILITY
 
 			void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 *str);
 
-			Row2& next();
+			Row& next();
 
 			NOU::boolean hasNext();
 
@@ -371,24 +216,6 @@ namespace NOE::NOE_UTILITY
 			- nostra::utils::core::ErrorCodes::UNKNOWN_ERROR: An unknown error occurred.
 			*/
 			NOU::boolean close();
-
-			/**
-			\param sql The SQL source code to execute.
-
-			\return The result of the SQL query. If the query is empty, the operation might have failed. See 
-			        the detailed section for further information.
-
-			\brief Executes one or more SQL statements and returns the result.
-
-			\details
-			Executes one or more SQL statements and returns the result.
-
-			On failure, an empty QueryResult is returned and an error will be pushed to the error handler 
-			(note that, depending on the SQL query, the QueryResult my be empty without any errors). The
-			possible errors are:
-			- nostra::utils::core::ErrorCodes::UNKNOWN_ERROR: An unknown error occurred.
-			*/
-			const QueryResult executeSQL(const NOU::NOU_DAT_ALG::StringView8 &sql);
 
 			SQLStatement execute(const NOU::NOU_DAT_ALG::StringView8 &sql);
 
