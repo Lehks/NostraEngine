@@ -213,25 +213,29 @@ namespace NOE::NOE_UTILITY
 		public:
 			Row2(SQLStatement &stmt);
 
-			NOU::int32 valueAs(NOU::sizeType index, INTEGER);
+			NOU::int32 valueAs(NOU::sizeType index, INTEGER) const;
 
-			NOU::int64 valueAs(NOU::sizeType index, INTEGER_64);
+			NOU::int64 valueAs(NOU::sizeType index, INTEGER_64) const;
 
-			NOU::float32 valueAs(NOU::sizeType index, FLOAT);
+			NOU::float32 valueAs(NOU::sizeType index, FLOAT) const;
 
-			NOU::float64 valueAs(NOU::sizeType index, FLOAT_64);
+			NOU::float64 valueAs(NOU::sizeType index, FLOAT_64) const;
 
-			NOU::NOU_DAT_ALG::StringView8 valueAs(NOU::sizeType index, STRING);
+			NOU::NOU_DAT_ALG::StringView8 valueAs(NOU::sizeType index, STRING) const;
 
-			NOU::boolean isNull(NOU::sizeType index);
+			NOU::boolean isNull(NOU::sizeType index) const;
 
-			Type getType(NOU::sizeType index);
+			Type getType(NOU::sizeType index) const;
 
 			NOU::sizeType size() const;
 
 			void setValid(NOU::boolean valid);
 
 			NOU::boolean isValid() const;
+
+			NOU::int64 affectedRows() const;
+
+			NOU::int64 lastRowId() const;
 		};
 
 		///\cond
@@ -291,7 +295,9 @@ namespace NOE::NOE_UTILITY
 
 			NOU::boolean hasNext();
 
-			void* get();
+			void* getUnderlying();
+
+		    Database& getDatabase();
 
 			SQLStatement& operator = (SQLStatement &&other);
 		};

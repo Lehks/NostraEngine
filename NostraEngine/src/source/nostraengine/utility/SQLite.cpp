@@ -108,41 +108,42 @@ namespace NOE::NOE_UTILITY
 			m_valid(false)
 		{}
 
-		NOU::int32 Row2::valueAs(NOU::sizeType index, INTEGER)
+		NOU::int32 Row2::valueAs(NOU::sizeType index, INTEGER) const
 		{
-			return sqlite3_column_int(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()), index);
+			return sqlite3_column_int(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::int64 Row2::valueAs(NOU::sizeType index, INTEGER_64)
+		NOU::int64 Row2::valueAs(NOU::sizeType index, INTEGER_64) const
 		{
-			return sqlite3_column_int64(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()), index);
+			return sqlite3_column_int64(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::float32 Row2::valueAs(NOU::sizeType index, FLOAT)
+		NOU::float32 Row2::valueAs(NOU::sizeType index, FLOAT) const
 		{
-			return sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()), index);
+			return sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::float64 Row2::valueAs(NOU::sizeType index, FLOAT_64)
+		NOU::float64 Row2::valueAs(NOU::sizeType index, FLOAT_64) const
 		{
-			return sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()), index);
+			return sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 		}
 
-		NOU::NOU_DAT_ALG::StringView8 Row2::valueAs(NOU::sizeType index, STRING)
+		NOU::NOU_DAT_ALG::StringView8 Row2::valueAs(NOU::sizeType index, STRING) const
 		{
-			auto rawText = sqlite3_column_text(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()), index);
+			auto rawText = sqlite3_column_text(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 
 			return reinterpret_cast<const NOU::char8*>(rawText);
 		}
 
-		NOU::boolean Row2::isNull(NOU::sizeType index)
+		NOU::boolean Row2::isNull(NOU::sizeType index) const
 		{
-			return sqlite3_column_type(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()), index) == SQLITE_NULL;
+			return sqlite3_column_type(
+				reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index) == SQLITE_NULL;
 		}
 
-		Type Row2::getType(NOU::sizeType index)
+		Type Row2::getType(NOU::sizeType index) const
 		{
-			int type = sqlite3_column_type(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()), index);
+			int type = sqlite3_column_type(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
 
 			switch (type)
 			{
@@ -159,7 +160,7 @@ namespace NOE::NOE_UTILITY
 
 		NOU::sizeType Row2::size() const
 		{
-			return sqlite3_column_count(reinterpret_cast<sqlite3_stmt*>(m_stmt->get()));
+			return sqlite3_column_count(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()));
 		}
 
 		void Row2::setValid(NOU::boolean valid)
@@ -171,6 +172,18 @@ namespace NOE::NOE_UTILITY
 		{
 			return m_valid;
 		}
+
+		NOU::int64 Row2::affectedRows() const
+		{
+			return sqlite3_changes(reinterpret_cast<sqlite3*>(m_stmt->getDatabase().getUnderlying()));
+		}
+
+		NOU::int64 Row2::lastRowId() const
+		{
+			return sqlite3_last_insert_rowid(
+				reinterpret_cast<sqlite3*>(m_stmt->getDatabase().getUnderlying()));
+		}
+
 
 
 		SQLStatement::SQLStatement(Database &db, const NOU::NOU_DAT_ALG::StringView8 &sql) :
@@ -370,9 +383,14 @@ namespace NOE::NOE_UTILITY
 			return m_state != State::DONE;
 		}
 
-		void* SQLStatement::get()
+		void* SQLStatement::getUnderlying()
 		{
 			return m_sql;
+		}
+
+		Database& SQLStatement::getDatabase()
+		{
+			return *m_db;
 		}
 
 		SQLStatement& SQLStatement::operator = (SQLStatement &&other)

@@ -6,59 +6,62 @@ namespace NOE::NOE_CORE
 	constexpr ResourceMetadata::ResourceID ResourceMetadata::INVALID_ID;
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_GENERIC = 
-																"SELECT %s FROM Resources WHERE ID = %d;";
+																"SELECT %s FROM Resources WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_TYPE_NAME = "type";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_PATH_NAME = "path";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_CACHED_PATH_NAME = "cached";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_EXISTS_RESOURCE = 
-															"SELECT COUNT(*) FROM Resources WHERE ID = %d";
+															"SELECT COUNT(*) FROM Resources WHERE ID = ?;";
 
-	NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path> ResourceMetadata::getCachePathImp() const
+	NOU::NOU_DAT_ALG::String8 ResourceMetadata::getAttribute
+													(const NOU::NOU_DAT_ALG::StringView8 &attribute) const
 	{
-		NOU::char8 sql[128] = { 0 };
+		if (!isValid())
+		{
+			return "NULL";
+		}
 
-		sprintf(sql, SQL_GENERIC.rawStr(), SQL_CACHED_PATH_NAME.rawStr(), m_id);
+		NOU::char8 sql[256] = { 0 };
+		sprintf(sql, SQL_GENERIC.rawStr(), attribute.rawStr());
 
-		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+		auto stmt = ResourceManager::get().getUnderlying().execute(sql);
+		stmt.bind(m_id);
 
-		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(), 
-			NOE::NOE_CORE::ErrorCodes::SQL_EXECUTION_ERROR, "The attribute 'cached' could not be queried.");
+		//there should always be a next
+		NOE::NOE_UTILITY::sqlite::Row2 &row = stmt.next();
 
-		auto val = result.getRows()[0].getEntries()[0].getValue();
-
-		if (val != nullptr)
-			return *val;
-		else
-			return NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path>();
+		if (!row.isNull(0))
+			return row.valueAs(0, NOE::NOE_UTILITY::sqlite::STRING());
 	}
 
 	ResourceMetadata::ResourceMetadata(ResourceID id) :
 		m_id(id)
 	{
-		//Check if the ID even exists in the database. If not, 
+		//Check if the ID even exists in the database. If not, set it to INVALID_ID
 
 		if (id != 0)
 		{
-			NOU::char8 sql[256] = { 0 };
-			sprintf(sql, SQL_EXISTS_RESOURCE.rawStr(), id);
+			auto stmt = ResourceManager::get().getUnderlying().execute(SQL_EXISTS_RESOURCE);
+			stmt.bind(id);
 
-			auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
+			NOE::NOE_UTILITY::sqlite::Row2 *row;
 
-			if (!result.isValid() || result.getRows().size() == 0)
+			if (stmt.hasNext())
+			{
+				row = &stmt.next();
+			}
+			else
 			{
 				m_id = INVALID_ID;
 				return;
 			}
 
-			NOU::int32 count = 
-				NOU::NOU_DAT_ALG::StringView8::stringToInt32(*result.getRows()[0].getEntries()[0].getValue());
+			NOU::int32 count = row->valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
 
 			if (count == 0)
-			{
 				m_id = INVALID_ID;
-			}
 		}
 	}
 
@@ -69,49 +72,36 @@ namespace NOE::NOE_CORE
 
 	typename ResourceMetadata::ResourceType ResourceMetadata::getType() const
 	{
-		if (!isValid())
-			return "NULL";
-
-		NOU::char8 sql[128] = { 0 };
-
-		sprintf(sql, SQL_GENERIC.rawStr(), SQL_TYPE_NAME.rawStr(), m_id);
-
-		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
-
-		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(),
-			NOE::NOE_CORE::ErrorCodes::SQL_EXECUTION_ERROR, "The attribute 'type' could not be queried.");
-
-		return *result.getRows()[0].getEntries()[0].getValue();
+		return getAttribute(SQL_TYPE_NAME);
 	}
 
 	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getPath() const
 	{
-		if (!isValid())
-			return "NULL";
-
-		NOU::char8 sql[128] = {0};
-
-		sprintf(sql, SQL_GENERIC.rawStr(), SQL_PATH_NAME.rawStr(), m_id);
-
-		auto result = ResourceManager::get().getUnderlying().executeSQL(sql);
-
-		NOU_COND_PUSH_ERROR(!result.isValid(), NOU::NOU_CORE::getErrorHandler(),
-			NOE::NOE_CORE::ErrorCodes::SQL_EXECUTION_ERROR, "The attribute 'path' could not be queried.");
-
-		return NOU::NOU_FILE_MNGT::Path(*result.getRows()[0].getEntries()[0].getValue());
+		return getAttribute(SQL_PATH_NAME);
 	}
 
 	NOU::boolean ResourceMetadata::isCached() const
 	{
 		if (!isValid())
+		{
 			return false;
+		}
 
-		return getCachePathImp().isValid();
+		NOU::char8 sql[256] = { 0 };
+		sprintf(sql, SQL_GENERIC.rawStr(), SQL_CACHED_PATH_NAME.rawStr());
+
+		auto stmt = ResourceManager::get().getUnderlying().execute(sql);
+		stmt.bind(m_id);
+
+		//there should always be a next
+		NOE::NOE_UTILITY::sqlite::Row2 &row = stmt.next();
+
+		return !row.isNull(0);
 	}
 
 	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getCachePath() const
 	{
-		return *getCachePathImp();
+		return getAttribute(SQL_CACHED_PATH_NAME);
 	}
 
 	NOU::boolean ResourceMetadata::isValid() const
@@ -230,22 +220,12 @@ namespace NOE::NOE_CORE
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_LIST_IDS = "SELECT ID FROM Resources;";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_RESOURCE =
-										"INSERT INTO Resources(path, type, cached) VALUES('%s', '%s', '%s')";
+										"INSERT INTO Resources(path, type, cached) VALUES(?, ?, ?)";
 
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_RESOURCE_NO_CACHE =
-										"INSERT INTO Resources(path, type, cached) VALUES('%s', '%s', NULL)";
-
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_GET_ID = 
-											"SELECT ID FROM Resources WHERE path = '%s';";
-
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE =
-																	"DELETE FROM Resources WHERE ID = %d;";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE = "DELETE FROM Resources WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE =
-														"UPDATE Resources SET cached = '%s' WHERE ID = %d;";
-
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE_NULL =
-														"UPDATE Resources SET cached = NULL WHERE ID = %d;";
+														"UPDATE Resources SET cached = ? WHERE ID = ?;";
 
 	ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
 		m_database(databasePath)
@@ -288,44 +268,31 @@ namespace NOE::NOE_CORE
 		const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache,
 		const NOU::NOU_FILE_MNGT::Path &cachePath)
 	{
-		NOU::char8 sql[1024] = { 0 };
+		auto stmt = getUnderlying().execute(SQL_ADD_RESOURCE);
 
-		if(enableCache)
-			sprintf(sql, SQL_ADD_RESOURCE.rawStr(), path.getRelativePath().rawStr(), type.rawStr(), 
-																cachePath.getRelativePath().rawStr());
+		stmt.bind(path.getRelativePath().rawStr());
+		stmt.bind(type.rawStr());
+		if (enableCache)
+			stmt.bind(cachePath.getRelativePath().rawStr());
 		else
-			sprintf(sql, SQL_ADD_RESOURCE_NO_CACHE.rawStr(), path.getRelativePath().rawStr(), type.rawStr());
+			stmt.bind(nullptr);
 
-		auto result = getUnderlying().executeSQL(sql);
+		auto row = stmt.next();
 
-		if (result.isValid())
-		{
-			memset(sql, 0, sizeof(sql) / sizeof(sql[0]));
-
-			sprintf(sql, SQL_GET_ID.rawStr(), path.getRelativePath().rawStr());
-
-			auto result = getUnderlying().executeSQL(sql);
-
-			auto val = result.getRows()[0].getEntries()[0].getValue();
-
-			return NOU::NOU_DAT_ALG::StringView8::stringToInt32(*val);
-		}
-		else
-		{
-			std::cout << result.getErrorMsg().rawStr() << std::endl;
+		if (row.affectedRows() == 0)
 			return ResourceMetadata::INVALID_ID;
-		}
+		else
+			return row.lastRowId();
 	}
 
 	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ResourceID id)
 	{
-		NOU::char8 sql[128] = { 0 };
+		auto stmt = getUnderlying().execute(SQL_REMOVE);
+		stmt.bind(id);
 
-		sprintf(sql, SQL_REMOVE.rawStr(), id);
+		auto row = stmt.next();
 
-		auto result = getUnderlying().executeSQL(sql);
-
-		return result.getAffectedRows() > 0;
+		return row.affectedRows() > 0;
 	}
 
 	NOU::uint32 ResourceManager::cleanupResources()
@@ -353,16 +320,18 @@ namespace NOE::NOE_CORE
 	{
 		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
 
-		NOU::char8 sql[1024] = { 0 };
-
-		if (enableCache)
-			sprintf(sql, SQL_UPDATE_CACHE.rawStr(), path.getRelativePath().rawStr(), id);
-		else
-			sprintf(sql, SQL_UPDATE_CACHE_NULL.rawStr(), id);
+		auto stmt = getUnderlying().execute(SQL_UPDATE_CACHE);
 		
-		auto result = getUnderlying().executeSQL(sql);
+		if (enableCache)
+			stmt.bind(path.getRelativePath().rawStr());
+		else
+			stmt.bind(nullptr);
 
-		return result.getAffectedRows() > 0;
+		stmt.bind(id);
+
+		auto row = stmt.next();
+
+		return row.affectedRows() > 0;
 	}
 
 	NOU::boolean ResourceManager::deleteCache(typename ResourceMetadata::ResourceID id)

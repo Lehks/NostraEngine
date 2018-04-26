@@ -70,12 +70,7 @@ namespace NOE::NOE_CORE
 		*/
 		ResourceID m_id;
 
-		/**
-		\return The cache path.
-
-		\brief Returns the cache path. If the path is NULL, the returned value will be invalid.
-		*/
-		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_FILE_MNGT::Path> getCachePathImp() const;
+		NOU::NOU_DAT_ALG::String8 getAttribute(const NOU::NOU_DAT_ALG::StringView8 &attribute) const;
 
 	public:
 		/**
@@ -427,15 +422,9 @@ namespace NOE::NOE_CORE
 
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_RESOURCE;
 
-		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_RESOURCE_NO_CACHE;
-		
-		static const NOU::NOU_DAT_ALG::StringView8 SQL_GET_ID;
-
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_REMOVE;
 
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_UPDATE_CACHE;
-
-		static const NOU::NOU_DAT_ALG::StringView8 SQL_UPDATE_CACHE_NULL;
 
 		NOE::NOE_UTILITY::sqlite::Database m_database;
 
