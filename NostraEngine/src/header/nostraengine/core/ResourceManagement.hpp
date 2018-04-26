@@ -70,6 +70,14 @@ namespace NOE::NOE_CORE
 		*/
 		ResourceID m_id;
 
+		/**
+		\param attribute The name of the attribute to get the value from.
+
+		\return The value of the attribute.
+
+		\brief Queries the value of the attribute \p attribute of the resource that is associated with this
+		       meta data.
+		*/
 		NOU::NOU_DAT_ALG::String8 getAttribute(const NOU::NOU_DAT_ALG::StringView8 &attribute) const;
 
 	public:
@@ -416,18 +424,39 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS ResourceManager final
 	{
 	private:
+		/**
+		\brief The default path to the database file.
+		*/
 		static NOU::NOU_FILE_MNGT::Path DATABASE_PATH;
 
+		/**
+		\brief The SQL code to query all IDs in the database. This is used by listMetadata().
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_LIST_IDS;
 
+		/**
+		\brief The SQL code to add a resource to the database. This is used by addResource().
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_RESOURCE;
 
+		/**
+		\brief The SQL code to remove a resource from the database. This is used by removeResource().
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_REMOVE;
 
+		/**
+		\brief The SQL code to update the cache state of a resource. This is used by cache().
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_UPDATE_CACHE;
 
+		/**
+		\brief The database that is used by the resource manager.
+		*/
 		NOE::NOE_UTILITY::sqlite::Database m_database;
 
+		/**
+		\brief A list of the loaders that were added to the manager.
+		*/
 		NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, ResourceLoader*> m_loaders;
 
 		/**
@@ -452,14 +481,36 @@ namespace NOE::NOE_CORE
 		static void deallocateResourceLoader(ResourceLoader *loader);
 
 	public:
+		/**
+		\param databasePath The path to the database file.
+
+		\brief Constructs a new instance that uses the passed file as database.
+		*/
 		//no default argument possible, DATABASE_PATH is not defined yet
 		ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath);
 
+		/**
+		\brief Constructs a new instance that uses the file with the path \p DATABASE_PATH as database.
+		*/
 		ResourceManager();
 
+		/**
+		\tparam ARGS The types of the arguments that will be passed to the constructor of \p T.
+
+		\param args The arguments that will be passed to the constructor of \p T.
+
+		\return A pointer to the allocated resource.
+
+		\brief Allocates a new instance of \p T. \p T must be a child of nostra::engine::core::Resource.
+		*/
 		template<typename T, typename... ARGS>
 		Resource* allocateResource(ARGS&&... args);
 
+		/**
+		\param resource The resource to deallocate.
+
+		\brief Deallocates a resource that was previously allocated with allocateResource().
+		*/
 		void deallocateResource(Resource *resource);
 
 		/**
@@ -629,6 +680,11 @@ namespace NOE::NOE_CORE
 
 		void shutdown();
 
+		/**
+		\return The underlying database.
+
+		\brief Returns the underlying database.
+		*/
 		NOE::NOE_UTILITY::sqlite::Database& getUnderlying();
 	};
 

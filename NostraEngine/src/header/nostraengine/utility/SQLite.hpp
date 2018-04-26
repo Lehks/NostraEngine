@@ -7,20 +7,43 @@ namespace NOE::NOE_UTILITY
 {
 	namespace sqlite
 	{
+		/**
+		\brief The error codes that are used by the SQLlite interface.
+		*/
 		class ErrorCodes
 		{
 		public:
 			enum
 			{
+				/**
+				\brief Always the first element in the enum. This has only technical purposes and is not an
+				       actual error code.
+				*/
 				FIRST_ELEMENT = 5000,
 
+				/**
+				\brief A syntax error was found in an SQL statement.
+				*/
 				SQL_SYNTAX_ERROR,
+
+				/**
+				\brief SQLStatement::bind() was called too often for a single statement.
+				*/
 				SQL_INVALID_PARAMETER_INDEX,
 
+				/**
+				\brief Always the last element in the enum. This has only technical purposes and is not an
+				actual error code.
+				*/
 				LAST_ELEMENT
 			};
 		};
 
+		/**
+		\brief The error pool that is used to provide the errors for the SQLite interfaces. This is barely
+		       documented because it behaves according to the rules that are set up by 
+			   nostra::utils::core::ErrorPool.
+		*/
 		class ErrorPool : public NOU::NOU_CORE::ErrorPool
 		{
 			NOU::NOU_CORE::Error m_errors[ErrorCodes::LAST_ELEMENT - ErrorCodes::FIRST_ELEMENT - 1];
@@ -31,12 +54,39 @@ namespace NOE::NOE_UTILITY
 			virtual const NOU::NOU_CORE::Error* queryError(NOU::NOU_CORE::ErrorPool::ErrorType id) const;
 		};
 
+		/**
+		\brief A dummy type that is used with SQLStatement::bind(). See the documentation of that function for
+		       further information.
+		*/
 		struct INTEGER {};
+
+		/**
+		\brief A dummy type that is used with SQLStatement::bind(). See the documentation of that function for
+		further information.
+		*/
 		struct INTEGER_64 {};
+
+		/**
+		\brief A dummy type that is used with SQLStatement::bind(). See the documentation of that function for
+		further information.
+		*/
 		struct FLOAT {};
+
+		/**
+		\brief A dummy type that is used with SQLStatement::bind(). See the documentation of that function for
+		further information.
+		*/
 		struct FLOAT_64 {};
+
+		/**
+		\brief A dummy type that is used with SQLStatement::bind(). See the documentation of that function for
+		further information.
+		*/
 		struct STRING {};
 
+		/**
+		\brief The possible types of a cell in a Row.
+		*/
 		enum class Type
 		{
 			INTEGER,
@@ -49,6 +99,14 @@ namespace NOE::NOE_UTILITY
 		class SQLStatement;
 		///\endcond
 
+		/**
+		\brief A class that represents the last row that was queried by a SQLStatement.
+
+		\details	
+		A class that represents the last row that was queried by a SQLStatement. This class changes its state
+		with each call to SQLStatement::next() and it will always only hold the information about the last
+		row that was queried using that method.
+		*/
 		class NOU_CLASS Row
 		{
 		private:
