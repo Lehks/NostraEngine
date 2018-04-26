@@ -1,6 +1,8 @@
 #ifndef NOE_WINDOW_GLFWWINDOW_HPP
 #define NOE_WINDOW_GLFWWINDOW_HPP
+#define GLAD_GLAPI_EXPORT
 
+#include "GLAD/glad.h"
 #include "GLFW/glfw3.h"
 
 #include "nostrautils/NostraUtils.hpp"
