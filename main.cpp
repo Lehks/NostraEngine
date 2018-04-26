@@ -1,10 +1,11 @@
-#include <nostraengine/src/header/nostraengine/core/NostraEngine.hpp>
+
+#include <iostream>
 
 int main()
 {
-    NOE::NostraEngine ne(1);
+	std::cout << "Hello";
 
-    ne.start();
-
+	system("pause");
+	
     return 0;
 }
