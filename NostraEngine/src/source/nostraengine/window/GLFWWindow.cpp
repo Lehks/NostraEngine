@@ -2,42 +2,19 @@
 
 namespace NOE::NOE_WINDOW
 {
+	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow()
+	{
+		if (!glfwInit())
+		{
+			//NOU_PUSH_ERROR(NOU_CORE::getErrorHandler(), NOU_CORE::ErrorCodes::UNKNOWN, "Could not initialize GLFW!");
+		}
+	}
 
-	//NOE::NOE_WINDOW::GLFWWindow::GLFWWindow(NOU::sizeType sizeWidth, NOU::sizeType sizeHeight, 
-	//	NOU::NOU_DAT_ALG::String8 title, GLFWmonitor* monitor, GLFWwindow* share)
-	//{
-	//	if (!glfwInit())
-	//	{
-	//		exit(EXIT_FAILURE);
-	//	}
-	//	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
-	//	glfwWindowHint(GLFW_VERSION_MINOR, 0);
-	//	m_window = glfwCreateWindow(sizeWidth, sizeHeight, title.rawStr(), monitor, share);
-	//	if (!m_window)
-	//	{
-	//		glfwTerminate();
-	//		exit(EXIT_FAILURE);
-	//	}
-	//	glfwMakeContextCurrent(m_window);
-	//	glfwSwapInterval(1);
-	//
-	//	while (!glfwWindowShouldClose(m_window))
-	//	{
-	//		NOU::float32 ratio;
-	//		NOU::int32 width, height;
-	//		glfwGetFramebufferSize(m_window, &width, &height);
-	//		ratio = width / (float)height;
-	//		glViewport(0, 0, width, height);
-	//		glClear(GL_COLOR_BUFFER_BIT);
-	//
-	//		glfwSwapBuffers(m_window);
-	//		glfwPollEvents();
-	//	}
-	//
-	//	glfwDestroyWindow(m_window);
-	//	glfwTerminate();
-	//	exit(EXIT_SUCCESS);
-	//}
+	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType sizeWidth, NOU::sizeType sizeHeight,
+		NOU::NOU_DAT_ALG::String8 title, void* monitor = nullptr,
+		void* share = nullptr)
+	{
+	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::setTitle(NOU::NOU_DAT_ALG::String8 title)
 	{
@@ -51,9 +28,9 @@ namespace NOE::NOE_WINDOW
 	{
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::close(GLFWwindow* window)
+	void NOE::NOE_WINDOW::GLFWWindow::closeWindow()
 	{
-		glfwDestroyWindow(window);
+		glfwDestroyWindow(m_window);
 	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::minimize()
@@ -90,8 +67,8 @@ namespace NOE::NOE_WINDOW
 		return NOU::NOU_DAT_ALG::String8();
 	}
 
-	void * NOE::NOE_WINDOW::GLFWWindow::getUnderlying()
+	void* NOE::NOE_WINDOW::GLFWWindow::getUnderlying()
 	{
-		return nullptr;
+		return m_window;
 	}
 }

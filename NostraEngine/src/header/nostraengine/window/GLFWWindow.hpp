@@ -25,20 +25,20 @@ namespace NOE::NOE_WINDOW
 	/**
 	\brief A class that implements the provided template functions of the pure virtual class Window.
 	*/
-	class NOU_CLASS GLFWWindow : Window
+	class NOU_CLASS GLFWWindow : public Window
 	{
 	private:
-		GLFWwindow * m_window;
-	public:
 
-		//GLFWWindow() = default;
-		//GLFWWindow(NOU::sizeType sizeWidth, NOU::sizeType sizeHeight,
-		//	NOU::NOU_DAT_ALG::String8 title, GLFWmonitor* monitor = nullptr, 
-		//	GLFWwindow* share = nullptr);
+		GLFWwindow* m_window;
+	public:
+		GLFWWindow();
+		virtual void createWindow(NOU::sizeType sizeWidth, NOU::sizeType sizeHeight,
+			NOU::NOU_DAT_ALG::String8 title, void* monitor = nullptr,
+			void* share = nullptr) override;
 		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) override;
-		virtual void close(GLFWwindow* window) override;
+		virtual void closeWindow() override;
 		virtual void minimize() override;
 		virtual void maximize()	override;
 		virtual void makeWindowed()	override;

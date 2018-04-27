@@ -24,14 +24,14 @@ namespace NOE::NOE_WINDOW
 	class NOU_CLASS Window
 	{
 	public:
-		
-		//Window() = default;
-		virtual ~Window() = default;
-		Window() = default;
+		Window();
+		virtual void createWindow(NOU::sizeType sizeWidth, NOU::sizeType sizeHeight,
+			NOU::NOU_DAT_ALG::String8 title, void* monitor = nullptr,
+			void* share = nullptr);
 		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) = 0;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) = 0;
 		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) = 0;
-		virtual void close(GLFWwindow* window) = 0;
+		virtual void closeWindow() = 0;
 		virtual void minimize() = 0;
 		virtual void maximize() = 0;
 		virtual void makeWindowed() = 0;
