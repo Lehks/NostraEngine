@@ -7,8 +7,9 @@ namespace NOE::NOE_WINDOW
 	{
 		if (!glfwInit())
 		{
-			exit(EXIT_FAILURE);
-			//NOU_PUSH_ERROR(NOU_CORE::getErrorHandler(), NOU_CORE::ErrorCodes::UNKNOWN, "Could not initialize GLFW!");
+			
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), 
+				ErrorCodes::GLFW_INITIALIZATION_FAILED, "Could not initialize GLFW!");
 		}
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -23,8 +24,9 @@ namespace NOE::NOE_WINDOW
 
 		if (!m_window)
 		{
-			glfwTerminate();
-			exit(EXIT_FAILURE);
+			closeWindow();
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				ErrorCodes::WINDOW_INITIALIZATION_FAILED, "Could not initialize the window!");
 		}
 
 		glfwMakeContextCurrent(m_window);
@@ -120,5 +122,29 @@ namespace NOE::NOE_WINDOW
 	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWWindow::getTitle()
 	{
 		return m_title;
+	}
+
+#ifndef NOU_WINDOW_MAKE_ERROR
+#define NOU_WINDOW_MAKE_ERROR(code) NOU::NOU_CORE::Error(#code, ErrorCodes::code)
+#endif
+
+	ErrorPool::ErrorPool() :
+		m_errors //must be in order
+	{
+		NOU_WINDOW_MAKE_ERROR(GLFW_INITIALIZATION_FAILED),
+		NOU_WINDOW_MAKE_ERROR(WINDOW_INITIALIZATION_FAILED)
+	}
+	{}
+
+#undef NOU_WINDOW_MAKE_ERROR
+
+	const NOU::NOU_CORE::Error* ErrorPool::queryError(NOU::NOU_CORE::ErrorPool::ErrorType id) const
+	{
+		if (id > ErrorCodes::FIRST_ELEMENT && id < ErrorCodes::LAST_ELEMENT)
+		{
+			NOU::sizeType index = id - ErrorCodes::FIRST_ELEMENT + 1;
+
+			return m_errors + index;
+		}
 	}
 }
