@@ -5,8 +5,6 @@
 
 #include "nostraengine/core/StdIncludes.hpp"
 
-#include "nostraengine/window/Device.hpp"
-
 /**
 \file window/Window.hpp
 
@@ -24,23 +22,22 @@ namespace NOE::NOE_WINDOW
 	class NOU_CLASS Window
 	{
 	public:
-		Window();
-		virtual void createWindow(NOU::sizeType sizeWidth, NOU::sizeType sizeHeight,
-			NOU::NOU_DAT_ALG::String8 title, void* monitor = nullptr,
-			void* share = nullptr);
+
+		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
+			NOU::NOU_DAT_ALG::String8 title, void* monitor = nullptr, void* share = nullptr) = 0;
 		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) = 0;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) = 0;
-		virtual void setPosition(NOU::sizeType width, NOU::sizeType height) = 0;
+		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) = 0;
 		virtual void closeWindow() = 0;
 		virtual void minimize() = 0;
 		virtual void maximize() = 0;
 		virtual void makeWindowed() = 0;
-		virtual void decorated(NOU::boolean state) = 0;
 		virtual void setFullscreen(NOU::boolean state) = 0;
 		virtual void update() = 0;
-		virtual NOE::NOE_WINDOW::Device getDevices() = 0;
-		virtual NOU::NOU_DAT_ALG::String8 getTitle() = 0;
 		virtual void* getUnderlying() = 0;
+		virtual void** getMonitors() = 0;
+		virtual NOU::sizeType getMonitorCount() = 0;
+		virtual NOU::NOU_DAT_ALG::String8 getTitle() = 0;
 	};
 }
 
