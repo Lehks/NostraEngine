@@ -99,6 +99,19 @@ namespace NOE::NOE_WINDOW
 
 		/**
 		\brief			All operations that are performed in the window like updating images, etc.
+
+		\details		The run loop of the window must be created by the user who implements the window.
+						This can be done by using the glfwWindowShouldClose() and using the returned result
+						of the getUnderlying().
+						e.g.: 
+						while(!glfwWindowShouldClose(
+						reinterpret_cast<GLFWwindow*>(windowObject.getUnderlying())))
+						{
+							//windowObject.update();
+						}
+
+						The reinterpret_cast is necessary because getUnderlying returns a void* and 
+						glfwWindowShouldClose() needs a GLFWwindow*.
 		*/
 		virtual void update() = 0;
 
