@@ -44,12 +44,25 @@ namespace NOE::NOE_WINDOW
 		\brief			The count of monitors connected.
 		*/
 		NOU::sizeType m_monitorCount;
+
+		/**
+		\brief			Stores the count of GLFW instances.
+		*/
+		NOU::sizeType m_instanceCounter;
 	public:
 
-		virtual ~GLFWWindow() = default;
+		/**
+		\brief			Checks if the instance counter is 0, increases the counter and initializes GLFW.
+		*/
+		GLFWWindow();
+
+		/**
+		\brief			Decreases the instance counter and terminates GLFW.
+		*/
+		virtual ~GLFWWindow();
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			NOU::NOU_DAT_ALG::String8 title, void* monitor = nullptr, void* share = nullptr) override;
-		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) override;
+			const NOU::NOU_DAT_ALG::String8& title, void* monitor = nullptr) override;
+		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
 		virtual void closeWindow() override;
@@ -61,7 +74,7 @@ namespace NOE::NOE_WINDOW
 		virtual void* getUnderlying() override;
 		virtual void** getMonitors() override;
 		virtual NOU::sizeType getMonitorCount() override;
-		virtual NOU::NOU_DAT_ALG::String8 getTitle() override;
+		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
 	};
 

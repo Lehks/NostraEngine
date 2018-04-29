@@ -2,25 +2,42 @@
 
 namespace NOE::NOE_WINDOW
 {
-	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
-		NOU::NOU_DAT_ALG::String8 title, void* monitor, void* share)
+	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow()
 	{
-		if (!glfwInit())
+		if (m_instanceCounter == 0)
 		{
-			
-			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), 
-				ErrorCodes::GLFW_INITIALIZATION_FAILED, "Could not initialize GLFW!");
+			if (!glfwInit())
+			{
+				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+					NOE::NOE_WINDOW::ErrorCodes::GLFW_INITIALIZATION_FAILED, "Could not initialize GLFW!");
+			}
+			else
+			{
+				m_instanceCounter++;
+			}
 		}
+	}
 
+	NOE::NOE_WINDOW::GLFWWindow::~GLFWWindow()
+	{
+		m_instanceCounter--;
+		if (m_instanceCounter == 0)
+		{
+			glfwTerminate();
+		}
+	}
+
+	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
+		const NOU::NOU_DAT_ALG::String8& title, void* monitor)
+	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 		GLFWmonitor* glwfMonitor = reinterpret_cast<GLFWmonitor*>(monitor);
-		GLFWwindow* glwfShare = reinterpret_cast<GLFWwindow*>(share);
 
 		m_title = title;
 
-		m_window = glfwCreateWindow(width, height, m_title.rawStr(), glwfMonitor, glwfShare);
+		m_window = glfwCreateWindow(width, height, m_title.rawStr(), glwfMonitor, nullptr);
 
 		if (!m_window)
 		{
@@ -33,7 +50,7 @@ namespace NOE::NOE_WINDOW
 		glfwSwapInterval(1);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setTitle(NOU::NOU_DAT_ALG::String8 title)
+	void NOE::NOE_WINDOW::GLFWWindow::setTitle(const NOU::NOU_DAT_ALG::String8& title)
 	{
 		m_title = title;
 		glfwSetWindowTitle(m_window, m_title.rawStr());
@@ -119,7 +136,7 @@ namespace NOE::NOE_WINDOW
 		return m_monitorCount;
 	}
 
-	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWWindow::getTitle()
+	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWWindow::getTitle()
 	{
 		return m_title;
 	}

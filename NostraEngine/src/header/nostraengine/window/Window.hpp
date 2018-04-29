@@ -24,16 +24,10 @@ namespace NOE::NOE_WINDOW
 	public:
 
 		/**
-		\brief			Destructor of the Window.
-		*/
-		virtual ~Window() = default;
-
-		/**
 		\param width	The width of the window.
 		\param height	The height of the window.
 		\param title	The title of the window.
 		\param monitor	A pointer to the monitor object.
-		\param share	A pointer to the window for sharing context.
 
 		\brief			Creates a new window and stores it in the m_window handle.
 
@@ -42,14 +36,14 @@ namespace NOE::NOE_WINDOW
 						-A pointer to a monitor where the window should be in full screen mode
 		*/
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			NOU::NOU_DAT_ALG::String8 title, void* monitor = nullptr, void* share = nullptr) = 0;
+			const NOU::NOU_DAT_ALG::String8& title, void* monitor = nullptr) = 0;
 
 		/**
 		\param title	The new title of the window.
 
 		\brief			Sets a new title for the window.
 		*/
-		virtual void setTitle(NOU::NOU_DAT_ALG::String8 title) = 0;
+		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) = 0;
 
 		/**
 		\param width	The new width of the window.
@@ -144,7 +138,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Returns the title of the window.
 		*/
-		virtual NOU::NOU_DAT_ALG::String8 getTitle() = 0;
+		virtual const NOU::NOU_DAT_ALG::String8& getTitle() = 0;
 	};
 }
 
