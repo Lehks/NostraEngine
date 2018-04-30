@@ -119,7 +119,7 @@ namespace NOE::NOE_WINDOW
 		virtual void* getUnderlying() = 0;
 
 		/**
-		\param monitor	A pointer to a monitor obejct.
+		\param monitor	A pointer to a monitor object.
 		\param width	A pointer to a NOU::sizeType. The width will be saved in this pointer.
 		\param height	A pointer to a NOU::sizeType. The height will be saved in this pointer.
 
