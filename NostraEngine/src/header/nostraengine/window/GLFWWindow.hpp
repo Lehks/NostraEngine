@@ -10,6 +10,7 @@
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/window/Window.hpp"
+#include "nostraengine/window/GLFWMonitor.hpp"
 
 /**
 \file window/GLFWWindow.hpp
@@ -23,7 +24,7 @@
 namespace NOE::NOE_WINDOW
 {
 	/**
-	\brief				A class that implements the provided template functions of the Window class. The
+	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
 	class NOU_CLASS GLFWWindow : public Window
@@ -49,6 +50,11 @@ namespace NOE::NOE_WINDOW
 		\brief			Stores the count of GLFW instances.
 		*/
 		static NOU::sizeType s_instanceCounter;
+
+		/**
+		\brief			An object of the GLFWMonitor class.
+		*/
+		NOE::NOE_WINDOW::GLFWMonitor m_monitor;
 	public:
 
 		/**
@@ -61,7 +67,7 @@ namespace NOE::NOE_WINDOW
 		*/
 		virtual ~GLFWWindow();
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, void* monitor = nullptr) override;
+			const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor = nullptr) override;
 		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
@@ -72,7 +78,8 @@ namespace NOE::NOE_WINDOW
 		virtual void setFullscreen(NOU::boolean state) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
-		virtual void** getMonitors() override;
+		virtual Monitor* getPrimaryMonitor() override;
+		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getMonitors() override;
 		virtual NOU::sizeType getMonitorCount() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 

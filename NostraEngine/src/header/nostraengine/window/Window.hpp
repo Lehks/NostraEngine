@@ -5,6 +5,8 @@
 
 #include "nostraengine/core/StdIncludes.hpp"
 
+#include "nostraengine/window/Monitor.hpp"
+
 /**
 \file window/Window.hpp
 
@@ -36,7 +38,7 @@ namespace NOE::NOE_WINDOW
 						-A pointer to a monitor where the window should be in full screen mode
 		*/
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, void* monitor = nullptr) = 0;
+			const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor = nullptr) = 0;
 
 		/**
 		\param title	The new title of the window.
@@ -117,6 +119,13 @@ namespace NOE::NOE_WINDOW
 		virtual void* getUnderlying() = 0;
 
 		/**
+		\return			A pointer to an monitor object.
+
+		\brief			Returns the primary monitor as a Monitor*.
+		*/
+		virtual Monitor* getPrimaryMonitor() = 0;
+
+		/**
 		\return			Returns an array of void pointer.
 
 		\brief			Returns all connected monitors.
@@ -124,7 +133,7 @@ namespace NOE::NOE_WINDOW
 		\details		The first array element is the primary monitor. For getting the count of monitors
 						call the getMonitorsCount method.
 		*/
-		virtual void** getMonitors() = 0;
+		virtual NOU::NOU_DAT_ALG::Vector<NOE::NOE_WINDOW::Monitor*> getMonitors() = 0;
 
 		/**
 		\returns		The monitor count.

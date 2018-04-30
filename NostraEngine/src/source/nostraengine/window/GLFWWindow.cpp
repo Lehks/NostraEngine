@@ -31,7 +31,7 @@ namespace NOE::NOE_WINDOW
 	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
-		const NOU::NOU_DAT_ALG::String8& title, void* monitor)
+		const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor)
 	{
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -122,21 +122,19 @@ namespace NOE::NOE_WINDOW
 		return m_window;
 	}
 
-	void** NOE::NOE_WINDOW::GLFWWindow::getMonitors()
+	NOE::NOE_WINDOW::Monitor* NOE::NOE_WINDOW::GLFWWindow::getPrimaryMonitor()
 	{
-		int count;
-		GLFWmonitor** monitors = glfwGetMonitors(&count);
-
-		return reinterpret_cast<void**>(monitors);
+		return m_monitor.getPrimaryMonitor();
+	}
+	
+	NOU::NOU_DAT_ALG::Vector<Monitor*> NOE::NOE_WINDOW::GLFWWindow::getMonitors()
+	{
+		return m_monitor.getConnectedMonitors();
 	}
 
 	NOU::sizeType NOE::NOE_WINDOW::GLFWWindow::getMonitorCount()
 	{
-		int count;
-		GLFWmonitor** monitors = glfwGetMonitors(&count);
-
-		m_monitorCount = count;
-		return m_monitorCount;
+		return m_monitor.getConnectedMonitors().size();
 	}
 
 	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWWindow::getTitle()

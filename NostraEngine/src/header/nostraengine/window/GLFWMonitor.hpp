@@ -22,11 +22,18 @@
 */
 namespace NOE::NOE_WINDOW
 {
+	/**
+	\brief				A class that implements the provided functions of the Monitor class. The
+						behavior of all functions is defined in the Monitor class.
+	*/
 	class NOU_CLASS GLFWMonitor : public Monitor
 	{
 	private:
 
-		static NOU::NOU_DAT_ALG::Vector<GLFWmonitor*> s_monitors;
+		/**
+		\brief			A vector of all connected monitors.
+		*/
+		static NOU::NOU_DAT_ALG::Vector<Monitor*> s_monitors;
 	public:
 
 		virtual Monitor* getPrimaryMonitor() override;
