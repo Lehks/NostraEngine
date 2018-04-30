@@ -1,5 +1,9 @@
 #ifndef NOE_WINDOW_GLFW_MONITOR_HPP
 #define NOE_WINDOW_GLFW_MONITOR_HPP
+#define GLAD_GLAPI_EXPORT //needed for exporting glad
+
+#include "GLAD/glad.h"
+#include "GLFW/glfw3.h"
 
 #include "nostrautils/NostraUtils.hpp"
 
@@ -20,7 +24,11 @@ namespace NOE::NOE_WINDOW
 {
 	class NOU_CLASS GLFWMonitor : public Monitor
 	{
+	private:
+
+		static NOU::NOU_DAT_ALG::Vector<GLFWmonitor*> s_monitors;
 	public:
+
 		virtual Monitor* getPrimaryMonitor() override;
 		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
 	};

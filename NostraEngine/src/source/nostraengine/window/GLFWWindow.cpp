@@ -2,9 +2,12 @@
 
 namespace NOE::NOE_WINDOW
 {
-	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow()
+	NOU::sizeType GLFWWindow::s_instanceCounter = 0;
+
+	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow() :
+		m_window(nullptr)
 	{
-		if (m_instanceCounter == 0)
+		if (s_instanceCounter == 0)
 		{
 			if (!glfwInit())
 			{
@@ -13,15 +16,15 @@ namespace NOE::NOE_WINDOW
 			}
 			else
 			{
-				m_instanceCounter++;
+				s_instanceCounter++;
 			}
 		}
 	}
 
 	NOE::NOE_WINDOW::GLFWWindow::~GLFWWindow()
 	{
-		m_instanceCounter--;
-		if (m_instanceCounter == 0)
+		s_instanceCounter--;
+		if (s_instanceCounter == 0)
 		{
 			glfwTerminate();
 		}

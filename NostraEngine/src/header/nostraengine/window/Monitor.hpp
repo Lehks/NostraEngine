@@ -22,7 +22,6 @@ namespace NOE::NOE_WINDOW
 
 		virtual Monitor* getPrimaryMonitor() = 0;
 		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() = 0;
-
 	};
 }
 

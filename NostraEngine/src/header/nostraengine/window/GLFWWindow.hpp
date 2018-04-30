@@ -33,7 +33,7 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			The handle of the window.
 		*/
-		GLFWwindow* m_window = nullptr;
+		GLFWwindow* m_window;
 
 		/**
 		\brief			Stores the title of the window.
@@ -48,7 +48,7 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			Stores the count of GLFW instances.
 		*/
-		NOU::sizeType m_instanceCounter;
+		static NOU::sizeType s_instanceCounter;
 	public:
 
 		/**
