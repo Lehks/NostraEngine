@@ -24,6 +24,15 @@ namespace NOE::NOE_WINDOW
 	public:
 
 		/**
+		\param monitor	A pointer to a monitor obejct.
+		\param width	A pointer to a NOU::sizeType. The width will be saved in this pointer.
+		\param height	A pointer to a NOU::sizeType. The height will be saved in this pointer.
+
+		\brief			Returns the resolution of the passed monitor in the passed pointers.
+		*/
+		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width, NOU::sizeType* height) = 0;
+
+		/**
 		\return			A pointer to the primary monitor.
 
 		\brief			Returns the primary monitor.
@@ -36,6 +45,7 @@ namespace NOE::NOE_WINDOW
 		\brief			Returns an array of all connected monitors. The first element is the primary monitor.
 		*/
 		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() = 0;
+
 	};
 }
 

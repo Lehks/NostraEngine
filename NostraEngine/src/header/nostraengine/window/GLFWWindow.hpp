@@ -78,6 +78,8 @@ namespace NOE::NOE_WINDOW
 		virtual void setFullscreen(NOU::boolean state) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
+		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width,
+			NOU::sizeType* height) override;
 		virtual Monitor* getPrimaryMonitor() override;
 		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getMonitors() override;
 		virtual NOU::sizeType getMonitorCount() override;

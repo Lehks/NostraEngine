@@ -36,6 +36,8 @@ namespace NOE::NOE_WINDOW
 		static NOU::NOU_DAT_ALG::Vector<Monitor*> s_monitors;
 	public:
 
+		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width,
+			NOU::sizeType* height) override;
 		virtual Monitor* getPrimaryMonitor() override;
 		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
 	};

@@ -122,6 +122,11 @@ namespace NOE::NOE_WINDOW
 		return m_window;
 	}
 
+	void NOE::NOE_WINDOW::GLFWWindow::getMonitorResolution(Monitor* monitor, NOU::sizeType* width, NOU::sizeType* height)
+	{
+		m_monitor.getMonitorResolution(monitor, width, height);
+	}
+
 	NOE::NOE_WINDOW::Monitor* NOE::NOE_WINDOW::GLFWWindow::getPrimaryMonitor()
 	{
 		return m_monitor.getPrimaryMonitor();
