@@ -2,6 +2,7 @@
 #define NOE_CORE_MATERIAL_SYSTEM_SHADER_COMPILER_HPP
 
 #include "nostraengine/core/StdIncludes.hpp"
+#include "nostrautils/NostraUtils.hpp"
 
 /**
 \file material_system/ShaderCompiler.hpp
@@ -28,11 +29,11 @@ namespace NOE::NOE_MATSYS
         /**
         \brief the source File of the soon compiled shader 
         */
-        File &m_source;
+        const NOU::NOU_FILE_MNGT::File *m_source;
         /**
         \brief the target File of the soon compiled shader
         */
-        File &m_target;
+        const NOU::NOU_FILE_MNGT::File *m_target;
 
     public:
         /**
@@ -52,13 +53,13 @@ namespace NOE::NOE_MATSYS
         \brief sets the source File that will be compiled later
         \param src a File object contianing the path to the sourcefile
         */
-        void setSource(const File &src);
+        void setSource(const NOU::NOU_FILE_MNGT::File &src);
 
         /**
         \brief returns a File object containing the compiled shader for the corresponding ShaderLang
         \return a file object containgin the compiled shader 
         */
-        const File& getTarget();
+        const NOU::NOU_FILE_MNGT::File& getTarget();
     };
 }
 #endif

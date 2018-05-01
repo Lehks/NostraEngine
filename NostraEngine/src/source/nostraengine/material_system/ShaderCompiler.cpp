@@ -2,13 +2,13 @@
 
 namespace NOE::NOE_MATSYS
 {
-    void ShaderCompiler::setSource(const File &src)
+    void ShaderCompiler::setSource(const NOU::NOU_FILE_MNGT::File &src)
     {
-        m_source = src;
+        m_source = &src;
     }
 
-    const File& ShaderCompiler::getTarget()
+    const NOU::NOU_FILE_MNGT::File& ShaderCompiler::getTarget()
     {
-        return m_target;
+        return *m_target;
     }
 }
