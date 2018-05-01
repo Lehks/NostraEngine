@@ -1,8 +1,21 @@
-// Natives
+/*
+    {}  -> 1 or more;
+    []  -> 0 or 1;
+    [{}]-> 0 or more;
+*/
+
+
+
+
+//  Natives
 DataType:   zint, uint, float, vec2, vec3, vec4, Image, matrix2, matrix3, matrix4, boolean
-Alphabet:   Alphanumeric_char, <Alphabet><Alphabet> 
-Number:     0-9, <Number><Number>
+Alphabet:   Alphanumeric_char, {Alphabet}
+Number:     0-9, {Number}
 NumVar:     <var>, <Number>
+Delimiter:  (, ), +, *, /, //, %, -
+
+Path:       
+Folder:     [][][]
 
 // special declarations
 ArrayDec:   [], <ArrayDec>[]
@@ -16,17 +29,33 @@ Subtraction:*
 Division:   *
 Product:    *
 Modulo:     *
-Div:        *   //done with a "//"
+Div:        *   //done with a "//"              //not sure if I'll implement it
+increment:  
 Arithmetic: <Addition>, <Subtraction>, <Division>, <Product>, <Modulo>, <Div>
 
+// boolean
+BoolNat:    true, false
+Equals:     <NumVar> == <NumVar>
+NEquals:    <NumVar> != <NumVar>
+XOR:        <BoolNat> ^ <BoolNat>, <Var> ^ <BoolNat>, <BoolNat> ^ <Var>, <Var> ^ <Var> 
+AND:        <BoolNat> & <BoolNat>, <Var> & <BoolNat>, <BoolNat> & <Var>, <Var> & <Var>, <AND> [{& <AND>}]
+OR:         <BoolNat> | <BoolNat>, <Var> | <BoolNat>, <BoolNat> | <Var>, <Var> | <Var>, 
+boolexpr:   
+
+Expr:       
 
 // variables
 Var:        <Name>
 VarDec:     <DataType> <Name>;
-varDef:     <Var> = <DataType>;, <Name> = <Name>;, <Var> = <Arithmetic>
+varDef:     <Var> = <DataType>;, <Name> = <Name>;, <Var> = <Arithmetic>, <Var> = <functionCall>
 
 // functions
 function:       func <DataType> <Name>(<ParamList>){<functionBody>}
 ParamList:      <VarDec>, <VarDec>"," <VarDec>
-functionBody:   <functionArg>;\n<functionArg>;, <functionArg>;
+functionBody:   \whitespace , [{<functionArg>]};
 functionArg:    <functionArg>
+functionCall:   <Name>(<ParamList>);, 
+
+// Pre processor
+PreP:       #
+include:    <PreP>include(<Path>)
