@@ -1,0 +1,32 @@
+// Natives
+DataType:   zint, uint, float, vec2, vec3, vec4, Image, matrix2, matrix3, matrix4, boolean
+Alphabet:   Alphanumeric_char, <Alphabet><Alphabet> 
+Number:     0-9, <Number><Number>
+NumVar:     <var>, <Number>
+
+// special declarations
+ArrayDec:   [], <ArrayDec>[]
+Array:      <DataType><ArrayDec>
+Name:       <Alphabet><Number>, <Alphabet>, <Alphabet><Number><Alphabet>, 
+            _<Name>, <Name>_, _<Name>_, <Name>_<Name>, 
+
+// Arithmetic
+Addition:   *
+Subtraction:*
+Division:   *
+Product:    *
+Modulo:     *
+Div:        *   //done with a "//"
+Arithmetic: <Addition>, <Subtraction>, <Division>, <Product>, <Modulo>, <Div>
+
+
+// variables
+Var:        <Name>
+VarDec:     <DataType> <Name>;
+varDef:     <Var> = <DataType>;, <Name> = <Name>;, <Var> = <Arithmetic>
+
+// functions
+function:       func <DataType> <Name>(<ParamList>){<functionBody>}
+ParamList:      <VarDec>, <VarDec>"," <VarDec>
+functionBody:   <functionArg>;\n<functionArg>;, <functionArg>;
+functionArg:    <functionArg>
