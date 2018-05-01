@@ -21,9 +21,4 @@ namespace NOE::NOE_MATSYS
             
     };
 }
-
-
-
-
-
 #ifndef

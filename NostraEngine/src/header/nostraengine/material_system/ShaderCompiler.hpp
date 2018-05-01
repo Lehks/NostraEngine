@@ -24,6 +24,16 @@ namespace NOE::NOE_MATSYS
 
     class ShaderCompiler
     {
+    private:
+        /**
+        \brief the source File of the soon compiled shader 
+        */
+        File &m_source;
+        /**
+        \brief the target File of the soon compiled shader
+        */
+        File &m_target;
+
     public:
         /**
         \brief a method that compiles the generated source shader.
@@ -37,6 +47,18 @@ namespace NOE::NOE_MATSYS
         \brief sets the internal Material attributes for later generation/compilation
         */
         virtual void setMaterial() = 0;
+
+        /**
+        \brief sets the source File that will be compiled later
+        \param src a File object contianing the path to the sourcefile
+        */
+        void setSource(const File &src);
+
+        /**
+        \brief returns a File object containing the compiled shader for the corresponding ShaderLang
+        \return a file object containgin the compiled shader 
+        */
+        const File& getTarget();
     };
 }
 #endif
