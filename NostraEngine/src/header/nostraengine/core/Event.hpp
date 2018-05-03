@@ -3,11 +3,12 @@
 
 #include "nostrautils/NostraUtils.hpp"
 #include "nostraengine/core/StdIncludes.hpp"
-#include "nostraengine/core/EventObservable.hpp"
 
 
 namespace NOE::NOE_CORE
 {
+	class EventObservable;
+
 	class Event
 	{
 		public:
@@ -15,7 +16,12 @@ namespace NOE::NOE_CORE
 
 		private:
 			NouString name;
-			EventObservable * subject;
+			EventObservable *origin;
+
+		public:
+			Event(EventObservable & observable);
+			NouString getName() const;
+			EventObservable * getOrigin();
 	};
 }
 #endif

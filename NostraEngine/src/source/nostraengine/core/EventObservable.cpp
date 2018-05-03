@@ -12,27 +12,21 @@ namespace NOE::NOE_CORE
 			return false;
 		}
 
-		this->observers.push(observer);
+		this->m_observers.push(observer);
 
 		return true;
 	}
 
 
-	bool EventObservable::unregisterObserver(const EventObserver & observer)
+	bool EventObservable::unregisterObserver(EventObserver & observer)
 	{
-		if (!this->hasObserver(observer)) {
+		sizeType idx = this->findObserver(observer);
+
+		if (idx == -1) {
 			return false;
 		}
 
-		NOU::int32 limit = observers.size();
-
-		for (NOU::int32 i = 0; i < limit; i++)
-		{
-			if (observers[i] == observer) {
-				observers.remove(i);
-				break;
-			}
-		}
+		observer.unsubscribe(*this);
 
 		return true;
 	}
@@ -40,22 +34,104 @@ namespace NOE::NOE_CORE
 
 	bool EventObservable::hasObserver(const EventObserver & observer) const
 	{
-		NOU::int32 limit = observers.size();
-		
-		for (NOU::int32 i = 0; i < limit; i++)
+		for (sizeType i = 0; i < this->m_observers.size(); i++)
 		{
-			/*if (observers[i] == observer) {
+			if (&this->m_observers.at(i) == &observer) {
 				return true;
-			}*/
+			}
 		}
-		
+
 		return false;
 	}
 
 
-	bool EventObservable::triggerEvent(NouString name) const
+	EventObservable::sizeType EventObservable::triggerEvent(const NouString name) const
 	{
+		if (!this->eventExists(name)) {
+			return 0;
+		}
 
+		Event e = this->getEvent(name);
+		sizeType count = 0;
+		EventObserver observer;
+
+		for (sizeType i = 0; i < this->m_observers.size(); i++)
+		{
+			observer = this->m_observers.at(i);
+
+			if (observer.observe(e)) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+
+	EventObservable::sizeType EventObservable::findObserver(const EventObserver & observer) const
+	{
+		for (sizeType i = 0; i < this->m_observers.size(); i++)
+		{
+			if (&this->m_observers.at(i) == &observer) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+
+	void EventObservable::addEvent(const NouString name, Event & e)
+	{
+		if (this->eventExists(name)) {
+			return;
+		}
+
+		this->m_events.insert(std::make_pair(name, e));
+	}
+
+
+	void EventObservable::removeEvent(const NouString name)
+	{
+		if (this->m_events.count(name) > 0) {
+			return;
+		}
+
+		this->m_events.erase(name);
+	}
+
+
+	bool EventObservable::eventExists(const NouString name) const
+	{
+		std::unordered_map<NouString, Event>::const_iterator found = this->m_events.find(name);
+
+		return (found != this->m_events.end());
+	}
+
+
+	Event EventObservable::getEvent(const NouString name) const
+	{
+		std::unordered_map<NouString, Event>::const_iterator e = this->m_events.find(name);
+
+		if (e != this->m_events.end()) {
+			return e->second;
+		}
+
+		return Event(*this);
+	}
+
+
+	EventObservable::~EventObservable()
+	{
+		// Tell all observers to unsubscribe
+		EventObserver obs;
+
+		for (sizeType i = 0; i < this->m_observers.size(); i++)
+		{
+			obs = this->m_observers.at(i);
+
+			obs.unsubscribe(*this);
+		}
 	}
 }
 #endif

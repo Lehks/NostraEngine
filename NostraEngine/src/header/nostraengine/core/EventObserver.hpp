@@ -6,13 +6,24 @@
 
 namespace NOE::NOE_CORE
 {
+	class EventObservable;
+
 	class EventObserver
 	{
 		public:
-			bool subscribe(const EventObservable & subject) const;
-			bool unsubscribe(const EventObservable & subject) const;
+		using ObservableVector = typename NOU::NOU_DAT_ALG::Vector<EventObservable>;
+		using sizeType = typename nostra::utils::sizeType;
+
+		private:
+			ObservableVector m_subscriptions;
+			sizeType findSubject(EventObservable & subject) const;
+
+		public:
+			bool subscribe(EventObservable & subject);
+			bool unsubscribe(EventObservable & subject);
 			bool isSubscribed(const EventObservable & subject) const;
 			virtual bool observe(const Event & e);
+			virtual ~EventObserver();
 	};
 }
 #endif
