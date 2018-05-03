@@ -123,7 +123,7 @@ namespace NOE::NOE_MATSYS
         glUniformMatrix4fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat[0][0]);
     }
 
-    void Shader::checkCompileErrors(NOU::int32 shader, NOU::NOU_DAT_ALG::String8 type)
+    void Shader::checkCompileErrors(NOU::int32 shader, const NOU::NOU_DAT_ALG::String8 &type)
     {
         NOU::int32 success;
         NOU::char8 infoLog[1024];
