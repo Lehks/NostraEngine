@@ -19,7 +19,7 @@
 
 
 #ifndef NOE_MATSYS
-#define NOE_MATSYS materialsystem
+#define NOE_MATSYS material_system
 #endif
 
 namespace NOE::internal
