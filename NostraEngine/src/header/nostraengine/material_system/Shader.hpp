@@ -24,7 +24,7 @@ namespace NOE::NOE_MATSYS
     public:
         NOU::uint32 ID;
 
-        Shader(NOU::int32 ID, const NOU::NOU_DAT_ALG::StringView8 *vertexShaderPath, const NOU::NOU_DAT_ALG::StringView8 *fragmentShaderPath, const NOU::NOU_DAT_ALG::StringView8 *geometryShaderSource = nullptr);
+        Shader(NOU::uint32 ID, const NOU::NOU_DAT_ALG::StringView8 *vertexShaderPath, const NOU::NOU_DAT_ALG::StringView8 *fragmentShaderPath, const NOU::NOU_DAT_ALG::StringView8 *geometryShaderSource = nullptr);
 
         void use();
         void compile();
@@ -40,7 +40,7 @@ namespace NOE::NOE_MATSYS
         void setMat2(const NOU::NOU_DAT_ALG::StringView8 &name, const glm::mat2 &mat) const;
         void setMat3(const NOU::NOU_DAT_ALG::StringView8 &name, const glm::mat3 &mat) const;
         void setMat4(const NOU::NOU_DAT_ALG::StringView8 &name, const glm::mat4 &mat) const;
-        void checkCompileErrors(NOU::int32 shader, const NOU::NOU_DAT_ALG::String8 &type);
+        void checkCompileErrors(NOU::uint32 shader, const NOU::NOU_DAT_ALG::String8 &type);
     };
 }
 

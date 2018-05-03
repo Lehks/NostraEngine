@@ -15,14 +15,15 @@ namespace NOE::NOE_MATSYS
             glAttachShader(ID, geometry);
         glLinkProgram(ID);
         checkCompileErrors(ID, "PROGRAM");
-        // delete the shaders as they're linked into our program now and no longer necessery
+        // delete the shaders as they're linked into our program now and no longer necessary
         glDeleteShader(vertex);
         glDeleteShader(fragment);
         if(geometryShaderSource != nullptr)
             glDeleteShader(geometry);
     }
 
-    Shader::Shader(NOU::int32 ID, const NOU::NOU_DAT_ALG::StringView8 *vertexShaderSource, const NOU::NOU_DAT_ALG::StringView8 *fragmentShaderSource, const NOU::NOU_DAT_ALG::StringView8 *geometryShaderSource) :
+    Shader::Shader(NOU::uint32 ID, const NOU::NOU_DAT_ALG::StringView8 *vertexShaderSource, const NOU::NOU_DAT_ALG::StringView8 *fragmentShaderSource, const NOU::NOU_DAT_ALG::StringView8 *geometryShaderSource) :
+        ID(ID),
         vertexShaderSource(vertexShaderSource),
         fragmentShaderSource(fragmentShaderSource),
         geometryShaderSource(geometryShaderSource)
@@ -36,8 +37,6 @@ namespace NOE::NOE_MATSYS
     void Shader::compile()
     {
         NOU::uint32 vertex, fragment;
-        NOU::int32 success;
-        NOU::char8 infoLog[512];
         // vertex shader
         vertex = glCreateShader(GL_VERTEX_SHADER);
         const char * vShaderSource = vertexShaderSource->rawStr();
@@ -51,7 +50,7 @@ namespace NOE::NOE_MATSYS
         glCompileShader(fragment);
         checkCompileErrors(fragment, "FRAGMENT");
         // if geometry shader is given, compile geometry shader
-        unsigned int geometry;
+        unsigned int geometry = nullptr;
         if(geometryShaderSource != nullptr)
         {
             const char * gShaderCode = geometryShaderSource->rawStr();
@@ -123,7 +122,7 @@ namespace NOE::NOE_MATSYS
         glUniformMatrix4fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat[0][0]);
     }
 
-    void Shader::checkCompileErrors(NOU::int32 shader, const NOU::NOU_DAT_ALG::String8 &type)
+    void Shader::checkCompileErrors(NOU::uint32 shader, const NOU::NOU_DAT_ALG::String8 &type)
     {
         NOU::int32 success;
         NOU::char8 infoLog[1024];
