@@ -24,22 +24,53 @@ namespace NOE::NOE_WINDOW
 	public:
 
 		/**
-		\param monitor	The monitor you want the name of.	
+		\return			The width of the monitor resolution.
 
+		\brief			Returns the width of the monitor resolution.
+		*/
+		virtual NOU::sizeType getWidth() const = 0;
+		
+		/**
+		\return			The height of the monitor resolution.
+
+		\brief			Returns the height of the monitor resolution.
+		*/
+		virtual NOU::sizeType getHeight() const = 0;
+
+		/**
+		\return			The refresh rate
+
+		\brief			Returns the refresh rate of the monitor.
+		*/
+		virtual NOU::sizeType getRefreshRate() const = 0;
+
+		/**
+		\return			The red bits
+
+		\brief			Returns the red bits of the monitor.
+		*/
+		virtual NOU::sizeType getRedBits() const = 0;
+
+		/**
+		\return			The green bits
+
+		\brief			Returns the green bits of the monitor.
+		*/
+		virtual NOU::sizeType getGreenBits() const = 0;
+
+		/**
+		\return			The blue bits
+
+		\brief			Returns the blue bits of the monitor.
+		*/
+		virtual NOU::sizeType getBlueBits() const = 0;
+
+		/**
 		\return			The name of the monitor
 
 		\brief			Returns the name of the monitor.
 		*/
-		virtual NOU::NOU_DAT_ALG::String8 getMonitorName(Monitor* monitor) = 0;
-
-		/**
-		\param monitor	A pointer to a monitor object.
-		\param width	A pointer to a NOU::sizeType. The width will be saved in this pointer.
-		\param height	A pointer to a NOU::sizeType. The height will be saved in this pointer.
-
-		\brief			Returns the resolution of the passed monitor in the passed pointers.
-		*/
-		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width, NOU::sizeType* height) = 0;
+		virtual NOU::NOU_DAT_ALG::String8 getName() const = 0;
 
 		/**
 		\return void*	Returns a void pointer to the window handle.
@@ -47,7 +78,13 @@ namespace NOE::NOE_WINDOW
 		\brief			Returns the monitor handle.
 		*/
 		virtual void* getUnderlying() = 0;
+
+		/**
+		\return void*	Returns a const void pointer to the window handle.
+
+		\brief			Returns the monitor handle.
+		*/
+		virtual const void* getUnderlying() const = 0;
 	};
 }
-
 #endif

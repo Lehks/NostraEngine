@@ -46,8 +46,8 @@ namespace NOE::NOE_WINDOW
 		*/
 		static NOU::sizeType s_instanceCounter;
 
-
-		NOU::NOU_DAT_ALG::Vector<Monitor*> m_connectedMonitors;
+		static NOU::NOU_DAT_ALG::Vector<GLFWMonitor> m_monitors;
+		static NOU::NOU_DAT_ALG::Vector<Monitor*> m_monitorPointer;
 
 	public:
 
@@ -68,13 +68,14 @@ namespace NOE::NOE_WINDOW
 		virtual void closeWindow() override;
 		virtual void minimize() override;
 		virtual void maximize()	override;
-		virtual void makeWindowed()	override;
-		virtual void setFullscreen(NOU::boolean state) override;
+		virtual void makeWindowed(GLFWmonitor* handle)	override;
+		virtual void setFullscreen(GLFWmonitor* handle, NOU::boolean state) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
 		virtual Monitor* getPrimaryMonitor() override;
 		NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
+		static void monitorCallback(GLFWmonitor* monitor, int event);
 
 	};
 
@@ -84,6 +85,7 @@ namespace NOE::NOE_WINDOW
 	class ErrorCodes
 	{
 	public:
+
 		enum
 		{
 			/**
@@ -120,6 +122,7 @@ namespace NOE::NOE_WINDOW
 		NOU::NOU_CORE::Error m_errors[ErrorCodes::LAST_ELEMENT - ErrorCodes::FIRST_ELEMENT - 1];
 
 	public:
+
 		ErrorPool();
 
 		virtual const NOU::NOU_CORE::Error* queryError(NOU::NOU_CORE::ErrorPool::ErrorType id) const;

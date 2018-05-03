@@ -36,17 +36,53 @@ namespace NOE::NOE_WINDOW
 		GLFWmonitor* m_handle;
 
 		/**
-		\brief			A vector of all connected monitors.
+		\brief			The width of the monitor resolution.
 		*/
-		NOU::NOU_DAT_ALG::Vector<Monitor*> m_monitors;
+		NOU::sizeType m_width;
+
+		/**
+		\brief			The height of the monitor resolution.
+		*/
+		NOU::sizeType m_height;
+
+		/**
+		\brief			The refresh rate of the monitor.
+		*/
+		NOU::sizeType m_refreshRate;
+
+		/**
+		\brief			The red bits of the monitor.
+		*/
+		NOU::sizeType m_redBits;
+
+		/**
+		\brief			The green bits of the monitor.
+		*/
+		NOU::sizeType m_greenBits;
+
+		/**
+		\brief			The blue bits of the monitor.
+		*/
+		NOU::sizeType m_blueBits;
+
+		/**
+		\brief			The name of the monitor.
+		*/
+		NOU::NOU_DAT_ALG::String8 m_name;
+
 	public:
 
-		GLFWMonitor();
+		GLFWMonitor(GLFWmonitor *handle);
 		virtual ~GLFWMonitor() = default;
-		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width,
-			NOU::sizeType* height) override;
-		virtual NOU::NOU_DAT_ALG::String8 getMonitorName(Monitor* monitor) override;
+		virtual NOU::sizeType getWidth() const override;
+		virtual NOU::sizeType getHeight() const override;
+		virtual NOU::sizeType getRefreshRate() const override;
+		virtual NOU::sizeType getRedBits() const override;
+		virtual NOU::sizeType getGreenBits() const override;
+		virtual NOU::sizeType getBlueBits() const override;
+		virtual NOU::NOU_DAT_ALG::String8 getName() const override;
 		virtual void* getUnderlying() override;
+		virtual const void* getUnderlying() const override;
 	};
 }
 #endif
