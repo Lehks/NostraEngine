@@ -20,7 +20,7 @@ namespace NOE::NOE_MATSYS
         NOU::NOU_DAT_ALG::String8   m_name;
 
     public:
-        MaterialEditor();
+        MaterialEditor( NOU::NOU_DAT_ALG::String8 m_name);
         NOU::NOU_DAT_ALG::String8 generateMaterialFromJSON();
         NOU::NOU_DAT_ALG::String8 generateJSONFromMaterial();
         void setTextureMapping(NOU::boolean setFlag);
