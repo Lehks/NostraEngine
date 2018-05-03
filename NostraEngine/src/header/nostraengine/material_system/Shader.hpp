@@ -20,7 +20,7 @@ namespace NOE::NOE_MATSYS
         const NOU::NOU_DAT_ALG::StringView8 *fragmentShaderSource;
         const NOU::NOU_DAT_ALG::StringView8 *geometryShaderSource;
 
-        void link(NOU::uint32 vertex, NOU::uint32 fragment, NOU::uint32 geometry = NULL);
+        void link(NOU::uint32 vertex, NOU::uint32 fragment, NOU::uint32 geometry = nullptr);
     public:
         NOU::uint32 ID;
 
