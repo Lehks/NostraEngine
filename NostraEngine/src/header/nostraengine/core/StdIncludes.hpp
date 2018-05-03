@@ -17,6 +17,9 @@
 #define NOE nostra::engine
 #endif
 
+#ifndef NOE_MATSYS
+#define NOE_MATSYS material_system
+
 namespace NOE::internal
 {
 	/**

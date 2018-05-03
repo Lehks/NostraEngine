@@ -2,7 +2,7 @@
 // Created by Dennis Franz on 23.04.18.
 //
 
-#include "nostraengine/src/header/nostraengine/material_system/Shader.hpp"
+#include "NostraEngine/material_system/Shader.hpp"
 
 namespace NOE::NOE_MATSYS
 {
