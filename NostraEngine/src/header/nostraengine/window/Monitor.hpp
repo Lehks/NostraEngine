@@ -9,7 +9,7 @@
 \file window/Monitor.hpp
 
 \author  Lukas Gross
-\version 0.0.1
+\version 0.0.2
 \since   0.0.1
 
 \brief A file that provides the functionality for accessing all connected monitors.
@@ -24,6 +24,15 @@ namespace NOE::NOE_WINDOW
 	public:
 
 		/**
+		\param monitor	The monitor you want the name of.	
+
+		\return			The name of the monitor
+
+		\brief			Returns the name of the monitor.
+		*/
+		virtual NOU::NOU_DAT_ALG::String8 getMonitorName(Monitor* monitor) = 0;
+
+		/**
 		\param monitor	A pointer to a monitor object.
 		\param width	A pointer to a NOU::sizeType. The width will be saved in this pointer.
 		\param height	A pointer to a NOU::sizeType. The height will be saved in this pointer.
@@ -33,19 +42,11 @@ namespace NOE::NOE_WINDOW
 		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width, NOU::sizeType* height) = 0;
 
 		/**
-		\return			A pointer to the primary monitor.
+		\return void*	Returns a void pointer to the window handle.
 
-		\brief			Returns the primary monitor.
+		\brief			Returns the monitor handle.
 		*/
-		virtual Monitor* getPrimaryMonitor() = 0;
-
-		/**
-		\return			A vector of Monitor*
-
-		\brief			Returns an array of all connected monitors. The first element is the primary monitor.
-		*/
-		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() = 0;
-
+		virtual void* getUnderlying() = 0;
 	};
 }
 

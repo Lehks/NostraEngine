@@ -31,16 +31,22 @@ namespace NOE::NOE_WINDOW
 	private:
 
 		/**
+		\brief			The handle of the monitor.
+		*/
+		GLFWmonitor* m_handle;
+
+		/**
 		\brief			A vector of all connected monitors.
 		*/
-		static NOU::NOU_DAT_ALG::Vector<Monitor*> s_monitors;
+		NOU::NOU_DAT_ALG::Vector<Monitor*> m_monitors;
 	public:
 
+		GLFWMonitor();
+		virtual ~GLFWMonitor() = default;
 		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width,
 			NOU::sizeType* height) override;
-		virtual Monitor* getPrimaryMonitor() override;
-		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
+		virtual NOU::NOU_DAT_ALG::String8 getMonitorName(Monitor* monitor) override;
+		virtual void* getUnderlying() override;
 	};
 }
-
 #endif

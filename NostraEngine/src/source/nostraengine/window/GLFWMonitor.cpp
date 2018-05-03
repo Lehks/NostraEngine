@@ -2,7 +2,10 @@
 
 namespace NOE::NOE_WINDOW
 {
-	NOU::NOU_DAT_ALG::Vector<Monitor*> GLFWMonitor::s_monitors;
+	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor()
+	{
+
+	}
 
 	void NOE::NOE_WINDOW::GLFWMonitor::getMonitorResolution(Monitor* monitor, NOU::sizeType* width,
 		NOU::sizeType* height)
@@ -13,21 +16,14 @@ namespace NOE::NOE_WINDOW
 		*height = mode->height;
 
 	}
-	NOE::NOE_WINDOW::Monitor* NOE::NOE_WINDOW::GLFWMonitor::getPrimaryMonitor()
+
+	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWMonitor::getMonitorName(Monitor* monitor)
 	{
-		s_monitors.at(0) = reinterpret_cast<Monitor*>(glfwGetPrimaryMonitor());
-		return s_monitors.peekFront();
+		return glfwGetMonitorName(reinterpret_cast<GLFWmonitor*>(monitor));
 	}
-	NOU::NOU_DAT_ALG::Vector<NOE::NOE_WINDOW::Monitor*> NOE::NOE_WINDOW::GLFWMonitor::getConnectedMonitors()
+
+	void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying()
 	{
-		int size;
-		GLFWmonitor** glfwMonitors = glfwGetMonitors(&size);
-
-		for (int i = 0; i < size ; i++)
-		{
-			s_monitors.pushBack(reinterpret_cast<Monitor*>(glfwMonitors[i]));
-		}
-
-		return s_monitors;
+		return m_handle;
 	}
 }

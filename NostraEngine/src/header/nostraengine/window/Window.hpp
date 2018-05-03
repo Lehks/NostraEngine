@@ -119,14 +119,6 @@ namespace NOE::NOE_WINDOW
 		virtual void* getUnderlying() = 0;
 
 		/**
-		\param monitor	A pointer to a monitor object.
-		\param width	A pointer to a NOU::sizeType. The width will be saved in this pointer.
-		\param height	A pointer to a NOU::sizeType. The height will be saved in this pointer.
-
-		\brief			Returns the resolution of the passed monitor in the passed pointers.
-		*/
-		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width, NOU::sizeType* height) = 0;
-		/**
 		\return			A pointer to an monitor object.
 
 		\brief			Returns the primary monitor as a Monitor*.
@@ -134,14 +126,13 @@ namespace NOE::NOE_WINDOW
 		virtual Monitor* getPrimaryMonitor() = 0;
 
 		/**
-		\return			Returns an array of void pointer.
+		\return			Returns an vector with Monitor pointer.
 
 		\brief			Returns all connected monitors.
 
-		\details		The first array element is the primary monitor. For getting the count of monitors
-						call the getMonitorsCount method.
+		\details		The first array element is the primary monitor.
 		*/
-		virtual NOU::NOU_DAT_ALG::Vector<NOE::NOE_WINDOW::Monitor*> getMonitors() = 0;
+		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() = 0;
 
 		/**
 		\return			Returns the title.

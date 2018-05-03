@@ -46,10 +46,9 @@ namespace NOE::NOE_WINDOW
 		*/
 		static NOU::sizeType s_instanceCounter;
 
-		/**
-		\brief			An object of the GLFWMonitor class.
-		*/
-		NOE::NOE_WINDOW::GLFWMonitor m_monitor;
+
+		NOU::NOU_DAT_ALG::Vector<Monitor*> m_connectedMonitors;
+
 	public:
 
 		/**
@@ -73,10 +72,8 @@ namespace NOE::NOE_WINDOW
 		virtual void setFullscreen(NOU::boolean state) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
-		virtual void getMonitorResolution(Monitor* monitor, NOU::sizeType* width,
-			NOU::sizeType* height) override;
 		virtual Monitor* getPrimaryMonitor() override;
-		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getMonitors() override;
+		NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
 	};

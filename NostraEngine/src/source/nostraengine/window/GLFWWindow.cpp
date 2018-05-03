@@ -121,20 +121,22 @@ namespace NOE::NOE_WINDOW
 	{
 		return m_window;
 	}
-
-	void NOE::NOE_WINDOW::GLFWWindow::getMonitorResolution(Monitor* monitor, NOU::sizeType* width, NOU::sizeType* height)
-	{
-		m_monitor.getMonitorResolution(monitor, width, height);
-	}
-
+	
 	NOE::NOE_WINDOW::Monitor* NOE::NOE_WINDOW::GLFWWindow::getPrimaryMonitor()
 	{
-		return m_monitor.getPrimaryMonitor();
+		return reinterpret_cast<Monitor*>(glfwGetPrimaryMonitor());
 	}
-	
-	NOU::NOU_DAT_ALG::Vector<Monitor*> NOE::NOE_WINDOW::GLFWWindow::getMonitors()
+
+	NOU::NOU_DAT_ALG::Vector<Monitor*> NOE::NOE_WINDOW::GLFWWindow::getConnectedMonitors()
 	{
-		return m_monitor.getConnectedMonitors();
+		int size;
+		GLFWmonitor** glfwMonitors = glfwGetMonitors(&size);
+
+		for (int i = 0; i < size; i++)
+		{
+			m_connectedMonitors.pushBack(reinterpret_cast<Monitor*>(glfwMonitors[i]));
+		}
+		return m_connectedMonitors;
 	}
 
 	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWWindow::getTitle()
