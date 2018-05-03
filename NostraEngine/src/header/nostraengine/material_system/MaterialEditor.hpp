@@ -7,6 +7,9 @@
 
 #include "NostraEngine/core/StdIncludes.hpp"
 #include "NostraUtils/NostraUtils.hpp"
+#include "NostraEngine/material_system/TextureMapping.hpp"
+#include "NostraEngine/material_system/NormalMapping.hpp"
+#include "NostraEngine/material_system/ParrallaxMapping.hpp"
 
 #include "glad/glad.h"
 
@@ -16,8 +19,11 @@ namespace NOE::NOE_MATSYS
     class NOU_CLASS MaterialEditor
     {
     private:
-        NOU::NOU_FILE_MNGT::File    m_materialSource;
-        NOU::NOU_DAT_ALG::String8   m_name;
+        NOU::NOU_FILE_MNGT::File            m_materialSource;
+        NOU::NOU_DAT_ALG::String8           m_name;
+        NOE::NOE_MATSYS::TextureMapping     m_textureMapping;
+        NOE::NOE_MATSYS::NormalMapping      m_normalMapping;
+        NOE::NOE_MATSYS::ParrallaxMapping   m_ParrallaxMapping;
 
     public:
         MaterialEditor( NOU::NOU_DAT_ALG::String8 m_name);
