@@ -6,17 +6,6 @@
 
 namespace NOE::NOE_MATSYS
 {
-    Shader::Shader(NOU::int32 ID, const NOU::NOU_DAT_ALG::StringView8 *vertexShaderSource, const NOU::NOU_DAT_ALG::StringView8 *fragmentShaderSource, const NOU::NOU_DAT_ALG::StringView8 *geometryShaderSource) :
-        vertexShaderSource(vertexShaderSource),
-        fragmentShaderSource(fragmentShaderSource),
-        geometryShaderSource(geometryShaderSource)
-    {}
-
-    void Shader::use()
-    {
-        glUseProgram(ID);
-    }
-
     void Shader::link(NOU::uint32 vertex, NOU::uint32 fragment, NOU::uint32 geometry)
     {
         ID = glCreateProgram();
@@ -31,6 +20,17 @@ namespace NOE::NOE_MATSYS
         glDeleteShader(fragment);
         if(geometryShaderSource != nullptr)
             glDeleteShader(geometry);
+    }
+
+    Shader::Shader(NOU::int32 ID, const NOU::NOU_DAT_ALG::StringView8 *vertexShaderSource, const NOU::NOU_DAT_ALG::StringView8 *fragmentShaderSource, const NOU::NOU_DAT_ALG::StringView8 *geometryShaderSource) :
+        vertexShaderSource(vertexShaderSource),
+        fragmentShaderSource(fragmentShaderSource),
+        geometryShaderSource(geometryShaderSource)
+    {}
+
+    void Shader::use()
+    {
+        glUseProgram(ID);
     }
 
     void Shader::compile()
