@@ -137,11 +137,6 @@ namespace NOE::NOE_WINDOW
 		return m_monitor.getConnectedMonitors();
 	}
 
-	NOU::sizeType NOE::NOE_WINDOW::GLFWWindow::getMonitorCount()
-	{
-		return m_monitor.getConnectedMonitors().size();
-	}
-
 	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWWindow::getTitle()
 	{
 		return m_title;

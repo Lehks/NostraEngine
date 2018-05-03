@@ -144,13 +144,6 @@ namespace NOE::NOE_WINDOW
 		virtual NOU::NOU_DAT_ALG::Vector<NOE::NOE_WINDOW::Monitor*> getMonitors() = 0;
 
 		/**
-		\returns		The monitor count.
-
-		\brief			Returns the count of monitors connected.
-		*/
-		virtual NOU::sizeType getMonitorCount() = 0;
-
-		/**
 		\return			Returns the title.
 
 		\brief			Returns the title of the window.

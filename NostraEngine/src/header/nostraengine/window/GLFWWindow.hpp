@@ -42,11 +42,6 @@ namespace NOE::NOE_WINDOW
 		NOU::NOU_DAT_ALG::String8 m_title;
 
 		/**
-		\brief			The count of monitors connected.
-		*/
-		NOU::sizeType m_monitorCount;
-
-		/**
 		\brief			Stores the count of GLFW instances.
 		*/
 		static NOU::sizeType s_instanceCounter;
@@ -82,7 +77,6 @@ namespace NOE::NOE_WINDOW
 			NOU::sizeType* height) override;
 		virtual Monitor* getPrimaryMonitor() override;
 		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getMonitors() override;
-		virtual NOU::sizeType getMonitorCount() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
 	};
