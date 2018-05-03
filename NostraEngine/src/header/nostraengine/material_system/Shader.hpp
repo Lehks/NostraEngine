@@ -16,13 +16,16 @@ namespace NOE::NOE_MATSYS
     class NOU_CLASS Shader
     {
     private:
-
+        NOU::NOU_DAT_ALG::String8 vertexShaderPath;
+        NOU::NOU_DAT_ALG::String8 fragmentShaderPath;
     public:
         NOU::uint32 ID;
 
-        Shader(const GLchar *vertexShaderPath, const GLchar *fragmentShaderPath);
+        Shader(NOU::NOU_DAT_ALG::String8 vertexShaderPath, NOU::NOU_DAT_ALG::String8 fragmentShaderPath);
 
         void use();
+        void link();
+        void compile();
         void setBool();
         void setInt();
         void setFloat();

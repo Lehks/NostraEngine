@@ -6,31 +6,27 @@
 
 namespace NOE::NOE_MATSYS
 {
-    Shader::Shader(const GLchar *vertexShaderPath, const GLchar *fragmentShaderPath)
-    {
-        NOU::NOU_DAT_ALG::String8 vertexCode;
-        NOU::NOU_DAT_ALG::String8 fragmentCode;
-
-        NOU::NOU_FILE_MNGT::File vShader(vertexShaderPath);
-        NOU::NOU_FILE_MNGT::File fShader(fragmentShaderPath);
-
-        vShader.open();
-        fShader.open();
-
-
-
-    }
-
-    Shader::use()
+    Shader::Shader(NOU::NOU_DAT_ALG::String8 vertexShaderPath, NOU::NOU_DAT_ALG::String8 fragmentShaderPath) :
+        vertexShaderPath(vertexShaderPath),
+        fragmentShaderPath(fragmentShaderPath)
     {}
 
-    Shader::setBool()
+    void Shader::use()
     {}
 
-    Shader::seInt()
+    void Shader::link()
     {}
 
-    setFloat()
+    void Shader::compile()
+    {}
+
+    void Shader::setBool()
+    {}
+
+    void Shader::setInt()
+    {}
+
+    void Shader::setFloat()
     {}
 }
 
