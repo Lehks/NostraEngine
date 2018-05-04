@@ -40,7 +40,7 @@ NOU::int32 NOE::NostraEngine::init()
 
 NOU::int32 NOE::NostraEngine::start()
 {
-	NOU::uint32 renderBeginTime, renderEndTime;
+	NOU::uint64 renderBeginTime, renderEndTime;
 
 	if (init() != 0)
 	{
@@ -51,10 +51,10 @@ NOU::int32 NOE::NostraEngine::start()
 
 	while (m_runState != -1)			//DON'T RUN IT !!!!
 	{
-		renderBeginTime = NOU::NOU_CORE::currentTimeMillis();
+		renderBeginTime = NOU::NOU_CORE::currentTimeNanos();
 		render();
-		renderEndTime   = NOU::NOU_CORE::currentTimeMillis();
-		//updateFrameInformations(renderBeginTime, renderEndTime); WE need nanotime
+		renderEndTime   = NOU::NOU_CORE::currentTimeNanos();
+		updateFrameInformations(renderBeginTime, renderEndTime);
         
 		//this loop runs 1 time because of this methode.
 		terminateEngine();
@@ -79,7 +79,7 @@ NOU::int32 NOE::NostraEngine::terminate()
 void NOE::NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
 {
 	m_frameTime = end - begin;
-	m_currFPS   = 1000 / m_frameTime;
+	m_currFPS   = 1000 / ((m_frameTime != 0) ? m_frameTime : 1);
 }
 
 void NOE::NostraEngine::setMaxFPS(const NOU::uint64 maxFPS)
@@ -112,8 +112,8 @@ void NOE::NostraEngine::fpsLimitStart()
 	if(getMaxFPS() > 0)
 	{
 		NOU::uint64 minFrameTime, timeDiff;
-
-		minFrameTime = 1000/getCurrFPS();
+		NOU::uint64 currFPS = getCurrFPS();
+		minFrameTime = 1000/((currFPS != 0) ? currFPS : 1);
 		if(getFrameTime() < minFrameTime)
 		{	
 			timeDiff = minFrameTime - getFrameTime();
