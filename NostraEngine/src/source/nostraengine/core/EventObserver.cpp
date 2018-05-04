@@ -61,6 +61,12 @@ namespace NOE::NOE_CORE
 	}
 
 
+	bool EventObserver::observe(const Event e)
+	{
+		return false;
+	}
+
+
 	EventObserver::~EventObserver()
 	{
 		// Unsubscribe from all observables

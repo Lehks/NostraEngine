@@ -45,7 +45,7 @@ namespace NOE::NOE_CORE
 	}
 
 
-	EventObservable::sizeType EventObservable::triggerEvent(const NouString name) const
+	EventObservable::sizeType EventObservable::triggerEvent(const NouString name)
 	{
 		if (!this->eventExists(name)) {
 			return 0;
@@ -109,7 +109,7 @@ namespace NOE::NOE_CORE
 	}
 
 
-	Event EventObservable::getEvent(const NouString name) const
+	Event EventObservable::getEvent(const NouString & name)
 	{
 		std::unordered_map<NouString, Event>::const_iterator e = this->m_events.find(name);
 
@@ -117,7 +117,9 @@ namespace NOE::NOE_CORE
 			return e->second;
 		}
 
-		return Event(*this);
+		Event ev = Event(*this);
+
+		return ev;
 	}
 
 

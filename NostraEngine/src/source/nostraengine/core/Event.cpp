@@ -5,9 +5,9 @@
 
 namespace NOE::NOE_CORE
 {
-	Event::Event(EventObservable & observable)
+	Event::Event(EventObservable & origin)
 	{
-		this->origin = &observable;
+		this->origin = &origin;
 	}
 
 
