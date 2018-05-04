@@ -9,9 +9,7 @@
 #include "NostraUtils/NostraUtils.hpp"
 #include "NostraEngine/material_system/TextureMapping.hpp"
 #include "NostraEngine/material_system/NormalMapping.hpp"
-#include "NostraEngine/material_system/ParrallaxMapping.hpp"
-
-#include "glad/glad.h"
+#include "ParallaxMapping.hpp"
 
 namespace NOE::NOE_MATSYS
 {
@@ -21,20 +19,35 @@ namespace NOE::NOE_MATSYS
     private:
         NOU::NOU_FILE_MNGT::File            m_materialSource;
         NOU::NOU_DAT_ALG::String8           m_name;
-        NOE::NOE_MATSYS::TextureMapping     m_textureMapping;
-        NOE::NOE_MATSYS::NormalMapping      m_normalMapping;
-        NOE::NOE_MATSYS::ParrallaxMapping   m_ParrallaxMapping;
+        NOE::NOE_MATSYS::TextureMapping     *m_textureMapping;
+        NOE::NOE_MATSYS::NormalMapping      *m_normalMapping;
+        NOE::NOE_MATSYS::ParallaxMapping   *m_parallaxMapping;
 
+        static MaterialEditor*              s_uniqueInstance;
+
+        MaterialEditor();
     public:
-        MaterialEditor(NOU::NOU_DAT_ALG::String8 m_name);
+        static MaterialEditor* getInstance();
+
         NOU::NOU_DAT_ALG::String8 generateMaterialFromJSON(const NOU::NOU_DAT_ALG::String8 &JSONPath);
         NOU::boolean generateJSONFromMaterial(const NOU::NOU_DAT_ALG::String8 &materialPath);
-        void setTextureMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, NOU::float32 scale, NOU::float32 offset);
-        void setNormalMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, const NOU::NOU_DAT_ALG::String8 &normalTexturePath, NOU::float32 scale, NOU::float32 offset);
-        void setParralaxMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, const NOU::NOU_DAT_ALG::String8 &normalTexturePath, const NOU::NOU_DAT_ALG::String8 &displacementTexturePath,NOU::float32 scale, NOU::float32 offset);
+
+        void setTextureMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath,
+                               NOU::float32 scale, NOU::float32 offset);
+
+        void setNormalMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath,
+                              const NOU::NOU_DAT_ALG::String8 &normalTexturePath, NOU::float32 scale,
+                              NOU::float32 offset);
+
+        void setParallaxMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath,
+                                const NOU::NOU_DAT_ALG::String8 &normalTexturePath,
+                                const NOU::NOU_DAT_ALG::String8 &displacementTexturePath,NOU::float32 scale,
+                                NOU::float32 offset);
+
         void setColor(NOU::boolean setFlag);
+
         void setMaterialName(NOU::NOU_DAT_ALG::String8 name);
-        NOU::NOU_DAT_ALG::String8 getMaterialName();
+        const NOU::NOU_DAT_ALG::String8 & getMaterialName();
     };
 
 }
