@@ -43,12 +43,12 @@ namespace NOE::NOE_WINDOW
 		static NOU::sizeType s_instanceCounter;
 
 		/**
-		\brief			The vector that stores the monitors as GLFWMonitors.
+		\brief			The const vector that stores the monitors as GLFWMonitors.
 		*/
 		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
 
 		/**
-		\brief			The vector that stores the monitors as Monitor pointers.
+		\brief			The const vector that stores the monitors as Monitor pointers.
 		*/
 		static const NOU::NOU_DAT_ALG::Vector<Monitor*> s_monitorPointer;
 
@@ -78,7 +78,19 @@ namespace NOE::NOE_WINDOW
 		virtual Monitor* getPrimaryMonitor() override;
 		NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
+
+		/**
+		\return			The s_monitor vector as a const reference.
+
+		\brief			Returns the s_monitor vector.
+		*/
 		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor>& getMonitors();
+
+		/**
+		\return			The s_monitorPointer vector as a const reference.
+
+		\brief			Returns the s_monitorPointer vector.
+		*/
 		static const NOU::NOU_DAT_ALG::Vector<Monitor*>& getMonitorPointer();
 		
 	};
