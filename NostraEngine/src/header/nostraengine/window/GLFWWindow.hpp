@@ -1,9 +1,5 @@
 #ifndef NOE_WINDOW_GLFWWINDOW_HPP
 #define NOE_WINDOW_GLFWWINDOW_HPP
-#define GLAD_GLAPI_EXPORT //needed for exporting glad
-
-#include "GLAD/glad.h"
-#include "GLFW/glfw3.h"
 
 #include "nostrautils/NostraUtils.hpp"
 
@@ -34,7 +30,7 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			The handle of the window.
 		*/
-		GLFWwindow* m_window;
+		void* m_window;
 
 		/**
 		\brief			Stores the title of the window.
@@ -49,12 +45,12 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			The vector that stores the monitors as GLFWMonitors.
 		*/
-		static NOU::NOU_DAT_ALG::Vector<GLFWMonitor> m_monitors;
+		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
 
 		/**
 		\brief			The vector that stores the monitors as Monitor pointers.
 		*/
-		static NOU::NOU_DAT_ALG::Vector<Monitor*> m_monitorPointer;
+		static const NOU::NOU_DAT_ALG::Vector<Monitor*> s_monitorPointer;
 
 	public:
 
@@ -82,8 +78,9 @@ namespace NOE::NOE_WINDOW
 		virtual Monitor* getPrimaryMonitor() override;
 		NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
-		static void monitorCallback(GLFWmonitor* monitor, int event);
-
+		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor>& getMonitors();
+		static const NOU::NOU_DAT_ALG::Vector<Monitor*>& getMonitorPointer();
+		
 	};
 
 	/**
