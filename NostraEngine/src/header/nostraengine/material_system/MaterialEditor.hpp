@@ -27,8 +27,8 @@ namespace NOE::NOE_MATSYS
 
     public:
         MaterialEditor(NOU::NOU_DAT_ALG::String8 m_name);
-        NOU::NOU_DAT_ALG::String8 generateMaterialFromJSON();
-        NOU::boolean generateJSONFromMaterial();
+        NOU::NOU_DAT_ALG::String8 generateMaterialFromJSON(const NOU::NOU_DAT_ALG::String8 &JSONPath);
+        NOU::boolean generateJSONFromMaterial(const NOU::NOU_DAT_ALG::String8 &materialPath);
         void setTextureMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, NOU::float32 scale, NOU::float32 offset);
         void setNormalMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, const NOU::NOU_DAT_ALG::String8 &normalTexturePath, NOU::float32 scale, NOU::float32 offset);
         void setParralaxMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, const NOU::NOU_DAT_ALG::String8 &normalTexturePath, const NOU::NOU_DAT_ALG::String8 &displacementTexturePath,NOU::float32 scale, NOU::float32 offset);
