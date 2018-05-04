@@ -88,24 +88,22 @@ namespace NOE::NOE_WINDOW
 		glfwMaximizeWindow(m_window);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::makeWindowed(GLFWmonitor* handle)
+	void NOE::NOE_WINDOW::GLFWWindow::makeWindowed(Monitor* handle)
 	{
-		const GLFWvidmode* mode = glfwGetVideoMode(handle);
-
 		int widthMM = 0;
 		int heightMM = 0;
 
-		glfwGetMonitorPhysicalSize(handle, &widthMM, &heightMM);
+		glfwGetMonitorPhysicalSize(reinterpret_cast<GLFWmonitor*>(handle->getUnderlying()), &widthMM, &heightMM);
 
-		glfwSetWindowMonitor(m_window, nullptr, widthMM, heightMM, 680, 680, mode->refreshRate);
+		glfwSetWindowMonitor(m_window, nullptr, widthMM, heightMM, 680, 680, handle->getRefreshRate());
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(GLFWmonitor* handle, NOU::boolean state)
+	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(Monitor* handle, NOU::boolean state)
 	{
-		const GLFWvidmode* mode = glfwGetVideoMode(handle);
 		if (state)
 		{
-			glfwSetWindowMonitor(m_window, handle, 0, 0, mode->width, mode->height, mode->refreshRate);
+			glfwSetWindowMonitor(m_window, reinterpret_cast<GLFWmonitor*>
+				(handle->getUnderlying()), 0, 0, handle->getWidth(), handle->getHeight(), handle->getRefreshRate());
 		}
 		else
 		{

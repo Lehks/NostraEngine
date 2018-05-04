@@ -75,8 +75,8 @@ namespace NOE::NOE_WINDOW
 		virtual void closeWindow() override;
 		virtual void minimize() override;
 		virtual void maximize()	override;
-		virtual void makeWindowed(GLFWmonitor* handle)	override;
-		virtual void setFullscreen(GLFWmonitor* handle, NOU::boolean state) override;
+		virtual void makeWindowed(Monitor* handle)	override;
+		virtual void setFullscreen(Monitor* handle, NOU::boolean state) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
 		virtual Monitor* getPrimaryMonitor() override;

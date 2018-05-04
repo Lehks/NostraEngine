@@ -83,7 +83,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Makes the window windowed.
 		*/
-		virtual void makeWindowed(GLFWmonitor* handle) = 0;
+		virtual void makeWindowed(Monitor* handle) = 0;
 
 		/**
 		\param handle	The monitor where to make the window full screen.
@@ -94,7 +94,7 @@ namespace NOE::NOE_WINDOW
 		\details		If state is set to false than the makeWindowed() is called. This results in making
 						exiting the full screen mode and making the window windowed again.
 		*/
-		virtual void setFullscreen(GLFWmonitor* handle, NOU::boolean state) = 0;
+		virtual void setFullscreen(Monitor* handle, NOU::boolean state) = 0;
 
 		/**
 		\brief			All operations that are performed in the window like updating images, etc.
