@@ -1,3 +1,6 @@
+#ifndef NOE_MATERIAL_SYSTEM_PREPROCESSOR_HPP
+#define NOE_MATERIAL_SYSTEM_PREPROCESSOR_HPP
+
 #include "nostraengine/core/StdIncludes.hpp"
 #include "nostrautils/NostraUtils.hpp"
 
@@ -64,3 +67,4 @@ namespace NOE::NOE_MATSYS
         const File *getTarget();
     }
 }
+#endif
