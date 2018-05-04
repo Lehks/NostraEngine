@@ -46,7 +46,14 @@ namespace NOE::NOE_WINDOW
 		*/
 		static NOU::sizeType s_instanceCounter;
 
+		/**
+		\brief			The vector that stores the monitors as GLFWMonitors.
+		*/
 		static NOU::NOU_DAT_ALG::Vector<GLFWMonitor> m_monitors;
+
+		/**
+		\brief			The vector that stores the monitors as Monitor pointers.
+		*/
 		static NOU::NOU_DAT_ALG::Vector<Monitor*> m_monitorPointer;
 
 	public:
