@@ -103,6 +103,11 @@ namespace NOE::NOE_MATSYS
         \return the File object containing the preprocessed file
         */
        const NOU::NOU_FILE_MNGT::File *getPreProcessedTarget();
+        /**
+        \brief sets the PreProcessor that will be used in the compile process
+        \param pp an object that implements a preprocessor
+        */
+       void setPreProcessor(PreProcessor pp);
     };
 }
 #endif
