@@ -26,12 +26,12 @@ namespace NOE::NOE_MATSYS
         NOE::NOE_MATSYS::ParrallaxMapping   m_ParrallaxMapping;
 
     public:
-        MaterialEditor( NOU::NOU_DAT_ALG::String8 m_name);
+        MaterialEditor(NOU::NOU_DAT_ALG::String8 m_name);
         NOU::NOU_DAT_ALG::String8 generateMaterialFromJSON();
         NOU::NOU_DAT_ALG::String8 generateJSONFromMaterial();
-        void setTextureMapping(NOU::boolean setFlag);
-        void setNormalMapping(NOU::boolean setFlag);
-        void setParralaxMapping(NOU::boolean setFlag);
+        void setTextureMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, NOU::float32 scale, NOU::float32 offset);
+        void setNormalMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, const NOU::NOU_DAT_ALG::String8 &normalTexturePath, NOU::float32 scale, NOU::float32 offset);
+        void setParralaxMapping(NOU::boolean setFlag, const NOU::NOU_DAT_ALG::String8 &texturePath, const NOU::NOU_DAT_ALG::String8 &normalTexturePath, const NOU::NOU_DAT_ALG::String8 &displacementTexturePath,NOU::float32 scale, NOU::float32 offset);
         void setColor(NOU::boolean setFlag);
         void setMaterialName(NOU::NOU_DAT_ALG::String8 name);
         NOU::NOU_DAT_ALG::String8 getMaterialName();
