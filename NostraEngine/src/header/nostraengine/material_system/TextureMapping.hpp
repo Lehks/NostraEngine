@@ -2,8 +2,8 @@
 // Created by Dennis Franz on 03.05.18.
 //
 
-#ifndef NOSTRAENGINE_TEXTUREMAPPING_HPP
-#define NOSTRAENGINE_TEXTUREMAPPING_HPP
+#ifndef NOE_MATERIAL_SYSTEM_TEXTUREMAPPING_HPP
+#define NOE_MATERIAL_SYSTEM_TEXTUREMAPPING_HPP
 
 #include "NostraEngine/core/StdIncludes.hpp"
 #include "NostraUtils/NostraUtils.hpp"
@@ -19,4 +19,4 @@ namespace NOE::NOE_MATSYS
 }
 
 
-#endif //NOSTRAENGINE_TEXTUREMAPPING_HPP
+#endif //NOE_MATERIAL_SYSTEM_TEXTUREMAPPING_HPP

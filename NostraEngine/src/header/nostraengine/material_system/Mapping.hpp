@@ -2,8 +2,8 @@
 // Created by Dennis Franz on 03.05.18.
 //
 
-#ifndef NOSTRAENGINE_MAPPING_HPP
-#define NOSTRAENGINE_MAPPING_HPP
+#ifndef NOE_MATERIAL_SYSTEM_MAPPING_HPP
+#define NOE_MATERIAL_SYSTEM_MAPPING_HPP
 
 #include "NostraEngine/core/StdIncludes.hpp"
 #include "NostraUtils/NostraUtils.hpp"
@@ -21,4 +21,4 @@ namespace NOE::NOE_MATSYS
     };
 }
 
-#endif //NOSTRAENGINE_MAPPING_HPP
+#endif //NOE_MATERIAL_SYSTEM_MAPPING_HPP
