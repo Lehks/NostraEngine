@@ -3,10 +3,11 @@
 namespace NOE::NOE_WINDOW
 {
 	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(GLFWmonitor* handle) :
-		m_handle(handle)
+		m_handle(handle),
+		m_name(glfwGetMonitorName(handle))
 	{
 		//Initialize m_width and m_height
-		const GLFWvidmode * mode = glfwGetVideoMode(m_handle);
+		const GLFWvidmode * mode = glfwGetVideoMode(handle);
 
 		m_width = mode->width;
 		m_height = mode->height;
@@ -52,7 +53,7 @@ namespace NOE::NOE_WINDOW
 
 	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWMonitor::getName() const
 	{
-		return glfwGetMonitorName(m_handle);
+		return m_name;
 	}
 
 	void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying()
