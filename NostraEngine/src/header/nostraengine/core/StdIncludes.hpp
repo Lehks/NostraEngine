@@ -21,7 +21,7 @@
 #endif
 
 /**
-\brief The name of the core namespace of the Nostra Engine.
+\brief The name of the namespace that contains all core components.
 */
 #ifndef NOE_CORE
 #define NOE_CORE core
@@ -32,6 +32,13 @@
 */
 #ifndef NOE_UTILITY
 #define NOE_UTILITY utility
+#endif
+
+/*
+\brief The name of the namespace that contains all window components.
+*/
+#ifndef NOE_WINDOW
+#define NOE_WINDOW window
 #endif
 
 namespace NOE::internal

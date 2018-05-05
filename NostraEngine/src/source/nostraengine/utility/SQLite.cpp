@@ -15,7 +15,8 @@ namespace NOE::NOE_UTILITY
 		ErrorPool::ErrorPool() :
 			m_errors //must be in order
 			{
-				NOU_SQLITE_MAKE_ERROR(SQL_SYNTAX_ERROR) ,
+				NOU_SQLITE_MAKE_ERROR(CAN_NOT_OPEN_FILE),
+				NOU_SQLITE_MAKE_ERROR(SQL_SYNTAX_ERROR),
 				NOU_SQLITE_MAKE_ERROR(SQL_INVALID_PARAMETER_INDEX)
 			}
 		{}
@@ -362,7 +363,7 @@ namespace NOE::NOE_UTILITY
 					{
 					case SQLITE_CANTOPEN_ISDIR:
 						NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-							NOU::NOU_CORE::ErrorCodes::CANNOT_OPEN_FILE,
+							ErrorCodes::CAN_NOT_OPEN_FILE,
 							"The passed path leads to a directory.");
 						return false;
 
@@ -378,14 +379,14 @@ namespace NOE::NOE_UTILITY
 				else if(error == SQLITE_NOTADB)
 				{
 					NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-						NOU::NOU_CORE::ErrorCodes::CANNOT_OPEN_FILE,
+						ErrorCodes::CAN_NOT_OPEN_FILE,
 						"The passed path leads to a files, but the file does not contain a database.");
 					return false;
 				}
 				else
 				{
 					NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-						NOU::NOU_CORE::ErrorCodes::UNKNOWN_ERROR,
+						ErrorCodes::CAN_NOT_OPEN_FILE,
 						"An unknown error occurred while opening a database.");
 					return false;
 				}

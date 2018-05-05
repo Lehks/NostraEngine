@@ -22,6 +22,11 @@ namespace NOE::NOE_UTILITY
 				FIRST_ELEMENT = 5000,
 
 				/**
+				\brief The database file could not be opened.
+				*/
+				CAN_NOT_OPEN_FILE,
+
+				/**
 				\brief A syntax error was found in an SQL statement.
 				*/
 				SQL_SYNTAX_ERROR,
