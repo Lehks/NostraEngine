@@ -52,7 +52,7 @@ namespace NOE::NOE_WINDOW
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		GLFWmonitor* glwfMonitor = reinterpret_cast<GLFWmonitor*>(monitor);
+		GLFWmonitor* glwfMonitor = reinterpret_cast<GLFWmonitor*>(monitor->getUnderlying());
 
 		m_title = title;
 
