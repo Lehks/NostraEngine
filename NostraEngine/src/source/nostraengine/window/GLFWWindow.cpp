@@ -18,6 +18,9 @@ namespace NOE::NOE_WINDOW
 	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow() :
 		m_window(nullptr)
 	{
+		//const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).expandCapacity(5);
+		//const_cast<NOU::NOU_DAT_ALG::Vector<Monitor*>&>(GLFWWindow::getMonitorPointer()).expandCapacity(5);
+
 		if (s_instanceCounter == 0)
 		{
 			if (!glfwInit())
@@ -159,10 +162,13 @@ namespace NOE::NOE_WINDOW
 
 			for (int i = 0; i < size; i++)
 			{
-				const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).push(glfwMonitors[i]);
+				const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
+			}
 
+			for (int i = 0; i < size; i++)
+			{
 				const_cast<NOU::NOU_DAT_ALG::Vector<Monitor*>&>(GLFWWindow::getMonitorPointer())
-					.push(&const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors())[i]);
+					.pushBack(&const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors())[i]);
 			}
 		}
 		else
