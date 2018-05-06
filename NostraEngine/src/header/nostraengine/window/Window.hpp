@@ -126,7 +126,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Returns the primary monitor as a Monitor*.
 		*/
-		virtual Monitor* getPrimaryMonitor() = 0;
+		virtual const Monitor* getPrimaryMonitor() = 0;
 
 		/**
 		\return			Returns an vector with Monitor pointer.
@@ -135,7 +135,7 @@ namespace NOE::NOE_WINDOW
 
 		\details		The first array element is the primary monitor.
 		*/
-		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() = 0;
+		virtual const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getConnectedMonitors() = 0;
 
 		/**
 		\return			Returns the title.

@@ -1,9 +1,5 @@
 #ifndef NOE_WINDOW_GLFW_MONITOR_HPP
 #define NOE_WINDOW_GLFW_MONITOR_HPP
-#define GLAD_GLAPI_EXPORT //needed for exporting glad
-
-#include "GLAD/glad.h"
-#include "GLFW/glfw3.h"
 
 #include "nostrautils/NostraUtils.hpp"
 
@@ -33,7 +29,7 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			The handle of the monitor.
 		*/
-		GLFWmonitor* m_handle;
+		const void* m_handle;
 
 		/**
 		\brief			The width of the monitor resolution.
@@ -72,7 +68,7 @@ namespace NOE::NOE_WINDOW
 
 	public:
 
-		GLFWMonitor(GLFWmonitor *handle);
+		GLFWMonitor(const void *handle);
 		virtual ~GLFWMonitor() = default;
 		virtual NOU::sizeType getWidth() const override;
 		virtual NOU::sizeType getHeight() const override;

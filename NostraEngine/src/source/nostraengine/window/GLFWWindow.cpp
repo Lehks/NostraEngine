@@ -1,9 +1,9 @@
 #define GLAD_GLAPI_EXPORT //needed for exporting glad
 
+#include "nostraengine/window/GLFWWindow.hpp"
+
 #include "GLAD/glad.h"
 #include "GLFW/glfw3.h"
-
-#include "nostraengine/window/GLFWWindow.hpp"
 
 namespace NOE::NOE_WINDOW
 {
@@ -11,16 +11,11 @@ namespace NOE::NOE_WINDOW
 
 	const NOU::NOU_DAT_ALG::Vector<GLFWMonitor> NOE::NOE_WINDOW::GLFWWindow::s_monitors;
 
-	const NOU::NOU_DAT_ALG::Vector<Monitor*> NOE::NOE_WINDOW::GLFWWindow::s_monitorPointer;
-
-	void monitorCallback(GLFWmonitor* monitor, int event);
+	const NOU::NOU_DAT_ALG::Vector<const Monitor*> NOE::NOE_WINDOW::GLFWWindow::s_monitorPointer;
 
 	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow() :
 		m_window(nullptr)
 	{
-		//const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).expandCapacity(5);
-		//const_cast<NOU::NOU_DAT_ALG::Vector<Monitor*>&>(GLFWWindow::getMonitorPointer()).expandCapacity(5);
-
 		if (s_instanceCounter == 0)
 		{
 			if (!glfwInit())
@@ -142,7 +137,7 @@ namespace NOE::NOE_WINDOW
 		return m_window;
 	}
 	
-	NOE::NOE_WINDOW::Monitor* NOE::NOE_WINDOW::GLFWWindow::getPrimaryMonitor()
+	const NOE::NOE_WINDOW::Monitor* NOE::NOE_WINDOW::GLFWWindow::getPrimaryMonitor()
 	{
 		if (s_monitors.size() == 0)
 		{
@@ -152,28 +147,23 @@ namespace NOE::NOE_WINDOW
 		return s_monitorPointer.at(0);
 	}
 
-	NOU::NOU_DAT_ALG::Vector<Monitor*> NOE::NOE_WINDOW::GLFWWindow::getConnectedMonitors()
+	const NOU::NOU_DAT_ALG::Vector<const Monitor*>& NOE::NOE_WINDOW::GLFWWindow::getConnectedMonitors()
 	{
-		//Only callable once. After that with monitor callback
-		if (GLFWWindow::getMonitors().size() == 0)
+		const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).clear();
+		const_cast<NOU::NOU_DAT_ALG::Vector<const Monitor*>&>(GLFWWindow::getMonitorPointer()).clear();
+
+		int size;
+		GLFWmonitor** glfwMonitors = glfwGetMonitors(&size);
+
+		for (int i = 0; i < size; i++)
 		{
-			int size;
-			GLFWmonitor** glfwMonitors = glfwGetMonitors(&size);
-
-			for (int i = 0; i < size; i++)
-			{
-				const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
-			}
-
-			for (int i = 0; i < size; i++)
-			{
-				const_cast<NOU::NOU_DAT_ALG::Vector<Monitor*>&>(GLFWWindow::getMonitorPointer())
-					.pushBack(&const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors())[i]);
-			}
+			const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
 		}
-		else
+
+		for (int i = 0; i < size; i++)
 		{
-			glfwSetMonitorCallback(monitorCallback);
+			const_cast<NOU::NOU_DAT_ALG::Vector<const Monitor*>&>(GLFWWindow::getMonitorPointer())
+				.pushBack(&const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors())[i]);
 		}
 		
 		return s_monitorPointer;
@@ -189,32 +179,9 @@ namespace NOE::NOE_WINDOW
 		return s_monitors;
 	}
 
-	const NOU::NOU_DAT_ALG::Vector<Monitor*>& NOE::NOE_WINDOW::GLFWWindow::getMonitorPointer() 
+	const NOU::NOU_DAT_ALG::Vector<const Monitor*>& NOE::NOE_WINDOW::GLFWWindow::getMonitorPointer() 
 	{
 		return s_monitorPointer;
-	}
-
-	void monitorCallback(GLFWmonitor* monitor, int event)
-	{
-		if (event == GLFW_CONNECTED)
-		{
-			const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).push(monitor);
-
-			const_cast<NOU::NOU_DAT_ALG::Vector<Monitor*>&>(GLFWWindow::getMonitorPointer())
-				.push(&const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(
-					GLFWWindow::getMonitors())[GLFWWindow::getMonitors().size() - 1]);
-		}
-		else if (event == GLFW_DISCONNECTED)
-		{
-			for (int i = 0; i < GLFWWindow::getMonitors().size(); i++)
-			{
-				if (GLFWWindow::getMonitors()[i].getUnderlying() == monitor)
-				{
-					const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).remove(i);
-					const_cast<NOU::NOU_DAT_ALG::Vector<Monitor*>&>(GLFWWindow::getMonitorPointer()).remove(i);
-				}
-			}
-		}
 	}
 
 #ifndef NOU_WINDOW_MAKE_ERROR

@@ -50,7 +50,7 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			The const vector that stores the monitors as Monitor pointers.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<Monitor*> s_monitorPointer;
+		static const NOU::NOU_DAT_ALG::Vector<const Monitor*> s_monitorPointer;
 
 	public:
 
@@ -75,8 +75,8 @@ namespace NOE::NOE_WINDOW
 		virtual void setFullscreen(Monitor* handle, NOU::boolean state) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
-		virtual Monitor* getPrimaryMonitor() override;
-		NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
+		virtual const Monitor* getPrimaryMonitor() override;
+		virtual const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
 		/**
@@ -91,7 +91,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Returns the s_monitorPointer vector.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<Monitor*>& getMonitorPointer();
+		static const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getMonitorPointer();
 		
 	};
 

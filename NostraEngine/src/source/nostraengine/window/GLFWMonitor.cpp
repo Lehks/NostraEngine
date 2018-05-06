@@ -1,13 +1,18 @@
+#define GLAD_GLAPI_EXPORT //needed for exporting glad
+
 #include "nostraengine/window/GLFWMonitor.hpp"
+
+#include "GLAD/glad.h"
+#include "GLFW/glfw3.h"
 
 namespace NOE::NOE_WINDOW
 {
-	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(GLFWmonitor* handle) :
+	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(const void* handle) :
 		m_handle(handle),
-		m_name(glfwGetMonitorName(handle))
+		m_name(glfwGetMonitorName(reinterpret_cast<GLFWmonitor*>(const_cast<void*>(handle))))
 	{
 		//Initialize m_width and m_height
-		const GLFWvidmode * mode = glfwGetVideoMode(handle);
+		const GLFWvidmode * mode = glfwGetVideoMode(reinterpret_cast<GLFWmonitor*>(const_cast<void*>(handle)));
 
 		m_width = mode->width;
 		m_height = mode->height;
@@ -58,7 +63,7 @@ namespace NOE::NOE_WINDOW
 
 	void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying()
 	{
-		return m_handle;
+		return const_cast<void*>(m_handle);
 	}
 
 	const void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying() const
