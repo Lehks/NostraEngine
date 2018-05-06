@@ -51,7 +51,7 @@ namespace NOE::NOE_WINDOW
 		return m_blueBits;
 	}
 
-	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWMonitor::getName() const
+	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWMonitor::getName() const
 	{
 		return m_name;
 	}
