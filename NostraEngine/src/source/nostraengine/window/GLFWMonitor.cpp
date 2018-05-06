@@ -12,7 +12,8 @@ namespace NOE::NOE_WINDOW
 		m_name(glfwGetMonitorName(reinterpret_cast<GLFWmonitor*>(const_cast<void*>(handle))))
 	{
 		//Initialize m_width and m_height
-		const GLFWvidmode * mode = glfwGetVideoMode(reinterpret_cast<GLFWmonitor*>(const_cast<void*>(handle)));
+		const GLFWvidmode* mode = glfwGetVideoMode(reinterpret_cast<GLFWmonitor*>
+			(const_cast<void*>(handle)));
 
 		m_width = mode->width;
 		m_height = mode->height;

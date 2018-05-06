@@ -89,7 +89,8 @@ namespace NOE::NOE_WINDOW
 
 		\details			Each parameter has its own default value.
 		*/
-		virtual void makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos, NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate) = 0;
+		virtual void makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos, 
+			NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate) = 0;
 
 		/**
 		\param handle	The monitor where to make the window full screen.

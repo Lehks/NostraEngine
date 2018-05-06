@@ -42,10 +42,11 @@ namespace NOE::NOE_WINDOW
 	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
 		const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor)
 	{
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
@@ -54,7 +55,8 @@ namespace NOE::NOE_WINDOW
 		if(monitor == nullptr)
 			glwfMonitor = reinterpret_cast<GLFWmonitor*>(monitor);
 		else
-			glwfMonitor = const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>(monitor->getUnderlying()));
+			glwfMonitor = const_cast<GLFWmonitor*>(
+				reinterpret_cast<const GLFWmonitor*>(monitor->getUnderlying()));
 
 		m_title = title;
 
@@ -102,7 +104,8 @@ namespace NOE::NOE_WINDOW
 		glfwMaximizeWindow(reinterpret_cast<GLFWwindow*>(m_window));
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos, NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate)
+	void NOE::NOE_WINDOW::GLFWWindow::makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos,
+		NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate)
 	{
 		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), 
 			nullptr, xpos, ypos, width, height, refreshRate);
@@ -110,8 +113,9 @@ namespace NOE::NOE_WINDOW
 
 	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(Monitor* handle)
 	{
-		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>
-			(handle->getUnderlying())), 0, 0, handle->getWidth(), handle->getHeight(), handle->getRefreshRate());
+		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), 
+			const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>(handle->getUnderlying())), 
+			0, 0, handle->getWidth(), handle->getHeight(), handle->getRefreshRate());
 	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::update()
@@ -145,7 +149,8 @@ namespace NOE::NOE_WINDOW
 
 		for (int i = 0; i < size; i++)
 		{
-			const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
+			const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
+				(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
 		}
 
 		for (int i = 0; i < size; i++)

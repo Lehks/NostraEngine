@@ -71,7 +71,8 @@ namespace NOE::NOE_WINDOW
 		virtual void closeWindow() override;
 		virtual void minimize() override;
 		virtual void maximize()	override;
-		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
+		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
+			NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
 		virtual void setFullscreen(Monitor* handle) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
