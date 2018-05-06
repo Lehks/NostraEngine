@@ -79,22 +79,24 @@ namespace NOE::NOE_WINDOW
 		virtual void maximize() = 0;
 
 		/**
-		\param handle	The monitor where to make the window windowed.
+		\param xpos			The x-axis position of the window.
+		\param ypos			The y-axis position of the window.
+		\param width		The width of the window.
+		\param height		The height of the window.
+		\param refreshRate	The refresh rate of the window.
 
-		\brief			Makes the window windowed.
+		\brief				Makes the window windowed.
+
+		\details			Each parameter has its own default value.
 		*/
-		virtual void makeWindowed(Monitor* handle) = 0;
+		virtual void makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos, NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate) = 0;
 
 		/**
 		\param handle	The monitor where to make the window full screen.
-		\param state	True if full screen and false if not.
 
 		\brief			Makes the window full screen.
-
-		\details		If state is set to false than the makeWindowed() is called. This results in making
-						exiting the full screen mode and making the window windowed again.
 		*/
-		virtual void setFullscreen(Monitor* handle, NOU::boolean state) = 0;
+		virtual void setFullscreen(Monitor* handle) = 0;
 
 		/**
 		\brief			All operations that are performed in the window like updating images, etc.

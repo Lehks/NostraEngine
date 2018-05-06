@@ -61,11 +61,6 @@ namespace NOE::NOE_WINDOW
 		return m_name;
 	}
 
-	void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying()
-	{
-		return const_cast<void*>(m_handle);
-	}
-
 	const void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying() const
 	{
 		return m_handle;

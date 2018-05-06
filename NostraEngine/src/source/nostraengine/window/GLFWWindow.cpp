@@ -54,7 +54,7 @@ namespace NOE::NOE_WINDOW
 		if(monitor == nullptr)
 			glwfMonitor = reinterpret_cast<GLFWmonitor*>(monitor);
 		else
-			glwfMonitor = reinterpret_cast<GLFWmonitor*>(monitor->getUnderlying());
+			glwfMonitor = const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>(monitor->getUnderlying()));
 
 		m_title = title;
 
@@ -102,28 +102,16 @@ namespace NOE::NOE_WINDOW
 		glfwMaximizeWindow(reinterpret_cast<GLFWwindow*>(m_window));
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::makeWindowed(Monitor* handle)
+	void NOE::NOE_WINDOW::GLFWWindow::makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos, NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate)
 	{
-		int widthMM = 0;
-		int heightMM = 0;
-
-		glfwGetMonitorPhysicalSize(reinterpret_cast<GLFWmonitor*>(handle->getUnderlying()), &widthMM, &heightMM);
-
 		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), 
-			nullptr, widthMM, heightMM, 680, 680, handle->getRefreshRate());
+			nullptr, xpos, ypos, width, height, refreshRate);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(Monitor* handle, NOU::boolean state)
+	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(Monitor* handle)
 	{
-		if (state)
-		{
-			glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), reinterpret_cast<GLFWmonitor*>
-				(handle->getUnderlying()), 0, 0, handle->getWidth(), handle->getHeight(), handle->getRefreshRate());
-		}
-		else
-		{
-			makeWindowed(handle);
-		}
+		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>
+			(handle->getUnderlying())), 0, 0, handle->getWidth(), handle->getHeight(), handle->getRefreshRate());
 	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::update()

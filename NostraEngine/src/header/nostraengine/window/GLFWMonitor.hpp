@@ -77,7 +77,6 @@ namespace NOE::NOE_WINDOW
 		virtual NOU::sizeType getGreenBits() const override;
 		virtual NOU::sizeType getBlueBits() const override;
 		virtual const NOU::NOU_DAT_ALG::String8& getName() const override;
-		virtual void* getUnderlying() override;
 		virtual const void* getUnderlying() const override;
 	};
 }
