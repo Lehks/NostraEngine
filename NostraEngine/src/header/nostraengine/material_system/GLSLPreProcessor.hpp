@@ -20,6 +20,10 @@ namespace NOE::NOE_MATSYS
     {
     private:
 
+    /**
+    All the Following constants and structs are specific keywords used in the pre-processor directives
+    */
+
     const NOU::char8                PREPROCESSOR_PREFIX     = '#';
     
     const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_INCLUDE    = "include";
@@ -28,18 +32,51 @@ namespace NOE::NOE_MATSYS
     const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_ELSE       = "else";
     const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_ENDIF      = "endif";
 
+    const NOU::char8 TOKEN_SEPERATOR[2] = {';', '{'};
+
+    
+
+    enum class State
+	{
+		DEFAULT,
+        PRE_PROCESSOR_DIRECTIVE,
+        DEFINE,
+        INCLUDE,
+        IFNDEF
+	};
+
+    State m_currentState;
+    NOU::NOU_DAT_ALG::String8 m_currentToken;
+
     public:
         /**
         \brief This is the constructor of the GLSL Preprocessor
         \param src a pointer to the source File
         \param trg a pointer to the target File (Where the output will be)
         */
-        GLSLPreProcessor(NOU::NOU_FILE_MNGT::File *src = nullptr, NOU::NOU_FILE_MNGT::File *trg = nullptr);
+        GLSLPreProcessor(NOU::NOU_FILE_MNGT::File *src, NOU::NOU_FILE_MNGT::File *trg = nullptr);
 
         /**
         \brief starts the preprocessor
         \param args if any Arguments have to be passed they will be written in this Vector
         */
         virtual void start(NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> args = NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>()) override;
+
+    private:
+        class CodeIterator
+        {
+            private:
+                const NOU::NOU_DAT_ALG::String8 &m_code;
+                NOU::uint64 m_pos;
+                NOU::NOU_DAT_ALG::String8 m_currToken;
+
+            public:
+                CodeIterator(const NOU::NOU_DAT_ALG::String8 &code);
+                
+                void reset();
+                NOU::boolean hasNext();
+                const NOU::NOU_DAT_ALG::String8 &next();
+                const NOU::NOU_DAT_ALG::String8 &getCurrToken();
+        };
     };
 }

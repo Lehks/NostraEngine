@@ -4,10 +4,50 @@
 namespace NOE::NOE_MATSYS
 {
     GLSLPreProcessor::GLSLPreProcessor(NOU::NOU_FILE_MNGT::File *src, NOU::NOU_FILE_MNGT::File *trg):
-        PreProcessor(src, trg){ }
+        PreProcessor(src, trg),
+        m_currentState(State::DEFAULT) { }
 
     void GLSLPreProcessor::start(NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>)
     {
         
     }
+
+    GLSLPreProcessor::CodeIterator::CodeIterator(const NOU::NOU_DAT_ALG::String8 &code):
+    m_code(code),
+    m_pos(0){ }
+
+
+
+
+
+
+
+
+
+    // +---------------+
+    // | CODE ITERATOR |
+    // +---------------+
+
+    void GLSLPreProcessor::CodeIterator::reset()
+    {
+        m_pos = 0;
+        m_currToken = NOU::NOU_DAT_ALG::String8("");
+    }
+
+    const NOU::NOU_DAT_ALG::String8 &GLSLPreProcessor::CodeIterator::getCurrToken()
+    {
+        return m_currToken;
+    }
+
+    NOU::boolean GLSLPreProcessor::CodeIterator::hasNext()
+    {
+        return false;
+    }
+
+    const NOU::NOU_DAT_ALG::String8 &GLSLPreProcessor::CodeIterator::next()
+    {
+        return NOU::NOU_DAT_ALG::String8("");
+    }
+
+
 }
