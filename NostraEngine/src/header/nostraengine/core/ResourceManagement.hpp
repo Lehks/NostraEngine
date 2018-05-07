@@ -450,6 +450,12 @@ namespace NOE::NOE_CORE
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_UPDATE_CACHE;
 
 		/**
+		\brief The SQL code to create the resources database if it does not exist yet. This is used by 
+		       initialize().
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_CREATE_TABLE;
+
+		/**
 		\brief The database that is used by the resource manager.
 		*/
 		NOE::NOE_UTILITY::sqlite::Database m_database;
@@ -487,7 +493,7 @@ namespace NOE::NOE_CORE
 		\brief Constructs a new instance that uses the passed file as database.
 		*/
 		//no default argument possible, DATABASE_PATH is not defined yet
-		ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath);
+		explicit ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath);
 
 		/**
 		\brief Constructs a new instance that uses the file with the path \p DATABASE_PATH as database.

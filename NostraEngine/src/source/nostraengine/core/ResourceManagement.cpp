@@ -227,7 +227,12 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE =
 														"UPDATE Resources SET cached = ? WHERE ID = ?;";
 
-	ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_CREATE_TABLE =
+		"CREATE TABLE IF NOT EXISTS Resources(ID INTEGER NOT NULL PRIMARY KEY, path varchar(1024) NOT NULL "
+		"UNIQUE CHECK(path NOT LIKE cached), cached varchar(1024) CHECK(cached NOT LIKE 'NULL'), "
+		"type varchar(30) NOT NULL)";
+	
+		ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
 		m_database(databasePath)
 	{}
 
@@ -379,7 +384,15 @@ namespace NOE::NOE_CORE
 
 	void ResourceManager::initalize()
 	{
+		NOU::NOU_FILE_MNGT::File databaseFile(m_database.getPath());
+
+		if(!databaseFile.exists())
+			databaseFile.createFile();
+
 		m_database.open(); ///\todo add error handling
+
+		auto result = m_database.execute(SQL_CREATE_TABLE);
+		result.next();
 	}
 
 	void ResourceManager::shutdown()
