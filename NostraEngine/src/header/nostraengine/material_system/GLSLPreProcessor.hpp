@@ -20,6 +20,9 @@ namespace NOE::NOE_MATSYS
     {
     private:
 
+    const NOU::char8 PREPROCESSOR_PREFIX = '#';
+    const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_INCLUDE = "include";
+
     public:
         /**
         \brief This is the constructor of the GLSL Preprocessor
