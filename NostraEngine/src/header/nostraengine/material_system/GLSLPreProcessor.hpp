@@ -20,8 +20,13 @@ namespace NOE::NOE_MATSYS
     {
     private:
 
-    const NOU::char8 PREPROCESSOR_PREFIX = '#';
-    const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_INCLUDE = "include";
+    const NOU::char8                PREPROCESSOR_PREFIX     = '#';
+    
+    const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_INCLUDE    = "include";
+    const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_DEFINE     = "define";
+    const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_IFNDEF     = "ifndef";
+    const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_ELSE       = "else";
+    const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_ENDIF      = "endif";
 
     public:
         /**
