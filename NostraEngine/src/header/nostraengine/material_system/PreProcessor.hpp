@@ -40,7 +40,7 @@ namespace NOE::NOE_MATSYS
         /**
         \brief starts the preprocessor
         */
-        virtual void start(NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> args) = 0;
+        virtual void start(NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> args = NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>()) = 0;
         
         /**
         \brief sets the sourcefile. ("What will be processed?")
