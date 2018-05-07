@@ -26,8 +26,8 @@ namespace NOE::NOE_MATSYS
     class NOU_CLASS PreProcessor
     {
     private:
-        File *m_source;
-        File *m_target;
+        NOU::NOU_FILE_MNGT::File *m_source;
+        NOU::NOU_FILE_MNGT::File *m_target;
     
     public:
         /**
@@ -35,36 +35,36 @@ namespace NOE::NOE_MATSYS
         \param src the source File
         \param trg the target File
         */
-        PreProcessor(const File *src = nullptr, const File *trg = nullptr);
+        PreProcessor(NOU::NOU_FILE_MNGT::File *src = nullptr, NOU::NOU_FILE_MNGT::File *trg = nullptr);
 
         /**
         \brief starts the preprocessor
         */
-        virtual void start() = 0;
+        virtual void start(NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> args) = 0;
         
         /**
         \brief sets the sourcefile. ("What will be processed?")
         \param src the sourcefile
         */
-        void setSource(const File *src);
+        void setSource(const NOU::NOU_FILE_MNGT::File *src);
 
         /**
         \brief sets the targetfile ("Where will the procsessed file be stored?")
         \param trg the TargetFile
         */
-        void setTarget(const File *trg);
+        void setTarget(NOU::NOU_FILE_MNGT::File *trg);
 
         /**
         \brief returns the assigned sourceFile
         \return the assigned Targetfile
         */
-        const File *getSource();
+        NOU::NOU_FILE_MNGT::File *getSource();
 
         /**
         \brief returns the assigned Targetfile
         \return the assigned Targetfile
         */
-        const File *getTarget();
-    }
+        NOU::NOU_FILE_MNGT::File *getTarget();
+    };
 }
 #endif

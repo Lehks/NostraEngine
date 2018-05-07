@@ -2,30 +2,30 @@
 
 namespace NOE::NOE_MATSYS
 {
-    PreProcessor::PreProcessor(const File *src, const File *trg):
+    PreProcessor::PreProcessor(NOU::NOU_FILE_MNGT::File *src, NOU::NOU_FILE_MNGT::File *trg):
     m_source(src),
     m_target(trg)
     {
 
     }
 
-    void PreProcessor::setSource(const File *src)
+    void PreProcessor::setSource(const NOU::NOU_FILE_MNGT::File *src)
     {
-        m_source = src;
+        m_source = const_cast<NOU::NOU_FILE_MNGT::File*>(src);
     }
 
-    void PreProcessor::setTarget(const File *trg)
+    void PreProcessor::setTarget(NOU::NOU_FILE_MNGT::File *trg)
     {
-        m_target = trg;
+        m_target = const_cast<NOU::NOU_FILE_MNGT::File*>(trg);
     }
 
-    const File *getSource()
+    NOU::NOU_FILE_MNGT::File *PreProcessor::getSource()
     {
         return m_source;
     }
 
-    const File *PreProcessor::getTarget()
+    NOU::NOU_FILE_MNGT::File *PreProcessor::getTarget()
     {
-        return m_targets;
+        return m_target;
     }
 }

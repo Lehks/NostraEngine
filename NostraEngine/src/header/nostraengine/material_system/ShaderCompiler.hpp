@@ -3,6 +3,7 @@
 
 #include "nostraengine/core/StdIncludes.hpp"
 #include "nostrautils/NostraUtils.hpp"
+#include "nostraengine/material_system/PreProcessor.hpp"
 
 /**
 \file material_system/ShaderCompiler.hpp
@@ -46,7 +47,7 @@ namespace NOE::NOE_MATSYS
         /**
         \brief the used Preprocessor
         */
-        PreProcessor *m_preprocessor;
+        NOE::NOE_MATSYS::PreProcessor *m_preprocessor;
 
     public: 
         /**
@@ -72,19 +73,19 @@ namespace NOE::NOE_MATSYS
         \brief sets the source File that will be compiled later
         \param src a File object contianing the path to the sourcefile
         */
-        void setSource(const NOU::NOU_FILE_MNGT::File *src);
+        void setSource(NOU::NOU_FILE_MNGT::File *src);
 
         /**
         \brief returns a File object containing the compiled shader for the corresponding ShaderLang
         \return a file object containgin the compiled shader 
         */
-        const NOU::NOU_FILE_MNGT::File& getTarget();
+        NOU::NOU_FILE_MNGT::File& getTarget();
 
         /**
         \brief sets the target destination File that will be compiled to later
         \param trg a File object contianing the path to the target file
         */
-        void setTarget(const NOU::NOU_FILE_MNGT::File *trg);
+        void setTarget(NOU::NOU_FILE_MNGT::File *trg);
 
         /**
         \brief returns a File object containing the Source file
@@ -96,18 +97,18 @@ namespace NOE::NOE_MATSYS
         \brief sets the destination of the preprocessed file
         \param pp the File object containing the preprocessed file
         */
-        void setPreProcessedTarget(const NOU::NOU_FILE_MNGT::File *pp);
+        void setPreProcessedTarget(NOU::NOU_FILE_MNGT::File *pp);
 
         /**
         \brief gets the destination of the preprocessed file
         \return the File object containing the preprocessed file
         */
-       const NOU::NOU_FILE_MNGT::File *getPreProcessedTarget();
+       NOU::NOU_FILE_MNGT::File *getPreProcessedTarget();
         /**
         \brief sets the PreProcessor that will be used in the compile process
         \param pp an object that implements a preprocessor
         */
-       void setPreProcessor(PreProcessor pp);
+       void setPreProcessor(PreProcessor *pp);
     };
 }
 #endif
