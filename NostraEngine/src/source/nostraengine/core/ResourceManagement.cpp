@@ -58,10 +58,19 @@ namespace NOE::NOE_CORE
 				return;
 			}
 
-			NOU::int32 count = row->valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
+			
+			if (row->isValid())
+			{
+				NOU::int32 count = row->valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
 
-			if (count == 0)
+				if (count == 0)
+					m_id = INVALID_ID;
+			}
+			else
+			{
 				m_id = INVALID_ID;
+				return;
+			}
 		}
 	}
 
