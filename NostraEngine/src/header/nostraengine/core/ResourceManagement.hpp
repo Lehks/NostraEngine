@@ -24,7 +24,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The type of a resource ID.
 		*/
-		using ResourceID = NOU::int32;
+		using ID = NOU::int32;
 
 		/**
 		\brief The type of a resource type.
@@ -34,7 +34,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief An ID that is invalid. An ID with this type must never be stored in a database.
 		*/
-		static constexpr ResourceID INVALID_ID = 0;
+		static constexpr ID INVALID_ID = 0;
 
 		/**
 		\brief A generic SQL command that gathers the value of an attribute of an object with a specified ID. 
@@ -68,7 +68,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The ID of the resource.
 		*/
-		ResourceID m_id;
+		ID m_id;
 
 		/**
 		\param attribute The name of the attribute to get the value from.
@@ -91,14 +91,14 @@ namespace NOE::NOE_CORE
 		the original ID is created afterwards, the instances of this class that were before that will NOT be
 		updated.
 		*/
-		ResourceMetadata(ResourceID id = INVALID_ID);
+		ResourceMetadata(ID id = INVALID_ID);
 
 		/**
 		\return The ID of the resource.
 
 		\brief Returns the ID of the resource.
 		*/
-		ResourceID getID() const;
+		ID getID() const;
 
 		/**
 		\return The type of the resource.
@@ -170,7 +170,7 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new instance.
 		*/
-		Resource(ResourceMetadata::ResourceID id, const NOU::NOU_DAT_ALG::StringView8& name);
+		Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::StringView8& name);
 
 		/**
 		\return The meta data of the resource.
@@ -383,7 +383,7 @@ namespace NOE::NOE_CORE
 		\note
 		A resource that has been loaded, needs to be closed with close() after it is not used anymore.
 		*/
-		Resource* load(ResourceMetadata::ResourceID id);
+		Resource* load(ResourceMetadata::ID id);
 
 		/**
 		\param resource The resource to store.
@@ -418,7 +418,7 @@ namespace NOE::NOE_CORE
 		\brief Returns whether the loader can load and store the resource with the passed ID. If the resource
 		       does not exist, false is returned.
 		*/
-		virtual NOU::boolean isResourceValid(typename ResourceMetadata::ResourceID id) const = 0;
+		virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const = 0;
 	};
 
 	class NOU_CLASS ResourceManager final
@@ -597,7 +597,7 @@ namespace NOE::NOE_CORE
 		over multiple executions (if a resource is removed and then added again, the ID may, and most likely 
 		will, change).
 		*/
-		typename ResourceMetadata::ResourceID addResource(const NOU::NOU_FILE_MNGT::Path &path, 
+		typename ResourceMetadata::ID addResource(const NOU::NOU_FILE_MNGT::Path &path, 
 			const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache = false,
 			const NOU::NOU_FILE_MNGT::Path &cachePath = "./");
 
@@ -613,7 +613,7 @@ namespace NOE::NOE_CORE
 		This method does not delete the files that were associated with that resource (that is the source and
 		a possible cache file).
 		*/
-		NOU::boolean removeResource(typename ResourceMetadata::ResourceID id);
+		NOU::boolean removeResource(typename ResourceMetadata::ID id);
 
 		/**
 		\return The amount of resources that were removed.
@@ -644,7 +644,7 @@ namespace NOE::NOE_CORE
 		- ErrorCodes::RESOURCE_NOT_PRESENT: A resource with the passed ID does not exist.
 		(Note that this list does not include errors that may be pushed be e.g. an underlying container)
 		*/
-		NOU::boolean cache(typename ResourceMetadata::ResourceID id, NOU::boolean enableCache,
+		NOU::boolean cache(typename ResourceMetadata::ID id, NOU::boolean enableCache,
 			const NOU::NOU_FILE_MNGT::Path &path = "./");
 
 		/**
@@ -663,7 +663,7 @@ namespace NOE::NOE_CORE
 		If the resource exists but is not cached, this method will not do anything (but it will still return 
 		true).
 		*/
-		NOU::boolean deleteCache(typename ResourceMetadata::ResourceID id);
+		NOU::boolean deleteCache(typename ResourceMetadata::ID id);
 
 		/**
 		\return A list that contains the meta data of all resources in the database.
@@ -680,7 +680,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the meta data of a single resource.
 		*/
-		ResourceMetadata getMetadata(typename ResourceMetadata::ResourceID id) const;
+		ResourceMetadata getMetadata(typename ResourceMetadata::ID id) const;
 	
 		void initalize();
 

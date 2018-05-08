@@ -3,7 +3,7 @@
 
 namespace NOE::NOE_CORE
 {
-	constexpr ResourceMetadata::ResourceID ResourceMetadata::INVALID_ID;
+	constexpr ResourceMetadata::ID ResourceMetadata::INVALID_ID;
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_GENERIC = 
 																"SELECT %s FROM Resources WHERE ID = ?;";
@@ -36,7 +36,7 @@ namespace NOE::NOE_CORE
 			return row.valueAs(0, NOE::NOE_UTILITY::sqlite::STRING());
 	}
 
-	ResourceMetadata::ResourceMetadata(ResourceID id) :
+	ResourceMetadata::ResourceMetadata(ID id) :
 		m_id(id)
 	{
 		//Check if the ID even exists in the database. If not, set it to INVALID_ID
@@ -74,7 +74,7 @@ namespace NOE::NOE_CORE
 		}
 	}
 
-	typename ResourceMetadata::ResourceID ResourceMetadata::getID() const
+	typename ResourceMetadata::ID ResourceMetadata::getID() const
 	{
 		return m_id;
 	}
@@ -125,7 +125,7 @@ namespace NOE::NOE_CORE
 
 
 
-	Resource::Resource(ResourceMetadata::ResourceID id, const NOU::NOU_DAT_ALG::StringView8 &name) :
+	Resource::Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::StringView8 &name) :
 		m_metadata(id),
 		m_name(name)
 	{}
@@ -177,7 +177,7 @@ namespace NOE::NOE_CORE
 		return m_enableCaching;
 	}
 
-	Resource* ResourceLoader::load(ResourceMetadata::ResourceID id)
+	Resource* ResourceLoader::load(ResourceMetadata::ID id)
 	{
 		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
 
@@ -278,7 +278,7 @@ namespace NOE::NOE_CORE
 		}
 	}
 
-	typename ResourceMetadata::ResourceID ResourceManager::addResource(const NOU::NOU_FILE_MNGT::Path &path,
+	typename ResourceMetadata::ID ResourceManager::addResource(const NOU::NOU_FILE_MNGT::Path &path,
 		const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache,
 		const NOU::NOU_FILE_MNGT::Path &cachePath)
 	{
@@ -299,7 +299,7 @@ namespace NOE::NOE_CORE
 			return row.lastRowId();
 	}
 
-	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ResourceID id)
+	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ID id)
 	{
 		auto stmt = getUnderlying().execute(SQL_REMOVE);
 		stmt.bind(id);
@@ -329,7 +329,7 @@ namespace NOE::NOE_CORE
 		return counter;
 	}
 
-	NOU::boolean ResourceManager::cache(typename ResourceMetadata::ResourceID id, NOU::boolean enableCache,
+	NOU::boolean ResourceManager::cache(typename ResourceMetadata::ID id, NOU::boolean enableCache,
 		const NOU::NOU_FILE_MNGT::Path &path)
 	{
 		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
@@ -348,7 +348,7 @@ namespace NOE::NOE_CORE
 		return row.affectedRows() > 0;
 	}
 
-	NOU::boolean ResourceManager::deleteCache(typename ResourceMetadata::ResourceID id)
+	NOU::boolean ResourceManager::deleteCache(typename ResourceMetadata::ID id)
 	{
 		ResourceMetadata metadata = ResourceManager::get().getMetadata(id);
 
@@ -365,7 +365,7 @@ namespace NOE::NOE_CORE
 	NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ResourceManager::listMetadata()
 	{
 		//Check if the sizeof ID and int32 match; otherwise stringToInt32() needs to be changed
-		static_assert(sizeof(ResourceMetadata::ResourceID) == sizeof(NOU::int32));
+		static_assert(sizeof(ResourceMetadata::ID) == sizeof(NOU::int32));
 
 		auto result = getUnderlying().execute(SQL_LIST_IDS);
 
@@ -377,7 +377,7 @@ namespace NOE::NOE_CORE
 
 			if (result.hasNext())
 			{
-				ResourceMetadata::ResourceID id = row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
+				ResourceMetadata::ID id = row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
 
 				ret.push(ResourceMetadata(id));
 			}
@@ -386,7 +386,7 @@ namespace NOE::NOE_CORE
 		return ret;
 	}
 
-	ResourceMetadata ResourceManager::getMetadata(typename ResourceMetadata::ResourceID id) const
+	ResourceMetadata ResourceManager::getMetadata(typename ResourceMetadata::ID id) const
 	{
 		return ResourceMetadata(id);
 	}
