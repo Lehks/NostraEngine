@@ -58,7 +58,7 @@ namespace NOE::NOE_MATSYS
     /**
     \brief The keyword for the indiviudal tokens that get processed
     */
-    const NOU::char8 TOKEN_SEPERATOR[2] = {';', '{'};
+    const static NOU::char8 TOKEN_SEPERATOR[2] = {';', '{'};
 
     
     /**
@@ -101,6 +101,9 @@ namespace NOE::NOE_MATSYS
         \param args if any Arguments have to be passed they will be written in this Vector
         */
         virtual void start(NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> args = NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>()) override;
+
+        
+
 
     private:
 

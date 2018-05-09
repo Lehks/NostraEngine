@@ -12,9 +12,7 @@ namespace NOE::NOE_MATSYS
         
     }
 
-    GLSLPreProcessor::CodeIterator::CodeIterator(const NOU::NOU_DAT_ALG::String8 &code):
-    m_code(code),
-    m_pos(0){ }
+
 
 
 
@@ -27,6 +25,10 @@ namespace NOE::NOE_MATSYS
     // +---------------+
     // | CODE ITERATOR |
     // +---------------+
+
+    GLSLPreProcessor::CodeIterator::CodeIterator(const NOU::NOU_DAT_ALG::String8 &code):
+    m_code(code),
+    m_pos(0){ }
 
     void GLSLPreProcessor::CodeIterator::reset()
     {
@@ -41,7 +43,12 @@ namespace NOE::NOE_MATSYS
 
     NOU::boolean GLSLPreProcessor::CodeIterator::hasNext()
     {
-        return false;
+        NOU::boolean b = false;
+        for(NOU::sizeType i = 0; i < sizeof(TOKEN_SEPERATOR)/ sizeof(TOKEN_SEPERATOR[0]); i++) 
+        {
+
+        }
+        return b;
     }
 
     const NOU::NOU_DAT_ALG::String8 &GLSLPreProcessor::CodeIterator::next()

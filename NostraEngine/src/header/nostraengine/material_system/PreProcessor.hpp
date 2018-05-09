@@ -26,8 +26,19 @@ namespace NOE::NOE_MATSYS
     class NOU_CLASS PreProcessor
     {
     private:
+        /**
+        \brief the outputfile
+        */
+        NOU::NOU_FILE_MNGT::File  *m_target;
+
+        /**
+        \brief the sourcecode
+        */
+        NOU::NOU_DAT_ALG::String8 *m_code;
+        /**
+        \brief the sourcefile (nullptr if code was never read from a file)
+        */
         NOU::NOU_FILE_MNGT::File *m_source;
-        NOU::NOU_FILE_MNGT::File *m_target;
     
     public:
         /**
@@ -36,6 +47,12 @@ namespace NOE::NOE_MATSYS
         \param trg the target File
         */
         PreProcessor(NOU::NOU_FILE_MNGT::File *src = nullptr, NOU::NOU_FILE_MNGT::File *trg = nullptr);
+
+        /** a constructor of the PreProcessor
+        \param src A string containing the whole sourcecode
+        \param trg the target file
+        */
+        PreProcessor(NOU::NOU_DAT_ALG::String8 *src = nullptr, NOU::NOU_FILE_MNGT *trg = nullptr);
 
         /**
         \brief starts the preprocessor
@@ -65,6 +82,19 @@ namespace NOE::NOE_MATSYS
         \return the assigned Targetfile
         */
         NOU::NOU_FILE_MNGT::File *getTarget();
+
+        /**
+        \brief setter for the code
+        \param code the sourcecode
+        */
+        void setCode(const NOU::NOU_DAT_ALG::String8 *code);
+
+        /**
+        \brief getter for the code
+        \return A string containing the whole source code
+        */
+        const String8 *getCode();
+        
     };
 }
 #endif
