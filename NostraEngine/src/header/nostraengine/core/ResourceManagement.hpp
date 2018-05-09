@@ -82,11 +82,6 @@ namespace NOE::NOE_CORE
 		using ID = NOU::int32;
 
 		/**
-		\brief The type of a resource type.
-		*/
-		using ResourceType = NOU::NOU_DAT_ALG::String8;
-
-		/**
 		\brief An ID that is invalid. An ID with this type must never be stored in a database.
 		*/
 		static constexpr ID INVALID_ID = 0;
@@ -123,7 +118,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The ID of the resource.
 		*/
-		ID m_id;
+		mutable ID m_id; //mutable for isValid()
 
 		/**
 		\param attribute The name of the attribute to get the value from.
@@ -135,6 +130,7 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::NOU_DAT_ALG::String8 getAttribute(const NOU::NOU_DAT_ALG::StringView8 &attribute) const;
 
+		NOU::boolean checkIfExsists() const;
 	public:
 		/**
 		\param id The ID.
@@ -510,6 +506,10 @@ namespace NOE::NOE_CORE
 		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_CREATE_TABLE;
 
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_TABLENAME_RESOURCES;
+													   
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_TABLENAME_TYPES;
+
 		/**
 		\brief The database that is used by the resource manager.
 		*/
@@ -540,6 +540,9 @@ namespace NOE::NOE_CORE
 		\brief Deallocates the passed loader.
 		*/
 		static void deallocateResourceLoader(ResourceLoader *loader);
+
+		//an ID should always fit into int64
+		NOU::boolean removeRow(NOU::int64 id, const NOU::NOU_DAT_ALG::StringView8 &table);
 
 	public:
 		/**
@@ -653,7 +656,7 @@ namespace NOE::NOE_CORE
 		will, change).
 		*/
 		typename ResourceMetadata::ID addResource(const NOU::NOU_FILE_MNGT::Path &path, 
-			const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache = false,
+			typename ResourceType::ID type, NOU::boolean enableCache = false,
 			const NOU::NOU_FILE_MNGT::Path &cachePath = "./");
 
 		/**
@@ -737,6 +740,17 @@ namespace NOE::NOE_CORE
 		*/
 		ResourceMetadata getMetadata(typename ResourceMetadata::ID id) const;
 	
+		typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name);
+
+		typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name, 
+			const NOU::NOU_DAT_ALG::StringView8 &description);
+
+		NOU::boolean removeType(typename ResourceType::ID id);
+
+		ResourceType getType(typename ResourceType::ID id) const;
+
+		NOU::NOU_DAT_ALG::Vector<ResourceType> listTypes() const;
+
 		void initalize();
 
 		void shutdown();

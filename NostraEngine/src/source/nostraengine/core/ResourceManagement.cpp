@@ -126,7 +126,7 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_GENERIC = 
 																"SELECT %s FROM Resources WHERE ID = ?;";
 
-	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_TYPE_NAME = "type";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_TYPE_NAME = "TypesID";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_PATH_NAME = "path";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_CACHED_PATH_NAME = "cached";
 
@@ -138,7 +138,9 @@ namespace NOE::NOE_CORE
 	{
 		if (!isValid())
 		{
-			return "NULL";
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				NOU::NOU_CORE::ErrorCodes::INVALID_OBJECT, "A type with that ID does not exist.");
+			return "__INVALID_TYPE_ATTRIBUTE__";
 		}
 
 		NOU::char8 sql[256] = { 0 };
@@ -152,6 +154,35 @@ namespace NOE::NOE_CORE
 
 		if (!row.isNull(0))
 			return row.valueAs(0, NOE::NOE_UTILITY::sqlite::STRING());
+	}
+
+	NOU::boolean ResourceMetadata::checkIfExsists() const
+	{
+		auto stmt = ResourceManager::get().getUnderlying().execute(SQL_EXISTS_RESOURCE);
+		stmt.bind(m_id);
+
+		NOE::NOE_UTILITY::sqlite::Row *row;
+
+		if (stmt.hasNext())
+			row = &stmt.next();
+		else
+			return false;
+
+		if (row->isValid())
+		{
+			NOU::int32 count = row->valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
+
+			if (count == 0) //no type of that ID was found
+			{
+				return false;
+			}
+		}
+		else //the row is not valid
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	ResourceMetadata::ResourceMetadata(ID id) :
@@ -197,9 +228,24 @@ namespace NOE::NOE_CORE
 		return m_id;
 	}
 
-	typename ResourceMetadata::ResourceType ResourceMetadata::getType() const
+	ResourceType ResourceMetadata::getType() const
 	{
-		return getAttribute(SQL_TYPE_NAME);
+		if (!isValid())
+		{
+			return ResourceType();
+		}
+
+		NOU::char8 sql[256] = { 0 };
+		sprintf(sql, SQL_GENERIC.rawStr(), SQL_TYPE_NAME.rawStr());
+
+		auto stmt = ResourceManager::get().getUnderlying().execute(sql);
+		stmt.bind(m_id);
+
+		//there should always be a next
+		NOE::NOE_UTILITY::sqlite::Row &row = stmt.next();
+
+		if (!row.isNull(0))
+			return ResourceType(row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER()));
 	}
 
 	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getPath() const
@@ -233,7 +279,22 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceMetadata::isValid() const
 	{
-		return m_id != 0;
+		if (m_id == INVALID_ID)
+			return false;
+		else
+		{
+			if (checkIfExsists())
+			{
+				//it exists
+				return true;
+			}
+			else
+			{
+				//it does not exist
+				m_id = INVALID_ID;
+				return false;
+			}
+		}
 	}
 
 	ResourceMetadata::operator NOU::boolean() const
@@ -338,28 +399,47 @@ namespace NOE::NOE_CORE
 
 
 
-	void ResourceManager::deallocateResourceLoader(ResourceLoader *loader)
-	{
-		delete loader;
-	}
 
 	NOU::NOU_FILE_MNGT::Path ResourceManager::DATABASE_PATH = "./Resources.db";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_LIST_IDS = "SELECT ID FROM Resources;";
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_RESOURCE =
-										"INSERT INTO Resources(path, type, cached) VALUES(?, ?, ?)";
+		"INSERT INTO Resources(path, type, TypesID) VALUES(?, ?, ?)";
 
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE = "DELETE FROM Resources WHERE ID = ?;";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE = "DELETE %s Resources WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE =
-														"UPDATE Resources SET cached = ? WHERE ID = ?;";
+		"UPDATE Resources SET TypesID = ? WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_CREATE_TABLE =
-		"CREATE TABLE IF NOT EXISTS Resources(ID INTEGER NOT NULL PRIMARY KEY, path varchar(1024) NOT NULL "
-		"UNIQUE CHECK(path NOT LIKE cached), cached varchar(1024) CHECK(cached NOT LIKE 'NULL'), "
-		"type varchar(30) NOT NULL)";
-	
-		ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
+		"CREATE TABLE IF NOT EXISTS Resources (ID INTEGER NOT NULL, "
+		"path TEXT NOT NULL UNIQUE CHECK(path NOT LIKE cached), "
+		"cached TEXT CHECK(cached NOT LIKE 'NULL'), TypesID INTEGER NOT NULL, PRIMARY KEY (ID));";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_TABLENAME_RESOURCES = "Resources";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_TABLENAME_TYPES = "Types";
+
+	void ResourceManager::deallocateResourceLoader(ResourceLoader *loader)
+	{
+		delete loader;
+	}
+
+	NOU::boolean ResourceManager::removeRow(NOU::int64 id, const NOU::NOU_DAT_ALG::StringView8 &table)
+	{
+		NOU::char8 sql[256] = { 0 };
+		sprintf(sql, SQL_REMOVE.rawStr(), table);
+
+
+		auto stmt = getUnderlying().execute(sql);
+		stmt.bind(id);
+
+		NOE::NOE_UTILITY::sqlite::Row &row = stmt.next();
+
+		return row.affectedRows() > 0;
+	}
+
+	ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
 		m_database(databasePath)
 	{}
 
@@ -397,13 +477,13 @@ namespace NOE::NOE_CORE
 	}
 
 	typename ResourceMetadata::ID ResourceManager::addResource(const NOU::NOU_FILE_MNGT::Path &path,
-		const typename ResourceMetadata::ResourceType &type, NOU::boolean enableCache,
+		typename ResourceType::ID type, NOU::boolean enableCache,
 		const NOU::NOU_FILE_MNGT::Path &cachePath)
 	{
 		auto stmt = getUnderlying().execute(SQL_ADD_RESOURCE);
 
 		stmt.bind(path.getRelativePath().rawStr());
-		stmt.bind(type.rawStr());
+		stmt.bind(type);
 		if (enableCache)
 			stmt.bind(cachePath.getRelativePath().rawStr());
 		else
@@ -419,12 +499,7 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ID id)
 	{
-		auto stmt = getUnderlying().execute(SQL_REMOVE);
-		stmt.bind(id);
-
-		NOE::NOE_UTILITY::sqlite::Row &row = stmt.next();
-
-		return row.affectedRows() > 0;
+		return removeRow(id, SQL_TABLENAME_RESOURCES);
 	}
 
 	NOU::uint32 ResourceManager::cleanupResources()
@@ -482,18 +557,15 @@ namespace NOE::NOE_CORE
 
 	NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ResourceManager::listMetadata()
 	{
-		//Check if the sizeof ID and int32 match; otherwise stringToInt32() needs to be changed
-		static_assert(sizeof(ResourceMetadata::ID) == sizeof(NOU::int32));
-
 		auto result = getUnderlying().execute(SQL_LIST_IDS);
 
 		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ret;
 
-		while(result.hasNext())
+		while(result.hasNext() && result.isValid())
 		{
 			NOE::NOE_UTILITY::sqlite::Row &row = result.next();
 
-			if (result.hasNext())
+			if (result.hasNext() && result.isValid())
 			{
 				ResourceMetadata::ID id = row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
 
@@ -509,13 +581,34 @@ namespace NOE::NOE_CORE
 		return ResourceMetadata(id);
 	}
 
+	typename ResourceType::ID ResourceManager::addType(const NOU::NOU_DAT_ALG::StringView8 &name)
+	{
+
+	}
+
+	typename ResourceType::ID ResourceManager::addType(const NOU::NOU_DAT_ALG::StringView8 &name, 
+		const NOU::NOU_DAT_ALG::StringView8 &description)
+	{
+
+	}
+
+	NOU::boolean ResourceManager::removeType(typename ResourceType::ID id)
+	{
+		return removeRow(id, SQL_TABLENAME_TYPES);
+	}
+
+	ResourceType ResourceManager::getType(typename ResourceType::ID id) const
+	{
+
+	}
+
+	NOU::NOU_DAT_ALG::Vector<ResourceType> ResourceManager::listTypes() const
+	{
+
+	}
+
 	void ResourceManager::initalize()
 	{
-		NOU::NOU_FILE_MNGT::File databaseFile(m_database.getPath());
-
-		if(!databaseFile.exists())
-			databaseFile.createFile();
-
 		m_database.open(); ///\todo add error handling
 
 		auto result = m_database.execute(SQL_CREATE_TABLE);
