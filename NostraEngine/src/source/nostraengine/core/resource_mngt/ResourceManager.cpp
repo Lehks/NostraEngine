@@ -5,19 +5,34 @@ namespace NOE::NOE_CORE
 {
 	NOU::NOU_FILE_MNGT::Path ResourceManager::DATABASE_PATH = "./Resources.db";
 
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_LIST_IDS = "SELECT ID FROM Resources;";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_LIST_IDS = 
+		"SELECT ID FROM %s;";
+
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_RESOURCE =
 		"INSERT INTO Resources(path, type, TypesID) VALUES(?, ?, ?)";
 
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE = "DELETE %s Resources WHERE ID = ?;";
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_TYPE =
+		"INSERT INTO Types(name, description) VALUES (?, ?)";
+
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE = 
+		"DELETE %s Resources WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE =
-		"UPDATE Resources SET TypesID = ? WHERE ID = ?;";
+		"UPDATE Resources SET cached = ? WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_CREATE_TABLE =
-		"CREATE TABLE IF NOT EXISTS Resources (ID INTEGER NOT NULL, "
-		"path TEXT NOT NULL UNIQUE CHECK(path NOT LIKE cached), "
-		"cached TEXT CHECK(cached NOT LIKE 'NULL'), TypesID INTEGER NOT NULL, PRIMARY KEY (ID));";
+		"CREATE TABLE Resources(									 "
+		"	ID      INTEGER NOT NULL,								 "
+		"	path    TEXT NOT NULL UNIQUE CHECK(path NOT LIKE cached),"
+		"	cached  TEXT CHECK(cached NOT LIKE 'NULL'),				 "
+		"	TypesID INTEGER NOT NULL,								 "
+		"	PRIMARY KEY(ID));										 "
+
+		"CREATE TABLE Types(										 "
+		"	ID          INTEGER NOT NULL,							 "
+		"	name        TEXT NOT NULL UNIQUE,						 "
+		"	description TEXT,										 "
+		"	PRIMARY KEY(ID));										 ";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_TABLENAME_RESOURCES = "Resources";
 
@@ -158,9 +173,17 @@ namespace NOE::NOE_CORE
 		return false;
 	}
 
+	ResourceMetadata ResourceManager::getMetadata(typename ResourceMetadata::ID id) const
+	{
+		return ResourceMetadata(id);
+	}
+
 	NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ResourceManager::listMetadata()
 	{
-		auto result = getUnderlying().execute(SQL_LIST_IDS);
+		NOU::char8 sql[256] = { 0 };
+		sprintf(sql, SQL_LIST_IDS.rawStr(), SQL_TABLENAME_RESOURCES.rawStr());
+
+		auto result = getUnderlying().execute(sql);
 
 		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> ret;
 
@@ -179,14 +202,19 @@ namespace NOE::NOE_CORE
 		return ret;
 	}
 
-	ResourceMetadata ResourceManager::getMetadata(typename ResourceMetadata::ID id) const
-	{
-		return ResourceMetadata(id);
-	}
-
 	typename ResourceType::ID ResourceManager::addType(const NOU::NOU_DAT_ALG::StringView8 &name)
 	{
-		return ResourceType::INVALID_ID;
+		auto stmt = getUnderlying().execute(SQL_ADD_TYPE);
+
+		stmt.bind(name);
+		stmt.bind(nullptr);
+
+		auto row = stmt.next();
+
+		if (row.affectedRows() == 0)
+			return ResourceType::INVALID_ID;
+		else
+			return ResourceType(row.lastRowId());
 	}
 
 	typename ResourceType::ID ResourceManager::addType(const NOU::NOU_DAT_ALG::StringView8 &name,
@@ -202,12 +230,31 @@ namespace NOE::NOE_CORE
 
 	ResourceType ResourceManager::getType(typename ResourceType::ID id) const
 	{
-		return ResourceType();
+		return ResourceType(id);
 	}
 
-	NOU::NOU_DAT_ALG::Vector<ResourceType> ResourceManager::listTypes() const
+	NOU::NOU_DAT_ALG::Vector<ResourceType> ResourceManager::listTypes()
 	{
-		return NOU::NOU_DAT_ALG::Vector<ResourceType>();
+		NOU::char8 sql[256] = { 0 };
+		sprintf(sql, SQL_LIST_IDS.rawStr(), SQL_TABLENAME_TYPES.rawStr());
+
+		auto result = getUnderlying().execute(sql);
+
+		NOU::NOU_DAT_ALG::Vector<ResourceType> ret;
+
+		while (result.hasNext() && result.isValid())
+		{
+			NOE::NOE_UTILITY::sqlite::Row &row = result.next();
+
+			if (result.hasNext() && result.isValid())
+			{
+				ResourceType::ID id = row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
+
+				ret.push(ResourceType(id));
+			}
+		}
+
+		return ret;
 	}
 
 	void ResourceManager::initalize()

@@ -28,6 +28,8 @@ namespace NOE::NOE_CORE
 		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_RESOURCE;
 
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_TYPE;
+
 		/**
 		\brief The SQL code to remove a resource from the database. This is used by removeResource().
 		*/
@@ -262,13 +264,6 @@ namespace NOE::NOE_CORE
 		NOU::boolean deleteCache(typename ResourceMetadata::ID id);
 
 		/**
-		\return A list that contains the meta data of all resources in the database.
-
-		\brief Returns a list that contains the meta data of all resources in the database.
-		*/
-		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> listMetadata();
-
-		/**
 		\param id The ID of the resource.
 
 		\return The meta data of the resource with the passed ID, or \p nullptr if the resource does not
@@ -277,6 +272,13 @@ namespace NOE::NOE_CORE
 		\brief Returns the meta data of a single resource.
 		*/
 		ResourceMetadata getMetadata(typename ResourceMetadata::ID id) const;
+
+		/**
+		\return A list that contains the meta data of all resources in the database.
+
+		\brief Returns a list that contains the meta data of all resources in the database.
+		*/
+		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> listMetadata();
 
 		typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name);
 
@@ -287,7 +289,7 @@ namespace NOE::NOE_CORE
 
 		ResourceType getType(typename ResourceType::ID id) const;
 
-		NOU::NOU_DAT_ALG::Vector<ResourceType> listTypes() const;
+		NOU::NOU_DAT_ALG::Vector<ResourceType> listTypes();
 
 		void initalize();
 

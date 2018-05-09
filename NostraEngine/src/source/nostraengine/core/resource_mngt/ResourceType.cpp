@@ -33,6 +33,8 @@ namespace NOE::NOE_CORE
 
 		if (!row.isNull(0))
 			return row.valueAs(0, NOE::NOE_UTILITY::sqlite::STRING());
+		else
+			return "NULL";
 	}
 
 	NOU::boolean ResourceType::checkIfExsists() const
