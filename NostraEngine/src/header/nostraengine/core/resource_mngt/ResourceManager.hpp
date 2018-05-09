@@ -84,19 +84,14 @@ namespace NOE::NOE_CORE
 		//an ID should always fit into int64
 		NOU::boolean removeRow(NOU::int64 id, const NOU::NOU_DAT_ALG::StringView8 &table);
 
-	public:
-		/**
-		\param databasePath The path to the database file.
-
-		\brief Constructs a new instance that uses the passed file as database.
-		*/
-		//no default argument possible, DATABASE_PATH is not defined yet
-		explicit ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath);
-
 		/**
 		\brief Constructs a new instance that uses the file with the path \p DATABASE_PATH as database.
 		*/
 		ResourceManager();
+
+	public:
+		ResourceManager(const ResourceManager &other) = delete;
+		ResourceManager(ResourceManager &&other) = delete;
 
 		/**
 		\tparam ARGS The types of the arguments that will be passed to the constructor of \p T.
@@ -125,7 +120,7 @@ namespace NOE::NOE_CORE
 		\details
 		Returns the instance of the resource manager. This method also stores the instance as a static local variable.
 		*/
-		static ResourceManager& get();
+		static ResourceManager& const get();
 
 		/**
 		\tparam T    The type resource loader to add. This must be a child class of ResourceLoader.

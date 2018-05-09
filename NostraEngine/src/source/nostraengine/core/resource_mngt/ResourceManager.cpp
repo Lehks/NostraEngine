@@ -57,10 +57,6 @@ namespace NOE::NOE_CORE
 		return row.affectedRows() > 0;
 	}
 
-	ResourceManager::ResourceManager(const NOU::NOU_FILE_MNGT::Path &databasePath) :
-		m_database(databasePath)
-	{}
-
 	ResourceManager::ResourceManager() :
 		m_database(DATABASE_PATH)
 	{}
