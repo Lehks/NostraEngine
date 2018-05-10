@@ -19,8 +19,8 @@ namespace NOE::NOE_CORE
 		if (!isValid())
 		{
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-				NOU::NOU_CORE::ErrorCodes::INVALID_OBJECT, "A type with that ID does not exist.");
-			return "__INVALID_TYPE_ATTRIBUTE__";
+				NOU::NOU_CORE::ErrorCodes::INVALID_OBJECT, "A resource with that ID does not exist.");
+			return "__INVALID_ID__";
 		}
 
 		NOU::char8 sql[256] = { 0 };

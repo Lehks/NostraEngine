@@ -19,7 +19,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 				NOU::NOU_CORE::ErrorCodes::INVALID_OBJECT, "A type with that ID does not exist.");
-			return "__INVALID_TYPE_ATTRIBUTE__";
+			return "__INVALID_ID__";
 		}
 
 		NOU::char8 sql[256] = { 0 };

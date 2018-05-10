@@ -78,7 +78,7 @@ namespace NOE::NOE_CORE
 		\brief Allocates a new ResourceLoader of the type T.
 		*/
 		template<typename T, typename ...ARGS>
-		static ResourceLoader* alloatecResourceLoader(ARGS&&... args);
+		static ResourceLoader* allocateResourceLoader(ARGS&&... args);
 
 		/**
 		\param loader The loader to deallocate
@@ -317,7 +317,7 @@ namespace NOE::NOE_CORE
 	}
 
 	template<typename T, typename ...ARGS>
-	static ResourceLoader* ResourceManager::alloatecResourceLoader(ARGS&&... args)
+	static ResourceLoader* ResourceManager::allocateResourceLoader(ARGS&&... args)
 	{
 		static_assert(NOU::NOU_CORE::IsBaseOf<ResourceLoader, T>::value);
 
@@ -327,7 +327,7 @@ namespace NOE::NOE_CORE
 	template<typename T, typename ...ARGS>
 	NOU::boolean ResourceManager::addLoader(ARGS&&... args)
 	{
-		ResourceLoader *loader = allocResourceLoader(NOU_CORE::forward<ARGS>(args)...);
+		ResourceLoader *loader = allocateResourceLoader<T>(NOU_CORE::forward<ARGS>(args)...);
 
 		if (!m_loaders.containsKey(loader->getName()))
 		{

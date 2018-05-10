@@ -21,7 +21,7 @@ namespace NOE::NOE_CORE
 		"UPDATE Resources SET cached = ? WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_CREATE_TABLE_RESOURCES =
-		"CREATE TABLE `Resources` (																   "
+		"CREATE TABLE IF NOT EXISTS `Resources` (												   "
 		"	`ID`	INTEGER NOT NULL,															   "
 		"	`path`	TEXT NOT NULL CHECK(path NOT LIKE cached) UNIQUE,							   "
 		"	`cached`	TEXT CHECK(cached NOT LIKE 'NULL'),										   "
@@ -78,7 +78,7 @@ namespace NOE::NOE_CORE
 
 	ResourceLoader* ResourceManager::getLoader(const NOU::NOU_DAT_ALG::StringView8 &name)
 	{
-		if (!m_loaders.containsKey(name))
+		if (m_loaders.containsKey(name))
 			return m_loaders.get(name);
 		else
 			return nullptr;

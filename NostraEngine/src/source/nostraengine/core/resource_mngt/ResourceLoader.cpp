@@ -47,7 +47,7 @@ namespace NOE::NOE_CORE
 		if (metadata.isValid() && !isResourceValid(metadata.getID()))
 			return false;
 
-		NOU::boolean ret;
+		NOU::boolean ret = false;
 
 		if (isCachingEnabled())
 			ret = storeCacheImpl(resource, metadata.getCachePath());
