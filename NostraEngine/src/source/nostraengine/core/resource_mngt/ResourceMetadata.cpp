@@ -38,6 +38,10 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceMetadata::checkIfExsists() const
 	{
+		if (m_removeUpdate >= ResourceManager::get().getResourceRemoveUpdates())
+			//return true if id is not invalid; the resource is still in the database
+			return m_id != INVALID_ID; 
+
 		auto stmt = ResourceManager::get().getUnderlying().execute(SQL_EXISTS_RESOURCE);
 		stmt.bind(m_id);
 
@@ -46,7 +50,11 @@ namespace NOE::NOE_CORE
 		if (stmt.hasNext())
 			row = &stmt.next();
 		else
+		{
+			//the latest update was checked
+			m_removeUpdate = ResourceManager::get().getResourceRemoveUpdates();
 			return false;
+		}
 
 		if (row->isValid())
 		{
@@ -54,57 +62,39 @@ namespace NOE::NOE_CORE
 
 			if (count == 0) //no type of that ID was found
 			{
+				//the latest update was checked
+				m_removeUpdate = ResourceManager::get().getResourceRemoveUpdates();
 				return false;
 			}
 		}
 		else //the row is not valid
 		{
+			//the latest update was checked
+			m_removeUpdate = ResourceManager::get().getResourceRemoveUpdates();
 			return false;
 		}
 
+		//the latest update was checked
+		m_removeUpdate = ResourceManager::get().getResourceRemoveUpdates();
 		return true;
 	}
 
 	ResourceMetadata::ResourceMetadata(ID id) :
-		m_id(id)
+		m_id(id),
+		/* 
+		 * -1, to force isValid() (or checkIfExists() to be more precise) to check in the database for an 
+		 * update
+		 */
+		m_removeUpdate(ResourceManager::get().getResourceRemoveUpdates() - 1)
 	{
 		//Check if the ID even exists in the database. If not, set it to INVALID_ID
-
-		if (id != INVALID_ID)
-		{
-			auto stmt = ResourceManager::get().getUnderlying().execute(SQL_EXISTS_RESOURCE);
-			stmt.bind(id);
-
-			NOE::NOE_UTILITY::sqlite::Row *row;
-
-			if (stmt.hasNext())
-			{
-				row = &stmt.next();
-			}
-			else
-			{
-				m_id = INVALID_ID;
-				return;
-			}
-
-
-			if (row->isValid())
-			{
-				NOU::int32 count = row->valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER());
-
-				if (count == 0)
-					m_id = INVALID_ID;
-			}
-			else
-			{
-				m_id = INVALID_ID;
-				return;
-			}
-		}
+		isValid();
 	}
 
 	typename ResourceMetadata::ID ResourceMetadata::getID() const
 	{
+		isValid(); //if necessary, set m_id to INVALID_ID
+
 		return m_id;
 	}
 

@@ -62,6 +62,10 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, ResourceLoader*> m_loaders;
 
+		NOU::uint32 m_typeRemoveUpdates; //must start at 1!
+
+		NOU::uint32 m_resourceRemoveUpdates; //must start at 1!
+
 		/**
 		\tparam T    The type resource loader to add. This must be a child class of ResourceLoader.
 		\tparam ARGS The types of the parameters that will be passed to the constructor of the resource
@@ -287,6 +291,10 @@ namespace NOE::NOE_CORE
 		ResourceType getType(typename ResourceType::ID id) const;
 
 		NOU::NOU_DAT_ALG::Vector<ResourceType> listTypes();
+
+		NOU::int32 getTypeRemoveUpdates() const;
+
+		NOU::int32 getResourceRemoveUpdates() const;
 
 		void initalize();
 

@@ -26,13 +26,15 @@ namespace NOE::NOE_CORE
 		*/
 		mutable ID m_id; //mutable for isValid()
 
-						 /**
-						 \param attribute The name of the attribute to get the value from.
+		mutable NOU::uint32 m_removeUpdate; //mutable for isValid()
 
-						 \return The value of the attribute.
+		/**
+		\param attribute The name of the attribute to get the value from.
 
-						 \brief Queries the value of the attribute \p attribute of the type.
-						 */
+		\return The value of the attribute.
+
+		\brief Queries the value of the attribute \p attribute of the type.
+		*/
 		NOU::NOU_DAT_ALG::String8 getAttribute(const NOU::NOU_DAT_ALG::StringView8 &attribute) const;
 
 		NOU::boolean checkIfExsists() const;

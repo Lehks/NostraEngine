@@ -60,7 +60,9 @@ namespace NOE::NOE_CORE
 	}
 
 	ResourceManager::ResourceManager() :
-		m_database(DATABASE_PATH)
+		m_database(DATABASE_PATH),
+		m_typeRemoveUpdates(1),
+		m_resourceRemoveUpdates(1)
 	{}
 
 	void ResourceManager::deallocateResource(Resource *resource)
@@ -118,7 +120,12 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ID id)
 	{
-		return removeRow(id, SQL_TABLENAME_RESOURCES);
+		NOU::boolean ret = removeRow(id, SQL_TABLENAME_RESOURCES);
+
+		if (ret)
+			m_resourceRemoveUpdates++;
+
+		return ret;
 	}
 
 	NOU::uint32 ResourceManager::cleanupResources()
@@ -236,7 +243,12 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceManager::removeType(typename ResourceType::ID id)
 	{
-		return removeRow(id, SQL_TABLENAME_TYPES);
+		NOU::boolean ret = removeRow(id, SQL_TABLENAME_TYPES);
+
+		if (ret)
+			m_typeRemoveUpdates++;
+
+		return ret;
 	}
 
 	ResourceType ResourceManager::getType(typename ResourceType::ID id) const
@@ -266,6 +278,16 @@ namespace NOE::NOE_CORE
 		}
 
 		return ret;
+	}
+
+	NOU::int32 ResourceManager::getTypeRemoveUpdates() const
+	{
+		return m_typeRemoveUpdates;
+	}
+
+	NOU::int32 ResourceManager::getResourceRemoveUpdates() const
+	{
+		return m_resourceRemoveUpdates;
 	}
 
 	void ResourceManager::initalize()

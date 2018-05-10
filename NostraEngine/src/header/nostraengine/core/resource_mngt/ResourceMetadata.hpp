@@ -56,15 +56,17 @@ namespace NOE::NOE_CORE
 		\brief The ID of the resource.
 		*/
 		mutable ID m_id; //mutable for isValid()
+		
+		mutable NOU::uint32 m_removeUpdate; //mutable for isValid()
 
-						 /**
-						 \param attribute The name of the attribute to get the value from.
+		/**
+		\param attribute The name of the attribute to get the value from.
 
-						 \return The value of the attribute.
+		\return The value of the attribute.
 
-						 \brief Queries the value of the attribute \p attribute of the resource that is associated with this
-						 meta data.
-						 */
+		\brief Queries the value of the attribute \p attribute of the resource that is associated with this
+		meta data.
+		*/
 		NOU::NOU_DAT_ALG::String8 getAttribute(const NOU::NOU_DAT_ALG::StringView8 &attribute) const;
 
 		NOU::boolean checkIfExsists() const;

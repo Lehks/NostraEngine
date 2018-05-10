@@ -39,6 +39,10 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ResourceType::checkIfExsists() const
 	{
+		if (m_removeUpdate >= ResourceManager::get().getTypeRemoveUpdates())
+			//return true if id is not invalid; the resource is still in the database
+			return m_id != INVALID_ID;
+
 		auto stmt = ResourceManager::get().getUnderlying().execute(SQL_EXISTS_TYPE);
 		stmt.bind(m_id);
 
@@ -47,7 +51,11 @@ namespace NOE::NOE_CORE
 		if (stmt.hasNext())
 			row = &stmt.next();
 		else
+		{
+			//the latest update was checked
+			m_removeUpdate = ResourceManager::get().getTypeRemoveUpdates();
 			return false;
+		}
 
 		if (row->isValid())
 		{
@@ -55,32 +63,38 @@ namespace NOE::NOE_CORE
 
 			if (count == 0) //no type of that ID was found
 			{
+				//the latest update was checked
+				m_removeUpdate = ResourceManager::get().getTypeRemoveUpdates();
 				return false;
 			}
 		}
 		else //the row is not valid
 		{
+			//the latest update was checked
+			m_removeUpdate = ResourceManager::get().getTypeRemoveUpdates();
 			return false;
 		}
 
+		//the latest update was checked
+		m_removeUpdate = ResourceManager::get().getTypeRemoveUpdates();
 		return true;
 	}
 
 	ResourceType::ResourceType(ID id) :
-		m_id(id)
+		m_id(id),
+		/*
+		* -1, to force isValid() (or checkIfExists() to be more precise) to check in the database for an
+		* update
+		*/
+		m_removeUpdate(ResourceManager::get().getTypeRemoveUpdates() - 1)
 	{
-		if (m_id != INVALID_ID) //check if exists, if the id is not invalid anyway
-		{
-			if (!checkIfExsists())
-			{
-				m_id = INVALID_ID;
-			}
-		}
+		//Check if the ID even exists in the database. If not, set it to INVALID_ID
+		isValid();
 	}
 
 	typename ResourceType::ID ResourceType::getID() const
 	{
-		isValid();
+		isValid(); //if necessary, set m_id to INVALID_ID
 
 		return m_id;
 	}
