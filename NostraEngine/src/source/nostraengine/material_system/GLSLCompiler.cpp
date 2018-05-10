@@ -21,7 +21,6 @@ namespace NOE
         {
             if(m_source==nullptr)
             {
-                NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::CANNOT_OPEN_FILE, "Sourcefile not found");
                 return;
             }
             //preProccessor();

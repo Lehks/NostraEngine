@@ -20,6 +20,8 @@
 
 #ifndef NOE_MATSYS
 #define NOE_MATSYS material_system
+#endif
+
 /**
 \brief The name of the namespace that contains all core components.
 */

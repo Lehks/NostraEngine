@@ -55,10 +55,7 @@ namespace NOE::NOE_MATSYS
     const NOU::NOU_DAT_ALG::String8 PREPROCESSOR_ENDIF      = "endif";
 
 
-    /**
-    \brief The keyword for the indiviudal tokens that get processed
-    */
-    const static NOU::char8 TOKEN_SEPERATOR[2] = {';', '{'};
+
 
     
     /**
@@ -86,7 +83,7 @@ namespace NOE::NOE_MATSYS
     /**
     \brief the current Token where preprocessor commands are executed
     */
-    NOU::NOU_DAT_ALG::String8 m_currentToken;
+    NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> m_lines;
 
     public:
         /**
@@ -115,6 +112,12 @@ namespace NOE::NOE_MATSYS
             private:
 
                 /**
+                \brief The keyword for the indiviudal tokens that get processed
+                */
+                const NOU::char8 TOKEN_SEPERATOR[2] = {';', '{'};
+
+
+                /**
                 \brief the whole source code where the iterator iterates trough
                 */
                 const NOU::NOU_DAT_ALG::String8 &m_code;
@@ -128,6 +131,12 @@ namespace NOE::NOE_MATSYS
                 \brief the current token that gets returned
                 */
                 NOU::NOU_DAT_ALG::String8 m_currToken;
+
+                /**
+                \brief searches for the end of the next Token
+                \returns the position of said end
+                */
+                NOU::int64 getNextEnd();
 
             public:
 
