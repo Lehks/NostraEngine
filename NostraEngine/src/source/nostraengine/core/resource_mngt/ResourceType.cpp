@@ -80,6 +80,8 @@ namespace NOE::NOE_CORE
 
 	typename ResourceType::ID ResourceType::getID() const
 	{
+		isValid();
+
 		return m_id;
 	}
 

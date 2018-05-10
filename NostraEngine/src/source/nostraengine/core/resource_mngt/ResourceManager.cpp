@@ -9,26 +9,28 @@ namespace NOE::NOE_CORE
 		"SELECT ID FROM %s;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_RESOURCE =
-		"INSERT INTO Resources(path, type, TypesID) VALUES(?, ?, ?)";
+		"INSERT INTO Resources(path, TypesID, cached) VALUES(?, ?, ?)";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_ADD_TYPE =
 		"INSERT INTO Types(name, description) VALUES (?, ?)";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_REMOVE = 
-		"DELETE %s Resources WHERE ID = ?;";
+		"DELETE FROM %s WHERE ID = ?;";
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_UPDATE_CACHE =
 		"UPDATE Resources SET cached = ? WHERE ID = ?;";
 
-	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_CREATE_TABLE =
-		"CREATE TABLE Resources(									 "
-		"	ID      INTEGER NOT NULL,								 "
-		"	path    TEXT NOT NULL UNIQUE CHECK(path NOT LIKE cached),"
-		"	cached  TEXT CHECK(cached NOT LIKE 'NULL'),				 "
-		"	TypesID INTEGER NOT NULL,								 "
-		"	PRIMARY KEY(ID));										 "
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_CREATE_TABLE_RESOURCES =
+		"CREATE TABLE `Resources` (																   "
+		"	`ID`	INTEGER NOT NULL,															   "
+		"	`path`	TEXT NOT NULL CHECK(path NOT LIKE cached) UNIQUE,							   "
+		"	`cached`	TEXT CHECK(cached NOT LIKE 'NULL'),										   "
+		"	`TypesID`	INTEGER NOT NULL,														   "
+		"	PRIMARY KEY(`ID`),																	   "
+		"	FOREIGN KEY(`TypesID`) REFERENCES `Types`(`ID`) ON DELETE NO ACTION ON UPDATE CASCADE);";
 
-		"CREATE TABLE Types(										 "
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_CREATE_TABLE_TYPES =
+		"CREATE TABLE IF NOT EXISTS Types(							 "
 		"	ID          INTEGER NOT NULL,							 "
 		"	name        TEXT NOT NULL UNIQUE,						 "
 		"	description TEXT,										 "
@@ -46,7 +48,7 @@ namespace NOE::NOE_CORE
 	NOU::boolean ResourceManager::removeRow(NOU::int64 id, const NOU::NOU_DAT_ALG::StringView8 &table)
 	{
 		NOU::char8 sql[256] = { 0 };
-		sprintf(sql, SQL_REMOVE.rawStr(), table);
+		sprintf(sql, SQL_REMOVE.rawStr(), table.rawStr());
 
 
 		auto stmt = getUnderlying().execute(sql);
@@ -94,6 +96,9 @@ namespace NOE::NOE_CORE
 		typename ResourceType::ID type, NOU::boolean enableCache,
 		const NOU::NOU_FILE_MNGT::Path &cachePath)
 	{
+		if(type == ResourceType::INVALID_ID)
+			return ResourceMetadata::INVALID_ID;
+
 		auto stmt = getUnderlying().execute(SQL_ADD_RESOURCE);
 
 		stmt.bind(path.getRelativePath().rawStr());
@@ -210,13 +215,23 @@ namespace NOE::NOE_CORE
 		if (row.affectedRows() == 0)
 			return ResourceType::INVALID_ID;
 		else
-			return ResourceType(row.lastRowId());
+			return row.lastRowId();
 	}
 
 	typename ResourceType::ID ResourceManager::addType(const NOU::NOU_DAT_ALG::StringView8 &name,
 		const NOU::NOU_DAT_ALG::StringView8 &description)
 	{
-		return ResourceType::INVALID_ID;
+		auto stmt = getUnderlying().execute(SQL_ADD_TYPE);
+
+		stmt.bind(name);
+		stmt.bind(description);
+
+		auto row = stmt.next();
+
+		if (row.affectedRows() == 0)
+			return ResourceType::INVALID_ID;
+		else
+			return row.lastRowId();
 	}
 
 	NOU::boolean ResourceManager::removeType(typename ResourceType::ID id)
@@ -257,8 +272,11 @@ namespace NOE::NOE_CORE
 	{
 		m_database.open(); ///\todo add error handling
 
-		auto result = m_database.execute(SQL_CREATE_TABLE);
-		result.next();
+		auto resultTypes = m_database.execute(SQL_CREATE_TABLE_TYPES);
+		resultTypes.next();
+
+		auto resultResources = m_database.execute(SQL_CREATE_TABLE_RESOURCES);
+		resultResources.next();
 	}
 
 	void ResourceManager::shutdown()

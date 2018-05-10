@@ -44,7 +44,9 @@ namespace NOE::NOE_CORE
 		\brief The SQL code to create the resources database if it does not exist yet. This is used by
 		initialize().
 		*/
-		static const NOU::NOU_DAT_ALG::StringView8 SQL_CREATE_TABLE;
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_CREATE_TABLE_RESOURCES;
+
+		static const NOU::NOU_DAT_ALG::StringView8 SQL_CREATE_TABLE_TYPES;
 
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_TABLENAME_RESOURCES;
 
