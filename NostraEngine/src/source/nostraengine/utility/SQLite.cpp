@@ -353,6 +353,11 @@ namespace NOE::NOE_UTILITY
 			
 			if (error == SQLITE_OK)
 			{
+				char *msg;
+
+				//enable foreign keys
+				sqlite3_exec(reinterpret_cast<sqlite3*>(m_dbPtr), "pragma foreign_keys = ON;", nullptr, nullptr, &msg);
+
 				return true;
 			}
 			else
