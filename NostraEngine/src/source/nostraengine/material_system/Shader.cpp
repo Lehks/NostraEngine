@@ -1,7 +1,7 @@
 //
 // Created by Dennis Franz on 23.04.18.
 //
-
+#include "glad/glad.h"
 #include "nostraengine/src/header/nostraengine/material_system/Shader.hpp"
 
 namespace NOE::NOE_MATSYS
@@ -29,7 +29,7 @@ namespace NOE::NOE_MATSYS
         geometryShaderSource(geometryShaderSource)
     {}
 
-    void Shader::use()
+    void Shader::bind()
     {
         glUseProgram(ID);
     }
@@ -80,46 +80,46 @@ namespace NOE::NOE_MATSYS
         glUniform1f(glGetUniformLocation(ID, name.rawStr()), value);
     }
     // ------------------------------------------------------------------------
-    void Shader::setVec2(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Vec2 &value) const
+    void Shader::setVec2(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Vec2 &vec2) const
     {
-        glUniform2fv(glGetUniformLocation(ID, name.rawStr()), 1, &value.value(0));
+        glUniform2fv(glGetUniformLocation(ID, name.rawStr()), 1, &vec2.value(0));
     }
     void Shader::setVec2(const NOU::NOU_DAT_ALG::StringView8 &name, NOU::float32 x, NOU::float32 y) const
     {
         glUniform2f(glGetUniformLocation(ID, name.rawStr()), x, y);
     }
     // ------------------------------------------------------------------------
-    void Shader::setVec3(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Vec3 &value) const
+    void Shader::setVec3(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Vec3 &vec3) const
     {
-        glUniform3fv(glGetUniformLocation(ID, name.rawStr()), 1, &value.value(0));
+        glUniform3fv(glGetUniformLocation(ID, name.rawStr()), 1, &vec3.value(0));
     }
     void Shader::setVec3(const NOU::NOU_DAT_ALG::StringView8 &name, NOU::float32 x, NOU::float32 y, NOU::float32 z) const
     {
         glUniform3f(glGetUniformLocation(ID, name.rawStr()), x, y, z);
     }
     // ------------------------------------------------------------------------
-    void Shader::setVec4(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Vec4 &value) const
+    void Shader::setVec4(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Vec4 &vec4) const
     {
-        glUniform4fv(glGetUniformLocation(ID, name.rawStr()), 1, &value.value(0));
+        glUniform4fv(glGetUniformLocation(ID, name.rawStr()), 1, &vec4.value(0));
     }
     void Shader::setVec4(const NOU::NOU_DAT_ALG::StringView8 &name, NOU::float32 x, NOU::float32 y, NOU::float32 z, NOU::float32 w) const
     {
         glUniform4f(glGetUniformLocation(ID, name.rawStr()), x, y, z, w);
     }
     // ------------------------------------------------------------------------
-    void Shader::setMat2(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Mat2 &mat) const
+    void Shader::setMat2(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Mat2 &mat2) const
     {
-        glUniformMatrix2fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat.value(0,0));
+        glUniformMatrix2fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat2.value(0,0));
     }
     // ------------------------------------------------------------------------
-    void Shader::setMat3(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Mat3 &mat) const
+    void Shader::setMat3(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Mat3 &mat3) const
     {
-        glUniformMatrix3fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat.value(0,0));
+        glUniformMatrix3fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat3.value(0,0));
     }
     // ------------------------------------------------------------------------
-    void Shader::setMat4(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Mat4 &mat) const
+    void Shader::setMat4(const NOU::NOU_DAT_ALG::StringView8 &name, const NOU::NOU_MATH::Mat4 &mat3) const
     {
-        glUniformMatrix4fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat.value(0,0));
+        glUniformMatrix4fv(glGetUniformLocation(ID, name.rawStr()), 1, GL_FALSE, &mat3.value(0,0));
     }
 
     void Shader::checkCompileErrors(NOU::uint32 shader, const NOU::NOU_DAT_ALG::String8 &type)
