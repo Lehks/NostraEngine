@@ -6,8 +6,24 @@
 #include "nostraengine/core/resource_mngt/ResourceType.hpp"
 #include "nostraengine/core/resource_mngt/Resource.hpp"
 
+/**
+\file    core/resource_mngt/ResourceLoader.hpp
+\author  Lukas Reichmann
+\version 1.0.0
+\since   0.0.1
+
+\brief A file that contains the class ResourceLoader.
+*/
+
 namespace NOE::NOE_CORE
 {
+	/**
+	\brief A class that is the base class of any resource loader that is managed by the ResourceManager.
+
+	\details
+	A class that is the base class of any resource loader that is managed by the ResourceManager. For a full 
+	tutorial on how to use the resource management system, see \link resourceManagementSys this page\endlink.
+	*/
 	class NOU_CLASS ResourceLoader
 	{
 	private:

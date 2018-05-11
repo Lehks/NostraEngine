@@ -8,8 +8,24 @@
 #include "nostraengine/core/resource_mngt/ResourceLoader.hpp"
 #include "nostraengine/utility/SQLite.hpp"
 
+/**
+\file    core/resource_mngt/ResourceManager.hpp
+\author  Lukas Reichmann
+\version 1.0.0
+\since   0.0.1
+
+\brief A file that contains the class ResourceManager.
+*/
+
 namespace NOE::NOE_CORE
 {
+	/**
+	\brief The central class of the resource management system of the engine. 
+
+	\details 
+	The central class of the resource management system of the engine. For a full tutorial on how to use the 
+	resource management system, see \link resourceManagementSys this page\endlink.
+	*/
 	class NOU_CLASS ResourceManager final
 	{
 	private:
@@ -41,15 +57,25 @@ namespace NOE::NOE_CORE
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_UPDATE_CACHE;
 
 		/**
-		\brief The SQL code to create the resources database if it does not exist yet. This is used by
-		initialize().
+		\brief The SQL code to create the table "Resources" in the resources database if it does not exist 
+		yet. This is used by initialize().
 		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_CREATE_TABLE_RESOURCES;
 
+		/**
+		\brief The SQL code to create the table "Types" in the resources database if it does not exist 
+		yet. This is used by initialize().
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_CREATE_TABLE_TYPES;
 
+		/**
+		\brief The name of the table "Resources".
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_TABLENAME_RESOURCES;
 
+		/**
+		\brief The name of the table "Types".
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_TABLENAME_TYPES;
 
 		/**
@@ -62,8 +88,44 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, ResourceLoader*> m_loaders;
 
-		NOU::uint32 m_typeRemoveUpdates; //must start at 1!
+		/**
+		\brief The counter for the removes of types.
 
+		\details
+		The counter for the removes of types. This counter is used to help the class ResourceMetadata check
+		if the resource that is associated with it still exists or not.
+
+		The concept is the following:
+		Each time that a type is removed from the database, this counter is increased. In addition to that, 
+		the ResourceType will store a value of the same type as this. If a ResourceType instance is being 
+		constructed, it will do an initial validity check and then set its internal counter to the same value 
+		as this variable. 
+
+		As soon as the ResourceType instance needs to do another validity check, it will first check whether 
+		the value of this variable is bigger the value of its internal counter. If so, a remove operation was 
+		done and the type may be invalid. After the check is done, the counter of the ResourceType instance 
+		will be set to the value of this variable yet again.
+		*/
+		NOU::uint32 m_typeRemoveUpdates; //must start at 1!
+		
+		/**
+		\brief The counter for the removes of resources.
+
+		\details
+		The counter for the removes of resources. This counter is used to help the class ResourceMetadata 
+		check if the resource that is associated with it still exists or not.
+
+		The concept is the following:
+		Each time that a resources is removed from the database, this counter is increased. In addition to 
+		that, the ResourceMetadata will store a value of the same type as this. If a ResourceMetadata instance
+		is being constructed, it will do an initial validity check and then set its internal counter to the
+		same value as this variable. 
+
+		As soon as the ResourceMetadata instance needs to do another validity check, it will first check
+		whether the value of this variable is bigger the value of its internal counter. If so, a remove
+		operation was done and the resource may be invalid. After the check is done, the counter of the 
+		ResourceMetadata instance will be set to the value of this variable yet again.
+		*/
 		NOU::uint32 m_resourceRemoveUpdates; //must start at 1!
 
 		/**
@@ -87,6 +149,12 @@ namespace NOE::NOE_CORE
 		*/
 		static void deallocateResourceLoader(ResourceLoader *loader);
 
+		/**
+		\param ID    The row-id of the row to remove.
+		\param table The table to remove the row from.
+
+		\brief Removes a row with the ID \p id from the table \p table.
+		*/
 		//an ID should always fit into int64
 		NOU::boolean removeRow(NOU::int64 id, const NOU::NOU_DAT_ALG::StringView8 &table);
 
@@ -168,7 +236,7 @@ namespace NOE::NOE_CORE
 		/**
 		\param path        The path to the resource. It is not allowed to have different resources that have
 		the same path.
-		\param type        The type of the resource.
+		\param type        The ID of the type of the resource. This type must already exist.
 		\param enableCache Enables (true) or disables (false) the caching.
 		\param cachePath   The path to the cache of the resource. If \p enableCache is false, this parameter
 		will be ignored.
@@ -281,23 +349,75 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> listMetadata();
 
+		/**
+		\param name The name of the type.
+
+		\return The ID of the type that was created, or ResourceType::INVALID_ID if the type could not be
+		        created.
+
+		\brief Adds a new type with the name \p name and the description \p NULL.
+		*/
 		typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name);
 
+		/**
+		\param name        The name of the type.
+		\param description The description of the type.
+
+		\return The ID of the type that was created, or ResourceType::INVALID_ID if the type could not be
+		created.
+
+		\brief Adds a new type with the name \p name and the description \p description.
+		*/
 		typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name,
 			const NOU::NOU_DAT_ALG::StringView8 &description);
 
+		/**
+		\param id The ID of the type to remove.
+
+		\return True, if the type was removed, false if not.
+
+		\brief Removes a type from the database.
+		*/
 		NOU::boolean removeType(typename ResourceType::ID id);
 
+		/**
+		\param id The ID of the type to get.
+
+		\brief Returns the type with the passed ID. That type may be invalid.
+		*/
 		ResourceType getType(typename ResourceType::ID id) const;
 
+		/**
+		\return A list that contains all types in the database.
+
+		\brief Returns a list that contains all types in the database.
+		*/
 		NOU::NOU_DAT_ALG::Vector<ResourceType> listTypes();
 
+		/**
+		\return The count of type removes.
+
+		\brief Returns the count of type removes.
+
+		\details
+		Returns the count of type removes. See m_typeRemoveUpdates for further information.
+		*/
 		NOU::int32 getTypeRemoveUpdates() const;
 
+		/**
+		\return The count of resources removes.
+
+		\brief Returns the count of resources removes.
+
+		\details
+		Returns the resources of type removes. See m_resourceRemoveUpdates for further information.
+		*/
 		NOU::int32 getResourceRemoveUpdates() const;
 
+		//WIP
 		void initalize();
 
+		//WIP
 		void shutdown();
 
 		/**
