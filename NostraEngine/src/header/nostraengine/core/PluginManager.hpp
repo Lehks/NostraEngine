@@ -11,10 +11,15 @@ namespace NOE::NOE_CORE
 		using FunctionGetVersion = NOU::uint32(*)();
 		using FunctionGetName = const NOU::char8*(*)();
 		using FunctionStart = NOU::uint32(*)(void*);
+		using FunctionStartup = void(*)();
+		using FunctionShutdown = void(*)();
 
 		static const NOU::NOU_DAT_ALG::StringView8 GET_NAME_FUNCNAME;
 		static const NOU::NOU_DAT_ALG::StringView8 GET_VERSION_FUNCNAME;
 		static const NOU::NOU_DAT_ALG::StringView8 START_FUNCNAME;
+
+		static const NOU::NOU_DAT_ALG::StringView8 PLUGIN_STARTUP_FUNCNAME;
+		static const NOU::NOU_DAT_ALG::StringView8 PLUGIN_SHUTDOWN_FUNCNAME;
 
 	private:
 		void *m_library;
@@ -25,6 +30,8 @@ namespace NOE::NOE_CORE
 		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_DAT_ALG::String8> m_name;
 
 		FunctionStart m_startFunc;
+
+		FunctionShutdown m_shutdownFunc;
 
 		NOU::boolean m_alreadyExecuted;
 

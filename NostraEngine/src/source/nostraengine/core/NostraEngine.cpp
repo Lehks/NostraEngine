@@ -3,6 +3,9 @@
 
 #include "nostraengine/core/NostraEngine.hpp"
 
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+
 void NOE::NostraEngine::render()
 {
 	//------------------------------------------------------------

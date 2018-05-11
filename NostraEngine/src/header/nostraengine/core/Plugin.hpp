@@ -2,30 +2,39 @@
 
 #include "nostraengine/core/NostraEngine.hpp"
 
-extern "C"
-{
-	extern void *pluginPtr;
-
-	NOU_FUNC NOU::uint32 noePluginGetVersion();
-	NOU_FUNC const NOU::char8* noePluginGetName();
-	NOU_FUNC NOU::uint32 noePluginStart(void* engineInstance);
-}
-
-#ifndef NOE_SET_AS_ACTIVE_PLUGIN_CLASS_WIN
-#define NOE_SET_AS_ACTIVE_PLUGIN_CLASS_WIN(PLUGIN)
-#endif
-
-#ifndef NOE_SET_AS_ACTIVE_PLUGIN_CLASS_POSIX
-#define NOE_SET_AS_ACTIVE_PLUGIN_CLASS_POSIX(PLUGIN) 
-#endif
-
 #ifndef NOE_SET_AS_ACTIVE_PLUGIN_CLASS
 
-#if     NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
-#define     NOE_SET_AS_ACTIVE_PLUGIN_CLASS(PLUGIN) NOE_SET_AS_ACTIVE_PLUGIN_CLASS_WIN(PLUGIN) 
-#elif   NOU_OS_LIBRARY == NOU_OS_LIBRARY_POSIX
-#define     NOE_SET_AS_ACTIVE_PLUGIN_CLASS(PLUGIN) NOE_SET_AS_ACTIVE_PLUGIN_CLASS_POSIX(PLUGIN) 
-#endif
+#define     NOE_SET_AS_ACTIVE_PLUGIN_CLASS(PLUGIN)												 \
+																								 \
+extern "C" NOU_FUNC void noePluginStartup()														 \
+{																								 \
+	NOE::NOE_CORE::Plugin::set(new PLUGIN());													 \
+}																								 \
+																								 \
+extern "C" NOU_FUNC void noePluginShutdown()													 \
+{																								 \
+	delete NOE::NOE_CORE::Plugin::get();														 \
+}																								 \
+																								 \
+extern "C" NOU_FUNC NOU::uint32 noePluginGetVersion()											 \
+{																								 \
+	return NOE::NOE_CORE::Plugin::get()->getVersion().getRaw();									 \
+}																								 \
+																								 \
+extern "C" NOU_FUNC const NOU::char8 * noePluginGetName()										 \
+{																								 \
+	return NOE::NOE_CORE::Plugin::get()->getName().rawStr();									 \
+}																								 \
+																								 \
+extern "C" NOU_FUNC NOU::uint32 noePluginStart(void * engineInstance)							 \
+{																								 \
+	NOE::NostraEngine *engine = reinterpret_cast<NOE::NostraEngine*>(engineInstance);			 \
+																								 \
+	NOE::NOE_CORE::PluginStartResult result = NOE::NOE_CORE::Plugin::get()->start(*engine);		 \
+																								 \
+	return NOU::uint32(result);																	 \
+}
+
 
 #endif
 
@@ -40,7 +49,15 @@ namespace NOE::NOE_CORE
 
 	class NOU_CLASS Plugin
 	{
+	private:
+		static Plugin *s_plugin;
+
 	public:
+		static void set(Plugin *plugin);
+		static Plugin* get();
+
+		Plugin() = default;
+
 		Plugin(const Plugin &other) = delete;
 		Plugin(Plugin &&) = delete;
 
@@ -48,5 +65,4 @@ namespace NOE::NOE_CORE
 		virtual const NOU::NOU_DAT_ALG::StringView8& getName() const = 0;
 		virtual PluginStartResult start(NostraEngine &engineInstance) = 0;
 	};
-
 }

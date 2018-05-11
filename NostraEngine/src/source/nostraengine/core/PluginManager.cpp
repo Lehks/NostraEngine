@@ -27,6 +27,9 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::GET_NAME_FUNCNAME = "noePluginGetName";
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::START_FUNCNAME = "noePluginStart"; 
 
+	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_STARTUP_FUNCNAME = "noePluginStartup";
+	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME = "noePluginShutdown";
+
 	void EnginePlugin::unload()
 	{
 #if NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
@@ -89,13 +92,21 @@ namespace NOE::NOE_CORE
 		EnginePlugin::FunctionStart startFunc =
 			getFuncAddress<EnginePlugin::FunctionStart>(lib, EnginePlugin::START_FUNCNAME);
 
+		EnginePlugin::FunctionStartup startupFunc =
+			getFuncAddress<EnginePlugin::FunctionStartup>(lib, EnginePlugin::PLUGIN_STARTUP_FUNCNAME);
+
+		EnginePlugin::FunctionShutdown shutdownFunc =
+			getFuncAddress<EnginePlugin::FunctionShutdown>(lib, EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME);
+
+		NOU::boolean success = true;
+
 		if (getVersionFunc == nullptr)
 		{
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION, 
 				"The function \"noePluginGetVersion()\" could not be loaded.");
 
-			return false;
+			success = false;
 		}
 
 		if (getNameFunc == nullptr)
@@ -104,7 +115,7 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
 				"The function \"noePluginGetName()\" could not be loaded.");
 
-			return false;
+			success = false;
 		}
 
 		if (startFunc == nullptr)
@@ -113,13 +124,39 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
 				"The function \"noePluginStart()\" could not be loaded.");
 
-			return false;
+			success = false;
 		}
+
+		if (startupFunc == nullptr)
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
+				"The function \"noePluginStartup()\" could not be loaded.");
+
+			success = false;
+		}
+
+		if (shutdownFunc == nullptr)
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
+				"The function \"noePluginShutdown()\" could not be loaded.");
+
+			success = false;
+		}
+
+		if (!success)
+			return false;
+
+		//start the plugin
+		startupFunc();
 
 		m_version = getVersionFunc();
 		m_name = getNameFunc();
 
 		m_startFunc = startFunc;
+
+		m_shutdownFunc = shutdownFunc;
 
 		return true;
 	}
