@@ -1,9 +1,9 @@
+#include "nostraengine/core/NostraEngine.hpp"
 
 int main()
 {
-    NostraEngine &engine;
-    NostraEngine::setActiveInstance(*(NostraEngine::createInstance()));
-    engine = NostraEngine::get();
+    NOE::NOE_CORE::NostraEngine::setActiveInstance(*(NOE::NOE_CORE::NostraEngine::createInstance()));
+    NOE::NOE_CORE::NostraEngine &engine = NOE::NOE_CORE::NostraEngine::get();
 
 
     return 0;
