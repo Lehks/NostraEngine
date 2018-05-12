@@ -83,8 +83,8 @@ namespace NOE::NOE_CORE
 
 		\brief Initialization-Method. Everything put in here will be initialized for later usage.
 		*/
-		NOU::int32 load();
-
+		NOU::int32 initialize();
+		
 		/**
 		\return		NOU::int8
 
