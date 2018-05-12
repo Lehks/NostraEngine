@@ -5,7 +5,26 @@
 
 namespace NOE::NOE_CORE
 {
-	class NOU_CLASS EnginePlugin
+	class NOU_CLASS PluginMetadata final
+	{
+	public:
+		using Priority = NOU::uint32;
+
+	private:
+		Plugin::ID m_id;
+
+	public:
+		PluginMetadata(Plugin::ID id);
+
+		Plugin::ID getId() const;
+		NOU::NOU_DAT_ALG::String8 getName() const;
+		NOU::NOU_DAT_ALG::String8 getDescription() const;
+		NOU::NOU_FILE_MNGT::Path getPath() const;
+		Priority getPriority() const;
+		NOU::boolean isValid() const;
+	};
+
+	class NOU_CLASS EnginePlugin final
 	{
 	public:
 		using FunctionGetVersion = NOU::uint32(*)();
@@ -48,11 +67,14 @@ namespace NOE::NOE_CORE
 		NOU::boolean load();
 
 		const NOU::NOU_CORE::Version& getVersion() const;
-		const NOU::NOU_DAT_ALG::StringView8& getName() const;
-		PluginStartResult start(NostraEngine &engineInstance);
+		typename Plugin::InitResult initialize(NostraEngine &engineInstance);
+		typename Plugin::InitResult terminate(NostraEngine &engineInstance);
+		void receive(Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags);
+
+		PluginMetadata getMetadata() const;
 	};
 
-	class NOU_CLASS PluginManager
+	class NOU_CLASS PluginManager final
 	{
 	public:
 		class ErrorCodes
@@ -81,6 +103,8 @@ namespace NOE::NOE_CORE
 										(typename NOU::NOU_CORE::ErrorHandler::ErrorType id) const override;
 		};
 
+		constexpr static Plugin::ID ENGINE_ID = 0;
+
 	private:
 		NOU::NOU_FILE_MNGT::Path m_folder;
 		NOU::NOU_DAT_ALG::Vector<EnginePlugin> m_plugins;
@@ -89,12 +113,27 @@ namespace NOE::NOE_CORE
 
 		void loadPlugins();
 
+		explicit PluginManager();
 	public:
-		explicit PluginManager(const NOU::NOU_FILE_MNGT::Path &folder);
+
+		static PluginManager& get();
 
 		PluginManager(const PluginManager &other) = delete;
 		PluginManager(PluginManager &&) = delete;
 
+		void initialize();
+		void terminate();
+
+		PluginMetadata getPluginMetdata(Plugin::ID id);
+		EnginePlugin& getPlugin(Plugin::ID id);
+
+		Plugin::SendResult send(Plugin::ID recipient, Plugin::ID source, void *data, NOU::sizeType size, 
+			NOU::uint32 flags);
+
+
+
 		NOU::NOU_DAT_ALG::Vector<EnginePlugin>& getPlugins();
 	};
+
+	constexpr Plugin::ID PluginManager::ENGINE_ID;
 }

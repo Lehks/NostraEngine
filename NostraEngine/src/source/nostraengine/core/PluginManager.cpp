@@ -24,11 +24,12 @@ namespace NOE::NOE_CORE
 	}
 
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::GET_VERSION_FUNCNAME = "noePluginGetVersion";
-	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::GET_NAME_FUNCNAME = "noePluginGetName";
-	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::START_FUNCNAME = "noePluginStart"; 
 
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_STARTUP_FUNCNAME = "noePluginStartup";
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME = "noePluginShutdown";
+
+	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::GET_NAME_FUNCNAME = "noePluginTerminate";
+	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::START_FUNCNAME = "noePluginInitialize"; 
 
 	void EnginePlugin::unload()
 	{
@@ -166,17 +167,12 @@ namespace NOE::NOE_CORE
 		return m_version;
 	}
 
-	const NOU::NOU_DAT_ALG::StringView8& EnginePlugin::getName() const
-	{
-		return m_name;
-	}
-
-	PluginStartResult EnginePlugin::start(NostraEngine &engineInstance)
+	Plugin::InitResult EnginePlugin::initialize(NostraEngine &engineInstance)
 	{
 		if (!m_alreadyExecuted)
-			return PluginStartResult(m_startFunc(&engineInstance));
+			return Plugin::InitResult(m_startFunc(&engineInstance));
 		else
-			return PluginStartResult::FAILED;
+			return Plugin::InitResult::FAILED;
 	}
 
 
@@ -197,6 +193,34 @@ namespace NOE::NOE_CORE
 			return m_errors + id;
 		else
 			return nullptr;
+	}
+
+	PluginMetadata getPluginMetdata(Plugin::ID id)
+	{
+		return PluginMetadata(id);
+	}
+
+	EnginePlugin& getPlugin(Plugin::ID id)
+	{
+
+	}
+
+	Plugin::SendResult PluginManager::send(Plugin::ID recipient, Plugin::ID source, void *data,
+		NOU::sizeType size, NOU::uint32 flags)
+	{
+		if (recipient == PluginManager::ENGINE_ID || recipient == source)
+		{
+			return Plugin::SendResult::INVALID_RECIPIENT;
+		}
+
+		PluginMetadata metadata = getPluginMetdata(recipient).isValid();
+
+		if (!metadata.isValid())
+		{
+			return Plugin::SendResult::PLUGIN_NOT_FOUND;
+		}
+
+		getPlugin(recipient).receive(source, data, size, flags);
 	}
 
 	void PluginManager::loadPlugins()
