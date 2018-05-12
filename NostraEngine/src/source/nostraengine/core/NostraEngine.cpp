@@ -18,7 +18,7 @@ NOE::NOE_CORE::NostraEngine::NostraEngine(NOU::int32 ID) :
 
 }
 
-NOU::int32 NOE::NOE_CORE::NostraEngine::load()
+NOU::int32 NOE::NOE_CORE::NostraEngine::initialize()
 {
 	//------------------------------------------------------------
 	//
