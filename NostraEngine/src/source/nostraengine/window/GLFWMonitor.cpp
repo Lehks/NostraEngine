@@ -7,10 +7,13 @@
 
 namespace NOE::NOE_WINDOW
 {
+	NOU::NOU_CORE::Logger* MonitorLog = NOU::NOU_CORE::Logger::instance();
+
 	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(const void* handle) :
 		m_handle(handle),
 		m_name(glfwGetMonitorName(reinterpret_cast<GLFWmonitor*>(const_cast<void*>(handle))))
 	{
+		
 		//Initialize m_width and m_height
 		const GLFWvidmode* mode = glfwGetVideoMode(reinterpret_cast<GLFWmonitor*>
 			(const_cast<void*>(handle)));
@@ -25,6 +28,9 @@ namespace NOE::NOE_WINDOW
 		m_redBits = mode->redBits;
 		m_greenBits = mode->greenBits;
 		m_blueBits = mode->blueBits;
+
+		MonitorLog->write(NOU::NOU_CORE::EventLevelCodes::DEBUG,
+			"Monitor object created!", "DebugLog.txt");
 	}
 
 	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getWidth() const
