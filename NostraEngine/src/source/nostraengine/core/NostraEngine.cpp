@@ -12,9 +12,11 @@ void NOE::NostraEngine::render()
 }
 
 NOE::NostraEngine::NostraEngine(NOU::int32 ID) :
-	ID(ID)
+	ID(ID),
+	m_initQueue(),
+	m_runstate(0)
 {
-	m_runState = 0;
+
 }
 
 NOU::int32 NOE::NostraEngine::init()
@@ -121,6 +123,11 @@ void NOE::NostraEngine::fpsLimitStart()
 			std::this_thread::sleep_for<>(msDuration);
 		}
 	}
+}
+
+NOU::boolean NOE::addInitializable(const NOE::Initializable *init)
+{
+	m_initQueue.emplaceBack(init);
 }
 
 // 1000 / ms = fps | /fps

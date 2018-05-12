@@ -9,6 +9,8 @@
 #include "nostraengine/core/StdIncludes.hpp"
 #include <iostream>
 
+#include "nostraengine/core/Initializable.hpp"
+
 /**
 \file core/NostraEngine
 
@@ -51,6 +53,11 @@ namespace NOE
 		NOU::uint64 m_maxFPS;
 
 		/**
+		\brief A vector containing all object that have to be initialized before the actual main loop
+		*/
+		NOU::NOU_DAT_ALG::Vector<NOE::Initializable*> m_initQueue;
+
+		/**
 		\brief uprates the FPS and frametime
 		\param begin the begintime of the current render iteration
 		\param end the end time of the current render iteration
@@ -68,29 +75,33 @@ namespace NOE
 		\brief The Render-Method. Everything put in here will be, after each iteration of the loop in the start method, updated.
 		*/
 		void render();
+
+		/**
+		\return	an eventual errorcode if something fails while initializing
+
+		\brief Initialization-Method. Everything put in here will be initialized for later usage.
+		*/
+		NOU::int32 load();
+
+		/**
+		\return		NOU::int8
+
+		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
+		*/
+		NOU::int32 terminate();
 	public:
 		/**
 		\brief Standard constructor for now.
 		*/
 		NostraEngine(NOU::int32 ID);
+		
 		/**
-		/return		NOU::int8
-
-		\brief Initialization-Method. Everything put in here will be initialized for later usage.
-		*/
-		NOU::int32 init();
-		/**
-		/return		NOU::int8
+		\return		NOU::int8
 
 		\brief Start-Method. Holds the main loop of the engine. 
 		*/
 		NOU::int32 start();
-		/**
-		/return		NOU::int8
 
-		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
-		*/
-		NOU::int32 terminate();
 
 		/**
 		\brief sets the maximum frames that are rendered per second.
@@ -116,6 +127,13 @@ namespace NOE
 		\return returns the current FrameTime
 		*/
 		const NOU::uint32& getFrameTime();
+
+		/**
+		\brief Adds a Class that has to be initialized to the queue
+		\param init The class that will be added to the queue
+		\return true if successfull, false if not
+		*/
+		NOU::boolean addInitializable(const NOE::Initializable *init);
 
 	};
 }
