@@ -141,16 +141,30 @@ namespace NOE::NOE_WINDOW
 
 	const NOU::NOU_DAT_ALG::Vector<const Monitor*>& NOE::NOE_WINDOW::GLFWWindow::getConnectedMonitors()
 	{
-		const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).clear();
-		const_cast<NOU::NOU_DAT_ALG::Vector<const Monitor*>&>(GLFWWindow::getMonitorPointer()).clear();
-
 		int size;
 		GLFWmonitor** glfwMonitors = glfwGetMonitors(&size);
 
 		for (int i = 0; i < size; i++)
 		{
-			const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
-				(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
+			if (const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
+				(GLFWWindow::getMonitors()).empty() == true)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
+						(GLFWWindow::getMonitors()).pushBack(glfwMonitors[j]);
+				}
+			}
+			else if (reinterpret_cast<const GLFWmonitor*>(GLFWWindow::getMonitors().at(i).getUnderlying()) != glfwMonitors[i])
+			{
+				const_cast<NOU::NOU_DAT_ALG::Vector<const Monitor*>&>(GLFWWindow::getMonitorPointer())
+					.remove(i);
+				const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).remove(i);
+
+				const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
+					(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
+			}
+			
 		}
 
 		for (int i = 0; i < size; i++)
