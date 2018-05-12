@@ -1107,7 +1107,7 @@ namespace NOU::NOU_DAT_ALG
 	void Vector<T>::sort()
 	{
 		///\todo implementing a "real" sorting alg.
-		qsort(m_data, m_size);
+		qsort(m_data, 0, m_size);
 	}
 
 	template<typename T>

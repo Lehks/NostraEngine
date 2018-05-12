@@ -26,6 +26,16 @@ namespace NOE::NOE_CORE{
 		//
 		setMaxFPS();		//disable the FPS limiter
 
+		m_initializables.sort();
+
+		NOU::sizeType initSize = m_initializables.size();
+
+		for(NOU::sizeType i = 0; i < initSize; i++)
+		{
+			m_initializables[i]->initialize();
+		}
+		
+
 		return 0;
 	}
 
@@ -115,6 +125,12 @@ namespace NOE::NOE_CORE{
 	NOU::boolean NostraEngine::addInitializable(Initializable *init)
 	{
 		m_initializables.emplaceBack(init);
+		return true;
+	}
+
+	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)
+	{
+		m_updatables.emplaceBack(updt);
 		return true;
 	}
 

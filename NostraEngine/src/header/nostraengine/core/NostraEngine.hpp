@@ -66,7 +66,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief A vector containing all objects that have to be updated every logic frame
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOE::NOE_CORE::Updatable*> m_updatable;
+		NOU::NOU_DAT_ALG::Vector<NOE::NOE_CORE::Updatable*> m_updatables;
 		/**
 		\brief uprates the FPS and frametime
 		\param begin the begintime of the current render iteration
@@ -152,7 +152,7 @@ namespace NOE::NOE_CORE
 		\param updt The class that will be added to the queue
 		\return true if successfull, false if not
 		*/
-		NOU::boolean addUpdatable(const NOE::NOE_CORE::Updatable *updt);
+		NOU::boolean addUpdatable(NOE::NOE_CORE::Updatable *updt);
 
 		/**
 		\brief Returns a reference to the isntance
