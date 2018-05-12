@@ -14,7 +14,7 @@
 
 \brief This File provides an interface for classes that need to be Initialized
 */
-namespace NOE {
+namespace NOE::NOE_CORE {
 	/**
 	\brief This class will be used as interface for other subclasses that need to be initialized before specific tasks can happen.
 		   It also provides a constructor which sets a basic priority for when some objects have to be initialized before others.

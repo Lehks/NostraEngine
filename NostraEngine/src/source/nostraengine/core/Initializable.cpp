@@ -1,7 +1,7 @@
 #include "nostraengine/core/Initializable.hpp"
 #include "nostraengine/core/NostraEngine.hpp"
 
-namespace NOE
+namespace NOE::NOE_CORE
 {
     Initializable::Initializable(NOU::uint32 priority) :
         m_priority(priority){ 

@@ -14,7 +14,7 @@
 
 
 
-namespace NOE
+namespace NOE::NOE_CORE
 {
 
     class NOU_CLASS Updatable

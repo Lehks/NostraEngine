@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "nostraengine/core/Initializable.hpp"
+#include "nostraengine/core/Updatable.hpp"
 
 /**
 \file core/NostraEngine
@@ -23,7 +24,7 @@ Initialize-Method:	Every other "main" file , class or module needs to be initial
 Start-Method:		In the start Method is the main loop of the engine, if there is something in the render Method it will be updated here.
 Terminate-Method:	If the window gets closed , the terminate method will clean up and "terminate" every module which got initialized.
 */
-namespace NOE
+namespace NOE::NOE_CORE
 {
 	class NOU_CLASS NostraEngine
 	{
@@ -52,12 +53,12 @@ namespace NOE
 		/**
 		\brief A vector containing all object that have to be initialized before the actual main loop
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOE::Initializable*> m_initializables;
+		NOU::NOU_DAT_ALG::Vector<NOE::NOE_CORE::Initializable*> m_initializables;
 
 		/**
 		\brief A vector containing all objects that have to be updated every logic frame
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOE::Updatable*> m_updatable;
+		NOU::NOU_DAT_ALG::Vector<NOE::NOE_CORE::Updatable*> m_updatable;
 		/**
 		\brief uprates the FPS and frametime
 		\param begin the begintime of the current render iteration
@@ -134,14 +135,14 @@ namespace NOE
 		\param init The class that will be added to the queue
 		\return true if successfull, false if not
 		*/
-		NOU::boolean addInitializable(const NOE::Initializable *init);
+		NOU::boolean addInitializable(NOE::NOE_CORE::Initializable *init);
 
 		/**
 		\brief Adds a Class that has to be updated to the queue
 		\param updt The class that will be added to the queue
 		\return true if successfull, false if not
 		*/
-		NOU::boolean addUpdatable(const NOE::Updatable *updt);
+		NOU::boolean addUpdatable(const NOE::NOE_CORE::Updatable *updt);
 	};
 }
 
