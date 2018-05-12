@@ -32,7 +32,7 @@ namespace NOE
 		/**
 		\brief an ID for the Engine.
 		*/
-		NOU::int32 ID;
+		NOU::int32 ID;	// -> m_id
 
 		/**
 		\brief current FPS of the renderer
@@ -52,8 +52,12 @@ namespace NOE
 		/**
 		\brief A vector containing all object that have to be initialized before the actual main loop
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOE::Initializable*> m_initQueue;
+		NOU::NOU_DAT_ALG::Vector<NOE::Initializable*> m_initializables;
 
+		/**
+		\brief A vector containing all objects that have to be updated every logic frame
+		*/
+		NOU::NOU_DAT_ALG::Vector<NOE::Updatable*> m_updatable;
 		/**
 		\brief uprates the FPS and frametime
 		\param begin the begintime of the current render iteration
@@ -132,6 +136,12 @@ namespace NOE
 		*/
 		NOU::boolean addInitializable(const NOE::Initializable *init);
 
+		/**
+		\brief Adds a Class that has to be updated to the queue
+		\param updt The class that will be added to the queue
+		\return true if successfull, false if not
+		*/
+		NOU::boolean addUpdatable(const NOE::Updatable *updt);
 	};
 }
 
