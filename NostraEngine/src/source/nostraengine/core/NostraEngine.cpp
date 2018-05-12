@@ -3,6 +3,9 @@
 
 #include "nostraengine/core/NostraEngine.hpp"
 
+NOE::NOE_CORE::NostraEngine* NOE::NOE_CORE::NostraEngine::s_instance = nullptr;
+NOU::uint8 NOE::NOE_CORE::NostraEngine::s_instanceCount = 0;
+
 void NOE::NOE_CORE::NostraEngine::render()
 {
 	//------------------------------------------------------------
@@ -11,12 +14,8 @@ void NOE::NOE_CORE::NostraEngine::render()
 	//
 }
 
-NOE::NOE_CORE::NostraEngine::NostraEngine(NOU::int32 ID) :
-	ID(ID),
-	m_runState(0)
-{
-
-}
+NOE::NOE_CORE::NostraEngine::NostraEngine() :
+	m_runState(0) { }
 
 NOU::int32 NOE::NOE_CORE::NostraEngine::initialize()
 {
@@ -33,7 +32,7 @@ NOU::int32 NOE::NOE_CORE::NostraEngine::start()
 {
 	NOU::uint64 renderBeginTime, renderEndTime;
 
-	if (load() != 0)
+	if (initialize() != 0)
 	{
 		std::cout << "An error occurred during initialization."  << std::endl;
 		return 1;
@@ -116,6 +115,33 @@ NOU::boolean NOE::NOE_CORE::NostraEngine::addInitializable(NOE::NOE_CORE::Initia
 {
 	m_initializables.emplaceBack(init);
 	return true;
+}
+
+NOE::NOE_CORE::NostraEngine &NOE::NOE_CORE::NostraEngine::get()
+{
+	return *(s_instance);
+}
+
+void NOE::NOE_CORE::NostraEngine::setActiveInstance(NostraEngine &instance)
+{
+	if(&instance == nullptr)
+	{
+		NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Cannot set the instance to a nullptr");
+	} else
+	{
+		s_instance = &instance;
+	}
+}
+
+NOE::NOE_CORE::NostraEngine *NOE::NOE_CORE::NostraEngine::createInstance()
+{
+	if(s_instanceCount < 1)
+	{
+		static NostraEngine instance;
+		s_instanceCount++;
+		return &instance;
+	}
+	return nullptr;
 }
 
 // 1000 / ms = fps | /fps

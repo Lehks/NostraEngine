@@ -18,6 +18,7 @@
 \since   1.0.0
 
 \brief This is the main file of this engine. It contains the 3 main methods: initialize method , start method and terminate method.
+	   The Engine itself is implemented as Singelton.
 
 \details 
 Initialize-Method:	Every other "main" file , class or module needs to be initialized before used which can be done in the initialize method.
@@ -29,11 +30,18 @@ namespace NOE::NOE_CORE
 	class NOU_CLASS NostraEngine
 	{
 	private:
-		NOU::int8 m_runState;
 		/**
-		\brief an ID for the Engine.
+		\brief the only instance of the Engine, nullptr if no instance is yet activated
 		*/
-		NOU::int32 ID;	// -> m_id
+		static NostraEngine *s_instance;
+
+		/**
+		\brief the count of instances that are currently in use
+		*/
+		static NOU::uint8 s_instanceCount;
+
+
+		NOU::int8 m_runState;
 
 		/**
 		\brief current FPS of the renderer
@@ -84,18 +92,20 @@ namespace NOE::NOE_CORE
 		\brief Initialization-Method. Everything put in here will be initialized for later usage.
 		*/
 		NOU::int32 initialize();
-		
+
 		/**
 		\return		NOU::int8
 
 		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
 		*/
 		NOU::int32 terminate();
-	public:
+
 		/**
 		\brief Standard constructor for now.
 		*/
-		NostraEngine(NOU::int32 ID);
+		NostraEngine();
+	public:
+
 		
 		/**
 		\return		NOU::int8
@@ -143,6 +153,24 @@ namespace NOE::NOE_CORE
 		\return true if successfull, false if not
 		*/
 		NOU::boolean addUpdatable(const NOE::NOE_CORE::Updatable *updt);
+
+		/**
+		\brief Returns a reference to the isntance
+		\return a reference to the instance
+		*/
+		static NostraEngine &get();
+
+		/**
+		\brief sets an instance of the Engine as the current active instance
+		\param instacne the instance that will be set as active
+		*/
+		static void setActiveInstance(NostraEngine &instance);
+
+		/**
+		\brief creates an instance of the engine but only once
+		\return a pointer to the instance of the engine or nullptr if it has been created once
+		*/
+		static NostraEngine *createInstance();
 	};
 }
 
