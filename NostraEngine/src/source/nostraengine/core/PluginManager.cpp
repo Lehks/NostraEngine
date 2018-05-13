@@ -27,55 +27,63 @@ namespace NOE::NOE_CORE
 
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_STARTUP_FUNCNAME = "noePluginStartup";
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME = "noePluginShutdown";
+	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_RECEIVE_FUNCNAME = "noePluginReceive";
 
-	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::GET_NAME_FUNCNAME = "noePluginTerminate";
-	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::START_FUNCNAME = "noePluginInitialize"; 
+	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::INITIALIZE_FUNCNAME = "noePluginInitialize"; 
+	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::TERMINATE_FUNCNAME = "noePluginTerminate";
 
-	void EnginePlugin::unload()
-	{
-#if NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
-		FreeLibrary(reinterpret_cast<HMODULE>(m_library));
-#elif NOU_OS_LIBRARY == NOU_OS_LIBRARY_POSIX
-		dlclose(m_library);
-#endif
-	}
-
-	EnginePlugin::EnginePlugin(const NOU::NOU_FILE_MNGT::Path &path) :
+	EnginePlugin::EnginePlugin(Plugin::ID id) :
 		m_library(nullptr),
-		m_path(path),
-		m_startFunc(nullptr),
-		m_alreadyExecuted(false)
+		m_metadata(id),
+		m_initializeFunc(nullptr),
+		m_terminateFunc(nullptr),
+		m_shutdownFunc(nullptr)
 	{}
 
 	EnginePlugin::EnginePlugin(EnginePlugin && other) :
 		m_library(other.m_library),
-		m_path(NOU::NOU_CORE::move(other.m_path)),
+		m_metadata(other.getMetadata().getId()),
 		m_version(NOU::NOU_CORE::move(other.m_version)),
-		m_name(NOU::NOU_CORE::move(other.m_name)),
-		m_startFunc(other.m_startFunc),
-		m_alreadyExecuted(other.m_alreadyExecuted)
+		m_initializeFunc(other.m_initializeFunc),
+		m_terminateFunc(other.m_terminateFunc),
+		m_shutdownFunc(other.m_shutdownFunc)
 	{
 		other.m_library = nullptr;
 	}
 
 	EnginePlugin::~EnginePlugin()
 	{
-		if (m_library == nullptr)
-			return;
-
-		unload();
+		if (m_library != nullptr)
+			unload();
 	}
 
 	NOU::boolean EnginePlugin::load()
 	{
+		if (isLoaded())
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::PLUGIN_ALREADY_LOADED, "The plugin is already loaded.");
+
+			return false;
+		}
+
+		if (getMetadata().isValid())
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::PLUGIN_NOT_EXISTING, "A plugin with that ID does not exist.");
+
+			return false;
+		}
+
+		NOU::NOU_FILE_MNGT::Path path = getMetadata().getPath();
 
 #if NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
-		HMODULE lib = LoadLibrary(m_path.getAbsolutePath().rawStr());
+		HMODULE lib = LoadLibrary(path.getAbsolutePath().rawStr());
 #elif NOU_OS_LIBRARY == NOU_OS_LIBRARY_POSIX
 		void* lib = dlopen(path.cstr(), RTLD_NOW);
 #endif
 
-		//error loading the library; it will be omitted
+		//error loading the library
 		if (lib == nullptr)
 		{
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), 
@@ -87,17 +95,20 @@ namespace NOE::NOE_CORE
 		EnginePlugin::FunctionGetVersion getVersionFunc =
 			getFuncAddress<EnginePlugin::FunctionGetVersion>(lib, EnginePlugin::GET_VERSION_FUNCNAME);
 
-		EnginePlugin::FunctionGetName getNameFunc =
-			getFuncAddress<EnginePlugin::FunctionGetName>(lib, EnginePlugin::GET_NAME_FUNCNAME);
-
-		EnginePlugin::FunctionStart startFunc =
-			getFuncAddress<EnginePlugin::FunctionStart>(lib, EnginePlugin::START_FUNCNAME);
-
 		EnginePlugin::FunctionStartup startupFunc =
 			getFuncAddress<EnginePlugin::FunctionStartup>(lib, EnginePlugin::PLUGIN_STARTUP_FUNCNAME);
 
 		EnginePlugin::FunctionShutdown shutdownFunc =
 			getFuncAddress<EnginePlugin::FunctionShutdown>(lib, EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME);
+
+		EnginePlugin::FunctionReceive receiveFunc =
+			getFuncAddress<EnginePlugin::FunctionReceive>(lib, EnginePlugin::PLUGIN_RECEIVE_FUNCNAME);
+
+		EnginePlugin::FunctionInitialize initializeFunc =
+			getFuncAddress<EnginePlugin::FunctionInitialize>(lib, EnginePlugin::INITIALIZE_FUNCNAME);
+
+		EnginePlugin::FunctionTerminate terminateFunc =
+			getFuncAddress<EnginePlugin::FunctionTerminate>(lib, EnginePlugin::TERMINATE_FUNCNAME);
 
 		NOU::boolean success = true;
 
@@ -106,24 +117,6 @@ namespace NOE::NOE_CORE
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION, 
 				"The function \"noePluginGetVersion()\" could not be loaded.");
-
-			success = false;
-		}
-
-		if (getNameFunc == nullptr)
-		{
-			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
-				"The function \"noePluginGetName()\" could not be loaded.");
-
-			success = false;
-		}
-
-		if (startFunc == nullptr)
-		{
-			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
-				"The function \"noePluginStart()\" could not be loaded.");
 
 			success = false;
 		}
@@ -146,20 +139,79 @@ namespace NOE::NOE_CORE
 			success = false;
 		}
 
+		if (receiveFunc == nullptr)
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
+				"The function \"noePluginReceive()\" could not be loaded.");
+
+			success = false;
+		}
+
+		if (initializeFunc == nullptr)
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
+				"The function \"noePluginInitialize()\" could not be loaded.");
+
+			success = false;
+		}
+
+		if (terminateFunc == nullptr)
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
+				"The function \"noePluginTerminate()\" could not be loaded.");
+
+			success = false;
+		}
+
 		if (!success)
 			return false;
 
 		//start the plugin
 		startupFunc();
 
-		m_version = getVersionFunc();
-		m_name = getNameFunc();
+		m_library = lib;
 
-		m_startFunc = startFunc;
+		m_version = getVersionFunc();
+
+		m_initializeFunc = initializeFunc;
+		m_terminateFunc = terminateFunc;;
+		m_receiveFunc = receiveFunc;
 
 		m_shutdownFunc = shutdownFunc;
 
 		return true;
+	}
+
+	NOU::boolean EnginePlugin::unload()
+	{
+		if (isLoaded())
+		{
+#if NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
+			//FreeLibrary was successful if return value is != 0
+			NOU::boolean success = (FreeLibrary(reinterpret_cast<HMODULE>(m_library)) != 0);
+#elif NOU_OS_LIBRARY == NOU_OS_LIBRARY_POSIX
+			//dlclose was successful if return value is == 0
+			NOU::boolean success = dlclose(m_library) == 0;
+#endif
+
+			if (!success)
+			{
+				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+					PluginManager::ErrorCodes::COULD_NOT_FREE_LIBRARY,
+					"The system call to free the library failed.");
+			}
+		}
+		else
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				PluginManager::ErrorCodes::PLUGIN_NOT_LOADED,
+				"The plugin is not loaded.");
+
+			return false;
+		}
 	}
 
 	const NOU::NOU_CORE::Version& EnginePlugin::getVersion() const
@@ -169,10 +221,17 @@ namespace NOE::NOE_CORE
 
 	Plugin::InitResult EnginePlugin::initialize(NostraEngine &engineInstance)
 	{
-		if (!m_alreadyExecuted)
-			return Plugin::InitResult(m_startFunc(&engineInstance));
-		else
-			return Plugin::InitResult::FAILED;
+		return Plugin::InitResult(m_initializeFunc(&engineInstance));
+	}
+
+	Plugin::InitResult EnginePlugin::terminate(NostraEngine &engineInstance)
+	{
+		return Plugin::InitResult(m_terminateFunc(&engineInstance));
+	}
+
+	void EnginePlugin::receive(Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags)
+	{
+		m_receiveFunc(source, data, size, flags);
 	}
 
 
@@ -181,8 +240,12 @@ namespace NOE::NOE_CORE
 	PluginManager::ErrorPool::ErrorPool() :
 		m_errors
 		{
+			NOU::NOU_CORE::Error("PLUGIN_NOT_EXISTING", ErrorCodes::PLUGIN_NOT_EXISTING),
+			NOU::NOU_CORE::Error("PLUGIN_ALREADY_LOADED", ErrorCodes::PLUGIN_ALREADY_LOADED),
 			NOU::NOU_CORE::Error("COULD_NOT_LOAD_LIBRARY", ErrorCodes::COULD_NOT_LOAD_LIBRARY),
-			NOU::NOU_CORE::Error("COULD_NOT_LOAD_FUNCTION", ErrorCodes::COULD_NOT_LOAD_FUNCTION)
+			NOU::NOU_CORE::Error("COULD_NOT_LOAD_FUNCTION", ErrorCodes::COULD_NOT_LOAD_FUNCTION),
+			NOU::NOU_CORE::Error("PLUGIN_NOT_LOADED", ErrorCodes::PLUGIN_NOT_LOADED),
+			NOU::NOU_CORE::Error("COULD_NOT_FREE_LIBRARY", ErrorCodes::COULD_NOT_FREE_LIBRARY)
 		}
 	{}
 
@@ -208,7 +271,7 @@ namespace NOE::NOE_CORE
 	Plugin::SendResult PluginManager::send(Plugin::ID recipient, Plugin::ID source, void *data,
 		NOU::sizeType size, NOU::uint32 flags)
 	{
-		if (recipient == PluginManager::ENGINE_ID || recipient == source)
+		if (recipient == EnginePlugin::ENGINE_ID || recipient == source)
 		{
 			return Plugin::SendResult::INVALID_RECIPIENT;
 		}
@@ -223,37 +286,16 @@ namespace NOE::NOE_CORE
 		getPlugin(recipient).receive(source, data, size, flags);
 	}
 
-	void PluginManager::loadPlugins()
-	{
-		std::filesystem::directory_iterator it(m_folder.getAbsolutePath().rawStr());
-
-		for (auto &f : it)
-		{
-			std::string path = f.path().string();
-
-			//Not a DLL, omit
-			if (f.is_directory() || path.substr(path.size() - 4, path.size()) != ".dll")
-				continue;
-
-			m_plugins.push(EnginePlugin(f.path().string().c_str()));
-
-			if (!m_plugins[m_plugins.size() - 1].load())
-				std::cout << "Error" << std::endl;
-		}
-
-		m_loadedPlugins = true;
-	}
-
-	PluginManager::PluginManager(const NOU::NOU_FILE_MNGT::Path &folder) :
-		m_folder(folder),
-		m_loadedPlugins(false)
+	PluginManager::PluginManager()
 	{}
+
+	NOU::boolean PluginManager::loadPlugins()
+	{
+
+	}
 
 	NOU::NOU_DAT_ALG::Vector<EnginePlugin>& PluginManager::getPlugins()
 	{
-		if (!m_loadedPlugins)
-			loadPlugins();
-
 		return m_plugins;
 	}
 }

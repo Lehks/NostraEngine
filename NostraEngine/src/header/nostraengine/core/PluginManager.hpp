@@ -28,36 +28,42 @@ namespace NOE::NOE_CORE
 	{
 	public:
 		using FunctionGetVersion = NOU::uint32(*)();
-		using FunctionGetName = const NOU::char8*(*)();
-		using FunctionStart = NOU::uint32(*)(void*);
+
 		using FunctionStartup = void(*)();
 		using FunctionShutdown = void(*)();
+		using FunctionReceive = void (*)(NOU::uint32 source, void *data, NOU::sizeType size, 
+			NOU::uint32 flags);
 
-		static const NOU::NOU_DAT_ALG::StringView8 GET_NAME_FUNCNAME;
+		using FunctionInitialize = NOU::uint32(*)(void*);
+		using FunctionTerminate = NOU::uint32(*)(void*);
+
 		static const NOU::NOU_DAT_ALG::StringView8 GET_VERSION_FUNCNAME;
-		static const NOU::NOU_DAT_ALG::StringView8 START_FUNCNAME;
 
 		static const NOU::NOU_DAT_ALG::StringView8 PLUGIN_STARTUP_FUNCNAME;
 		static const NOU::NOU_DAT_ALG::StringView8 PLUGIN_SHUTDOWN_FUNCNAME;
+		static const NOU::NOU_DAT_ALG::StringView8 PLUGIN_RECEIVE_FUNCNAME;
+
+		static const NOU::NOU_DAT_ALG::StringView8 INITIALIZE_FUNCNAME;
+		static const NOU::NOU_DAT_ALG::StringView8 TERMINATE_FUNCNAME;
+
+		constexpr static Plugin::ID ENGINE_ID = 0;
+		constexpr static Plugin::ID INVALID_ID = ENGINE_ID;
 
 	private:
 		void *m_library;
 
-		NOU::NOU_FILE_MNGT::Path m_path;
+		PluginMetadata m_metadata;
 
 		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_CORE::Version> m_version;
-		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_DAT_ALG::String8> m_name;
 
-		FunctionStart m_startFunc;
+		FunctionInitialize m_initializeFunc;
+		FunctionTerminate  m_terminateFunc;
+		FunctionReceive  m_receiveFunc;
 
 		FunctionShutdown m_shutdownFunc;
 
-		NOU::boolean m_alreadyExecuted;
-
-		void unload();
-
 	public:
-		explicit EnginePlugin(const NOU::NOU_FILE_MNGT::Path &path);
+		explicit EnginePlugin(Plugin::ID id = INVALID_ID);
 		EnginePlugin(EnginePlugin && other);
 
 		EnginePlugin(const EnginePlugin &other) = delete;
@@ -66,12 +72,17 @@ namespace NOE::NOE_CORE
 
 		NOU::boolean load();
 
+		NOU::boolean unload();
+
+		NOU::boolean isLoaded();
+
 		const NOU::NOU_CORE::Version& getVersion() const;
+
 		typename Plugin::InitResult initialize(NostraEngine &engineInstance);
 		typename Plugin::InitResult terminate(NostraEngine &engineInstance);
 		void receive(Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags);
 
-		PluginMetadata getMetadata() const;
+		const PluginMetadata& getMetadata() const;
 	};
 
 	class NOU_CLASS PluginManager final
@@ -84,8 +95,12 @@ namespace NOE::NOE_CORE
 			{
 				FIRST_ELEMENT = 6000,
 
+				PLUGIN_NOT_EXISTING,
+				PLUGIN_ALREADY_LOADED,
 				COULD_NOT_LOAD_LIBRARY,
 				COULD_NOT_LOAD_FUNCTION,
+				PLUGIN_NOT_LOADED,
+				COULD_NOT_FREE_LIBRARY,
 
 				LAST_ELEMENT
 			};
@@ -103,15 +118,8 @@ namespace NOE::NOE_CORE
 										(typename NOU::NOU_CORE::ErrorHandler::ErrorType id) const override;
 		};
 
-		constexpr static Plugin::ID ENGINE_ID = 0;
-
 	private:
-		NOU::NOU_FILE_MNGT::Path m_folder;
 		NOU::NOU_DAT_ALG::Vector<EnginePlugin> m_plugins;
-
-		NOU::boolean m_loadedPlugins;
-
-		void loadPlugins();
 
 		explicit PluginManager();
 	public:
@@ -130,10 +138,11 @@ namespace NOE::NOE_CORE
 		Plugin::SendResult send(Plugin::ID recipient, Plugin::ID source, void *data, NOU::sizeType size, 
 			NOU::uint32 flags);
 
-
+		NOU::boolean loadPlugins();
 
 		NOU::NOU_DAT_ALG::Vector<EnginePlugin>& getPlugins();
 	};
 
-	constexpr Plugin::ID PluginManager::ENGINE_ID;
+	constexpr Plugin::ID EnginePlugin::ENGINE_ID;
+	constexpr Plugin::ID EnginePlugin::INVALID_ID;
 }
