@@ -109,7 +109,7 @@ namespace NOE::NOE_WINDOW
 			\brief		Always the first element in the enum. This has only technical purposes and is not an
 						actual error code.
 			*/
-			FIRST_ELEMENT = 6000,
+			FIRST_ELEMENT = 5100,
 
 			/**
 			\brief		The initialization of the GLFW failed.
