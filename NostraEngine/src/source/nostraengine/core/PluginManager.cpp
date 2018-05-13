@@ -10,6 +10,78 @@
 
 namespace NOE::NOE_CORE
 {
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = ".np";
+	const PluginMetadata::Priority LOWEST_PRIORITY = 0;
+	const PluginMetadata::Priority HIGHEST_PRIORITY = -1;
+
+
+	void PluginMetadata::load(const NOU::NOU_FILE_MNGT::Path &config)
+	{
+		m_id = 1;
+		m_name = "MyPlugin";
+		m_description = "MyPlugin. Duh.";
+		m_version = NOU::NOU_CORE::Version(1, 0, 0);
+
+		// the filename is the name of the plugin plus the plugin name extension
+		m_path = m_name + PLUGIN_FILE_EXTENSION;
+
+		m_priority = 0;
+	}
+
+	PluginMetadata::PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config) : 
+		m_id(EnginePlugin::INVALID_ID),
+		m_version(0, 0, 0),
+		m_path("./")
+	{
+		load(config);
+	}
+
+	PluginMetadata::PluginMetadata() :
+		m_id(EnginePlugin::INVALID_ID),
+		m_version(0, 0, 0),
+		m_path("./")
+	{}
+
+	Plugin::ID PluginMetadata::getID() const
+	{
+		return m_id;
+	}
+
+	const NOU::NOU_DAT_ALG::String8& PluginMetadata::getName() const
+	{
+		return m_name;
+	}
+
+	const NOU::NOU_DAT_ALG::String8& PluginMetadata::getDescription() const
+	{
+		return m_description;
+	}
+
+	const NOU::NOU_CORE::Version& PluginMetadata::getVersion() const
+	{
+		return m_version;
+	}
+
+	NOU::NOU_FILE_MNGT::Path PluginMetadata::getPath() const
+	{
+		return m_path;
+	}
+
+	PluginMetadata::Priority PluginMetadata::getPriority() const
+	{
+		return m_priority;
+	}
+
+	NOU::boolean PluginMetadata::isValid() const
+	{
+		return getID() == EnginePlugin::INVALID_ID;
+	}
+
+	PluginMetadata::operator NOU::boolean() const
+	{
+		return isValid();
+	}
+
 	//helper function
 	template<typename T>
 	T getFuncAddress(void *lib, const NOU::NOU_DAT_ALG::StringView8 &name)
@@ -23,8 +95,6 @@ namespace NOE::NOE_CORE
 #endif
 	}
 
-	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::GET_VERSION_FUNCNAME = "noePluginGetVersion";
-
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_STARTUP_FUNCNAME = "noePluginStartup";
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME = "noePluginShutdown";
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::PLUGIN_RECEIVE_FUNCNAME = "noePluginReceive";
@@ -32,9 +102,17 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::INITIALIZE_FUNCNAME = "noePluginInitialize"; 
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::TERMINATE_FUNCNAME = "noePluginTerminate";
 
-	EnginePlugin::EnginePlugin(Plugin::ID id) :
+	EnginePlugin::EnginePlugin(const NOU::NOU_FILE_MNGT::Path &config) :
 		m_library(nullptr),
-		m_metadata(id),
+		m_metadata(config),
+		m_initializeFunc(nullptr),
+		m_terminateFunc(nullptr),
+		m_shutdownFunc(nullptr)
+	{}
+
+	EnginePlugin::EnginePlugin() :
+		m_library(nullptr),
+		m_metadata(),
 		m_initializeFunc(nullptr),
 		m_terminateFunc(nullptr),
 		m_shutdownFunc(nullptr)
@@ -42,8 +120,7 @@ namespace NOE::NOE_CORE
 
 	EnginePlugin::EnginePlugin(EnginePlugin && other) :
 		m_library(other.m_library),
-		m_metadata(other.getMetadata().getId()),
-		m_version(NOU::NOU_CORE::move(other.m_version)),
+		m_metadata(NOU::NOU_CORE::move(other.m_metadata)),
 		m_initializeFunc(other.m_initializeFunc),
 		m_terminateFunc(other.m_terminateFunc),
 		m_shutdownFunc(other.m_shutdownFunc)
@@ -92,9 +169,6 @@ namespace NOE::NOE_CORE
 			return false;
 		}
 
-		EnginePlugin::FunctionGetVersion getVersionFunc =
-			getFuncAddress<EnginePlugin::FunctionGetVersion>(lib, EnginePlugin::GET_VERSION_FUNCNAME);
-
 		EnginePlugin::FunctionStartup startupFunc =
 			getFuncAddress<EnginePlugin::FunctionStartup>(lib, EnginePlugin::PLUGIN_STARTUP_FUNCNAME);
 
@@ -111,15 +185,6 @@ namespace NOE::NOE_CORE
 			getFuncAddress<EnginePlugin::FunctionTerminate>(lib, EnginePlugin::TERMINATE_FUNCNAME);
 
 		NOU::boolean success = true;
-
-		if (getVersionFunc == nullptr)
-		{
-			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION, 
-				"The function \"noePluginGetVersion()\" could not be loaded.");
-
-			success = false;
-		}
 
 		if (startupFunc == nullptr)
 		{
@@ -174,8 +239,6 @@ namespace NOE::NOE_CORE
 
 		m_library = lib;
 
-		m_version = getVersionFunc();
-
 		m_initializeFunc = initializeFunc;
 		m_terminateFunc = terminateFunc;;
 		m_receiveFunc = receiveFunc;
@@ -212,11 +275,6 @@ namespace NOE::NOE_CORE
 
 			return false;
 		}
-	}
-
-	const NOU::NOU_CORE::Version& EnginePlugin::getVersion() const
-	{
-		return m_version;
 	}
 
 	Plugin::InitResult EnginePlugin::initialize(NostraEngine &engineInstance)
@@ -258,14 +316,12 @@ namespace NOE::NOE_CORE
 			return nullptr;
 	}
 
-	PluginMetadata getPluginMetdata(Plugin::ID id)
+	EnginePlugin& PluginManager::getPlugin(Plugin::ID id)
 	{
-		return PluginMetadata(id);
-	}
-
-	EnginePlugin& getPlugin(Plugin::ID id)
-	{
-
+		if (m_idIndexMap.containsKey(id))
+			return m_idIndexMap.get(id);
+		else
+			return m_idIndexMap.get(EnginePlugin::INVALID_ID);
 	}
 
 	Plugin::SendResult PluginManager::send(Plugin::ID recipient, Plugin::ID source, void *data,
@@ -276,18 +332,21 @@ namespace NOE::NOE_CORE
 			return Plugin::SendResult::INVALID_RECIPIENT;
 		}
 
-		PluginMetadata metadata = getPluginMetdata(recipient).isValid();
+		EnginePlugin &plugin = getPlugin(recipient);
 
-		if (!metadata.isValid())
+		if (!plugin.getMetadata().isValid())
 		{
 			return Plugin::SendResult::PLUGIN_NOT_FOUND;
 		}
 
-		getPlugin(recipient).receive(source, data, size, flags);
+		plugin.receive(source, data, size, flags);
 	}
 
 	PluginManager::PluginManager()
-	{}
+	{
+		//map invalid plugin
+		m_idIndexMap.map(EnginePlugin::INVALID_ID, EnginePlugin());
+	}
 
 	NOU::boolean PluginManager::loadPlugins()
 	{
@@ -296,6 +355,6 @@ namespace NOE::NOE_CORE
 
 	NOU::NOU_DAT_ALG::Vector<EnginePlugin>& PluginManager::getPlugins()
 	{
-		return m_plugins;
+		return m_idIndexMap.entrySet();
 	}
 }
