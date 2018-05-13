@@ -21,6 +21,7 @@ namespace NOE::NOE_CORE
 		m_name = "MyPlugin";
 		m_description = "MyPlugin. Duh.";
 		m_version = NOU::NOU_CORE::Version(1, 0, 0);
+		m_requiredVersion = NOU::NOU_CORE::Version(0, 0, 1);
 
 		// the filename is the name of the plugin plus the plugin name extension
 		m_path = m_name + PLUGIN_FILE_EXTENSION;
@@ -31,6 +32,7 @@ namespace NOE::NOE_CORE
 	PluginMetadata::PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config) : 
 		m_id(EnginePlugin::INVALID_ID),
 		m_version(0, 0, 0),
+		m_requiredVersion(0, 0, 0),
 		m_path("./")
 	{
 		load(config);
@@ -39,6 +41,7 @@ namespace NOE::NOE_CORE
 	PluginMetadata::PluginMetadata() :
 		m_id(EnginePlugin::INVALID_ID),
 		m_version(0, 0, 0),
+		m_requiredVersion(0, 0, 0),
 		m_path("./")
 	{}
 
@@ -57,9 +60,14 @@ namespace NOE::NOE_CORE
 		return m_description;
 	}
 
-	const NOU::NOU_CORE::Version& PluginMetadata::getVersion() const
+	const NOU::NOU_CORE::Version& PluginMetadata::getPluginVersion() const
 	{
 		return m_version;
+	}
+
+	const NOU::NOU_CORE::Version& PluginMetadata::getRequiredVersion() const
+	{
+		return m_requiredVersion;
 	}
 
 	NOU::NOU_FILE_MNGT::Path PluginMetadata::getPath() const
@@ -130,7 +138,7 @@ namespace NOE::NOE_CORE
 
 	EnginePlugin::~EnginePlugin()
 	{
-		if (m_library != nullptr)
+		if (isLoaded())
 			unload();
 	}
 
