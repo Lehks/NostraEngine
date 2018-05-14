@@ -107,7 +107,6 @@ namespace NOE::NOE_CORE
 		SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
 		ID getID() const;
 
-		virtual const NOU::NOU_CORE::Version getVersion() const = 0;
 		virtual InitResult initialize(NostraEngine &engineInstance) = 0;
 		virtual InitResult terminate(NostraEngine &engineInstance) = 0;
 		virtual void receive(ID source, void *data, NOU::sizeType size, NOU::uint32 flags) = 0;
