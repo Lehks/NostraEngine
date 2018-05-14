@@ -80,11 +80,9 @@ namespace NOE::NOE_CORE
 		void fpsLimitStart();
 
 		/**
-		\return		void
-
-		\brief The Render-Method. Everything put in here will be, after each iteration of the loop in the start method, updated.
+		\brief every render frame will be processed in here;
 		*/
-		void render();
+		void renderMain();
 
 		/**
 		\return	an eventual errorcode if something fails while initializing
@@ -92,6 +90,19 @@ namespace NOE::NOE_CORE
 		\brief Initialization-Method. Everything put in here will be initialized for later usage.
 		*/
 		NOU::int32 initialize();
+
+
+		/**
+		\return an eventual errorcode if something fails while postInitialising
+		\brief Initialiation-Methode that runs directly after the initializing stage
+		*/
+		NOU::int32 postInitialize();
+
+		/**
+		\return an eventual errorcode if something fails while pre Initialising
+		\brief Initialiation-Methode that runs directly before the initializing stage
+		*/
+		NOU::int32 preInitialize();
 
 		/**
 		\return		NOU::int8
@@ -104,6 +115,11 @@ namespace NOE::NOE_CORE
 		\brief Standard constructor for now.
 		*/
 		NostraEngine();
+
+		/**
+		\brief gamelogic frames will be executed in here
+		*/
+		void logicMain();
 	public:
 
 		
@@ -153,6 +169,12 @@ namespace NOE::NOE_CORE
 		\return true if successfull, false if not
 		*/
 		NOU::boolean addUpdatable(NOE::NOE_CORE::Updatable *updt);
+
+		/**
+		\brief calls the update Method of each updatable
+		\return true on success, false if not
+		*/
+		void updateUpdatables();
 
 		/**
 		\brief Returns a reference to the isntance

@@ -7,7 +7,7 @@ namespace NOE::NOE_CORE{
 	NostraEngine* NostraEngine::s_instance = nullptr;
 	NOU::uint8 NostraEngine::s_instanceCount = 0;
 
-	void NostraEngine::render()
+	void NostraEngine::renderMain()
 	{
 		//------------------------------------------------------------
 		//
@@ -18,48 +18,16 @@ namespace NOE::NOE_CORE{
 	NostraEngine::NostraEngine() :
 		m_runState(0) { }
 
-	NOU::int32 NostraEngine::initialize()
-	{
-		//------------------------------------------------------------
-		//
-		//DO YOUR STANDARD INIT METHOD'S HERE !
-		//
-		setMaxFPS();		//disable the FPS limiter
-
-		m_initializables.sort();
-
-		NOU::sizeType initSize = m_initializables.size();
-
-		for(NOU::sizeType i = 0; i < initSize; i++)
-		{
-			m_initializables[i]->initialize();
-		}
-		
-
-		return 0;
-	}
-
 	NOU::int32 NostraEngine::start()
 	{
-		NOU::uint64 renderBeginTime, renderEndTime;
-
-		if (initialize() != 0)
-		{
-			std::cout << "An error occurred during initialization."  << std::endl;
-			return 1;
-		}
 
 
-		while (m_runState != -1)			//DON'T RUN IT !!!!
-		{
-			renderBeginTime = NOU::NOU_CORE::currentTimeNanos();
-			render();
-			renderEndTime   = NOU::NOU_CORE::currentTimeNanos();
-			updateFrameInformations(renderBeginTime, renderEndTime);
-			
-			//this loop runs 1 time because of this methode.
-			terminateEngine();
-		}
+		preInitialize();
+		initialize();
+		postInitialize();
+
+		logicMain();
+
 
 		terminate();
 
@@ -160,8 +128,66 @@ namespace NOE::NOE_CORE{
 		}
 		return nullptr;
 	}
-}
 
-// 1000 / ms = fps | /fps
-// 1000 / ms * fps = 1 | *ms
-// 1000 / fps = ms
+	void NostraEngine::updateUpdatables()
+	{
+		NOU::sizeType s = m_updatables.size();
+		for(NOU::sizeType i = 0; i < s; i++)
+		{
+			m_updatables[i]->update();
+		}
+	}
+
+	NOU::int32 NostraEngine::preInitialize()
+	{
+		m_initializables.sort();
+
+
+		NOU::sizeType s = m_initializables.size();
+		for(NOU::sizeType i = 0; i < s; i++)
+		{
+			m_initializables[i]->preInitialize();
+		}
+		return 0;
+	}
+
+	NOU::int32 NostraEngine::initialize()
+	{
+		setMaxFPS();		//disable the FPS limiter
+
+		NOU::sizeType initSize = m_initializables.size();
+
+		for(NOU::sizeType i = 0; i < initSize; i++)
+		{
+			m_initializables[i]->initialize();
+		}
+
+		return 0;
+	}
+
+	NOU::int32 NostraEngine::postInitialize()
+	{
+		NOU::sizeType initSize = m_initializables.size();
+
+		for(NOU::sizeType i = 0; i < initSize; i++)
+		{
+			m_initializables[i]->postInitialize();
+		}
+		return 0;
+	}
+
+	void NostraEngine::logicMain()
+	{
+		NOU::uint64 renderBeginTime, renderEndTime;
+		while (m_runState != -1)
+			{
+				renderBeginTime = NOU::NOU_CORE::currentTimeNanos();
+				updateUpdatables();
+				renderEndTime   = NOU::NOU_CORE::currentTimeNanos();
+				updateFrameInformations(renderBeginTime, renderEndTime);
+				
+				//this loop runs 1 time because of this methode.
+				terminateEngine();
+			}
+		}
+}

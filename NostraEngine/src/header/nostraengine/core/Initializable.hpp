@@ -37,9 +37,20 @@ namespace NOE::NOE_CORE {
 			Initializable(NOU::uint32 priority = -1);
 
 			/**
+			\brief If something has to be done before the init stage it has to be called in this method
+			*/
+			virtual NOU::int32 preInitialize();
+
+			/**
 			\brief If something has to be initialized before usage it has to be called in this method
 			*/
 			virtual NOU::int32 initialize() = 0;
+
+			/**
+			\brief If something has to be done after the init stage but before the main loop
+				   it has to be called in this method
+			*/
+			virtual NOU::int32 postInitialize();
 
 			/**
 			\brief If something has to be terminated after usage it has to be called in this method
