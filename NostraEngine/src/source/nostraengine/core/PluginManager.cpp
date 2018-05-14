@@ -379,8 +379,8 @@ namespace NOE::NOE_CORE
 
 	}
 
-	NOU::NOU_DAT_ALG::Vector<EnginePlugin>& PluginManager::getPlugins()
+	NOU::NOU_DAT_ALG::Vector<EnginePlugin*>& PluginManager::getPlugins()
 	{
-		return m_idIndexMap.entrySet();
+		return m_sortedPlugins;
 	}
 }

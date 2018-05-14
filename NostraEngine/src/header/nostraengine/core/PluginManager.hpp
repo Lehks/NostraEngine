@@ -515,6 +515,11 @@ namespace NOE::NOE_CORE
 		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, EnginePlugin> m_idIndexMap;
 
 		/**
+		\brief A list of all plugins, sorted after their priority.
+		*/
+		NOU::NOU_DAT_ALG::Vector<EnginePlugin*> m_sortedPlugins;
+
+		/**
 		\brief Constructs a new instance.
 		*/
 		explicit PluginManager();
@@ -613,7 +618,7 @@ namespace NOE::NOE_CORE
 
 		To use this method, createPluginList() needs to have been called before.
 		*/
-		NOU::NOU_DAT_ALG::Vector<EnginePlugin>& getPlugins();
+		NOU::NOU_DAT_ALG::Vector<EnginePlugin*>& getPlugins();
 	};
 
 	constexpr Plugin::ID EnginePlugin::ENGINE_ID;
