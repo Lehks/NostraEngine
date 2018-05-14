@@ -332,14 +332,101 @@ namespace NOE::NOE_CORE
 		*/
 		~EnginePlugin();
 
+		/**
+		\brief Loads the plugin.
+
+		\return True on success and false on failure.
+
+		\details
+		Loads the plugin.
+
+		Loading a plugin is only possible, if \code{.cpp} getMetadata().isValid()\endcode returns true.
+
+		Only after a successful call to this method, the methods initialize(), terminate(), receive() and
+		unload() can be called.
+
+		Generally, this method does two things:
+		1. It loads the shared library file of the plugin.
+		2. It calls the startup function for the plugin.
+
+		If the loading was successful, this method will return true. If it was not successful, false will be 
+		returned and an error will be pushed to the error handler. The possible error codes are:
+		- PluginManager::ErrorCodes::PLUGIN_ALREADY_LOADED: The plugin was already loaded previously.
+		- PluginManager::ErrorCodes::PLUGIN_NOT_EXISTING: The plugin does not exist (the metadata is not
+		  valid).
+		- PluginManager::ErrorCodes::COULD_NOT_LOAD_LIBRARY: The system call to load the plugin's shared 
+		  library failed.
+		- PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION: The plugin's shared library could be loaded, 
+		  but a function could not be loaded.
+
+		In the case of the error code PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION, it is possible that
+		multiple errors are pushed to the error handler, one for each function that could not be loaded 
+		(which is 5 functions at most).
+		*/
 		NOU::boolean load();
 
+		/**
+		\brief Unloads the plugin.
+
+		\return True on success and false on failure.
+
+		\details
+		Unloads the plugin.
+
+		Unloading a plugin is only possible, if it was already loaded previously.
+
+		This method will free the plugin's shared library file.
+
+		If the unloading was successful, this method will return true. If it was not successful, false will be
+		returned and an error will be pushed to the error handler. The possible error codes are:
+		- PluginManager::ErrorCodes::COULD_NOT_FREE_LIBRARY: The system call to free the plugin's shared
+		  library failed.
+		- PluginManager::ErrorCodes::PLUGIN_NOT_LOADED: The plugin was not loaded.
+		*/
 		NOU::boolean unload();
 
+		/**
+		\return True, if the plugin is loaded and false if not.
+
+		\brief Returns whether the plugin is loaded or not.
+
+		\details
+		Returns whether the plugin is loaded or not. A plugin is loaded, if a call to load() was successful.
+		*/
 		NOU::boolean isLoaded();
 
+		/**
+		\return The value that was returned by Plugin::initialize().
+
+		\brief Initializes the plugin by calling Plugin::initialize().
+
+		\details
+		Initializes the plugin by calling Plugin::initialize(). This function will fail (and most likely 
+		crash the program) if the plugin is not loaded yet.
+		*/
 		typename Plugin::InitResult initialize(NostraEngine &engineInstance);
+
+		/**
+		\return The value that was returned by Plugin::terminate().
+
+		\brief Initializes the plugin by calling Plugin::terminate().
+
+		\details
+		Initializes the plugin by calling Plugin::terminate(). This function will fail (and most likely
+		crash the program) if the plugin is not loaded yet.
+		*/
 		typename Plugin::InitResult terminate(NostraEngine &engineInstance);
+
+		/**
+		\brief Initializes the plugin by calling Plugin::receive().
+
+		\details
+		Initializes the plugin by calling Plugin::receive(). This function will fail (and most likely
+		crash the program) if the plugin is not loaded yet.
+
+		\note
+		This method is not meant to be called directly by a user.
+		*/
 		void receive(Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags);
 
 		/**
