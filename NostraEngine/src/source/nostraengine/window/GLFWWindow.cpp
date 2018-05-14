@@ -20,8 +20,6 @@ namespace NOE::NOE_WINDOW
 	{
 		if (s_instanceCounter == 0)
 		{
-			WindowLog->pushLogger<NOU::NOU_CORE::FileLogger>();
-
 			if (!glfwInit())
 			{
 				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
