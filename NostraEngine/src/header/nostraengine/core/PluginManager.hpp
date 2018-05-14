@@ -437,27 +437,65 @@ namespace NOE::NOE_CORE
 		const PluginMetadata& getMetadata() const;
 	};
 
+	/**
+	\brief A class that gives access to all plugins. 
+	*/
 	class NOU_CLASS PluginManager final
 	{
 	public:
+		/**
+		\brief A singleton class that contains all of the error codes that are used by the plugin system.
+		*/
 		class ErrorCodes
 		{
 		public:
 			enum  Codes
 			{
+				/**
+				\brief Not an actual error, but always the first element in the enum.
+				*/
 				FIRST_ELEMENT = 7000,
 
+				/**
+				\brief A plugin does either not exist, or it is set to disabled in it Plugin-Configuration.
+				*/
 				PLUGIN_NOT_EXISTING,
+
+				/**
+				\brief The plugin is already loaded.
+				*/
 				PLUGIN_ALREADY_LOADED,
+
+				/**
+				\brief The system call to load the shared library of a plugin failed.
+				*/
 				COULD_NOT_LOAD_LIBRARY,
+
+				/**
+				\brief The system call to load a function in the shared library of a plugin failed.
+				*/
 				COULD_NOT_LOAD_FUNCTION,
+
+				/**
+				\brief The plugin is not loaded.
+				*/
 				PLUGIN_NOT_LOADED,
+
+				/**
+				\brief The system call to free the shared library of a plugin failed.
+				*/
 				COULD_NOT_FREE_LIBRARY,
 
+				/**
+				\brief Not an actual error, but always the last element in the enum.
+				*/
 				LAST_ELEMENT
 			};
 		};
 
+		/**
+		\brief The error pool that provides the errors that are used by the plugin management.
+		*/
 		class ErrorPool : public NOU::NOU_CORE::ErrorPool
 		{
 		private:
@@ -471,27 +509,110 @@ namespace NOE::NOE_CORE
 		};
 
 	private:
+		/**
+		\brief A map that allows access to the single plugins by their ID. Not sorted.
+		*/
 		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, EnginePlugin> m_idIndexMap;
 
+		/**
+		\brief Constructs a new instance.
+		*/
 		explicit PluginManager();
 	public:
-
+		/**
+		\brief Returns the instance of the class.
+		*/
 		static PluginManager& get();
 
 		PluginManager(const PluginManager &other) = delete;
 		PluginManager(PluginManager &&) = delete;
 
+		/**
+		\brief Initializes the plugin manager.
+
+		\details
+		Initializes the plugin manager. This function must be called before any of the other methods are
+		usable.
+		*/
 		void initialize();
+
+		/**
+		\brief Terminates the plugin manager.
+
+		\details
+		Terminates the plugin manager. This function must be called before any of the other methods are 
+		usable.
+		*/
 		void terminate();
 
-		PluginMetadata getPluginMetdata(Plugin::ID id);
+		/**
+		\param id The ID of the plugin.
+
+		\brief Returns the instance of the plugin with the passed ID.
+
+		\details
+		Returns the instance of the plugin with the passed ID. If the ID is invalid (the plugin does not
+		exist), an invalid instance will be returned. 
+
+		To use this method, createPluginList() needs to have been called before.
+		*/
 		EnginePlugin& getPlugin(Plugin::ID id);
 
-		Plugin::SendResult send(Plugin::ID recipient, Plugin::ID source, void *data, NOU::sizeType size, 
+		/**
+		\param recipient The ID of the plugin that should receive the message.
+		\param data      A pointer to a chunk of memory that will be send to the plugin.
+		\param size      The size (amount of bytes) of the memory that \p data points to.
+		\param flags     An arbitrary number that might help the recipient to identify what data was send to
+		                 it.
+
+		\brief Sends the passed data to the recipient plugin.
+
+		\details
+		Sends the passed data to the recipient plugin. The sender-ID will be set to EnginePlugin::ENGINE_ID.
+
+		To use this method, createPluginList() needs to have been called before and the recipient plugin 
+		needs to be loaded.
+		*/
+		Plugin::SendResult send(Plugin::ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
+
+		/**
+		\param recipient The ID of the plugin that should receive the message.
+		\param recipient The ID of the plugin that send the message.
+		\param data      A pointer to a chunk of memory that will be send to the plugin.
+		\param size      The size (amount of bytes) of the memory that \p data points to.
+		\param flags     An arbitrary number that might help the recipient to identify what data was send to
+		                 it.
+
+		\brief Sends the passed data to the recipient plugin.
+
+		\note
+		This method is not supposed to be used by a user, it is only called by other methods of the engine.
+		*/
+		Plugin::SendResult sendImpl(Plugin::ID recipient, Plugin::ID source, void *data, NOU::sizeType size,
 			NOU::uint32 flags);
 
-		NOU::boolean loadPlugins();
+		/**
+		\return True, if the method was successful, false if not.
 
+		\brief Reads the plugins-folder and parses all of their Plugin-Configurations.
+
+		\details
+		Reads the plugins-folder and parses all of their Plugin-Configurations. This method needs to be called
+		before any other of the method that access the plugins.
+
+		\note
+		This method only constructs the plugin instances - it does not load them.
+		*/
+		NOU::boolean createPluginList();
+
+		/**
+		\brief Returns a list of all of the plugins sorted after their priority.
+
+		\details
+		Returns a list of all of the plugins sorted after their priority.
+
+		To use this method, createPluginList() needs to have been called before.
+		*/
 		NOU::NOU_DAT_ALG::Vector<EnginePlugin>& getPlugins();
 	};
 

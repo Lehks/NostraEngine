@@ -332,7 +332,25 @@ namespace NOE::NOE_CORE
 			return m_idIndexMap.get(EnginePlugin::INVALID_ID);
 	}
 
-	Plugin::SendResult PluginManager::send(Plugin::ID recipient, Plugin::ID source, void *data,
+
+
+	void PluginManager::initialize()
+	{
+		NOU::NOU_CORE::ErrorHandler::pushPool<PluginManager::ErrorPool>();
+	}
+
+	void PluginManager::terminate()
+	{
+		//does nothing yet
+	}
+
+	Plugin::SendResult PluginManager::send(Plugin::ID recipient, void *data, NOU::sizeType size, 
+		NOU::uint32 flags)
+	{
+		sendImpl(recipient, EnginePlugin::ENGINE_ID, data, size, flags);
+	}
+
+	Plugin::SendResult PluginManager::sendImpl(Plugin::ID recipient, Plugin::ID source, void *data,
 		NOU::sizeType size, NOU::uint32 flags)
 	{
 		if (recipient == EnginePlugin::ENGINE_ID || recipient == source)
@@ -356,7 +374,7 @@ namespace NOE::NOE_CORE
 		m_idIndexMap.map(EnginePlugin::INVALID_ID, EnginePlugin());
 	}
 
-	NOU::boolean PluginManager::loadPlugins()
+	NOU::boolean PluginManager::createPluginList()
 	{
 
 	}

@@ -23,7 +23,7 @@ namespace NOE::NOE_CORE
 
 	Plugin::SendResult Plugin::send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags)
 	{
-		return PluginManager::get().send(recipient, getID(), data, size, flags);
+		return PluginManager::get().sendImpl(recipient, getID(), data, size, flags);
 	}
 
 	Plugin::ID Plugin::getID() const
