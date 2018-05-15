@@ -184,8 +184,6 @@ namespace NOE::NOE_CORE
 		SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
 		ID getID() const;
 
-		virtual const NOU::NOU_CORE::Version getVersion() const = 0;
-
 		/**
 		\return A literal from the InitResult enum, see detailed section for more information.
 
