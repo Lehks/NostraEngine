@@ -1,3 +1,6 @@
+#ifndef NOE_CORE_PLUGIN_HPP
+#define NOE_CORE_PLUGIN_HPP
+
 #include "nostraengine/core/StdIncludes.hpp"
 #include "nostraengine/core/NostraEngine.hpp"
 
@@ -243,3 +246,5 @@ namespace NOE::NOE_CORE
 		virtual void receive(ID source, void *data, NOU::sizeType size, NOU::uint32 flags) = 0;
 	};
 }
+
+#endif
