@@ -1,5 +1,4 @@
 #include "nostraengine/core/StdIncludes.hpp"
-
 #include "nostraengine/core/NostraEngine.hpp"
 
 #ifndef NOE_SET_AS_ACTIVE_PLUGIN_CLASS
@@ -182,6 +181,12 @@ namespace NOE::NOE_CORE
 		\p flags can be used to send additional data that might give a hint on what kind of data \p data points to.
 		*/
 		SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
+
+		/**
+		\return The ID of this plugin.
+
+		\brief Returns the ID of this plugin.
+		*/
 		ID getID() const;
 
 		/**

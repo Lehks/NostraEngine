@@ -1,7 +1,7 @@
 #include "nostraengine/core/StdIncludes.hpp"
 
-#include "nostraengine/core/NostraEngine.hpp"
 #include "nostraengine/core/Plugin.hpp"
+#include "nostraengine/core/NostraEngine.hpp"
 
 namespace NOE::NOE_CORE
 {

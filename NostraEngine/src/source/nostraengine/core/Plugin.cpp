@@ -1,5 +1,5 @@
-#include "nostraengine\core\Plugin.hpp"
 
+#include "nostraengine/core/Plugin.hpp"
 #include "nostraengine/core/PluginManager.hpp"
 
 namespace NOE::NOE_CORE
