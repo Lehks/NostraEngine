@@ -2,7 +2,7 @@
 
 #include "nostraengine/window/GLFWMonitor.hpp"
 
-#include "GLAD/glad.h"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace NOE::NOE_WINDOW
