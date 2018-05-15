@@ -60,16 +60,16 @@ namespace NOE::NOE_WINDOW
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		GLFWmonitor* glwfMonitor;
+		GLFWmonitor* glfwMonitor;
 		if(monitor == nullptr)
-			glwfMonitor = reinterpret_cast<GLFWmonitor*>(monitor);
+			glfwMonitor = reinterpret_cast<GLFWmonitor*>(monitor);
 		else
-			glwfMonitor = const_cast<GLFWmonitor*>(
+			glfwMonitor = const_cast<GLFWmonitor*>(
 				reinterpret_cast<const GLFWmonitor*>(monitor->getUnderlying()));
 
 		m_title = title;
 
-		m_window = glfwCreateWindow(width, height, m_title.rawStr(), glwfMonitor, nullptr);
+		m_window = glfwCreateWindow(width, height, m_title.rawStr(), glfwMonitor, nullptr);
 
 		if (!m_window)
 		{
