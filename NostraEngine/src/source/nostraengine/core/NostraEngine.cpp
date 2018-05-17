@@ -34,14 +34,16 @@ namespace NOE::NOE_CORE{
 		return 0;
 	}
 
-	NOU::int32 NostraEngine::terminate()
-	{
-		//------------------------------------------------------------
-		//
-		//DO YOUR STANDARD TERMINATE METHOD'S HERE !
-		//
-		return 0;
-	}
+    NOU::int32 NostraEngine::terminate()
+    {
+        NOU::sizeType initVecSize = m_initializables.size();
+        for(NOU::sizeType i = initVecSize - 1; i >= 0; i--)
+        {
+            m_initializables[i]->terminate();
+        }
+
+        return 0;
+    }
 
 	void NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
 	{
