@@ -27,9 +27,15 @@ namespace NOE::NOE_CORE {
 			\brief The priority rating of the current object. 0 is the lowest priority where -1 is the highest
 			*/
 			NOU::uint32 m_priority;
-
+			/**
+			\brief The size of the HaspMap.
+			*/
+			static const NOU::int32 S_MAP_SIZE = 1000;
+			/**
+			\brief The HashMap to sore variables such as Path's.
+			*/
+			static NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, NOU::NOU_DAT_ALG::String8> s_hashMap;
 		public:
-
 			/**
 			\brief The Constructor of the Initializable Interface
 			\param priority sets the internal priority rating of the object
@@ -69,6 +75,12 @@ namespace NOE::NOE_CORE {
 			\return the priority rating
 			*/
 			NOU::uint32 getPriority() const;
+
+			/**
+			\brief Returns the static HashMap as a reference.
+			\return the HashMap reference
+			*/
+			NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8 ,NOU::NOU_DAT_ALG::String8> & getMap();
 
 			/**
 			\brief compares two Initializables depending on their priority

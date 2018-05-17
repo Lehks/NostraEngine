@@ -40,7 +40,9 @@ namespace NOE::NOE_CORE
 		*/
 		static NOU::uint8 s_instanceCount;
 
-
+        /**
+        \brief Integer to see of the engine is running (-1 == terminate engine for now (version 0.0.0))
+        */
 		NOU::int8 m_runState;
 
 		/**
@@ -67,6 +69,11 @@ namespace NOE::NOE_CORE
 		\brief A vector containing all objects that have to be updated every logic frame
 		*/
 		NOU::NOU_DAT_ALG::Vector<NOE::NOE_CORE::Updatable*> m_updatables;
+
+        /**
+        \brief The current version of the Engine.
+        */
+		NOU::NOU_CORE::Version m_version;
 		/**
 		\brief uprates the FPS and frametime
 		\param begin the begintime of the current render iteration
@@ -136,7 +143,9 @@ namespace NOE::NOE_CORE
 		\param maXFPS sets the maximum FPS to the given value, if the value is zero, the frame limiter gets disabled
 		*/
 		void setMaxFPS(const NOU::uint64 maxFPS = 0);
-
+        /**
+        \brief Terminates the engine if this method is called.
+        */
 		void terminateEngine();
 		/**
 		\brief getter for m_currFPS
@@ -193,6 +202,11 @@ namespace NOE::NOE_CORE
 		\return a pointer to the instance of the engine or nullptr if it has been created once
 		*/
 		static NostraEngine *createInstance();
+        /**
+        \brief Returns the version of the engine.
+        \return NOU::NOU_CORE::Version Type
+        */
+        const NOU::NOU_CORE::Version & getVersion();
 	};
 }
 

@@ -16,18 +16,33 @@ namespace NOE::NOE_CORE{
 	}
 
 	NostraEngine::NostraEngine() :
-		m_runState(0) { }
+		m_runState(0) ,
+        m_version(0,0,0)
+    { }
 
 	NOU::int32 NostraEngine::start()
 	{
+        std::cout << m_version.getMajor() << "." << m_version.getMinor() << "." << m_version.getPatch() << std::endl;
 
+        NOU::uint64 renderBeginTime, renderEndTime;
 
 		preInitialize();
 		initialize();
 		postInitialize();
 
-		logicMain();
+		//@Lukas Groß: please add || (statement od window) so that the engine can be terminated with the x button of the window.
+		while(m_runState != -1)
+        {
+            renderBeginTime = NOU::NOU_CORE::currentTimeNanos();
+            logicMain();
+            renderMain();
+            renderEndTime   = NOU::NOU_CORE::currentTimeNanos();
+            updateFrameInformations(renderBeginTime, renderEndTime);
 
+            std::cout << m_currFPS << std::endl;
+            //Engine Runs just 1 time.
+            terminateEngine();
+        }
 
 		terminate();
 
@@ -142,7 +157,7 @@ namespace NOE::NOE_CORE{
 
 	NOU::int32 NostraEngine::preInitialize()
 	{
-		m_initializables.sort();
+	    m_initializables.sort();
 
 
 		NOU::sizeType s = m_initializables.size();
@@ -180,16 +195,11 @@ namespace NOE::NOE_CORE{
 
 	void NostraEngine::logicMain()
 	{
-		NOU::uint64 renderBeginTime, renderEndTime;
-		while (m_runState != -1)
-			{
-				renderBeginTime = NOU::NOU_CORE::currentTimeNanos();
-				updateUpdatables();
-				renderEndTime   = NOU::NOU_CORE::currentTimeNanos();
-				updateFrameInformations(renderBeginTime, renderEndTime);
-				
-				//this loop runs 1 time because of this methode.
-				terminateEngine();
-			}
+		updateUpdatables();
 	}
+
+    const NOU::NOU_CORE::Version & NostraEngine::getVersion()
+    {
+        return m_version;
+    }
 }

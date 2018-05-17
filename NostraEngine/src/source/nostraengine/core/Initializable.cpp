@@ -6,6 +6,8 @@ namespace NOE::NOE_CORE
 {
 
 
+    NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, NOU::NOU_DAT_ALG::String8> Initializable::s_hashMap(S_MAP_SIZE);
+
     Initializable::Initializable(NOU::uint32 priority) :
         m_priority(priority)
         { 
@@ -20,6 +22,11 @@ namespace NOE::NOE_CORE
     NOU::uint32 Initializable::getPriority() const
     {
         return m_priority;
+    }
+
+    NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8 ,NOU::NOU_DAT_ALG::String8>& Initializable::getMap()
+    {
+            return s_hashMap;
     }
 
 	NOU::boolean Initializable::operator<(const Initializable &i) const
