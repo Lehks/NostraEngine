@@ -49,7 +49,7 @@ namespace NOE::NOE_WINDOW
 	}
 
 	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
-		const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor)
+		const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor)
 	{
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
@@ -62,7 +62,7 @@ namespace NOE::NOE_WINDOW
 
 		GLFWmonitor* glfwMonitor;
 		if(monitor == nullptr)
-			glfwMonitor = reinterpret_cast<GLFWmonitor*>(monitor);
+			glfwMonitor = nullptr;
 		else
 			glfwMonitor = const_cast<GLFWmonitor*>(
 				reinterpret_cast<const GLFWmonitor*>(monitor->getUnderlying()));
@@ -122,7 +122,7 @@ namespace NOE::NOE_WINDOW
 			nullptr, xpos, ypos, width, height, refreshRate);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(Monitor* handle)
+	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(const Monitor* handle)
 	{
 		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), 
 			const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>(handle->getUnderlying())), 

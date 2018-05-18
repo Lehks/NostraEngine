@@ -64,7 +64,7 @@ namespace NOE::NOE_WINDOW
 		*/
 		virtual ~GLFWWindow();
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor = nullptr) override;
+			const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor = nullptr) override;
 		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
@@ -73,7 +73,7 @@ namespace NOE::NOE_WINDOW
 		virtual void maximize()	override;
 		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
 			NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
-		virtual void setFullscreen(Monitor* handle) override;
+		virtual void setFullscreen(const Monitor* handle) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
 		virtual const Monitor* getPrimaryMonitor() override;

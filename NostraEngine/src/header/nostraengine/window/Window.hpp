@@ -38,7 +38,7 @@ namespace NOE::NOE_WINDOW
 						-A pointer to a monitor where the window should be in full screen mode
 		*/
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor = nullptr) = 0;
+			const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor = nullptr) = 0;
 
 		/**
 		\param title	The new title of the window.
@@ -97,7 +97,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Makes the window full screen.
 		*/
-		virtual void setFullscreen(Monitor* handle) = 0;
+		virtual void setFullscreen(const Monitor* handle) = 0;
 
 		/**
 		\brief			All operations that are performed in the window like updating images, etc.
