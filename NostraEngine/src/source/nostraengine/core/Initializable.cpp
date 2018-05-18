@@ -68,4 +68,9 @@ namespace NOE::NOE_CORE
     {
         return 0;
     }
+
+    NOU::int32 Initializable::postTerminate()
+    {
+        return 0;
+    }
 }

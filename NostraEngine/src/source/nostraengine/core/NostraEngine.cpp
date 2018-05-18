@@ -34,7 +34,7 @@ namespace NOE::NOE_CORE{
 
 	NOU::int32 NostraEngine::preInitialize()
 	{
-		m_initializables.sort();
+
 
 
 		NOU::sizeType s = m_initializables.size();
@@ -79,9 +79,9 @@ namespace NOE::NOE_CORE{
 			return 0;
 		}
 
-		for (NOU::sizeType i = initVecSize - 1; i >= 0; i--)
+		for (NOU::sizeType i = 0; i < initVecSize; i++)
 		{
-			m_initializables[i]->terminate();
+			m_initializables[initVecSize - i - 1]->terminate();
 		}
 
 		return 0;
@@ -89,6 +89,17 @@ namespace NOE::NOE_CORE{
 
 	NOU::int32 NostraEngine::postTerminate()
 	{
+		NOU::sizeType initVecSize = m_initializables.size();
+
+		if (initVecSize == 0)
+		{
+			return 0;
+		}
+
+		for (NOU::sizeType i = 0; i < initVecSize; i++)
+		{
+			m_initializables[initVecSize - i - 1]->postTerminate();
+		}
 
 		return 0;
 	}
@@ -124,6 +135,8 @@ namespace NOE::NOE_CORE{
 
         NOU::uint64 renderBeginTime, renderEndTime;
 
+		m_initializables.sort();
+
 		preInitialize();
 		initialize();
 		postInitialize();
@@ -142,6 +155,7 @@ namespace NOE::NOE_CORE{
         }
 
 		terminate();
+		postTerminate();
 
 		return 0;
 	}

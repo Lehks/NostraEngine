@@ -63,6 +63,11 @@ namespace NOE::NOE_CORE {
 			*/
 			virtual NOU::int32 terminate()  = 0;
 
+			/**
+			\brief If something has to be called after the termination method it has to be called in this method
+			*/
+			virtual NOU::int32 postTerminate();
+
 
 			/**
 			\brief sets the priority rating
