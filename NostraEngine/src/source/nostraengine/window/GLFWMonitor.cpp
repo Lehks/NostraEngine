@@ -7,7 +7,7 @@
 
 namespace NOE::NOE_WINDOW
 {
-	NOU::NOU_CORE::Logger* MonitorLog = NOU::NOU_CORE::Logger::instance();
+	NOU::NOU_CORE::Logger* monitorLog = NOU::NOU_CORE::Logger::instance();
 
 	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(const void* handle) :
 		m_handle(handle),
@@ -28,7 +28,7 @@ namespace NOE::NOE_WINDOW
 		m_greenBits = mode->greenBits;
 		m_blueBits = mode->blueBits;
 
-		MonitorLog->write(NOU::NOU_CORE::EventLevelCodes::DEBUG,
+		NOU_WRITE_LOG(monitorLog, NOU::NOU_CORE::EventLevelCodes::DEBUG,
 			"Monitor object created!", "DebugLog.txt");
 	}
 
