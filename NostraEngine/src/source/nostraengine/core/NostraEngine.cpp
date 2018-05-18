@@ -96,8 +96,12 @@ namespace NOE::NOE_CORE{
 	//CONSTRUCTOR
 	NostraEngine::NostraEngine() :
 		m_runState(0),
-		m_version(0, 0, 1)
-	{}
+		m_version(0, 0, 1),
+		m_logger(NOU::NOU_CORE::Logger::instance())
+	{
+		m_logger->pushLogger<NOU::NOU_CORE::FileLogger>();
+		m_logger->pushLogger<NOU::NOU_CORE::ConsoleLogger>();
+	}
 
 	void NostraEngine::logicMain()
 	{
@@ -115,7 +119,8 @@ namespace NOE::NOE_CORE{
 
 	NOU::int32 NostraEngine::start()
 	{
-        std::cout << m_version.getMajor() << "." << m_version.getMinor() << "." << m_version.getPatch() << std::endl;
+		
+		m_logger->write(NOU::NOU_CORE::EventLevelCodes::INFO, getVersion().rawStr() ,"EngineLog.txt");
 
         NOU::uint64 renderBeginTime, renderEndTime;
 
@@ -131,8 +136,6 @@ namespace NOE::NOE_CORE{
             renderMain();
             renderEndTime   = NOU::NOU_CORE::currentTimeNanos();
             updateFrameInformations(renderBeginTime, renderEndTime);
-
-            std::cout << m_currFPS << std::endl;
 
             //Engine Runs just 1 time.
             terminateEngine();
@@ -217,9 +220,18 @@ namespace NOE::NOE_CORE{
 		return m_frameTime;
 	}
 
-    const NOU::NOU_CORE::Version & NostraEngine::getVersion()
+    const NOU::NOU_DAT_ALG::String8 & NostraEngine::getVersion()
     {
-        return m_version;
+
+		NOU::NOU_DAT_ALG::String8 ver;
+
+		ver.append(m_version.getMajor());
+		ver.append('.');
+		ver.append(m_version.getMinor());
+		ver.append('.');
+		ver.append(m_version.getPatch());
+
+        return ver;
     }
 
 	//----------------------------------------------------- End public -----------------------------------------------------
