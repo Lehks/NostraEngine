@@ -87,9 +87,10 @@ namespace NOE::NOE_CORE
 		void fpsLimitStart();
 
 		/**
-		\brief every render frame will be processed in here;
+		\return an eventual errorcode if something fails while pre Initialising
+		\brief Initialiation-Methode that runs directly before the initializing stage
 		*/
-		void renderMain();
+		NOU::int32 preInitialize();
 
 		/**
 		\return	an eventual errorcode if something fails while initializing
@@ -105,18 +106,20 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::int32 postInitialize();
 
-		/**
-		\return an eventual errorcode if something fails while pre Initialising
-		\brief Initialiation-Methode that runs directly before the initializing stage
-		*/
-		NOU::int32 preInitialize();
 
 		/**
-		\return		NOU::int8
+		\return		NOU::int32
 
 		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
 		*/
 		NOU::int32 terminate();
+
+		/**
+		\return		NOU::int32
+
+		\brief post Terminate-Method. Every pulgin put in here will be closed the right way if the program will be terminated.
+		*/
+		NOU::int32 postTerminate();
 
 		/**
 		\brief Standard constructor for now.
@@ -127,6 +130,11 @@ namespace NOE::NOE_CORE
 		\brief gamelogic frames will be executed in here
 		*/
 		void logicMain();
+
+		/**
+		\brief every render frame will be processed in here;
+		*/
+		void renderMain();
 	public:
 
 		
@@ -137,33 +145,28 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::int32 start();
 
+		/**
+		\brief creates an instance of the engine but only once
+		\return a pointer to the instance of the engine or nullptr if it has been created once
+		*/
+		static NostraEngine *createInstance();
 
 		/**
-		\brief sets the maximum frames that are rendered per second.
-		\param maXFPS sets the maximum FPS to the given value, if the value is zero, the frame limiter gets disabled
+		\brief Returns a reference to the isntance
+		\return a reference to the instance
 		*/
-		void setMaxFPS(const NOU::uint64 maxFPS = 0);
-        /**
-        \brief Terminates the engine if this method is called.
-        */
+		static NostraEngine &get();
+
+		/**
+		\brief sets an instance of the Engine as the current active instance
+		\param instacne the instance that will be set as active
+		*/
+		static void setActiveInstance(NostraEngine &instance);
+
+		/**
+		\brief Terminates the engine if this method is called.
+		*/
 		void terminateEngine();
-		/**
-		\brief getter for m_currFPS
-		\return returns the current FPS
-		*/
-		const NOU::uint64& getCurrFPS();
-
-		/**
-		\brief getter for m_maxFPS
-		\return returns the maximum set FPS
-		*/
-		const NOU::uint64& getMaxFPS();
-
-		/**
-		\brief getter for m_frameTime
-		\return returns the current FrameTime
-		*/
-		const NOU::uint32& getFrameTime();
 
 		/**
 		\brief Adds a Class that has to be initialized to the queue
@@ -186,22 +189,29 @@ namespace NOE::NOE_CORE
 		void updateUpdatables();
 
 		/**
-		\brief Returns a reference to the isntance
-		\return a reference to the instance
+		\brief sets the maximum frames that are rendered per second.
+		\param maXFPS sets the maximum FPS to the given value, if the value is zero, the frame limiter gets disabled
 		*/
-		static NostraEngine &get();
+		void setMaxFPS(const NOU::uint64 maxFPS = 0);
 
 		/**
-		\brief sets an instance of the Engine as the current active instance
-		\param instacne the instance that will be set as active
+		\brief getter for m_currFPS
+		\return returns the current FPS
 		*/
-		static void setActiveInstance(NostraEngine &instance);
+		const NOU::uint64& getCurrFPS();
 
 		/**
-		\brief creates an instance of the engine but only once
-		\return a pointer to the instance of the engine or nullptr if it has been created once
+		\brief getter for m_maxFPS
+		\return returns the maximum set FPS
 		*/
-		static NostraEngine *createInstance();
+		const NOU::uint64& getMaxFPS();
+
+		/**
+		\brief getter for m_frameTime
+		\return returns the current FrameTime
+		*/
+		const NOU::uint32& getFrameTime();
+
         /**
         \brief Returns the version of the engine.
         \return NOU::NOU_CORE::Version Type
