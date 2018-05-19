@@ -47,7 +47,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief A logger for writing strings in files / at the console.
 		*/
-		NOU::NOU_CORE::Logger *m_logger;
+		NOU::NOU_CORE::Logger *m_engineLogger;
 
         /**
         \brief Integer to see of the engine is running (-1 == terminate engine for now (version 0.0.0))

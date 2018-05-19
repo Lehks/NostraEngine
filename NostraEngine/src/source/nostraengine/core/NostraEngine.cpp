@@ -15,12 +15,12 @@ namespace NOE::NOE_CORE{
 	NostraEngine::NostraEngine() :
 		m_runState(0),
 		m_version(0, 0, 1),
-		m_logger(NOU::NOU_CORE::Logger::instance()),
+		m_engineLogger(NOU::NOU_CORE::Logger::instance()),
 		m_initializedObjects(0),
 		m_preInitializedObjects(0)
 	{
-		m_logger->pushLogger<NOU::NOU_CORE::FileLogger>();
-		m_logger->pushLogger<NOU::NOU_CORE::ConsoleLogger>();
+		m_engineLogger->pushLogger<NOU::NOU_CORE::FileLogger>();
+		m_engineLogger->pushLogger<NOU::NOU_CORE::ConsoleLogger>();
 	}
 
 	void NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
@@ -179,7 +179,7 @@ namespace NOE::NOE_CORE{
 	NOU::int32 NostraEngine::start()
 	{
 		
-		m_logger->write(NOU::NOU_CORE::EventLevelCodes::INFO, getVersion().rawStr() ,"EngineLog.txt");
+		NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::INFO, getVersion().rawStr() ,"EngineLog.txt");
 
 
 
