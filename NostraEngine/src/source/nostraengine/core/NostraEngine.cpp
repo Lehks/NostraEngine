@@ -114,6 +114,9 @@ namespace NOE::NOE_CORE{
 	ExitCode NostraEngine::postTerminate()
 	{
 
+		//Need to be the last function of the engine.
+		m_engineLogger->wait();
+
 		return ExitCode::SUCCESS;
 	}
 
