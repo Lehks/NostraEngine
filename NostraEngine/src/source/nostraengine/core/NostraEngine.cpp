@@ -7,8 +7,21 @@ namespace NOE::NOE_CORE{
 
 	//----------------------------------------------------- Start Private ------------------------------------------------------
 
+
 	NostraEngine* NostraEngine::s_instance = nullptr;
 	NOU::uint8 NostraEngine::s_instanceCount = 0;
+
+	//CONSTRUCTOR
+	NostraEngine::NostraEngine() :
+		m_runState(0),
+		m_version(0, 0, 1),
+		m_logger(NOU::NOU_CORE::Logger::instance()),
+		m_initializedObjects(0),
+		m_preInitializedObjects(0)
+	{
+		m_logger->pushLogger<NOU::NOU_CORE::FileLogger>();
+		m_logger->pushLogger<NOU::NOU_CORE::ConsoleLogger>();
+	}
 
 	void NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
 	{
@@ -40,9 +53,10 @@ namespace NOE::NOE_CORE{
 		NOU::sizeType s = m_initializables.size();
 		for (NOU::sizeType i = 0; i < s; i++)
 		{
-			m_initializables[i]->preInitialize();
+			// m_initializables[i]->preInitialize();
+			m_preInitializedObjects++;
 		}
-		return 0;
+		return ExitCode::SUCCESS;
 	}
 
 	ExitCode NostraEngine::initialize()
@@ -53,66 +67,60 @@ namespace NOE::NOE_CORE{
 
 		for (NOU::sizeType i = 0; i < initSize; i++)
 		{
-			m_initializables[i]->initialize();
+			if(m_initializables[i]->initialize() == ExitCode::ERROR)
+			{
+				return ExitCode::ERROR;
+			}
+			m_initializedObjects++;
 		}
 
-		return 0;
+		return ExitCode::SUCCESS;
 	}
 
 	ExitCode NostraEngine::postInitialize()
 	{
 		NOU::sizeType initSize = m_initializables.size();
 
+		if(m_initializedObjects != initSize)
+		{
+			return ExitCode::ERROR;
+		}
+
 		for (NOU::sizeType i = 0; i < initSize; i++)
 		{
 			m_initializables[i]->postInitialize();
 		}
-		return 0;
+		return ExitCode::SUCCESS;
 	}
 
 	ExitCode NostraEngine::terminate()
 	{
-		NOU::sizeType initVecSize = m_initializables.size();
 
-		if (initVecSize == 0)
+		if (m_initializables.size() == 0)
 		{
-			return 0;
+			return ExitCode::SUCCESS;
 		}
 
-		for (NOU::sizeType i = 0; i < initVecSize; i++)
+		if(m_initializedObjects == 0)
 		{
-			m_initializables[initVecSize - i - 1]->terminate();
+			return ExitCode::SUCCESS;
 		}
 
-		return 0;
+		for (NOU::sizeType i = 0; i < m_initializedObjects; i++)
+		{
+			m_initializables[m_initializedObjects - i - 1]->terminate();
+		}
+
+		return ExitCode::SUCCESS;
 	}
 
 	ExitCode NostraEngine::postTerminate()
 	{
-		NOU::sizeType initVecSize = m_initializables.size();
 
-		if (initVecSize == 0)
-		{
-			return 0;
-		}
-
-		for (NOU::sizeType i = 0; i < initVecSize; i++)
-		{
-			m_initializables[initVecSize - i - 1]->postTerminate();
-		}
-
-		return 0;
+		return ExitCode::SUCCESS;
 	}
 
-	//CONSTRUCTOR
-	NostraEngine::NostraEngine() :
-		m_runState(0),
-		m_version(0, 0, 1),
-		m_logger(NOU::NOU_CORE::Logger::instance())
-	{
-		m_logger->pushLogger<NOU::NOU_CORE::FileLogger>();
-		m_logger->pushLogger<NOU::NOU_CORE::ConsoleLogger>();
-	}
+
 
 	void NostraEngine::logicMain()
 	{
@@ -168,19 +176,38 @@ namespace NOE::NOE_CORE{
 
 	//----------------------------------------------------- Start public -----------------------------------------------------
 
-	ExitCode NostraEngine::start()
+	NOU::int32 NostraEngine::start()
 	{
 		
 		m_logger->write(NOU::NOU_CORE::EventLevelCodes::INFO, getVersion().rawStr() ,"EngineLog.txt");
 
-        NOU::uint64 renderBeginTime, renderEndTime;
+
 
 		m_initializables.sort();
 
-		preInitialize();
-		initialize();
-		postInitialize();
+		if(preInitialize() == ExitCode::ERROR)
+		{
+			m_runState = -1;
+		}else{
 
+			if(initialize() == ExitCode::ERROR)
+			{
+				m_runState = -1;
+			}
+			postInitialize();
+		}
+
+		mainLoop();
+
+		terminate();
+		postTerminate();
+
+		return 0;
+	}
+
+	void NostraEngine::mainLoop()
+	{
+		NOU::uint64 renderBeginTime, renderEndTime;
 		//@Lukas Groß: please add || (statement of window) so that the engine can be terminated with the x button of the window.
 		while(m_runState != -1)
         {
@@ -193,11 +220,6 @@ namespace NOE::NOE_CORE{
             //Engine Runs just 1 time.
             terminateEngine();
         }
-
-		terminate();
-		postTerminate();
-
-		return 0;
 	}
 
 	NostraEngine *NostraEngine::createInstance()

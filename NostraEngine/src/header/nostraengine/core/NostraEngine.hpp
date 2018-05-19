@@ -27,20 +27,12 @@ Terminate-Method:	If the window gets closed , the terminate method will clean up
 */
 namespace NOE::NOE_CORE
 {
-
-	enum class ExitCode
-	{
-		SUCCESS,
-		WARNING,
-		ERROR
-	};
-
 	class NOU_CLASS NostraEngine
 	{
 		// Dependencies
-	private:
 		friend class Initializable;
 		friend class Updatable;
+
 	private:
 		/**
 		\brief the only instance of the Engine, nullptr if no instance is yet activated
@@ -91,6 +83,17 @@ namespace NOE::NOE_CORE
         \brief The current version of the Engine.
         */
 		NOU::NOU_CORE::Version m_version;
+
+		/**
+		\brief Counts how many Initializables were initialized without Errors
+		*/
+		NOU::sizeType m_initializedObjects;
+
+		/**
+		\brief Coutns how many Initializables were pre initialized without Errors
+		*/
+		NOU::sizeType m_preInitializedObjects;
+
 		/**
 		\brief uprates the FPS and frametime
 		\param begin the begintime of the current render iteration
@@ -107,21 +110,21 @@ namespace NOE::NOE_CORE
 		\return an eventual errorcode if something fails while pre Initialising
 		\brief Initialiation-Methode that runs directly before the initializing stage
 		*/
-		NOU::int32 preInitialize();
+		ExitCode preInitialize();
 
 		/**
 		\return	an eventual errorcode if something fails while initializing
 
 		\brief Initialization-Method. Everything put in here will be initialized for later usage.
 		*/
-		NOU::int32 initialize();
+		ExitCode initialize();
 
 
 		/**
 		\return an eventual errorcode if something fails while postInitialising
 		\brief Initialiation-Methode that runs directly after the initializing stage
 		*/
-		NOU::int32 postInitialize();
+		ExitCode postInitialize();
 
 
 		/**
@@ -129,19 +132,24 @@ namespace NOE::NOE_CORE
 
 		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
 		*/
-		NOU::int32 terminate();
+		ExitCode terminate();
 
 		/**
 		\return		NOU::int32
 
 		\brief post Terminate-Method. Every pulgin put in here will be closed the right way if the program will be terminated.
 		*/
-		NOU::int32 postTerminate();
+		ExitCode postTerminate();
 
 		/**
 		\brief Standard constructor for now.
 		*/
 		NostraEngine();
+
+		/**
+		\brief Manages the run of both Mainloops.
+		*/
+		void mainLoop();
 
 		/**
 		\brief gamelogic frames will be executed in here
@@ -186,7 +194,6 @@ namespace NOE::NOE_CORE
 		
 		/**
 		\return		NOU::int8
-
 		\brief Start-Method. Holds the main loop of the engine. 
 		*/
 		NOU::int32 start();

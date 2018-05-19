@@ -3,7 +3,6 @@
 
 #include "nostraengine/core/StdIncludes.hpp"
 #include "nostrautils/NostraUtils.hpp"
-#include "nostraengine/core/NostraEngine.hpp"
 
 
 
@@ -17,6 +16,16 @@
 \brief This File provides an interface for classes that need to be Initialized
 */
 namespace NOE::NOE_CORE {
+
+
+	enum class ExitCode
+	{
+		SUCCESS,
+		WARNING,
+		ERROR
+	};
+
+
 	/**
 	\brief This class will be used as interface for other subclasses that need to be initialized before specific tasks can happen.
 		   It also provides a constructor which sets a basic priority for when some objects have to be initialized before others.
@@ -49,9 +58,9 @@ namespace NOE::NOE_CORE {
 			~Initializable();
 
 			/**
-			\brief If something has to be done before the init stage it has to be called in this method
+			\brief returns a name given to an instance of the class. Necessary for errorhandling
 			*/
-			virtual ExitCode preInitialize();
+			virtual NOU::NOU_DAT_ALG::StringView8 getName() = 0;
 
 			/**
 			\brief If something has to be initialized before usage it has to be called in this method
@@ -67,12 +76,7 @@ namespace NOE::NOE_CORE {
 			/**
 			\brief If something has to be terminated after usage it has to be called in this method
 			*/
-			virtual ExitCode terminate()  = 0;
-
-			/**
-			\brief If something has to be called after the termination method it has to be called in this method
-			*/
-			virtual ExitCode postTerminate();
+			virtual void terminate()  = 0;
 
 
 			/**

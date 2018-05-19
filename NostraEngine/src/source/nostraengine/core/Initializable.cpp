@@ -64,17 +64,7 @@ namespace NOE::NOE_CORE
         return this->getPriority() - i.getPriority();
     }
 
-    ExitCode Initializable::preInitialize()
-    {
-        return ExitCode::SUCCESS;
-    }
-
     ExitCode Initializable::postInitialize()
-    {
-        return ExitCode::SUCCESS;
-    }
-
-    ExitCode Initializable::postTerminate()
     {
         return ExitCode::SUCCESS;
     }
