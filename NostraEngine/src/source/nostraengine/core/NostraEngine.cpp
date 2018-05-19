@@ -47,9 +47,6 @@ namespace NOE::NOE_CORE{
 
 	ExitCode NostraEngine::preInitialize()
 	{
-
-
-
 		NOU::sizeType s = m_initializables.size();
 		for (NOU::sizeType i = 0; i < s; i++)
 		{
@@ -181,26 +178,36 @@ namespace NOE::NOE_CORE{
 		
 		NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::INFO, getVersion().rawStr() ,"EngineLog.txt");
 
-
-
 		m_initializables.sort();
 
 		if(preInitialize() == ExitCode::ERROR)
 		{
+			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "preInitialize(): An Error occurred during pre initialize.", "EngineLog.txt");
 			m_runState = -1;
-		}else{
+		}
+		else if (initialize() == ExitCode::ERROR)
+		{
 
-			if(initialize() == ExitCode::ERROR)
-			{
-				m_runState = -1;
-			}
-			postInitialize();
+			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "Initialize(): An Error occurred during initialize.", "EngineLog.txt");
+			m_runState = -1;
+
+		}else if (postInitialize() == ExitCode::ERROR)
+		{
+			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "postInitialize(): An Error occurred during post initialize.", "EngineLog.txt");
+			m_runState = -1;
 		}
 
 		mainLoop();
 
-		terminate();
-		postTerminate();
+		if (terminate() == ExitCode::ERROR)
+		{
+			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "terminate(): An Error occurred during terminate.", "EngineLog.txt");
+		}
+
+		if (postTerminate() == ExitCode::ERROR)
+		{
+			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "postTerminate(): An Error occurred during post terminate.", "EngineLog.txt");
+		}
 
 		return 0;
 	}
