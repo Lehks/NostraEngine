@@ -1,12 +1,21 @@
+#define GLAD_GLAPI_EXPORT //needed for exporting glad
+
 #include "nostraengine/window/GLFWMonitor.hpp"
+
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 namespace NOE::NOE_WINDOW
 {
-	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(GLFWmonitor* handle) :
-		m_handle(handle)
+	NOU::NOU_CORE::Logger* monitorLog = NOU::NOU_CORE::Logger::instance();
+
+	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(const void* handle) :
+		m_handle(handle),
+		m_name(glfwGetMonitorName(reinterpret_cast<GLFWmonitor*>(const_cast<void*>(handle))))
 	{
 		//Initialize m_width and m_height
-		const GLFWvidmode * mode = glfwGetVideoMode(m_handle);
+		const GLFWvidmode* mode = glfwGetVideoMode(reinterpret_cast<GLFWmonitor*>
+			(const_cast<void*>(handle)));
 
 		m_width = mode->width;
 		m_height = mode->height;
@@ -18,6 +27,9 @@ namespace NOE::NOE_WINDOW
 		m_redBits = mode->redBits;
 		m_greenBits = mode->greenBits;
 		m_blueBits = mode->blueBits;
+
+		NOU_WRITE_LOG(monitorLog, NOU::NOU_CORE::EventLevelCodes::DEBUG,
+			"Monitor object created!", "DebugLog.txt");
 	}
 
 	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getWidth() const
@@ -50,14 +62,9 @@ namespace NOE::NOE_WINDOW
 		return m_blueBits;
 	}
 
-	NOU::NOU_DAT_ALG::String8 NOE::NOE_WINDOW::GLFWMonitor::getName() const
+	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWMonitor::getName() const
 	{
-		return glfwGetMonitorName(m_handle);
-	}
-
-	void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying()
-	{
-		return m_handle;
+		return m_name;
 	}
 
 	const void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying() const

@@ -3,8 +3,6 @@
 
 #include "nostraengine/core/NostraEngine.hpp"
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 
 void NOE::NostraEngine::render()
 {
@@ -22,15 +20,9 @@ NOE::NostraEngine::NostraEngine(NOU::int32 ID) :
 
 NOU::int32 NOE::NostraEngine::init()
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//The two lines above mean OpenGL version 4.0.
+	
 
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+
 
 	//------------------------------------------------------------
 	//
