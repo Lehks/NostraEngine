@@ -9,10 +9,15 @@ namespace NOE::NOE_CORE
     NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, NOU::NOU_DAT_ALG::String8> Initializable::s_hashMap(S_MAP_SIZE);
 
     Initializable::Initializable(NOU::uint32 priority) :
-        m_priority(priority)
-        { 
-            NostraEngine::get().addInitializable(this);
-        }
+    m_priority(priority)
+    { 
+        NostraEngine::get().addInitializable(this);
+    }
+
+    Initializable::~Initializable()
+    {
+        NostraEngine::get().removeInitializable(this);
+    }
 
     void Initializable::setPriority(NOU::uint32 priority)
     {

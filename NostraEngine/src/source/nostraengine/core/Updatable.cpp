@@ -18,4 +18,9 @@ namespace NOE::NOE_CORE
     {
         NostraEngine::get().addUpdatable(this);
     }
+
+    Updatable::~Updatable()
+    {
+        NostraEngine::get().removeUpdatable(this);
+    }
 }

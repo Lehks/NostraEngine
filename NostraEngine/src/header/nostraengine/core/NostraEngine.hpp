@@ -29,6 +29,10 @@ namespace NOE::NOE_CORE
 {
 	class NOU_CLASS NostraEngine
 	{
+		// Dependencies
+	private:
+		friend class Initializable;
+		friend class Updatable;
 	private:
 		/**
 		\brief the only instance of the Engine, nullptr if no instance is yet activated
@@ -140,6 +144,35 @@ namespace NOE::NOE_CORE
 		\brief every render frame will be processed in here;
 		*/
 		void renderMain();
+
+		/**
+		\brief Adds a Class that has to be initialized to the queue
+		\param init The class that will be added to the queue
+		\return true if successfull, false if not
+		*/
+		NOU::boolean addInitializable(NOE::NOE_CORE::Initializable *init);
+
+		/**
+		\brief removes a Class that has to be initialized from the queue
+		\param init The class that will be removed from the queue
+		\return true if successfull, false if not
+		*/
+		NOU::boolean removeInitializable(NOE::NOE_CORE::Initializable *init);
+
+		/**
+		\brief Adds a Class that has to be updated to the queue
+		\param updt The class that will be added to the queue
+		\return true if successfull, false if not
+		*/
+		NOU::boolean addUpdatable(NOE::NOE_CORE::Updatable *updt);
+
+		/**
+		\brief Removes a Class that has to be updated from the queue
+		\param updt The class that will be removed from the queue
+		\return true if successfull, false if not
+		*/
+		NOU::boolean removeUpdatable(NOE::NOE_CORE::Updatable *updt);
+
 	public:
 
 		
@@ -172,20 +205,6 @@ namespace NOE::NOE_CORE
 		\brief Terminates the engine if this method is called.
 		*/
 		void terminateEngine();
-
-		/**
-		\brief Adds a Class that has to be initialized to the queue
-		\param init The class that will be added to the queue
-		\return true if successfull, false if not
-		*/
-		NOU::boolean addInitializable(NOE::NOE_CORE::Initializable *init);
-
-		/**
-		\brief Adds a Class that has to be updated to the queue
-		\param updt The class that will be added to the queue
-		\return true if successfull, false if not
-		*/
-		NOU::boolean addUpdatable(NOE::NOE_CORE::Updatable *updt);
 
 		/**
 		\brief calls the update Method of each updatable

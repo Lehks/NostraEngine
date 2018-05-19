@@ -124,6 +124,46 @@ namespace NOE::NOE_CORE{
 
 	}
 
+	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)
+	{
+		m_updatables.emplaceBack(updt);
+		return true;
+	}
+
+	NOU::boolean NostraEngine::addInitializable(Initializable *init)
+	{
+		m_initializables.emplaceBack(init);
+		return true;
+	}
+
+	NOU::boolean NostraEngine::removeUpdatable(Updatable *updt)
+	{
+		NOU::sizeType s = m_updatables.size();
+		for(NOU::sizeType i = 0; i < s; i++)
+		{
+			if(m_updatables[i] == updt)
+			{
+				m_updatables.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	NOU::boolean NostraEngine::removeInitializable(Initializable *init)
+	{
+		NOU::sizeType s = m_initializables.size();
+		for(NOU::sizeType i = 0; i < s; i++)
+		{
+			if(m_initializables[i] == init)
+			{
+				m_initializables.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	//----------------------------------------------------- End Private ------------------------------------------------------
 
 	//----------------------------------------------------- Start public -----------------------------------------------------
@@ -193,17 +233,6 @@ namespace NOE::NOE_CORE{
 		m_runState = -1;
 	}
 
-	NOU::boolean NostraEngine::addInitializable(Initializable *init)
-	{
-		m_initializables.emplaceBack(init);
-		return true;
-	}
-
-	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)
-	{
-		m_updatables.emplaceBack(updt);
-		return true;
-	}
 
 	void NostraEngine::updateUpdatables()
 	{

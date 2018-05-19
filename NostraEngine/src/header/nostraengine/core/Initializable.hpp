@@ -43,6 +43,11 @@ namespace NOE::NOE_CORE {
 			Initializable(NOU::uint32 priority = -1);
 
 			/**
+			\brief The destructor of the initializable Interface
+			*/
+			~Initializable();
+
+			/**
 			\brief If something has to be done before the init stage it has to be called in this method
 			*/
 			virtual NOU::int32 preInitialize();
