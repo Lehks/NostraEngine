@@ -1,6 +1,6 @@
 #define GLAD_GLAPI_EXPORT //needed for exporting glad
 
-#include "nostraengine/window/GLFWMonitor.hpp"
+#include "GLFWMonitor.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"

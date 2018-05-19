@@ -1,14 +1,12 @@
 #define GLAD_GLAPI_EXPORT //needed for exporting glad
 
-#include "nostraengine/window/GLFWWindow.hpp"
+#include "GLFWWindow.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace NOE::NOE_WINDOW
 {
-	NOU::sizeType NOE::NOE_WINDOW::GLFWWindow::s_instanceCounter = 0;
-
 	const NOU::NOU_DAT_ALG::Vector<GLFWMonitor> NOE::NOE_WINDOW::GLFWWindow::s_monitors;
 
 	const NOU::NOU_DAT_ALG::Vector<const Monitor*> NOE::NOE_WINDOW::GLFWWindow::s_monitorPointer;
@@ -17,45 +15,7 @@ namespace NOE::NOE_WINDOW
 
 	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow() :
 		m_window(nullptr)
-	{
-		if (s_instanceCounter == 0)
-		{
-			if (!glfwInit())
-			{
-				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-					NOE::NOE_WINDOW::ErrorCodes::GLFW_INITIALIZATION_FAILED, "Could not initialize GLFW!");
-
-				NOU_WRITE_LOG(windowLog, NOU::NOU_CORE::EventLevelCodes::DEBUG,
-					"GLFW initialization failed!", "DebugLog.txt");
-			}
-			else
-			{
-				glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-#ifdef __APPLE__
-				glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-				NOU_WRITE_LOG(windowLog, NOU::NOU_CORE::EventLevelCodes::DEBUG,
-					"GLFW initialization successful!", "DebugLog.txt");
-				s_instanceCounter++;
-			}
-		}
-	}
-
-	NOE::NOE_WINDOW::GLFWWindow::~GLFWWindow()
-	{
-		s_instanceCounter--;
-		if (s_instanceCounter == 0)
-		{
-			NOU_WRITE_LOG(windowLog, NOU::NOU_CORE::EventLevelCodes::DEBUG,
-				"GLFW successfully terminated!", "DebugLog.txt");
-			glfwTerminate();
-		}
-	}
+	{}
 
 	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
 		const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor)

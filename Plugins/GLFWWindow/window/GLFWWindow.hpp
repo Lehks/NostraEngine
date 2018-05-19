@@ -23,7 +23,7 @@ namespace NOE::NOE_WINDOW
 	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
-	class NOU_CLASS GLFWWindow : public Window
+	class NOU_CLASS GLFWWindow final : public Window
 	{
 	private:
 
@@ -36,11 +36,6 @@ namespace NOE::NOE_WINDOW
 		\brief			Stores the title of the window.
 		*/
 		NOU::NOU_DAT_ALG::String8 m_title;
-
-		/**
-		\brief			Stores the count of GLFW instances.
-		*/
-		static NOU::sizeType s_instanceCounter;
 
 		/**
 		\brief			The const vector that stores the monitors as GLFWMonitors.
@@ -62,7 +57,6 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			Decreases the instance counter and terminates GLFW.
 		*/
-		virtual ~GLFWWindow();
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
 			const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor = nullptr) override;
 		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
