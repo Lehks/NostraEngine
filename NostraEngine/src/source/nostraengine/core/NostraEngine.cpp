@@ -32,7 +32,7 @@ namespace NOE::NOE_CORE{
 		}
 	}
 
-	NOU::int32 NostraEngine::preInitialize()
+	ExitCode NostraEngine::preInitialize()
 	{
 
 
@@ -45,7 +45,7 @@ namespace NOE::NOE_CORE{
 		return 0;
 	}
 
-	NOU::int32 NostraEngine::initialize()
+	ExitCode NostraEngine::initialize()
 	{
 		setMaxFPS();		//disable the FPS limiter
 
@@ -59,7 +59,7 @@ namespace NOE::NOE_CORE{
 		return 0;
 	}
 
-	NOU::int32 NostraEngine::postInitialize()
+	ExitCode NostraEngine::postInitialize()
 	{
 		NOU::sizeType initSize = m_initializables.size();
 
@@ -70,7 +70,7 @@ namespace NOE::NOE_CORE{
 		return 0;
 	}
 
-	NOU::int32 NostraEngine::terminate()
+	ExitCode NostraEngine::terminate()
 	{
 		NOU::sizeType initVecSize = m_initializables.size();
 
@@ -87,7 +87,7 @@ namespace NOE::NOE_CORE{
 		return 0;
 	}
 
-	NOU::int32 NostraEngine::postTerminate()
+	ExitCode NostraEngine::postTerminate()
 	{
 		NOU::sizeType initVecSize = m_initializables.size();
 
@@ -168,7 +168,7 @@ namespace NOE::NOE_CORE{
 
 	//----------------------------------------------------- Start public -----------------------------------------------------
 
-	NOU::int32 NostraEngine::start()
+	ExitCode NostraEngine::start()
 	{
 		
 		m_logger->write(NOU::NOU_CORE::EventLevelCodes::INFO, getVersion().rawStr() ,"EngineLog.txt");

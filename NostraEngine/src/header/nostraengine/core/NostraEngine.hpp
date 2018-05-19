@@ -27,6 +27,14 @@ Terminate-Method:	If the window gets closed , the terminate method will clean up
 */
 namespace NOE::NOE_CORE
 {
+
+	enum class ExitCode
+	{
+		SUCCESS,
+		WARNING,
+		ERROR
+	};
+
 	class NOU_CLASS NostraEngine
 	{
 		// Dependencies

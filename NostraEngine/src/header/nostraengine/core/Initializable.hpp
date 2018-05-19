@@ -1,8 +1,9 @@
 #ifndef NOE_CORE_INITIALIZABLE_HPP
 #define NOE_CORE_INITIALIZABLE_HPP
 
-#include "nostrautils/NostraUtils.hpp"
 #include "nostraengine/core/StdIncludes.hpp"
+#include "nostrautils/NostraUtils.hpp"
+#include "nostraengine/core/NostraEngine.hpp"
 
 
 
@@ -50,28 +51,28 @@ namespace NOE::NOE_CORE {
 			/**
 			\brief If something has to be done before the init stage it has to be called in this method
 			*/
-			virtual NOU::int32 preInitialize();
+			virtual ExitCode preInitialize();
 
 			/**
 			\brief If something has to be initialized before usage it has to be called in this method
 			*/
-			virtual NOU::int32 initialize() = 0;
+			virtual ExitCode initialize() = 0;
 
 			/**
 			\brief If something has to be done after the init stage but before the main loop
 				   it has to be called in this method
 			*/
-			virtual NOU::int32 postInitialize();
+			virtual ExitCode postInitialize();
 
 			/**
 			\brief If something has to be terminated after usage it has to be called in this method
 			*/
-			virtual NOU::int32 terminate()  = 0;
+			virtual ExitCode terminate()  = 0;
 
 			/**
 			\brief If something has to be called after the termination method it has to be called in this method
 			*/
-			virtual NOU::int32 postTerminate();
+			virtual ExitCode postTerminate();
 
 
 			/**

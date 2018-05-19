@@ -64,18 +64,18 @@ namespace NOE::NOE_CORE
         return this->getPriority() - i.getPriority();
     }
 
-    NOU::int32 Initializable::preInitialize()
+    ExitCode Initializable::preInitialize()
     {
-        return 0;
+        return ExitCode::SUCCESS;
     }
 
-    NOU::int32 Initializable::postInitialize()
+    ExitCode Initializable::postInitialize()
     {
-        return 0;
+        return ExitCode::SUCCESS;
     }
 
-    NOU::int32 Initializable::postTerminate()
+    ExitCode Initializable::postTerminate()
     {
-        return 0;
+        return ExitCode::SUCCESS;
     }
 }
