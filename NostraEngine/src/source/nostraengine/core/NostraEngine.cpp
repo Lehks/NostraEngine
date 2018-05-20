@@ -62,8 +62,6 @@ NOU::int32 NOE::NostraEngine::start()
 
 NOU::int32 NOE::NostraEngine::terminate()
 {
-	glfwTerminate();
-
 	//------------------------------------------------------------
 	//
 	//DO YOUR STANDARD TERMINATE METHOD'S HERE !

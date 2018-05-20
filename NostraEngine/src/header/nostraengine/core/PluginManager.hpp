@@ -393,7 +393,7 @@ namespace NOE::NOE_CORE
 		\details
 		Returns whether the plugin is loaded or not. A plugin is loaded, if a call to load() was successful.
 		*/
-		NOU::boolean isLoaded();
+		NOU::boolean isLoaded() const;
 
 		/**
 		\return The value that was returned by Plugin::initialize().
@@ -512,7 +512,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief A map that allows access to the single plugins by their ID. Not sorted.
 		*/
-		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, EnginePlugin> m_idIndexMap;
+//		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, EnginePlugin> m_idIndexMap;
 
 		/**
 		\brief A list of all plugins, sorted after their priority.

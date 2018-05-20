@@ -165,7 +165,7 @@ namespace NOE::NOE_CORE
 #if NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
 		HMODULE lib = LoadLibrary(path.getAbsolutePath().rawStr());
 #elif NOU_OS_LIBRARY == NOU_OS_LIBRARY_POSIX
-		void* lib = dlopen(path.cstr(), RTLD_NOW);
+		void *lib = dlopen(path.cstr(), RTLD_NOW);
 #endif
 
 		//error loading the library
@@ -285,6 +285,11 @@ namespace NOE::NOE_CORE
 		}
 	}
 
+	NOU::boolean EnginePlugin::isLoaded() const
+	{
+		return m_library != nullptr;
+	}
+
 	Plugin::InitResult EnginePlugin::initialize(NostraEngine &engineInstance)
 	{
 		return Plugin::InitResult(m_initializeFunc(&engineInstance));
@@ -298,6 +303,11 @@ namespace NOE::NOE_CORE
 	void EnginePlugin::receive(Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags)
 	{
 		m_receiveFunc(source, data, size, flags);
+	}
+
+	const PluginMetadata& EnginePlugin::getMetadata() const
+	{
+		return m_metadata;
 	}
 
 
@@ -326,10 +336,12 @@ namespace NOE::NOE_CORE
 
 	EnginePlugin& PluginManager::getPlugin(Plugin::ID id)
 	{
-		if (m_idIndexMap.containsKey(id))
-			return m_idIndexMap.get(id);
-		else
-			return m_idIndexMap.get(EnginePlugin::INVALID_ID);
+	//	if (m_idIndexMap.containsKey(id))
+	//		return m_idIndexMap.get(id);
+	//	else
+	//		return m_idIndexMap.get(EnginePlugin::INVALID_ID);
+
+		return EnginePlugin();
 	}
 
 
@@ -347,7 +359,7 @@ namespace NOE::NOE_CORE
 	Plugin::SendResult PluginManager::send(Plugin::ID recipient, void *data, NOU::sizeType size, 
 		NOU::uint32 flags)
 	{
-		sendImpl(recipient, EnginePlugin::ENGINE_ID, data, size, flags);
+		return sendImpl(recipient, EnginePlugin::ENGINE_ID, data, size, flags);
 	}
 
 	Plugin::SendResult PluginManager::sendImpl(Plugin::ID recipient, Plugin::ID source, void *data,
@@ -371,12 +383,18 @@ namespace NOE::NOE_CORE
 	PluginManager::PluginManager()
 	{
 		//map invalid plugin
-		m_idIndexMap.map(EnginePlugin::INVALID_ID, EnginePlugin());
+	//	m_idIndexMap.map(EnginePlugin::INVALID_ID, EnginePlugin());
+	}
+
+	PluginManager& PluginManager::get()
+	{
+		static PluginManager instance;
+		return instance;
 	}
 
 	NOU::boolean PluginManager::createPluginList()
 	{
-
+		return false;
 	}
 
 	NOU::NOU_DAT_ALG::Vector<EnginePlugin*>& PluginManager::getPlugins()
