@@ -1,38 +1,44 @@
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
 project(GLFWWindow CXX)
-
-option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
 
 # Set language standard
 if ("${NOE_CPP14_COMPATIBLILTY_MODE}")
 	set (CMAKE_CXX_STANDARD 14)
-	message(STATUS "NOE:  Generating for C++14 compatibility mode.")
 	add_definitions(-DNOU_CPP14_COMPATIBILITY)
 else()
 	set (CMAKE_CXX_STANDARD 17)
-	message(STATUS "NOE:  Generating without C++14 compatibility mode.")
 endif()
+
+#===GLFW===
+
+#=== Variables for GLFW 
+set(NOE_GLFW_LIB_NAME "glfw")
+set(NOE_GLFW_LIB_CONFIG "SHARED") #Either STATIC or SHARED
+#===
+
+add_subdirectory("GLFW")
+
+#==========
 
 set(TARGET_NAME GLFWWindow)
 
+file(GLOB_RECURSE "files" "src/*.cpp")
+
 include_directories("${NOE_NOE_INCLUDE_DIR}")
-include_directories("${NOE_GLFW_INCLUDE_DIR}")
 include_directories("${NOE_GLAD_INCLUDE_DIR}")
 include_directories("${NOE_NOU_INCLUDE_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}")
 
-add_library(${TARGET_NAME} SHARED GLFWWindow.cpp)
+add_library(${TARGET_NAME} SHARED "${files}")
 
-target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_GLFW_LIB_NAME}")
-target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
-target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
-target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
+target_link_libraries("${TARGET_NAME}" "${NOE_GLFW_LIB_NAME}")
+target_link_libraries("${TARGET_NAME}" "${NOE_GLAD_LIB_NAME}")
+target_link_libraries("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
 
-add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLFW_LIB_NAME}")
-add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
-add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
-add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
+add_dependencies("${TARGET_NAME}" "${NOE_GLFW_LIB_NAME}")
+add_dependencies("${TARGET_NAME}" "${NOE_GLAD_LIB_NAME}")
+add_dependencies("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
 
 set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
 set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".np")

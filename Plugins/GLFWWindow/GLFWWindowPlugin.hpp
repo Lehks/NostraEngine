@@ -26,6 +26,3 @@ namespace GLFWWindowPlugin
 		virtual void receive(NOE::NOE_CORE::Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags) override;
     }
 }
-
-
-

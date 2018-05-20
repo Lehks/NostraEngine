@@ -6,7 +6,7 @@
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/window/Window.hpp"
-#include "nostraengine/window/GLFWMonitor.hpp"
+#include "GLFWMonitor.hpp"
 
 /**
 \file window/GLFWWindow.hpp
