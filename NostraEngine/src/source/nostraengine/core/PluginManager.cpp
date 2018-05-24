@@ -8,25 +8,67 @@
 
 #include <filesystem>
 
+//w/o, logging functions do not work
+#undef ERROR
+
 namespace NOE::NOE_CORE
 {
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = ".np";
-	const PluginMetadata::Priority LOWEST_PRIORITY = 0;
-	const PluginMetadata::Priority HIGHEST_PRIORITY = -1;
+	const PluginMetadata::Priority PluginMetadata::LOWEST_PRIORITY = 0;
+	const PluginMetadata::Priority PluginMetadata::HIGHEST_PRIORITY = -1;
+
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_SECTION_CORE = "core";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_SECTION_META = "meta";
+
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_ID               = "id";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_PRIORITY         = "priority";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_MINVERSION_MAJOR = "minversion.major";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_MINVERSION_MINOR = "minversion.minor";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_MINVERSION_PATCH = "minversion.patch";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_NAME             = "name";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_DESCRIPTION      = "description";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_VERSION_MAJOR    = "version.major";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_VERSION_MINOR    = "version.minor";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_VERSION_PATCH    = "version.patch";
 
 
 	void PluginMetadata::load(const NOU::NOU_FILE_MNGT::Path &config)
 	{
-		m_id = 1;
-		m_name = "MyPlugin";
-		m_description = "MyPlugin. Duh.";
-		m_version = NOU::NOU_CORE::Version(1, 0, 0);
-		m_requiredVersion = NOU::NOU_CORE::Version(0, 0, 1);
+		NOU::NOU_FILE_MNGT::INIFile pluginConfig(config.getAbsolutePath());
+
+		if (!pluginConfig.read())
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), 
+				PluginManager::ErrorCodes::PLUGIN_CONFIGURATION_PARSE_ERROR, 
+				"The plugin configuration of a plugin could not be loaded.");
+
+			m_id = EnginePlugin::INVALID_ID;
+
+			return;
+		}
+
+		m_id = pluginConfig.getInt(PCONF_ATTRIB_ID, PCONF_SECTION_CORE);
+		m_priority = pluginConfig.getInt(PCONF_ATTRIB_PRIORITY, PCONF_SECTION_CORE);
+
+		NOU::uint32 minversionMajor = pluginConfig.getInt(PCONF_ATTRIB_MINVERSION_MAJOR, PCONF_SECTION_CORE);
+		NOU::uint32 minversionMinor = pluginConfig.getInt(PCONF_ATTRIB_MINVERSION_MINOR, PCONF_SECTION_CORE);
+		NOU::uint32 minversionPatch = pluginConfig.getInt(PCONF_ATTRIB_MINVERSION_PATCH, PCONF_SECTION_CORE);
+
+		m_requiredVersion = NOU::NOU_CORE::Version(minversionMajor, minversionMinor, minversionPatch);
+
+
+
+		m_name = pluginConfig.getString(PCONF_ATTRIB_NAME, PCONF_SECTION_META);
+		m_description = pluginConfig.getString(PCONF_ATTRIB_DESCRIPTION, PCONF_SECTION_META);
+
+		NOU::uint32 versionMajor = pluginConfig.getInt(PCONF_ATTRIB_VERSION_MAJOR, PCONF_SECTION_META);
+		NOU::uint32 versionMinor = pluginConfig.getInt(PCONF_ATTRIB_VERSION_MINOR, PCONF_SECTION_META);
+		NOU::uint32 versionPatch = pluginConfig.getInt(PCONF_ATTRIB_VERSION_PATCH, PCONF_SECTION_META);
+		
+		m_version = NOU::NOU_CORE::Version(versionMajor, versionMinor, versionPatch);
 
 		// the filename is the name of the plugin plus the plugin name extension
 		m_path = m_name + PLUGIN_FILE_EXTENSION;
-
-		m_priority = 0;
 	}
 
 	PluginMetadata::PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config) : 
@@ -321,7 +363,9 @@ namespace NOE::NOE_CORE
 			NOU::NOU_CORE::Error("COULD_NOT_LOAD_LIBRARY", ErrorCodes::COULD_NOT_LOAD_LIBRARY),
 			NOU::NOU_CORE::Error("COULD_NOT_LOAD_FUNCTION", ErrorCodes::COULD_NOT_LOAD_FUNCTION),
 			NOU::NOU_CORE::Error("PLUGIN_NOT_LOADED", ErrorCodes::PLUGIN_NOT_LOADED),
-			NOU::NOU_CORE::Error("COULD_NOT_FREE_LIBRARY", ErrorCodes::COULD_NOT_FREE_LIBRARY)
+			NOU::NOU_CORE::Error("COULD_NOT_FREE_LIBRARY", ErrorCodes::COULD_NOT_FREE_LIBRARY),
+			NOU::NOU_CORE::Error("PLUGIN_CONFIGURATION_PARSE_ERROR", 
+				ErrorCodes::PLUGIN_CONFIGURATION_PARSE_ERROR)
 		}
 	{}
 

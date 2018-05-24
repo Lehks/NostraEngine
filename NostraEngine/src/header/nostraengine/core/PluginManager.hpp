@@ -43,6 +43,20 @@ namespace NOE::NOE_CORE
 		*/
 		static const Priority HIGHEST_PRIORITY;
 
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_SECTION_CORE;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_SECTION_META;
+
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_ID;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_PRIORITY;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_MINVERSION_MAJOR;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_MINVERSION_MINOR;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_MINVERSION_PATCH;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_NAME;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_DESCRIPTION;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_VERSION_MAJOR;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_VERSION_MINOR;
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_VERSION_PATCH;
+
 	private:
 		/**
 		\brief The ID of the plugin. If the plugin does not exist, this will be EnginePlugin::INVALID_ID.
@@ -485,6 +499,11 @@ namespace NOE::NOE_CORE
 				\brief The system call to free the shared library of a plugin failed.
 				*/
 				COULD_NOT_FREE_LIBRARY,
+
+				/**
+				\brief A .pconf file could not be parsed.
+				*/
+				PLUGIN_CONFIGURATION_PARSE_ERROR,
 
 				/**
 				\brief Not an actual error, but always the last element in the enum.
