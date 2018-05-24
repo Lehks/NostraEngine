@@ -8,7 +8,7 @@
 
 
 //  Natives
-DataType:   zint, uint, float, vec2, vec3, vec4, Image, matrix2, matrix3, matrix4, boolean
+DataType:   int, float, vec2, vec3, vec4, Image, matrix2, matrix3, matrix4, boolean
 Alphabet:   Alphanumeric_char, {Alphabet}
 Number:     0-9, {Number}
 NumVar:     <var>, <Number>
