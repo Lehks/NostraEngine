@@ -40,7 +40,7 @@ namespace NOE::NOE_CORE {
 			/**
 			\brief The size of the HaspMap.
 			*/
-			static const NOU::int32 S_MAP_SIZE = 1000;
+			static constexpr NOU::int32 S_MAP_SIZE = 1000;
 			/**
 			\brief The HashMap to sore variables such as Path's.
 			*/
