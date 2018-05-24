@@ -4,15 +4,29 @@
 #include "nostraengine/core/StdIncludes.hpp"
 #include "nostraengine/core/NostraEngine.hpp"
 
+/**
+\file    core/Plugin.hpp
+\author  Lukas Reichmann
+\version 1.0.0
+\since   0.0.1
+
+\brief A file that contains the plugin-side interface of the plugin system.
+*/
+
 #ifndef NOE_SET_AS_ACTIVE_PLUGIN_CLASS
 
+/**
+\param PLUGIN The (fully qualified) name of the plugin class.
+
+\brief A macro that needs to be placed under the declaration of the plugin class (and outside of any 
+namespace) of every plugin.
+
+\details
+A macro that needs to be placed somewhere under the declaration of the plugin class of every plugin.
+
+This macro defines the global functions that will be loaded by the plugin manager in the engine.
+*/
 #define NOE_SET_AS_ACTIVE_PLUGIN_CLASS(PLUGIN)															   \
-																										   \
-/*version*/																								   \
-extern "C" NOU_FUNC NOU::uint32 noePluginGetVersion()													   \
-{																										   \
-	return NOE::NOE_CORE::Plugin::get()->getVersion().getRaw();											   \
-}																										   \
 																										   \
 /*startup*/																								   \
 extern "C" NOU_FUNC void noePluginStartup(NOU::uint32 id)												   \
@@ -57,13 +71,59 @@ extern "C" NOU_FUNC NOU::uint32 noePluginTerminate(void *engineInstance)								
 
 #endif
 
-extern "C" NOU_FUNC NOU::uint32 noePluginGetVersion();
+/**
+\param id The ID of the plugin.
 
+\brief Constructs a new instance of the user defined plugin class and sets that instance as active instance.
+
+\details
+Constructs a new instance of the user defined plugin class and sets that instance as active instance. This is 
+one of the functions that will be defined by NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
+*/
 extern "C" NOU_FUNC void noePluginStartup(NOU::uint32 id);
+
+/**
+\brief Deletes the instance of the user defined plugin class.
+
+\details
+Deletes the instance of the user defined plugin class. This is one of the functions that will be defined by
+NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
+*/
 extern "C" NOU_FUNC void noePluginShutdown();
+
+/**
+\brief The interface function for Plugin::receive().
+
+\details
+The interface function for Plugin::receive(). This is one of the functions that will be defined by
+NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
+*/
 extern "C" NOU_FUNC void noePluginReceive();
 
+/**
+\param engineInstance A pointer to the instance of the engine.
+
+\return A value from InitResult cast to uint32.
+
+\brief The interface function for Plugin::initialize().
+
+\details
+The interface function for Plugin::initialize(). This is one of the functions that will be defined by
+NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
+*/
 extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void *engineInstance);
+
+/**
+\param engineInstance A pointer to the instance of the engine.
+
+\return A value from InitResult cast to uint32.
+
+\brief The interface function for Plugin::terminate().
+
+\details
+The interface function for Plugin::terminate(). This is one of the functions that will be defined by
+NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
+*/
 extern "C" NOU_FUNC NOU::uint32 noePluginTerminate(void *engineInstance);
 
 namespace NOE::NOE_CORE
@@ -72,8 +132,8 @@ namespace NOE::NOE_CORE
 	\brief The plugin-side interface of a plugin.
 
 	\details
-	The plugin-side interface of a plugin. Every plugin needs to have a single class that inherits from this one to
-	be able to be loaded as a plugin.
+	The plugin-side interface of a plugin. Every plugin needs to have a single class that inherits from this 
+	one to be able to be loaded as a plugin.
 	*/
 	class NOU_CLASS Plugin
 	{
@@ -84,7 +144,7 @@ namespace NOE::NOE_CORE
 		using ID = NOU::uint32;
 
 		/**
-		\brief The error codes that can be returned bei either initialize() or terminate().
+		\brief The error codes that can be returned by either initialize() or terminate().
 		*/
 		enum class InitResult : NOU::uint32
 		{
@@ -107,7 +167,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The error codes that can occur when sending data from one plugin to another.
 		*/
-		enum class SendResult
+		enum class SendResult : NOU::uint32
 		{
 			/**
 			\brief The sending was successful.
@@ -117,12 +177,13 @@ namespace NOE::NOE_CORE
 			/**
 			\brief The recipient plugin was not found.
 			*/
-			PLUGIN_NOT_FOUND,
+			PLUGIN_NOT_FOUND = 1,
 
 			/**
-			\brief The recipient ID is the same as the sender ID, or it is the same as EnginePlugin::ENGINE_ID.
+			\brief The recipient ID is the same as the sender ID, or it is the same as 
+			       EnginePlugin::ENGINE_ID.
 			*/
-			INVALID_RECIPIENT
+			INVALID_RECIPIENT = 2
 		};
 
 	private:
@@ -180,8 +241,9 @@ namespace NOE::NOE_CORE
 
 		The intended usage is as follows: 
 		To send any data, \p data should be used. 
-		\p size should be set to the size of the memory that \p data points to (in bytes).
-		\p flags can be used to send additional data that might give a hint on what kind of data \p data points to.
+		- \p size should be set to the size of the memory that \p data points to (in bytes).
+		- \p flags can be used to send additional data that might give a hint on what kind of data \p data 
+		  points to.
 		*/
 		SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
 
@@ -202,10 +264,10 @@ namespace NOE::NOE_CORE
 
 		The resulting return value may be:
 		- InitResult::SUCCESS: The initialization was completed with no errors whatsoever.
-		- InitResult::WARNING: Some errors happened during the initialization, but they could be fixed and the plugin 
-		                       is mostly still able to work as intended.
-		- InitResult::FAILED:  The initialization failed and the plugin is not usable. This will cause the engine to 
-		                       exit.
+		- InitResult::WARNING: Some errors happened during the initialization, but they could be fixed and the 
+		                       plugin is still able to work as intended.
+		- InitResult::FAILED:  The initialization failed and the plugin is not usable. This will cause the 
+		                       engine to exit.
 		*/
 		virtual InitResult initialize(NostraEngine &engineInstance) = 0;
 
@@ -219,10 +281,10 @@ namespace NOE::NOE_CORE
 
 		The resulting return value may be:
 		- InitResult::SUCCESS: The termination was completed with no errors whatsoever.
-		- InitResult::WARNING: Some errors happened during the termination, but they could be fixed and the plugin
-		is mostly still able to work as intended.
-		- InitResult::FAILED:  The termination failed and the plugin is not usable. This will cause the engine to
-		exit.
+		- InitResult::WARNING: Some errors happened during the termination, but they could be fixed and the 
+		                       plugin is mostly still able to work as intended.
+		- InitResult::FAILED:  The termination failed and the plugin is not usable. This will cause the engine
+		                       to exit.
 		*/
 		virtual InitResult terminate(NostraEngine &engineInstance) = 0;
 
@@ -235,10 +297,11 @@ namespace NOE::NOE_CORE
 		\brief Receives data from another plugin or the engine.
 
 		\details
-		Receives data from another plugin or the engine. This is the counterpart to Plugin::send(). Any data that was
-		send using that method, will be received by this method.
+		Receives data from another plugin or the engine. This is the counterpart to Plugin::send(). Any data 
+		that was send using that method, will be received by this method.
 
-		See documentation of Plugin::send() for further information on what data the parameters are supposed to 
+		See documentation of Plugin::send() for further information on what data the parameters are supposed 
+		to represent.
 		
 		The source ID (parameter \p source) is either the ID of the plugin that has send the message, or it is
 		EnginePlugin::ENGINE_ID. In that case, the data has been send using PluginManager::send().
