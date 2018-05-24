@@ -57,14 +57,14 @@ namespace NOU::NOU_DAT_ALG
 	date, since it points to the variable that points to the buffer (and the address of that variable never changes).
 	*/
 	template<typename CHAR_TYPE = char>
-	class NOU_CLASS StringView 
+	class StringView 
 	{
 	public:
 
 		/**
 		\brief The same as ConstCharType, but without the const. This type is used by nostra::utils::data_alg::String.
 		*/
-		using CharType = NOU_CORE::removeConst_t<CHAR_TYPE>;
+		using CharType = NOU_CORE::RemoveConst_t<CHAR_TYPE>;
 
 		/**
 		\brief The type that is used to store the single characters. Since a string view is read only, this type is
