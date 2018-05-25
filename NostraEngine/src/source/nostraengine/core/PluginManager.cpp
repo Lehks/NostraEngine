@@ -1,4 +1,5 @@
 #include "nostraengine/core/PluginManager.hpp"
+#include "nostrautils/file_mngt/Folder.hpp"
 
 #if NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
 #include <Windows.h>
@@ -151,6 +152,12 @@ namespace NOE::NOE_CORE
 
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::INITIALIZE_FUNCNAME = "noePluginInitialize"; 
 	const NOU::NOU_DAT_ALG::StringView8 EnginePlugin::TERMINATE_FUNCNAME = "noePluginTerminate";
+
+	NOU::NOU_DAT_ALG::CompareResult EnginePlugin::comparator(EnginePlugin *const&a, EnginePlugin *const&b)
+	{
+		return NOU::NOU_DAT_ALG::genericComparator(a->getMetadata().getPriority(), 
+			b->getMetadata().getPriority());
+	}
 
 	EnginePlugin::EnginePlugin(const NOU::NOU_FILE_MNGT::Path &config) :
 		m_library(nullptr),
@@ -378,12 +385,42 @@ namespace NOE::NOE_CORE
 			return nullptr;
 	}
 
+	const NOU::NOU_FILE_MNGT::Path PluginManager::DEFAULT_LOAD_PATH = "./Plugins/";
+
 	EnginePlugin& PluginManager::getPlugin(Plugin::ID id)
 	{
 		if (m_idIndexMap.containsKey(id))
-			return m_idIndexMap.get(id);
+			return *m_idIndexMap.get(id);
 		else
-			return m_idIndexMap.get(EnginePlugin::INVALID_ID);
+			return *m_idIndexMap.get(EnginePlugin::INVALID_ID);
+	}
+
+	NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> PluginManager::listPluginFiles()
+	{
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths;
+
+		NOU::NOU_FILE_MNGT::Folder folder(m_loadPath);
+
+		auto list = folder.listFiles();
+
+		for (auto file : list)
+		{
+			if (file.getPath().getFileExtension() == PluginMetadata::PLUGIN_FILE_EXTENSION)
+				paths.push(file.getPath());
+		}
+
+		return paths;
+	}
+
+	void PluginManager::setPluginLoadPath(const NOU::NOU_FILE_MNGT::Path &path)
+	{
+		if (!isPluginListCreated())
+			m_loadPath = path;
+	}
+
+	const NOU::NOU_FILE_MNGT::Path& PluginManager::getPluginLoadPath() const
+	{
+		return m_loadPath;
 	}
 
 	void PluginManager::initialize()
@@ -421,7 +458,8 @@ namespace NOE::NOE_CORE
 	}
 
 	PluginManager::PluginManager() : 
-		m_createdPluginList(false)
+		m_createdPluginList(false),
+		m_loadPath(DEFAULT_LOAD_PATH)
 	{}
 
 	PluginManager& PluginManager::get()
@@ -432,7 +470,39 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean PluginManager::createPluginList()
 	{
-		return false;
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths = listPluginFiles();
+
+		//+1 b/c of invalid plugin
+		m_idIndexMap = NOU::NOU_DAT_ALG::HashMap<NOU::uint32, 
+			NOU::NOU_MEM_MNGT::UniquePtr<EnginePlugin>>(paths.size() + 1);
+
+		m_idIndexMap.map(EnginePlugin::INVALID_ID, NOU::NOU_MEM_MNGT::UniquePtr<EnginePlugin>(
+			new EnginePlugin(), NOU::NOU_MEM_MNGT::defaultDeleter));
+
+		for (auto path : paths)
+		{
+			NOU::NOU_MEM_MNGT::UniquePtr<EnginePlugin> plugin(new EnginePlugin(path), 
+				NOU::NOU_MEM_MNGT::defaultDeleter);
+
+			if (plugin->getMetadata().isValid())
+			{
+				NOU::uint32 id = plugin->getMetadata().getID();
+
+				m_sortedPlugins.push(plugin.rawPtr());
+				m_idIndexMap.map(id, NOU::NOU_CORE::move(plugin));
+			}
+			else
+			{
+				m_createdPluginList = false;
+				return false;
+			}
+		}
+
+		if(m_sortedPlugins.size() > 0)
+			m_sortedPlugins.sortComp(EnginePlugin::comparator);
+
+		m_createdPluginList = true;
+		return true;
 	}
 
 	NOU::boolean PluginManager::isPluginListCreated() const

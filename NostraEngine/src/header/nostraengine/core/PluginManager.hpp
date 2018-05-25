@@ -199,6 +199,14 @@ namespace NOE::NOE_CORE
 	{
 	public:
 		/**
+		\param a The first plugin.
+		\param a The second plugin.
+
+		\brief The comparator for engine plugin pointers. Sorts after priorities.
+		*/
+		static NOU::NOU_DAT_ALG::CompareResult comparator(EnginePlugin *const&a, EnginePlugin *const&b);
+
+		/**
 		\brief The signature of the function "noePluginStartup" in the plugin.
 		*/
 		using FunctionStartup = void(*)();
@@ -527,11 +535,13 @@ namespace NOE::NOE_CORE
 										(typename NOU::NOU_CORE::ErrorHandler::ErrorType id) const override;
 		};
 
+		static const NOU::NOU_FILE_MNGT::Path DEFAULT_LOAD_PATH;
+
 	private:
 		/**
 		\brief A map that allows access to the single plugins by their ID. Not sorted.
 		*/
-		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, EnginePlugin> m_idIndexMap;
+		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, NOU::NOU_MEM_MNGT::UniquePtr<EnginePlugin>> m_idIndexMap;
 
 		/**
 		\brief A list of all plugins, sorted after their priority.
@@ -542,6 +552,18 @@ namespace NOE::NOE_CORE
 		\brief True, if the plugin list was created, false if not.
 		*/
 		NOU::boolean m_createdPluginList;
+
+		/**
+		\brief The path that the plugins will be loaded from.
+		*/
+		NOU::NOU_FILE_MNGT::Path m_loadPath;
+
+		/**
+		\returns All plugin configuration files.
+
+		\brief Returns a list of all .pconf files m_loadPath.
+		*/
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> listPluginFiles();
 
 		/**
 		\brief Constructs a new instance.
@@ -555,6 +577,24 @@ namespace NOE::NOE_CORE
 
 		PluginManager(const PluginManager &other) = delete;
 		PluginManager(PluginManager &&) = delete;
+
+		/**
+		\param path The path to load the plugins from.
+
+		\brief Sets the path that the plugins should be loaded from.
+
+		\details
+		Sets the path that the plugins should be loaded from. Loading the plugins will occur non-recursively.
+		After createPluginList() has been called successfully, this method will do nothing anymore.
+		*/
+		void setPluginLoadPath(const NOU::NOU_FILE_MNGT::Path &path);
+
+		/**
+		\return The path that the plugins will be/were loaded from.
+
+		\brief Returns the path that the plugins will be/were loaded from.
+		*/
+		const NOU::NOU_FILE_MNGT::Path& getPluginLoadPath() const;
 
 		/**
 		\brief Initializes the plugin manager.
