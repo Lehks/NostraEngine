@@ -27,7 +27,7 @@ namespace NOU::NOU_MEM_MNGT
 	       memory.
 	*/
 	template<typename T>
-	class NOU_CLASS AllocationCallback
+	class AllocationCallback
 	{
 	public:
 
@@ -84,7 +84,7 @@ namespace NOU::NOU_MEM_MNGT
 	any memory that was allocated by deallocateUninitialized().
 	*/
 	template<typename T>
-	class NOU_CLASS GenericAllocationCallback final : public AllocationCallback<T>
+	class GenericAllocationCallback final : public AllocationCallback<T>
 	{
 	public:
 		/**
@@ -96,7 +96,7 @@ namespace NOU::NOU_MEM_MNGT
 		Returns a static instance of this class. Instead of storing the instance in the class, it will be 
 		stored in this method.       
 		*/
-		static GenericAllocationCallback<T>& getInstance();
+		static GenericAllocationCallback<T>& get();
 
 		/**
 		\param amount The amount of objects to allocate.
@@ -124,7 +124,7 @@ namespace NOU::NOU_MEM_MNGT
 	       tracks the amount of allocations and deallocations.
 	*/
 	template<typename T>
-	class NOU_CLASS DebugAllocationCallback final : public AllocationCallback<T>
+	class DebugAllocationCallback final : public AllocationCallback<T>
 	{
 	private:
 		/**
@@ -169,7 +169,7 @@ namespace NOU::NOU_MEM_MNGT
 //	GenericAllocationCallback<T> GenericAllocationCallback<T>::s_instance;
 
 	template<typename T>
-	GenericAllocationCallback<T>& GenericAllocationCallback<T>::getInstance()
+	GenericAllocationCallback<T>& GenericAllocationCallback<T>::get()
 	{
 		static GenericAllocationCallback instance;
 		return instance;
@@ -197,13 +197,13 @@ namespace NOU::NOU_MEM_MNGT
 	T* DebugAllocationCallback<T>::allocate(sizeType amount)
 	{
 		m_counter++;
-		return GenericAllocationCallback<T>::getInstance().allocate(amount);
+		return GenericAllocationCallback<T>::get().allocate(amount);
 	}
 
 	template<typename T>
 	void DebugAllocationCallback<T>::deallocate(T *data)
 	{
-		GenericAllocationCallback<T>::getInstance().deallocate(data);
+		GenericAllocationCallback<T>::get().deallocate(data);
 		m_counter--;
 	}
 
