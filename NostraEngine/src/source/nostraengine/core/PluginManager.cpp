@@ -14,7 +14,8 @@
 
 namespace NOE::NOE_CORE
 {
-	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = ".np";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = "np";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = "pconf";
 	const PluginMetadata::Priority PluginMetadata::LOWEST_PRIORITY = 0;
 	const PluginMetadata::Priority PluginMetadata::HIGHEST_PRIORITY = -1;
 
@@ -23,6 +24,7 @@ namespace NOE::NOE_CORE
 
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_ID               = "id";
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_PRIORITY         = "priority";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_ENABLE           = "enable";
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_MINVERSION_MAJOR = "minversion.major";
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_MINVERSION_MINOR = "minversion.minor";
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_ATTRIB_MINVERSION_PATCH = "minversion.patch";
@@ -35,7 +37,7 @@ namespace NOE::NOE_CORE
 
 	void PluginMetadata::load(const NOU::NOU_FILE_MNGT::Path &config)
 	{
-		NOU::NOU_FILE_MNGT::INIFile pluginConfig(config.getAbsolutePath());
+		NOU::NOU_FILE_MNGT::INIFile pluginConfig(config.getRelativePath());
 
 		if (!pluginConfig.read())
 		{
@@ -48,9 +50,17 @@ namespace NOE::NOE_CORE
 			return;
 		}
 
+		NOU::boolean enable = pluginConfig.getInt(PCONF_ATTRIB_ENABLE, PCONF_SECTION_CORE);
+
+		if (!enable)
+		{
+			//make invalid, the plugin will then be ignored by the plugin manager
+			m_id = EnginePlugin::INVALID_ID;
+			return;
+		}
+
 		m_id = pluginConfig.getInt(PCONF_ATTRIB_ID, PCONF_SECTION_CORE);
 		m_priority = pluginConfig.getInt(PCONF_ATTRIB_PRIORITY, PCONF_SECTION_CORE);
-
 		NOU::uint32 minversionMajor = pluginConfig.getInt(PCONF_ATTRIB_MINVERSION_MAJOR, PCONF_SECTION_CORE);
 		NOU::uint32 minversionMinor = pluginConfig.getInt(PCONF_ATTRIB_MINVERSION_MINOR, PCONF_SECTION_CORE);
 		NOU::uint32 minversionPatch = pluginConfig.getInt(PCONF_ATTRIB_MINVERSION_PATCH, PCONF_SECTION_CORE);
@@ -69,7 +79,7 @@ namespace NOE::NOE_CORE
 		m_version = NOU::NOU_CORE::Version(versionMajor, versionMinor, versionPatch);
 
 		// the filename is the name of the plugin plus the plugin name extension
-		m_path = m_name + PLUGIN_FILE_EXTENSION;
+		m_path = m_name + "." + PLUGIN_FILE_EXTENSION;
 	}
 
 	PluginMetadata::PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config) : 
@@ -125,7 +135,7 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean PluginMetadata::isValid() const
 	{
-		return getID() == EnginePlugin::INVALID_ID;
+		return getID() != EnginePlugin::INVALID_ID;
 	}
 
 	PluginMetadata::operator NOU::boolean() const
@@ -385,7 +395,7 @@ namespace NOE::NOE_CORE
 			return nullptr;
 	}
 
-	const NOU::NOU_FILE_MNGT::Path PluginManager::DEFAULT_LOAD_PATH = "./Plugins/";
+	const NOU::NOU_FILE_MNGT::Path PluginManager::DEFAULT_LOAD_PATH = "./Plugins";
 
 	EnginePlugin& PluginManager::getPlugin(Plugin::ID id)
 	{
@@ -405,7 +415,7 @@ namespace NOE::NOE_CORE
 
 		for (auto file : list)
 		{
-			if (file.getPath().getFileExtension() == PluginMetadata::PLUGIN_FILE_EXTENSION)
+			if (file.getPath().getFileExtension() == PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION)
 				paths.push(file.getPath());
 		}
 

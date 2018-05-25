@@ -34,6 +34,12 @@ namespace NOE::NOE_CORE
 		static const NOU::NOU_DAT_ALG::StringView8 PLUGIN_FILE_EXTENSION;
 
 		/**
+		\brief The file extension of a plugin-configuration file.
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 PLUGIN_CONFIGURATION_FILE_EXTENSION;
+
+
+		/**
 		\brief The lowest possible priority of a plugin.
 		*/
 		static const Priority LOWEST_PRIORITY;
@@ -43,18 +49,69 @@ namespace NOE::NOE_CORE
 		*/
 		static const Priority HIGHEST_PRIORITY;
 
+		/**
+		\brief The name of the core section in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_SECTION_CORE;
+
+		/**
+		\brief The name of the meta section in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_SECTION_META;
 
+		/**
+		\brief The name of the attribute "id" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_ID;
+
+		/**
+		\brief The name of the attribute "priority" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_PRIORITY;
+
+		/**
+		\brief The name of the attribute "enable" in the .pconf file.
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_ENABLE;
+
+		/**
+		\brief The name of the attribute "minversion.major" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_MINVERSION_MAJOR;
+
+		/**
+		\brief The name of the attribute "minversion.minor" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_MINVERSION_MINOR;
+
+		/**
+		\brief The name of the attribute "minversion.patch" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_MINVERSION_PATCH;
+
+		/**
+		\brief The name of the attribute "name" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_NAME;
+
+		/**
+		\brief The name of the attribute "description" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_DESCRIPTION;
+
+		/**
+		\brief The name of the attribute "version.major" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_VERSION_MAJOR;
+
+		/**
+		\brief The name of the attribute "version.minor" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_VERSION_MINOR;
+
+		/**
+		\brief The name of the attribute "version.patch" in the .pconf file.
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PCONF_ATTRIB_VERSION_PATCH;
 
 	private:
@@ -535,6 +592,9 @@ namespace NOE::NOE_CORE
 										(typename NOU::NOU_CORE::ErrorHandler::ErrorType id) const override;
 		};
 
+		/**
+		\brief The path from which the plugins are being loaded by default.
+		*/
 		static const NOU::NOU_FILE_MNGT::Path DEFAULT_LOAD_PATH;
 
 	private:
