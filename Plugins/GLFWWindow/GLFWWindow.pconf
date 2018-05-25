@@ -1,0 +1,17 @@
+[core]
+id="1"
+priority="0"
+enable="true"
+minversion.major="0"
+minversion.minor="0"
+minversion.patch="1"
+
+[meta]
+name="GLFWWindow"
+description="A implementation of the Nostra Engine Window that uses GLFW internally."
+version.major="0"
+version.minor="0"
+version.patch="1"
+
+
+

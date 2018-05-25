@@ -1,9 +1,5 @@
 #ifndef NOE_WINDOW_GLFW_MONITOR_HPP
 #define NOE_WINDOW_GLFW_MONITOR_HPP
-#define GLAD_GLAPI_EXPORT //needed for exporting glad
-
-#include "GLAD/glad.h"
-#include "GLFW/glfw3.h"
 
 #include "nostrautils/NostraUtils.hpp"
 
@@ -20,20 +16,20 @@
 
 \brief A file that provides the functionality for accessing all connected monitors.
 */
-namespace NOE::NOE_WINDOW
+namespace GLFWWindowPlugin
 {
 	/**
 	\brief				A class that implements the provided functions of the Monitor class. The
 						behavior of all functions is defined in the Monitor class.
 	*/
-	class NOU_CLASS GLFWMonitor : public Monitor
+	class NOU_CLASS GLFWMonitor : public NOE::NOE_WINDOW::Monitor
 	{
 	private:
 
 		/**
 		\brief			The handle of the monitor.
 		*/
-		GLFWmonitor* m_handle;
+		const void* m_handle;
 
 		/**
 		\brief			The width of the monitor resolution.
@@ -72,7 +68,7 @@ namespace NOE::NOE_WINDOW
 
 	public:
 
-		GLFWMonitor(GLFWmonitor *handle);
+		GLFWMonitor(const void *handle);
 		virtual ~GLFWMonitor() = default;
 		virtual NOU::sizeType getWidth() const override;
 		virtual NOU::sizeType getHeight() const override;
@@ -80,8 +76,7 @@ namespace NOE::NOE_WINDOW
 		virtual NOU::sizeType getRedBits() const override;
 		virtual NOU::sizeType getGreenBits() const override;
 		virtual NOU::sizeType getBlueBits() const override;
-		virtual NOU::NOU_DAT_ALG::String8 getName() const override;
-		virtual void* getUnderlying() override;
+		virtual const NOU::NOU_DAT_ALG::String8& getName() const override;
 		virtual const void* getUnderlying() const override;
 	};
 }

@@ -33,7 +33,7 @@ namespace NOU::NOU_DAT_ALG
 	that case, both the push and pop operations can be done in O(1).
 	*/
 	template<typename T>
-	class NOU_CLASS FastQueue final
+	class FastQueue final
 	{
 
 
@@ -91,7 +91,7 @@ namespace NOU::NOU_DAT_ALG
 		\brief					Constructs a new FastQueue.
 		*/
 		FastQueue(sizeType initialCapacity = MIN_CAPACITY, NOU_MEM_MNGT::AllocationCallback<Type> &allocator 
-			= NOU_MEM_MNGT::GenericAllocationCallback<Type>::getInstance());
+			= NOU_MEM_MNGT::GenericAllocationCallback<Type>::get());
 		
 		/**
 		\brief Destructs an instance of FastQueue.
