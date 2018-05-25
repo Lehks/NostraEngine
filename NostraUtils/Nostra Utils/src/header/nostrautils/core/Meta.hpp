@@ -26,7 +26,7 @@ namespace NOU::NOU_CORE
 	frequently used in combination with inheritance when writing other meta functions.
 	*/
 	template<typename T>
-	struct NOU_CLASS IdentityType
+	struct IdentityType
 	{
 		using type = T;
 	};
@@ -72,7 +72,7 @@ namespace NOU::NOU_CORE
 	is frequently used in combination with inheritance when writing other meta functions.
 	*/
 	template<typename T, T v>
-	struct NOU_CLASS Constant
+	struct Constant
 	{
 		/**
 		\brief The stored value.
@@ -118,18 +118,18 @@ namespace NOU::NOU_CORE
 	second one.
 	*/
 	template<boolean B, typename T1, typename T2>
-	struct NOU_CLASS typeIf : IdentityType<T1>{};
+	struct TypeIf : IdentityType<T1>{};
 
 	///\cond
 	template<typename T1, typename T2>
-	struct NOU_CLASS typeIf<false, T1, T2> : IdentityType<T2> {};
+	struct TypeIf<false, T1, T2> : IdentityType<T2> {};
 	///\endcond
 
 	/**
-	\brief The result of a call to typeIf.
+	\brief The result of a call to TypeIf.
 	*/
 	template<boolean B, typename T1, typename T2>
-	using typeIf_t = typename typeIf<B, T1, T2>::type;
+	using TypeIf_t = typename TypeIf<B, T1, T2>::type;
 
 	/**
 	\tparam T The type to remove const from.
@@ -147,18 +147,18 @@ namespace NOU::NOU_CORE
 	const int | int
 	*/
 	template<typename T>
-	struct NOU_CLASS removeConst : IdentityType<T>{};
+	struct RemoveConst : IdentityType<T>{};
 
 	///\cond
 	template<typename T>
-	struct NOU_CLASS removeConst<const T> : IdentityType<T> {};
+	struct RemoveConst<const T> : IdentityType<T> {};
 	///\endcond
 
 	/**
-	\brief The result of a call to removeConst.
+	\brief The result of a call to RemoveConst.
 	*/
 	template<typename T>
-	using removeConst_t = typename removeConst<T>::type;
+	using RemoveConst_t = typename RemoveConst<T>::type;
 
 	/**
 	\tparam The enum the underlying type should be determined for.
@@ -166,7 +166,7 @@ namespace NOU::NOU_CORE
 	\brief Determines the underlying type of an enum.
 	*/
 	template<typename T>
-	struct NOU_CLASS UnderlyingType : std::underlying_type<T> {};
+	struct UnderlyingType : std::underlying_type<T> {};
 
 	/**
 	\brief The result of a call to UnderlyingType.
@@ -185,17 +185,17 @@ namespace NOU::NOU_CORE
 	\brief Checks if one or more types are the same.
 	*/
 	template<typename T0, typename T1, typename... T2>
-	struct NOU_CLASS AreSame : FalseType {};
+	struct AreSame : FalseType {};
 
 	///\cond
 	template<typename T0, typename... T2>
-	struct NOU_CLASS AreSame<T0, T0, T2...> : AreSame<T0, T2...> {};
+	struct AreSame<T0, T0, T2...> : AreSame<T0, T2...> {};
 
 	template<typename T0, typename T1>
-	struct NOU_CLASS AreSame<T0, T1> : FalseType {};
+	struct AreSame<T0, T1> : FalseType {};
 
 	template<typename T>
-	struct NOU_CLASS AreSame<T, T> : TrueType {};
+	struct AreSame<T, T> : TrueType {};
 	///\endcond
 
 	/**
@@ -220,7 +220,8 @@ namespace NOU::NOU_CORE
 		struct InvokeResultImpl : IdentityType<std::result_of_t<T(ARGS...)>> {};
 
 		template<typename T, typename...ARGS>
-		struct InvokeResultImpl<false, T, ARGS...> : IdentityType<std::result_of_t<std::add_pointer_t<T>(ARGS...)>> {};
+		struct InvokeResultImpl<false, T, ARGS...> : IdentityType<
+			std::result_of_t<std::add_pointer_t<T>(ARGS...)>> {};
 	}
 
 	template<typename T, typename...ARGS>
@@ -251,7 +252,7 @@ namespace NOU::NOU_CORE
 	*/
 #ifndef NOU_CPP14_COMPATIBILITY
 	template<typename T, typename... ARGS>
-	struct IsInvocable : typeIf_t<std::is_invocable<T, ARGS...>::value, TrueType, FalseType> {};
+	struct IsInvocable : TypeIf_t<std::is_invocable<T, ARGS...>::value, TrueType, FalseType> {};
 	#define NOU_EXISTS_FEATURE_IS_INVOCABLE
 #endif
 	/**
@@ -271,7 +272,7 @@ namespace NOU::NOU_CORE
 	*/
 #ifndef NOU_CPP14_COMPATIBILITY
 	template<typename R, typename T, typename... ARGS>
-	struct IsInvocableR : typeIf_t<std::is_invocable_r<R, T, ARGS...>::value, TrueType, FalseType> {};
+	struct IsInvocableR : TypeIf_t<std::is_invocable_r<R, T, ARGS...>::value, TrueType, FalseType> {};
 	#define NOU_EXISTS_FEATURE_IS_INVOCABLE_R
 #endif
 
@@ -283,7 +284,7 @@ namespace NOU::NOU_CORE
 	\brief Checks whether a type is default constructible or not.
 	*/
 	template<typename T>
-	struct IsDefaultConstructible : typeIf_t<std::is_default_constructible<T>::value, 
+	struct IsDefaultConstructible : TypeIf_t<std::is_default_constructible<T>::value, 
 		TrueType, FalseType> {};
 
 	/**

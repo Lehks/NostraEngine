@@ -28,7 +28,7 @@ namespace NOU::NOU_DAT_ALG
 	we need that because of our search function. The second part is the "standard" id which will be used for sorting / maintaining the heap law.
 	*/
 	template<typename T>
-	class NOU_CLASS BinaryHeap
+	class BinaryHeap
 	{
 	public:
 		using PriorityTypePart = NOU::uint32;
@@ -93,7 +93,9 @@ namespace NOU::NOU_DAT_ALG
 		Default = true (min heap),
 		false = max heap.
 		*/
-		BinaryHeap(boolean isMinHeap = true, sizeType size = 0, NOU::NOU_MEM_MNGT::AllocationCallback<NOU::NOU_DAT_ALG::Pair<PriorityType, T>> &allocator = NOU_MEM_MNGT::GenericAllocationCallback<NOU::NOU_DAT_ALG::Pair<PriorityType, T>>::getInstance());
+		BinaryHeap(boolean isMinHeap = true, sizeType size = 0, 
+			NOU::NOU_MEM_MNGT::AllocationCallback<NOU::NOU_DAT_ALG::Pair<PriorityType, T>> &allocator = 
+			NOU_MEM_MNGT::GenericAllocationCallback<NOU::NOU_DAT_ALG::Pair<PriorityType, T>>::get());
 		/**
 		\param other			An other BinaryHeap.
 
@@ -237,13 +239,13 @@ namespace NOU::NOU_DAT_ALG
 	template<typename T>
 	typename BinaryHeap<T>::PriorityTypePart BinaryHeap<T>::getPriority(PriorityType priority) const
 	{
-		return (priority / 100000000);
+		return static_cast<PriorityTypePart>(priority / 100000000);
 	}
 
 	template<typename T>
 	typename BinaryHeap<T>::PriorityTypePart BinaryHeap<T>::getPriorityId(PriorityType priority) const
 	{
-		return (priority % 10000);
+		return static_cast<PriorityTypePart>(priority % 10000);
 	}
 
 	template<typename T>

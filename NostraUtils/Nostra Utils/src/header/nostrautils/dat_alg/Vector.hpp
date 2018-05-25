@@ -6,10 +6,12 @@
 #include "nostrautils/core/Utils.hpp"
 #include "nostrautils/core/ErrorHandler.hpp"
 #include "nostrautils/dat_alg/Utils.hpp"
+#include "nostrautils/dat_alg/Quicksort.hpp"
 
+#include <type_traits>
 #include <new>
 
-/** \file Vector.hpp
+/** \file dat_alg/Vector.hpp
 \author  Dennis Franz
 \author  Lukas Reichmann
 \since   1.0.0
@@ -41,7 +43,7 @@ namespace NOU::NOU_DAT_ALG
 	\details The most basic of our containers. It can act like a dynamic array a FIFO-Queue, LIFO-Queue or a normal Queue.
 	*/
 	template<typename T>
-	class NOU_CLASS Vector final
+	class Vector final
 	{
 
 	private:
@@ -88,14 +90,6 @@ namespace NOU::NOU_DAT_ALG
 		void free(T *data);
 
 		/**
-		\brief Reallocate memory for the vector.
-
-		\details 
-		If a new element gets inserted to the vector it has to reallocate the memory for it.
-		*/
-		void reallocateData(sizeType capacity);
-
-		/**
 		\tparam ARGS The types of the arguments that will be passed to the constructor of T.
 
 		\param index The index at which the instance will be inserted at.
@@ -121,7 +115,7 @@ namespace NOU::NOU_DAT_ALG
 		\see   nostra::utils::mem_mngt::GenericAllocationCallback
 		*/
 		Vector<T>(sizeType size = MIN_CAPACITY, NOU::NOU_MEM_MNGT::AllocationCallback<T> &allocator = 
-			NOU_MEM_MNGT::GenericAllocationCallback<T>::getInstance());
+			NOU_MEM_MNGT::GenericAllocationCallback<T>::get());
 
 		/**
 		\param other Takes an other vector for moving.
@@ -395,6 +389,14 @@ namespace NOU::NOU_DAT_ALG
 		*/
 		Vector& replace(sizeType index, const T &replacement);
 
+        /**
+        \brief Reallocate memory for the vector.
+
+        \details
+        If a new element gets inserted to the vector it has to reallocate the memory for it.
+        */
+        void reallocateData(sizeType capacity);
+
 		/**
 		\return A nostra::utils::dat_alg::VectorIterator that points to the first element in the vector.
 
@@ -554,7 +556,7 @@ namespace NOU::NOU_DAT_ALG
 	both const and non-const iterating). This iterator is a forward iterator.
 	*/
 	template<typename T>
-	class NOU_CLASS VectorIterator
+	class VectorIterator
 	{
 		friend class Vector<T>;
 
@@ -689,7 +691,7 @@ namespace NOU::NOU_DAT_ALG
 	both const and non-const iterating). This iterator is a reverse iterator.
 	*/
 	template<typename T>
-	class NOU_CLASS VectorReverseIterator
+	class VectorReverseIterator
 	{
 		friend class Vector<T>;
 
@@ -1106,15 +1108,13 @@ namespace NOU::NOU_DAT_ALG
 	template<typename T>
 	void Vector<T>::sort()
 	{
-		///\todo implementing a "real" sorting alg.
-		qsort(m_data, 0, m_size);
+		qsort(m_data, 0, size() - 1);
 	}
 
 	template<typename T>
 	void Vector<T>::sortComp(NOU::NOU_DAT_ALG::Comparator<T> comp)
 	{
-		///\todo implementing a "real" sorting alg.
-		qsort(m_data, m_size, comp);
+		qsort(m_data, 0, size() - 1, comp);
 	}
 
 	template<typename T>
@@ -1189,7 +1189,15 @@ namespace NOU::NOU_DAT_ALG
 		*/
 		//####
 		for (i = 0; i < NOU::NOU_CORE::min(m_size, other.m_size); i++) //copy-assign part
-			at(i) = other.at(i);
+		{
+			if constexpr (std::is_copy_assignable<T>::value)
+				at(i) = other.at(i);
+			else
+			{
+				at(i).~T();
+				new (m_data + i) T(at(i));
+			}
+		}
 
 		for (; i < other.m_size; i++) //copy-constr part
 			new (m_data + i) T(other.at(i));
