@@ -380,15 +380,11 @@ namespace NOE::NOE_CORE
 
 	EnginePlugin& PluginManager::getPlugin(Plugin::ID id)
 	{
-	//	if (m_idIndexMap.containsKey(id))
-	//		return m_idIndexMap.get(id);
-	//	else
-	//		return m_idIndexMap.get(EnginePlugin::INVALID_ID);
-
-		return EnginePlugin();
+		if (m_idIndexMap.containsKey(id))
+			return m_idIndexMap.get(id);
+		else
+			return m_idIndexMap.get(EnginePlugin::INVALID_ID);
 	}
-
-
 
 	void PluginManager::initialize()
 	{
@@ -424,11 +420,9 @@ namespace NOE::NOE_CORE
 		plugin.receive(source, data, size, flags);
 	}
 
-	PluginManager::PluginManager()
-	{
-		//map invalid plugin
-	//	m_idIndexMap.map(EnginePlugin::INVALID_ID, EnginePlugin());
-	}
+	PluginManager::PluginManager() : 
+		m_createdPluginList(false)
+	{}
 
 	PluginManager& PluginManager::get()
 	{
@@ -439,6 +433,11 @@ namespace NOE::NOE_CORE
 	NOU::boolean PluginManager::createPluginList()
 	{
 		return false;
+	}
+
+	NOU::boolean PluginManager::isPluginListCreated() const
+	{
+		return m_createdPluginList;
 	}
 
 	NOU::NOU_DAT_ALG::Vector<EnginePlugin*>& PluginManager::getPlugins()

@@ -531,12 +531,17 @@ namespace NOE::NOE_CORE
 		/**
 		\brief A map that allows access to the single plugins by their ID. Not sorted.
 		*/
-//		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, EnginePlugin> m_idIndexMap;
+		NOU::NOU_DAT_ALG::HashMap<Plugin::ID, EnginePlugin> m_idIndexMap;
 
 		/**
 		\brief A list of all plugins, sorted after their priority.
 		*/
 		NOU::NOU_DAT_ALG::Vector<EnginePlugin*> m_sortedPlugins;
+
+		/**
+		\brief True, if the plugin list was created, false if not.
+		*/
+		NOU::boolean m_createdPluginList;
 
 		/**
 		\brief Constructs a new instance.
@@ -628,6 +633,13 @@ namespace NOE::NOE_CORE
 		This method only constructs the plugin instances - it does not load them.
 		*/
 		NOU::boolean createPluginList();
+
+		/**
+		\return True, if the plugin list was successfully created, false if not.
+
+		\brief Returns whether the plugin list was successfully created.
+		*/
+		NOU::boolean isPluginListCreated() const;
 
 		/**
 		\brief Returns a list of all of the plugins sorted after their priority.
