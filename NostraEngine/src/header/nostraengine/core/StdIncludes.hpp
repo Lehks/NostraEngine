@@ -31,6 +31,13 @@
 #define NOE_WINDOW window
 #endif
 
+/**
+\brief The name of the namespace that contains all material system components.
+*/
+#ifndef NOE_MATSYS
+#define NOE_MATSYS material_system
+#endif
+
 namespace NOE::internal
 {
 	/**

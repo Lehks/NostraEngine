@@ -1,5 +1,5 @@
-#ifndef NOSTRA_ENGINE_HPP
-#define NOSTRA_ENGINE_HPP
+#ifndef NOE_NOSTRA_ENGINE_HPP
+#define NOE_NOSTRA_ENGINE_HPP
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
