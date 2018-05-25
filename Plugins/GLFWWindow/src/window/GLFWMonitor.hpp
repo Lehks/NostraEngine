@@ -16,13 +16,13 @@
 
 \brief A file that provides the functionality for accessing all connected monitors.
 */
-namespace NOE::NOE_WINDOW
+namespace GLFWWindowPlugin
 {
 	/**
 	\brief				A class that implements the provided functions of the Monitor class. The
 						behavior of all functions is defined in the Monitor class.
 	*/
-	class NOU_CLASS GLFWMonitor : public Monitor
+	class NOU_CLASS GLFWMonitor : public NOE::NOE_WINDOW::Monitor
 	{
 	private:
 

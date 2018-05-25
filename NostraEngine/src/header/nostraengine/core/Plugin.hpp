@@ -52,7 +52,8 @@ extern "C" void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType s
 /*initialize*/																							   \
 extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void * engineInstance)								   \
 {																										   \
-	NOE::NostraEngine *engine = reinterpret_cast<NOE::NostraEngine*>(engineInstance);					   \
+	NOE::NOE_CORE::NostraEngine *engine = 															       \
+		reinterpret_cast<NOE::NOE_CORE::NostraEngine*>(engineInstance);                                    \
 																										   \
 	NOE::NOE_CORE::Plugin::InitResult result = NOE::NOE_CORE::Plugin::get()->initialize(*engine);		   \
 																										   \
@@ -62,7 +63,8 @@ extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void * engineInstance)						
 /*terminate*/																							   \
 extern "C" NOU_FUNC NOU::uint32 noePluginTerminate(void *engineInstance)								   \
 {																										   \
-	NOE::NostraEngine *engine = reinterpret_cast<NOE::NostraEngine*>(engineInstance);					   \
+	NOE::NOE_CORE::NostraEngine *engine = 															       \
+		reinterpret_cast<NOE::NOE_CORE::NostraEngine*>(engineInstance);                                    \
 																										   \
 	NOE::NOE_CORE::Plugin::InitResult result = NOE::NOE_CORE::Plugin::get()->terminate(*engine);		   \
 																										   \
@@ -92,13 +94,19 @@ NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
 extern "C" NOU_FUNC void noePluginShutdown();
 
 /**
+\param source The ID of the source plugin.
+\param data   The data to receive.
+\param size   The size of \p data.
+\param flags  Arbitrary flags.
+
 \brief The interface function for Plugin::receive().
 
 \details
 The interface function for Plugin::receive(). This is one of the functions that will be defined by
 NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
 */
-extern "C" NOU_FUNC void noePluginReceive();
+extern "C" NOU_FUNC void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType size,
+	NOU::uint32 flags);
 
 /**
 \param engineInstance A pointer to the instance of the engine.

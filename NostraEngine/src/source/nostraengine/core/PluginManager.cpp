@@ -15,7 +15,7 @@
 namespace NOE::NOE_CORE
 {
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = "np";
-	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = "pconf";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = ".pconf";
 	const PluginMetadata::Priority PluginMetadata::LOWEST_PRIORITY = 0;
 	const PluginMetadata::Priority PluginMetadata::HIGHEST_PRIORITY = -1;
 
@@ -50,7 +50,9 @@ namespace NOE::NOE_CORE
 			return;
 		}
 
-		m_enabled = pluginConfig.getInt(PCONF_ATTRIB_ENABLE, PCONF_SECTION_CORE);
+		NOU::NOU_DAT_ALG::String8 enabled = pluginConfig.getString(PCONF_ATTRIB_ENABLE, PCONF_SECTION_CORE);
+
+		m_enabled = NOU::NOU_DAT_ALG::String8::stringToBoolean(enabled);
 
 		if (!m_enabled)
 		{
@@ -79,7 +81,8 @@ namespace NOE::NOE_CORE
 		m_version = NOU::NOU_CORE::Version(versionMajor, versionMinor, versionPatch);
 
 		// the filename is the name of the plugin plus the plugin name extension
-		m_path = m_name + "." + PLUGIN_FILE_EXTENSION;
+		m_path = PluginManager::get().getPluginLoadPath();
+		m_path += m_name + "." + PLUGIN_FILE_EXTENSION;
 	}
 
 	PluginMetadata::PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config) : 
@@ -218,7 +221,7 @@ namespace NOE::NOE_CORE
 			return false;
 		}
 
-		if (getMetadata().isValid())
+		if (!getMetadata().isValid())
 		{
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 				PluginManager::ErrorCodes::PLUGIN_NOT_EXISTING, "A plugin with that ID does not exist.");
@@ -416,6 +419,18 @@ namespace NOE::NOE_CORE
 	{
 		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths;
 
+		std::filesystem::directory_iterator iter(m_loadPath.getAbsolutePath().rawStr());
+
+		for (auto file : iter)
+		{
+			if (PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION ==
+				file.path().extension().string().c_str())
+			{
+				paths.push(file.path().string().c_str());
+			}
+		}
+
+		/*
 		NOU::NOU_FILE_MNGT::Folder folder(m_loadPath);
 
 		auto list = folder.listFiles();
@@ -425,7 +440,7 @@ namespace NOE::NOE_CORE
 			if (file.getPath().getFileExtension() == PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION)
 				paths.push(file.getPath());
 		}
-
+		*/
 		return paths;
 	}
 
@@ -511,17 +526,23 @@ namespace NOE::NOE_CORE
 				{
 					NOU::uint32 id = plugin->getMetadata().getID();
 
-					m_sortedPlugins.push(plugin.rawPtr());
+					EnginePlugin *pluginPtr = plugin.rawPtr();
+
+					m_sortedPlugins.push(pluginPtr);
 					m_idIndexMap.map(id, NOU::NOU_CORE::move(plugin));
 					loadedPlugins++;
 
-					NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin ") +
-						plugin->getMetadata().getName() + ".");
+					///\todo Re-enable commented out code.
+					//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin ") +
+					//	pluginPtr->getMetadata().getName() + ".");
+					NOU_LOG_INFO("A plugin was successfully loaded.");
 				}
 				else
 				{
-					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file ") + path.getName()
-						+ " could not be loaded.");
+					///\todo Re-enable commented out code.
+					//NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file ") + path.getName()
+					//	+ " could not be loaded.");
+					NOU_LOG_INFO("A plugin could not be loaded.");
 
 					m_createdPluginList = false;
 					return false;
@@ -534,7 +555,9 @@ namespace NOE::NOE_CORE
 
 		m_createdPluginList = true;
 
-		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
+		///\todo Re-enable commented out code.
+		//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
+		NOU_LOG_INFO("Successfully loaded all plugins.");
 
 		return true;
 	}

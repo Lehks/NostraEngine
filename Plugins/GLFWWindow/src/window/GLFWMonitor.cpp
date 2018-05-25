@@ -5,9 +5,9 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-namespace NOE::NOE_WINDOW
+namespace GLFWWindowPlugin
 {
-	NOE::NOE_WINDOW::GLFWMonitor::GLFWMonitor(const void* handle) :
+	GLFWMonitor::GLFWMonitor(const void* handle) :
 		m_handle(handle),
 		m_name(glfwGetMonitorName(reinterpret_cast<GLFWmonitor*>(const_cast<void*>(handle))))
 	{
@@ -29,42 +29,42 @@ namespace NOE::NOE_WINDOW
 		NOU_LOG_DEBUG("Monitor object created!");
 	}
 
-	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getWidth() const
+	NOU::sizeType GLFWMonitor::getWidth() const
 	{
 		return m_width;
 	}
 
-	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getHeight() const
+	NOU::sizeType GLFWMonitor::getHeight() const
 	{
 		return m_height;
 	}
 
-	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getRefreshRate() const
+	NOU::sizeType GLFWMonitor::getRefreshRate() const
 	{
 		return m_refreshRate;
 	}
 
-	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getRedBits() const
+	NOU::sizeType GLFWMonitor::getRedBits() const
 	{
 		return m_redBits;
 	}
 
-	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getGreenBits() const
+	NOU::sizeType GLFWMonitor::getGreenBits() const
 	{
 		return m_greenBits;
 	}
 
-	NOU::sizeType NOE::NOE_WINDOW::GLFWMonitor::getBlueBits() const
+	NOU::sizeType GLFWMonitor::getBlueBits() const
 	{
 		return m_blueBits;
 	}
 
-	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWMonitor::getName() const
+	const NOU::NOU_DAT_ALG::String8& GLFWMonitor::getName() const
 	{
 		return m_name;
 	}
 
-	const void* NOE::NOE_WINDOW::GLFWMonitor::getUnderlying() const
+	const void* GLFWMonitor::getUnderlying() const
 	{
 		return m_handle;
 	}

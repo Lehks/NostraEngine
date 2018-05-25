@@ -5,7 +5,7 @@
 
 namespace GLFWWindowPlugin
 {
-    NOE::NOE_CORE::InitResult GLFWWindowPlugin::initialize(NOE::NOE_CORE::NostraEngine &engineInstance)
+    NOE::NOE_CORE::Plugin::InitResult GLFWWindowPlugin::initialize(NOE::NOE_CORE::NostraEngine &engineInstance)
     {
 		if (glfwInit())
 		{
@@ -18,23 +18,21 @@ namespace GLFWWindowPlugin
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-
-			return NOE::NOE_CORE::InitResult::SUCCESS;
+			return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
 		}
 		else
-			return NOE::NOE_CORE::InitResult::FAILURE;
+			return NOE::NOE_CORE::Plugin::InitResult::FAILED;
 
-		m_window = NOE::NOE_WINDOW::GLFWWindow();
+		m_window = GLFWWindow();
 
 		//set window in main
     }
 
-	NOE::NOE_CORE::InitResult GLFWWindowPlugin::terminate(NOE::NOE_CORE::NostraEngine &engineInstance)
+	NOE::NOE_CORE::Plugin::InitResult GLFWWindowPlugin::terminate(NOE::NOE_CORE::NostraEngine &engineInstance)
     {
-		if(glfwTerminate())
-			return NOE::NOE_CORE::InitResult::SUCCESS;
-		else
-			return NOE::NOE_CORE::InitResult::FAILURE;
+		glfwTerminate();
+
+		return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
     }
         
 	void GLFWWindowPlugin::receive(NOE::NOE_CORE::Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags)
@@ -43,5 +41,5 @@ namespace GLFWWindowPlugin
     }
 }
 
-
+NOE_SET_AS_ACTIVE_PLUGIN_CLASS(GLFWWindowPlugin::GLFWWindowPlugin);
 
