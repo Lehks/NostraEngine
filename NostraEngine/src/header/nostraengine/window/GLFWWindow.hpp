@@ -50,7 +50,7 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			The const vector that stores the monitors as Monitor pointers.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<Monitor*> s_monitorPointer;
+		static const NOU::NOU_DAT_ALG::Vector<const Monitor*> s_monitorPointer;
 
 	public:
 
@@ -64,19 +64,20 @@ namespace NOE::NOE_WINDOW
 		*/
 		virtual ~GLFWWindow();
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor = nullptr) override;
+			const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor = nullptr) override;
 		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
 		virtual void closeWindow() override;
 		virtual void minimize() override;
 		virtual void maximize()	override;
-		virtual void makeWindowed(Monitor* handle)	override;
-		virtual void setFullscreen(Monitor* handle, NOU::boolean state) override;
+		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
+			NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
+		virtual void setFullscreen(const Monitor* handle) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
-		virtual Monitor* getPrimaryMonitor() override;
-		NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() override;
+		virtual const Monitor* getPrimaryMonitor() override;
+		virtual const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
 		/**
@@ -91,7 +92,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Returns the s_monitorPointer vector.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<Monitor*>& getMonitorPointer();
+		static const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getMonitorPointer();
 		
 	};
 
@@ -108,7 +109,7 @@ namespace NOE::NOE_WINDOW
 			\brief		Always the first element in the enum. This has only technical purposes and is not an
 						actual error code.
 			*/
-			FIRST_ELEMENT = 6000,
+			FIRST_ELEMENT = 5100,
 
 			/**
 			\brief		The initialization of the GLFW failed.

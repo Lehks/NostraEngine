@@ -37,7 +37,7 @@ namespace NOE::NOE_WINDOW
 						-A pointer to a monitor where the window should be in full screen mode
 		*/
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, Monitor* monitor = nullptr) = 0;
+			const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor = nullptr) = 0;
 
 		/**
 		\param title	The new title of the window.
@@ -78,22 +78,25 @@ namespace NOE::NOE_WINDOW
 		virtual void maximize() = 0;
 
 		/**
-		\param handle	The monitor where to make the window windowed.
+		\param xpos			The x-axis position of the window.
+		\param ypos			The y-axis position of the window.
+		\param width		The width of the window.
+		\param height		The height of the window.
+		\param refreshRate	The refresh rate of the window.
 
-		\brief			Makes the window windowed.
+		\brief				Makes the window windowed.
+
+		\details			Each parameter has its own default value.
 		*/
-		virtual void makeWindowed(Monitor* handle) = 0;
+		virtual void makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos, 
+			NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate) = 0;
 
 		/**
 		\param handle	The monitor where to make the window full screen.
-		\param state	True if full screen and false if not.
 
 		\brief			Makes the window full screen.
-
-		\details		If state is set to false than the makeWindowed() is called. This results in making
-						exiting the full screen mode and making the window windowed again.
 		*/
-		virtual void setFullscreen(Monitor* handle, NOU::boolean state) = 0;
+		virtual void setFullscreen(const Monitor* handle) = 0;
 
 		/**
 		\brief			All operations that are performed in the window like updating images, etc.
@@ -125,7 +128,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Returns the primary monitor as a Monitor*.
 		*/
-		virtual Monitor* getPrimaryMonitor() = 0;
+		virtual const Monitor* getPrimaryMonitor() = 0;
 
 		/**
 		\return			Returns an vector with Monitor pointer.
@@ -134,7 +137,7 @@ namespace NOE::NOE_WINDOW
 
 		\details		The first array element is the primary monitor.
 		*/
-		virtual NOU::NOU_DAT_ALG::Vector<Monitor*> getConnectedMonitors() = 0;
+		virtual const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getConnectedMonitors() = 0;
 
 		/**
 		\return			Returns the title.
