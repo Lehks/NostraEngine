@@ -50,9 +50,9 @@ namespace NOE::NOE_CORE
 			return;
 		}
 
-		NOU::boolean enable = pluginConfig.getInt(PCONF_ATTRIB_ENABLE, PCONF_SECTION_CORE);
+		m_enabled = pluginConfig.getInt(PCONF_ATTRIB_ENABLE, PCONF_SECTION_CORE);
 
-		if (!enable)
+		if (!m_enabled)
 		{
 			//make invalid, the plugin will then be ignored by the plugin manager
 			m_id = EnginePlugin::INVALID_ID;
@@ -85,6 +85,7 @@ namespace NOE::NOE_CORE
 	PluginMetadata::PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config) : 
 		m_id(EnginePlugin::INVALID_ID),
 		m_version(0, 0, 0),
+		m_enabled(false),
 		m_requiredVersion(0, 0, 0),
 		m_path("./")
 	{
@@ -94,6 +95,7 @@ namespace NOE::NOE_CORE
 	PluginMetadata::PluginMetadata() :
 		m_id(EnginePlugin::INVALID_ID),
 		m_version(0, 0, 0),
+		m_enabled(false),
 		m_requiredVersion(0, 0, 0),
 		m_path("./")
 	{}
@@ -136,6 +138,11 @@ namespace NOE::NOE_CORE
 	NOU::boolean PluginMetadata::isValid() const
 	{
 		return getID() != EnginePlugin::INVALID_ID;
+	}
+
+	NOU::boolean PluginMetadata::isEnabled() const
+	{
+		return m_enabled;
 	}
 
 	PluginMetadata::operator NOU::boolean() const
@@ -480,6 +487,8 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean PluginManager::createPluginList()
 	{
+		NOU_LOG_INFO("Loading plugins...");
+
 		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths = listPluginFiles();
 
 		//+1 b/c of invalid plugin
@@ -489,22 +498,34 @@ namespace NOE::NOE_CORE
 		m_idIndexMap.map(EnginePlugin::INVALID_ID, NOU::NOU_MEM_MNGT::UniquePtr<EnginePlugin>(
 			new EnginePlugin(), NOU::NOU_MEM_MNGT::defaultDeleter));
 
+		NOU::uint32 loadedPlugins = 0;
+
 		for (auto path : paths)
 		{
 			NOU::NOU_MEM_MNGT::UniquePtr<EnginePlugin> plugin(new EnginePlugin(path), 
 				NOU::NOU_MEM_MNGT::defaultDeleter);
 
-			if (plugin->getMetadata().isValid())
+			if (plugin->getMetadata().isEnabled()) //ignore if disabled
 			{
-				NOU::uint32 id = plugin->getMetadata().getID();
+				if (plugin->getMetadata().isValid())
+				{
+					NOU::uint32 id = plugin->getMetadata().getID();
 
-				m_sortedPlugins.push(plugin.rawPtr());
-				m_idIndexMap.map(id, NOU::NOU_CORE::move(plugin));
-			}
-			else
-			{
-				m_createdPluginList = false;
-				return false;
+					m_sortedPlugins.push(plugin.rawPtr());
+					m_idIndexMap.map(id, NOU::NOU_CORE::move(plugin));
+					loadedPlugins++;
+
+					NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin ") +
+						plugin->getMetadata().getName() + ".");
+				}
+				else
+				{
+					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file ") + path.getName()
+						+ " could not be loaded.");
+
+					m_createdPluginList = false;
+					return false;
+				}
 			}
 		}
 
@@ -512,6 +533,9 @@ namespace NOE::NOE_CORE
 			m_sortedPlugins.sortComp(EnginePlugin::comparator);
 
 		m_createdPluginList = true;
+
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
+
 		return true;
 	}
 

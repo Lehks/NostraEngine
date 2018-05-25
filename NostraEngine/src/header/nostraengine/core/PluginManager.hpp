@@ -121,6 +121,11 @@ namespace NOE::NOE_CORE
 		Plugin::ID m_id;
 
 		/**
+		\brief True, if the plugin is enabled, false if not.
+		*/
+		NOU::boolean m_enabled;
+
+		/**
 		\brief The name of the plugin.
 		*/
 		NOU::NOU_DAT_ALG::String8 m_name;
@@ -236,6 +241,19 @@ namespace NOE::NOE_CORE
 		EnginePlugin::INVALID_ID).
 		*/
 		NOU::boolean isValid() const;
+
+		/**
+		\brief Returns whether the plugin is enabled or not.
+
+		\details
+		Returns whether the plugin is enabled or not. This method is mainly used during the loading of a
+		plugin by the plugin manager. When used on plugins that are returned by PluginManager::getPlugins(),
+		this method will always return true.
+
+		\note
+		A disabled plugin implies that the plugin is also invalid.
+		*/
+		NOU::boolean isEnabled() const;
 
 		/**
 		\return isValid()
