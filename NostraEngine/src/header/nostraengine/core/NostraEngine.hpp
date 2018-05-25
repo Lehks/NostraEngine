@@ -1,12 +1,14 @@
 #ifndef NOSTRA_ENGINE_HPP
 #define NOSTRA_ENGINE_HPP
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 
 #include "nostrautils/NostraUtils.hpp"
 
 #include "nostraengine/core/StdIncludes.hpp"
+
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+
 #include <iostream>
 
 /**
