@@ -27,9 +27,6 @@
 */
 namespace NOU::NOU_CORE
 {
-//provisional fix for the macro ERROR being defined here
-#undef ERROR
-
 	/**
 	\brief A enum class, which stores the different event level. 
 		   The eventLevel can be:
