@@ -17,6 +17,20 @@
 #define NOE nostra::engine
 #endif
 
+/**
+\brief The name of the namespace that contains all core components.
+*/
+#ifndef NOE_CORE
+#define NOE_CORE core
+#endif
+
+/**
+\brief The name of the namespace that contains all window components.
+*/
+#ifndef NOE_WINDOW
+#define NOE_WINDOW window
+#endif
+
 namespace NOE::internal
 {
 	/**
