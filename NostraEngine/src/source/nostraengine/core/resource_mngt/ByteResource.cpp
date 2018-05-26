@@ -4,7 +4,7 @@
 
 namespace NOE::NOE_CORE
 {
-	ByteResource::ByteResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::StringView8& name,
+	ByteResource::ByteResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name,
 		NOU::NOU_DAT_ALG::Vector<NOU::byte> &&bytes) : 
 		Resource(id, name),
 		m_bytes(bytes)
@@ -24,7 +24,7 @@ namespace NOE::NOE_CORE
 
 
 
-	const NOU::NOU_DAT_ALG::StringView8 ByteResourceLoader::NAME = "NOE_BYTE_LOADER";
+	const NOU::NOU_DAT_ALG::String8 ByteResourceLoader::NAME = "NOE_BYTE_LOADER";
 
 	NOU::boolean ByteResourceLoader::storeImpl(Resource *resource, const NOU::NOU_FILE_MNGT::Path& path)
 	{
@@ -36,6 +36,8 @@ namespace NOE::NOE_CORE
 		NOU::NOU_FILE_MNGT::File file(path);
 
 		file.open();
+
+		byteRes->getBytes().pushBack(0);
 
 		NOU::boolean res = file.write(reinterpret_cast<NOU::char8*>(byteRes->getBytes().data()));
 

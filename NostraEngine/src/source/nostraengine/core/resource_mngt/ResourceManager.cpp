@@ -76,7 +76,7 @@ namespace NOE::NOE_CORE
 		return instance;
 	}
 
-	ResourceLoader* ResourceManager::getLoader(const NOU::NOU_DAT_ALG::StringView8 &name)
+	ResourceLoader* ResourceManager::getLoader(const NOU::NOU_DAT_ALG::String8 &name)
 	{
 		if (m_loaders.containsKey(name))
 			return m_loaders.get(name);

@@ -44,6 +44,9 @@ namespace NOE::NOE_CORE
 		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_RESOURCE;
 
+		/**
+		\brief The SQL code to add a type to the database. This is used by addType().
+		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_ADD_TYPE;
 
 		/**
@@ -226,7 +229,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the loader with the passed name.
 		*/
-		ResourceLoader* getLoader(const NOU::NOU_DAT_ALG::StringView8 &name);
+		ResourceLoader* getLoader(const NOU::NOU_DAT_ALG::String8 &name);
 
 		/**
 		\brief Deletes the cache files of all resources.

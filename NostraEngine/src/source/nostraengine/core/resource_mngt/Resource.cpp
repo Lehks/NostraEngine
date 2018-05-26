@@ -3,7 +3,7 @@
 
 namespace NOE::NOE_CORE
 {
-	Resource::Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::StringView8 &name) :
+	Resource::Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8 &name) :
 		m_metadata(id),
 		m_name(name)
 	{}
@@ -13,7 +13,7 @@ namespace NOE::NOE_CORE
 		return m_metadata;
 	}
 
-	const NOU::NOU_DAT_ALG::StringView8& Resource::getLoaderName() const
+	const NOU::NOU_DAT_ALG::String8& Resource::getLoaderName() const
 	{
 		return m_name;
 	}

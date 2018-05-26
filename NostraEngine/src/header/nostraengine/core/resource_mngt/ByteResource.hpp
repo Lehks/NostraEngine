@@ -34,7 +34,7 @@ namespace NOE::NOE_CORE
 		\param name  The name of the loader that this resource was loaded with.
 		\param bytes The byte array.
 		*/
-		ByteResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::StringView8& name, 
+		ByteResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name, 
 			NOU::NOU_DAT_ALG::Vector<NOU::byte> &&bytes);
 
 		/**
@@ -61,7 +61,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The name of the loader.
 		*/
-		static const NOU::NOU_DAT_ALG::StringView8 NAME;
+		static const NOU::NOU_DAT_ALG::String8 NAME;
 
 	protected:
 

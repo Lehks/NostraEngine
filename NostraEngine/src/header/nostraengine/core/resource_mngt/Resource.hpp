@@ -23,7 +23,7 @@ namespace NOE::NOE_CORE
 	A class that is the base class of any resource that is managed by the ResourceManager. For a full tutorial
 	on how to use the resource management system, see \link resourceManagementSys this page\endlink.
 	*/
-	class Resource
+	class NOU_CLASS Resource
 	{
 	private:
 		/**
@@ -38,7 +38,7 @@ namespace NOE::NOE_CORE
 		The name of the loader that this resource was loaded with. This is stored in the resource loader
 		itself and this member only references that name in the resource loader.
 		*/
-		const NOU::NOU_DAT_ALG::StringView8 &m_name;
+		const NOU::NOU_DAT_ALG::String8 m_name;
 
 	public:
 		/**
@@ -47,7 +47,7 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new instance.
 		*/
-		Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::StringView8& name);
+		Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name);
 
 		/**
 		\return The meta data of the resource.
@@ -67,7 +67,7 @@ namespace NOE::NOE_CORE
 		store the resource with this loader (unless another error occurs, e.g. the process does not have the
 		permission to write the source file of the resource).
 		*/
-		const NOU::NOU_DAT_ALG::StringView8& getLoaderName() const;
+		const NOU::NOU_DAT_ALG::String8& getLoaderName() const;
 
 		/**
 		\return True, if the resource was successfully stored, false if not.
