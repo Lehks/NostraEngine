@@ -417,10 +417,14 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::int32 getResourceRemoveUpdates() const;
 
-		//WIP
+		/**
+		\brief Initializes the resource manager. It is only usable after this method has been called.
+		*/
 		void initalize();
 
-		//WIP
+		/**
+		\brief Terminates the resource manager. After calling this method, it is not usable anymore.
+		*/
 		void terminate();
 
 		/**

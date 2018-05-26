@@ -101,6 +101,8 @@ namespace NOE::NOE_CORE
 		NOU::boolean cache(NOU::boolean enableCache = true, const NOU::NOU_FILE_MNGT::Path &path = "./");
 
 		/**
+		\return True, if the cache file was deleted, false if not.
+
 		\brief Deletes the cache file of the resource.
 
 		\details
@@ -114,7 +116,7 @@ namespace NOE::NOE_CORE
 		\note
 		If the resource is not cached, this method will not do anything.
 		*/
-		void deleteCache();
+		NOU::boolean deleteCache();
 	};
 }
 

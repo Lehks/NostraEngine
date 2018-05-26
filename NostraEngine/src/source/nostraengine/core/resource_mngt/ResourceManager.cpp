@@ -175,6 +175,8 @@ namespace NOE::NOE_CORE
 		{
 			NOU::NOU_FILE_MNGT::File file(metadata.getCachePath());
 
+			std::cout << file.getPath().getAbsolutePath().rawStr() << std::endl;
+
 			return file.deleteFile();
 		}
 

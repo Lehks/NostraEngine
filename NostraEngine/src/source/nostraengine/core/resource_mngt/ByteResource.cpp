@@ -31,7 +31,7 @@ namespace NOE::NOE_CORE
 		//to ensure the reinterpret_cast works
 		static_assert(sizeof(NOU::char8) == sizeof(NOU::byte));
 
-		ByteResource *byteRes = reinterpret_cast<ByteResource*>(resource);
+		ByteResource *byteRes = static_cast<ByteResource*>(resource);
 
 		NOU::NOU_FILE_MNGT::File file(path);
 

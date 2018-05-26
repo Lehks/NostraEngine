@@ -29,8 +29,8 @@ namespace NOE::NOE_CORE
 		return ResourceManager::get().cache(getMetadata().getID(), enableCache, path);
 	}
 
-	void Resource::deleteCache()
+	NOU::boolean Resource::deleteCache()
 	{
-		ResourceManager::get().deleteCache(getMetadata().getID());
+		return ResourceManager::get().deleteCache(getMetadata().getID());
 	}
 }
