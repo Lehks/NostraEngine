@@ -1,3 +1,6 @@
+#ifndef NOU_CORE_BYTE_RESOURCE_HPP
+#define NOU_CORE_BYTE_RESOURCE_HPP
+
 #include "nostraengine/core/ResourceManagement.hpp"
 
 #include "nostrautils/dat_alg/StringView.hpp"
@@ -121,3 +124,5 @@ namespace NOE::NOE_CORE
 
 	};
 }
+
+#endif

@@ -418,7 +418,7 @@ namespace NOE::NOE_CORE
 		void initalize();
 
 		//WIP
-		void shutdown();
+		void terminate();
 
 		/**
 		\return The underlying database.

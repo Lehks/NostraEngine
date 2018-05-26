@@ -9,6 +9,7 @@
 #include "nostraengine/core/resource_mngt/Resource.hpp"
 #include "nostraengine/core/resource_mngt/ResourceLoader.hpp"
 #include "nostraengine/core/resource_mngt/ResourceManager.hpp"
+#include "nostraengine/core/resource_mngt/ByteResource.hpp"
 
 /**
 \file    core/ResourceManagement.hpp

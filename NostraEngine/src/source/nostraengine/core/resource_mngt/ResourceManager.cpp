@@ -175,7 +175,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU::NOU_FILE_MNGT::File file(metadata.getCachePath());
 
-			//delete file
+			return file.deleteFile();
 		}
 
 		return false;
@@ -301,7 +301,7 @@ namespace NOE::NOE_CORE
 		resultResources.next();
 	}
 
-	void ResourceManager::shutdown()
+	void ResourceManager::terminate()
 	{
 		m_database.close(); ///\todo add error handling
 	}
