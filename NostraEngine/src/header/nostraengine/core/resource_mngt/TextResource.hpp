@@ -1,5 +1,5 @@
-#ifndef NOU_CORE_BYTE_RESOURCE_HPP
-#define NOU_CORE_BYTE_RESOURCE_HPP
+#ifndef NOU_CORE_TEXT_RESOURCE_HPP
+#define NOU_CORE_TEXT_RESOURCE_HPP
 
 #include "nostraengine/core/resource_mngt/ResourceType.hpp"
 #include "nostraengine/core/resource_mngt/ResourceMetadata.hpp"
@@ -7,30 +7,27 @@
 #include "nostraengine/core/resource_mngt/ResourceLoader.hpp"
 #include "nostraengine/core/resource_mngt/ResourceManager.hpp"
 
-#include "nostrautils/dat_alg/StringView.hpp"
-
 /**
-\file    core/resource_mngt/ByteResource.hpp
+\file    core/resource_mngt/TextResource.hpp
 \author  Lukas Reichmann
 \version 1.0.0
 \since   0.0.1
 
-\brief A file that contains the class ByteResource and ByteResourceLoader.
+\brief A file that contains the class TextResource and TextResourceLoader.
 */
 
 namespace NOE::NOE_CORE
 {
 	/**
-	\brief A resource type that contains the content of a file as byte array. This loader is mostly used for
-	other loaders to build upon it.
+	\brief A resource type that contains the content of a file as a string.
 	*/
-	class NOU_CLASS ByteResource final : public Resource
+	class NOU_CLASS TextResource final : public Resource
 	{
 	private:
 		/**
-		\brief The bytes in the file.
+		\brief The text in the file.
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOU::byte> m_bytes;
+		NOU::NOU_DAT_ALG::String8 m_text;
 
 	public:
 		/**
@@ -38,28 +35,28 @@ namespace NOE::NOE_CORE
 		\param name  The name of the loader that this resource was loaded with.
 		\param bytes The byte array.
 		*/
-		ByteResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name, 
-			NOU::NOU_DAT_ALG::Vector<NOU::byte> &&bytes);
+		TextResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name,
+			NOU::NOU_DAT_ALG::String8 &&text);
 
 		/**
-		\return The byte array.
+		\return The text.
 
-		\brief Returns the byte array.
+		\brief Returns the text.
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes();
+		NOU::NOU_DAT_ALG::String8& getText();
 
 		/**
-		\return The byte array.
+		\return The text.
 
-		\brief Returns the byte array.
+		\brief Returns the text.
 		*/
-		const NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes() const;
+		const NOU::NOU_DAT_ALG::String8& getText() const;
 	};
 
 	/**
-	\brief A loader for ByteResource, a resource that stores the content of a class as byte array.
+	\brief A loader for TextResource, a resource that stores the content of a class as a string.
 	*/
-	class NOU_CLASS ByteResourceLoader final : public ResourceLoader 
+	class NOU_CLASS TextResourceLoader final : public ResourceLoader
 	{
 	public:
 		/**
@@ -115,7 +112,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Constructs a new instance.
 		*/
-		ByteResourceLoader();
+		TextResourceLoader();
 
 		/**
 		\param id The ID of the resource to check.
