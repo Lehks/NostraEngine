@@ -70,14 +70,7 @@ namespace NOE::NOE_WINDOW
 
 		\brief			Returns the name of the monitor.
 		*/
-		virtual NOU::NOU_DAT_ALG::String8 getName() const = 0;
-
-		/**
-		\return void*	Returns a void pointer to the window handle.
-
-		\brief			Returns the monitor handle.
-		*/
-		virtual void* getUnderlying() = 0;
+		virtual const NOU::NOU_DAT_ALG::String8& getName() const = 0;
 
 		/**
 		\return void*	Returns a const void pointer to the window handle.
