@@ -2,6 +2,7 @@
 #include <chrono>
 
 #include "nostraengine/core/NostraEngine.hpp"
+#include "nostraengine/core/PluginManager.hpp"
 
 namespace NOE::NOE_CORE{
 
@@ -15,13 +16,9 @@ namespace NOE::NOE_CORE{
 	NostraEngine::NostraEngine() :
 		m_runState(0),
 		m_version(0, 0, 1),
-		m_engineLogger(NOU::NOU_CORE::Logger::instance()),
 		m_initializedObjects(0),
 		m_preInitializedObjects(0)
-	{
-		m_engineLogger->pushLogger<NOU::NOU_CORE::FileLogger>();
-		m_engineLogger->pushLogger<NOU::NOU_CORE::ConsoleLogger>();
-	}
+	{}
 
 	void NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
 	{
@@ -47,13 +44,53 @@ namespace NOE::NOE_CORE{
 
 	ExitCode NostraEngine::preInitialize()
 	{
-		NOU::sizeType s = m_initializables.size();
+		ExitCode ret = ExitCode::SUCCESS;
+
+		if (!PluginManager::get().createPluginList())
+		{
+			NOU_LOG_ERROR("Failed to create the plugin list.");
+			return ExitCode::ERROR;
+		}
+
+		NOU::sizeType s = PluginManager::get().getPlugins().size();
+
 		for (NOU::sizeType i = 0; i < s; i++)
 		{
-			// m_initializables[i]->preInitialize();
+			EnginePlugin *plugin = PluginManager::get().getPlugins()[i];
+
+			if (!PluginManager::get().getPlugins()[i]->load())
+			{
+				NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
+					+ "(ID: " + plugin->getMetadata().getID() + "\") could not be loaded.");
+				return ExitCode::ERROR;
+			}
+
+			Plugin::InitResult result = plugin->initialize(*this);
+
+			switch (result)
+			{
+			case Plugin::InitResult::SUCCESS:
+				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
+					+ "(ID: " + plugin->getMetadata().getID() + "\") was successful.");
+				break;
+			case Plugin::InitResult::WARNING:
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
+					+ "(ID: " + plugin->getMetadata().getID() + "\") has finished with a warning.");
+
+				ret = ExitCode::WARNING;
+
+				break;
+			case Plugin::InitResult::FAILED:
+				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
+					+ "(ID: " + plugin->getMetadata().getID() + "\") has failed.");
+				return ExitCode::ERROR;
+			}
 			m_preInitializedObjects++;
 		}
-		return ExitCode::SUCCESS;
+
+		m_initializables.sort();
+
+		return ret;
 	}
 
 	ExitCode NostraEngine::initialize()
@@ -113,11 +150,52 @@ namespace NOE::NOE_CORE{
 
 	ExitCode NostraEngine::postTerminate()
 	{
+		ExitCode ret = ExitCode::SUCCESS;
+
+		//iterate over all plugins that were initialized
+		for (NOU::sizeType i = PluginManager::get().getPlugins().size() - 1; i >= 0; i++)
+		{
+			EnginePlugin *plugin = PluginManager::get().getPlugins()[i];
+
+			Plugin::InitResult result = plugin->terminate(*this);
+
+			switch (result)
+			{
+			case Plugin::InitResult::SUCCESS:
+				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
+					+ "(ID: " + plugin->getMetadata().getID() + "\") was successful.");
+				break;
+			case Plugin::InitResult::WARNING:
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName() 
+					+ "(ID: " + plugin->getMetadata().getID() + "\") has finished with a warning.");
+
+				if (ret != ExitCode::ERROR)
+					ret = ExitCode::WARNING;
+
+				break;
+			case Plugin::InitResult::FAILED:
+				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
+					+ "(ID: " + plugin->getMetadata().getID() + "\") has failed.");
+
+				ret = ExitCode::ERROR;
+
+				break;
+			}
+
+			if (!PluginManager::get().getPlugins()[i]->unload())
+			{
+				NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
+					+ "(ID: " + plugin->getMetadata().getID() + "\") could not be unloaded.");
+
+				ret = ExitCode::ERROR;
+			}
+		}
+
 
 		//Need to be the last function of the engine.
-		m_engineLogger->wait();
+		NOU::NOU_CORE::Logger::get().wait();
 
-		return ExitCode::SUCCESS;
+		return ret;
 	}
 
 
@@ -178,25 +256,27 @@ namespace NOE::NOE_CORE{
 
 	NOU::int32 NostraEngine::start()
 	{
-		
-		NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::INFO, getVersion().rawStr() ,"EngineLog.txt");
+		NOU::NOU_CORE::Logger::get().pushLogger<NOU::NOU_CORE::ConsoleLogger>();
+		NOU::NOU_CORE::Logger::get().pushLogger<NOU::NOU_CORE::FileLogger>();
 
-		m_initializables.sort();
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("NostraEngine Version ") + getVersion().rawStr());
+
+		NOE::NOE_CORE::PluginManager::get().initialize();
 
 		if(preInitialize() == ExitCode::ERROR)
 		{
-			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "preInitialize(): An Error occurred during pre initialize.", "EngineLog.txt");
+			NOU_LOG_ERROR("preInitialize(): An Error occurred during pre initialize.");
 			m_runState = -1;
 		}
 		else if (initialize() == ExitCode::ERROR)
 		{
 
-			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "Initialize(): An Error occurred during initialize.", "EngineLog.txt");
+			NOU_LOG_ERROR("Initialize(): An Error occurred during initialize.");
 			m_runState = -1;
 
 		}else if (postInitialize() == ExitCode::ERROR)
 		{
-			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "postInitialize(): An Error occurred during post initialize.", "EngineLog.txt");
+			NOU_LOG_ERROR("postInitialize(): An Error occurred during post initialize.");
 			m_runState = -1;
 		}
 
@@ -204,13 +284,15 @@ namespace NOE::NOE_CORE{
 
 		if (terminate() == ExitCode::ERROR)
 		{
-			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "terminate(): An Error occurred during terminate.", "EngineLog.txt");
+			NOU_LOG_ERROR("terminate(): An Error occurred during terminate.");
 		}
 
 		if (postTerminate() == ExitCode::ERROR)
 		{
-			NOU_WRITE_LOG(m_engineLogger, NOU::NOU_CORE::EventLevelCodes::ERROR, "postTerminate(): An Error occurred during post terminate.", "EngineLog.txt");
+			NOU_LOG_ERROR("postTerminate(): An Error occurred during post terminate.");
 		}
+
+		NOE::NOE_CORE::PluginManager::get().terminate();
 
 		return 0;
 	}
