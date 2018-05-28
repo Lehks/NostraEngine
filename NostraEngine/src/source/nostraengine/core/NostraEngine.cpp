@@ -88,7 +88,8 @@ namespace NOE::NOE_CORE{
 			m_preInitializedObjects++;
 		}
 
-		m_initializables.sort();
+		if(m_initializables.size() > 0)
+			m_initializables.sort();
 
 		return ret;
 	}
@@ -153,7 +154,7 @@ namespace NOE::NOE_CORE{
 		ExitCode ret = ExitCode::SUCCESS;
 
 		//iterate over all plugins that were initialized
-		for (NOU::sizeType i = PluginManager::get().getPlugins().size() - 1; i >= 0; i++)
+		for (NOU::sizeType i = PluginManager::get().getPlugins().size() - 1; i != -1; i--)
 		{
 			EnginePlugin *plugin = PluginManager::get().getPlugins()[i];
 

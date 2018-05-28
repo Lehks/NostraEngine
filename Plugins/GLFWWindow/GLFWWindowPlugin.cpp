@@ -18,14 +18,14 @@ namespace GLFWWindowPlugin
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
+			m_window = GLFWWindow();
+
+			//set window in main
+
 			return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
 		}
 		else
 			return NOE::NOE_CORE::Plugin::InitResult::FAILED;
-
-		m_window = GLFWWindow();
-
-		//set window in main
     }
 
 	NOE::NOE_CORE::Plugin::InitResult GLFWWindowPlugin::terminate(NOE::NOE_CORE::NostraEngine &engineInstance)
