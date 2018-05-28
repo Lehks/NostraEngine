@@ -1,20 +1,24 @@
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
-file(GLOB source_files "src/source/nostraengine/*/*.c*")
+project(NostraEngine CXX)
 
-include_directories("${PROJECT_SOURCE_DIR}/NostraEngine/src/header")
-include_directories("${PROJECT_SOURCE_DIR}/NostraEngine/dependencies/include")
+file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
-add_library(NostraEngine_STATIC STATIC "${source_files}")
-#add_library(NostraEngine_SHARED SHARED "${source_files}")
+include_directories("${NOE_NOE_INCLUDE_DIR}")
+include_directories("${NOE_GLAD_INCLUDE_DIR}")
+include_directories("${NOE_NOU_INCLUDE_DIR}")
+include_directories("${CMAKE_SOURCE_DIR}")
 
-set_target_properties(NostraEngine_STATIC PROPERTIES LINKER_LANGUAGE CXX)
-#set_target_properties(NostraEngine_SHARED PROPERTIES LINKER_LANGUAGE CXX)
+add_library("${NOE_NOE_LIB_NAME}" SHARED "${NOE_NOE_SOURCE_FILES}")
 
-link_directories("NostraEngine/dependencies/lib/GLFW/x86/")
-#link_directories("NostraEngine/dependencies/lib/nostrautils/Release/x86/")
+target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
+target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
+target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
 
-target_link_libraries(NostraEngine_STATIC NostraUtils_STATIC.lib)
-target_link_libraries(NostraEngine_STATIC glfw3.lib)
-#target_link_libraries(NostraEngine_SHARED NostraUtils_STATIC.lib)
-#target_link_libraries(NostraEngine_SHARED glfw3.lib)
+add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
+add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
+add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
+
+install(TARGETS "${NOE_NOE_LIB_NAME}" DESTINATION "bin")
+
+install(DIRECTORY "${NOE_NOE_INCLUDE_DIR}/" DESTINATION "include")

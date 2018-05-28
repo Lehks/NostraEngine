@@ -1,6 +1,8 @@
 #ifndef NOE_CORE_STD_INCLUDES_HPP
 #define NOE_CORE_STD_INCLUDES_HPP
 
+#include "nostrautils/NostraUtils.hpp"
+
 /**
 \file core/StdIncludes.hpp
 
@@ -11,13 +13,46 @@
 \brief A file that is usually included by all other files of the Nostra Engine.
 */
 
+/**
+\brief The name of the main namespace of the Nostra Engine.
+*/
 #ifndef NOE
 #define NOE nostra::engine
+#endif
+
+/**
+\brief The name of the namespace that contains all core components.
+*/
+#ifndef NOE_CORE
+#define NOE_CORE core
 #endif
 
 #ifndef NOE_SCENE
 #define NOE_SCENE scene
 #endif
 
+
+/**
+\brief The name of the utility namespace of the Nostra Engine.
+*/
+#ifndef NOE_UTILITY
+#define NOE_UTILITY utility
+#endif
+
+/*
+\brief The name of the namespace that contains all window components.
+*/
+#ifndef NOE_WINDOW
+#define NOE_WINDOW window
+#endif
+
+namespace NOE::internal
+{
+	/**
+	\brief A function that has no functionality, but because of StdIncludes.cpp will always force a compiler
+	       to generate a library file.
+	*/
+	NOU_FUNC void forceLibGen();
+}
 
 #endif
