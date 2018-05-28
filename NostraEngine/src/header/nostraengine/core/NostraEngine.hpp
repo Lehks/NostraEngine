@@ -37,11 +37,6 @@ namespace NOE::NOE_CORE
 	private:
 
 		/**
-		\brief The actual size of the loaded plugins.
-		*/
-		NOU::sizeType m_loadedPluginsSize;
-
-		/**
 		\brief A pointer to a window Object.
 		*/
 		NOE::NOE_WINDOW::Window *m_window;
