@@ -17,7 +17,8 @@ namespace NOE::NOE_CORE{
 		m_runState(0),
 		m_version(0, 0, 1),
 		m_initializedObjects(0),
-		m_preInitializedObjects(0)
+		m_preInitializedObjects(0),
+		m_loadedPluginsSize(0)
 	{}
 
 	void NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
@@ -72,13 +73,14 @@ namespace NOE::NOE_CORE{
 			case Plugin::InitResult::SUCCESS:
 			//	NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") was successful.");
+				m_loadedPluginsSize++;
 				break;
 			case Plugin::InitResult::WARNING:
 			//	NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has finished with a warning.");
 
 				ret = ExitCode::WARNING;
-
+				m_loadedPluginsSize++;
 				break;
 			case Plugin::InitResult::FAILED:
 			//	NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
@@ -154,7 +156,7 @@ namespace NOE::NOE_CORE{
 		ExitCode ret = ExitCode::SUCCESS;
 
 		//iterate over all plugins that were initialized
-		for (NOU::sizeType i = PluginManager::get().getPlugins().size() - 1; i != -1; i--)
+		for (NOU::sizeType i = m_loadedPluginsSize - 1; i != -1; i--)
 		{
 			EnginePlugin *plugin = PluginManager::get().getPlugins()[i];
 
