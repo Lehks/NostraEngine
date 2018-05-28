@@ -29,24 +29,27 @@ This macro defines the global functions that will be loaded by the plugin manage
 #define NOE_SET_AS_ACTIVE_PLUGIN_CLASS(PLUGIN)															   \
 																										   \
 /*startup*/																								   \
+																										   \
+PLUGIN *pluginPtr;																						   \
+																										   \
 extern "C" NOU_FUNC void noePluginStartup(NOU::uint32 id)												   \
 {																										   \
-	NOE::NOE_CORE::Plugin::set(new PLUGIN());															   \
+    pluginPtr = new PLUGIN();															   				   \
 																										   \
-	NOE::NOE_CORE::Plugin::get()->setID(id);															   \
+	pluginPtr->setID(id);															   					   \
 }																										   \
 																										   \
 /*shutdown*/																							   \
 extern "C" NOU_FUNC void noePluginShutdown()															   \
 {																										   \
-	delete NOE::NOE_CORE::Plugin::get();																   \
+	delete pluginPtr;																   					   \
 }																										   \
 																										   \
 /*receive*/																								   \
 extern "C" void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType size,					   \
 	NOU::uint32 flags)																					   \
 {																										   \
-	NOE::NOE_CORE::Plugin::get()->receive(source, data, size, flags);									   \
+	pluginPtr->receive(source, data, size, flags);									   					   \
 }																										   \
 																										   \
 /*initialize*/																							   \
@@ -55,7 +58,7 @@ extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void * engineInstance)						
 	NOE::NOE_CORE::NostraEngine *engine = 															       \
 		reinterpret_cast<NOE::NOE_CORE::NostraEngine*>(engineInstance);                                    \
 																										   \
-	NOE::NOE_CORE::Plugin::InitResult result = NOE::NOE_CORE::Plugin::get()->initialize(*engine);		   \
+	NOE::NOE_CORE::Plugin::InitResult result = pluginPtr->initialize(*engine);		   					   \
 																										   \
 	return NOU::uint32(result);																			   \
 }																										   \
@@ -66,7 +69,7 @@ extern "C" NOU_FUNC NOU::uint32 noePluginTerminate(void *engineInstance)								
 	NOE::NOE_CORE::NostraEngine *engine = 															       \
 		reinterpret_cast<NOE::NOE_CORE::NostraEngine*>(engineInstance);                                    \
 																										   \
-	NOE::NOE_CORE::Plugin::InitResult result = NOE::NOE_CORE::Plugin::get()->terminate(*engine);		   \
+	NOE::NOE_CORE::Plugin::InitResult result = pluginPtr->terminate(*engine);		   					   \
 																										   \
 	return NOU::uint32(result);																			   \
 }
@@ -199,11 +202,6 @@ namespace NOE::NOE_CORE
 		friend void ::noePluginStartup(NOU::uint32);
 
 		/**
-		\brief A pointer to the instance that was set by NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
-		*/
-		static Plugin *s_plugin;
-
-		/**
 		\brief The ID of this plugin.
 		*/
 		ID m_id;
@@ -216,23 +214,6 @@ namespace NOE::NOE_CORE
 		void setID(ID id);
 
 	public:
-		/**
-		\param plugin A pointer to the plugin that should be active.
-
-		\brief Sets the currently active plugin.
-
-		\note
-		This method is only supposed to be called by the plugin management system and not by a user.
-		*/
-		static void set(Plugin *plugin);
-
-		/**
-		\return The currently active plugin.
-
-		\brief Returns the plugin that is currently active.
-		*/
-		static Plugin* get();
-
 		Plugin() = default;
 		virtual ~Plugin() = default;
 

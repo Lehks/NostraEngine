@@ -1,0 +1,17 @@
+[core]
+id="666941819"
+priority="1"
+enable="true"
+minversion.major="0"
+minversion.minor="0"
+minversion.patch="1"
+
+[meta]
+name="TestPlugin"
+description="A plugin to test the plugin management."
+version.major="1"
+version.minor="0"
+version.patch="0"
+
+
+
