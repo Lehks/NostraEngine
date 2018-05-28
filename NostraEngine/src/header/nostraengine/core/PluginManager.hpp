@@ -287,7 +287,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The signature of the function "noePluginStartup" in the plugin.
 		*/
-		using FunctionStartup = void(*)();
+		using FunctionStartup = void(*)(NOU::uint32);
 
 		/**
 		\brief The signature of the function "noePluginShutdown" in the plugin.
