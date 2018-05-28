@@ -6,9 +6,9 @@
 #include "nostraengine/core/StdIncludes.hpp"
 #include <iostream>
 
-#include "NostraEngine.hpp"
 #include "nostraengine/core/Initializable.hpp"
 #include "nostraengine/core/Updatable.hpp"
+#include "nostraengine/window/Window.hpp"
 
 /**
 \file core/NostraEngine
