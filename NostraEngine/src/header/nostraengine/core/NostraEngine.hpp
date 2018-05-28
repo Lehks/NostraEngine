@@ -36,6 +36,14 @@ namespace NOE::NOE_CORE
 
 	private:
 
+		/**
+		\brief The actual size of the loaded plugins.
+		*/
+		NOU::sizeType m_loadedPluginsSize;
+
+		/**
+		\brief A pointer to a window Object.
+		*/
 		NOE::NOE_WINDOW::Window *m_window;
 
 		/**
@@ -204,14 +212,14 @@ namespace NOE::NOE_CORE
 		static NostraEngine *createInstance();
 
 		/**
-		\brief Returns a reference to the isntance
+		\brief Returns a reference to the instance
 		\return a reference to the instance
 		*/
 		static NostraEngine &get();
 
 		/**
 		\brief sets an instance of the Engine as the current active instance
-		\param instacne the instance that will be set as active
+		\param instance the instance that will be set as active
 		*/
 		static void setActiveInstance(NostraEngine &instance);
 
@@ -255,6 +263,25 @@ namespace NOE::NOE_CORE
 		\return NOU::NOU_CORE::Version Type
 		*/
 		const NOU::NOU_DAT_ALG::String8 & getVersion();
+
+		/**
+		\brief Returns the window pointer
+		\return NOU::NOU_WINDOW::Window* (window pointer)
+		*/
+		NOE::NOE_WINDOW::Window* getWindowPointer()
+		{
+			return m_window;
+		}
+
+		/**
+		\brief Set's the pointer for the window
+
+		\param ptr_window		the new window pointer.
+		*/
+		void setWindowPointer(NOE::NOE_WINDOW::Window* ptr_window)
+		{
+			m_window = ptr_window;
+		}
 	};
 }
 
