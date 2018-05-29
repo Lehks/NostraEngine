@@ -17,21 +17,20 @@
 */
 namespace NOE::NOE_CORE {
 
-
-	enum class ExitCode
-	{
-		SUCCESS,
-		WARNING,
-		ERROR
-	};
-
-
 	/**
 	\brief This class will be used as interface for other subclasses that need to be initialized before specific tasks can happen.
 		   It also provides a constructor which sets a basic priority for when some objects have to be initialized before others.
 	*/
 	class NOU_CLASS Initializable 
 	{
+		public:
+			enum class ExitCode
+			{
+				SUCCESS,
+				WARNING,
+				ERROR
+			};
+
 		private:
 			/**
 			\brief The priority rating of the current object. 0 is the lowest priority where -1 is the highest
@@ -60,7 +59,7 @@ namespace NOE::NOE_CORE {
 			/**
 			\brief returns a name given to an instance of the class. Necessary for errorhandling
 			*/
-			virtual NOU::NOU_DAT_ALG::StringView8 getName() = 0;
+			virtual const NOU::NOU_DAT_ALG::StringView8& getName() const = 0;
 
 			/**
 			\brief If something has to be initialized before usage it has to be called in this method
