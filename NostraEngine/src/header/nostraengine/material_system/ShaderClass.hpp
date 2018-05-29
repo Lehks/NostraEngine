@@ -7,7 +7,28 @@
 
 namespace NOE::NOE_MATSYS
 {
-    class ShaderClass {
+
+    class ShaderClass
+    {
+        enum class Variables
+        {
+            INT,
+            FLOAT,
+            BOOLEAN,
+            VEC1,
+            VEC2,
+            VEC3,
+            VEC4,
+            MAT1,
+            MAT2,
+            MAT3,
+            MAT4
+        };
+
+        NOU::NOU_DAT_ALG::String8 m_vShaderSource;
+        NOU::NOU_DAT_ALG::String8 m_fShaderSource;
+        NOU::NOU_DAT_ALG::String8 m_gShaderSource;
+
 
     };
 }
