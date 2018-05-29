@@ -40,6 +40,10 @@ By alphabet is meant: every alphanumeric character + `_`
 §2.6.6 `<body>` is a constellation of multiple or one `<expression>` calls each separated by a `;`. Multiple expressions can be spread over multiple lines. Said expressions  
 §2.6.7 Macros cannot contain return statements.
 §2.6.8 A defined object recognized as variable will be evaluated and every correctly recognized set parameter will be evaluated and replaced to the assigned value in the body of the macro. After this step the whole object will be replaced by the body of the macro.  
+§2.7 Defines can be undefined again by following syntaxes:
+- `undefine <preprocessor variablename>`
+- `undefine <preprocessor macroname>`
+§2.8 Macros and variables can be redefined
 
 ## §3 Conditional Directives  
 §3.1 A conditional directive is called by the following syntaxes:  
@@ -61,7 +65,7 @@ By alphabet is meant: every alphanumeric character + `_`
 §3.5.2 `<preprocessor variable> == <preprocessor variable>` determines whether both preprocessor variables have the same value resulting in `true` or `false`  
 §3.5.3 `<preprocessor variable> == <value>` determines whether the given preprocessor variable is defined as the given value.  
 
-## §4 include directives
+## §4 Include Directives
 §4.1 An include directive is called by the following syntax:
 - `include "<source>"`
 
@@ -73,3 +77,12 @@ By alphabet is meant: every alphanumeric character + `_`
 §5.1 Depending on what context, specific Macros are already defined.  
 $5.2 A variable called `SHADER_LANGUAGE` will be predefined with the corresponding target language.
 - GLSL: `GLSL`  
+
+## $6 Group Directives
+
+§6.1 A group directive is called by the following syntax:
+- `group <name>`  
+
+§6.2 The group directive marks the following tokens as grouped until another group directive gets called or the file ends.  
+§6.3 Each group gets treated as a seperate File. And will be processed to a seperate File.  
+$6.4 The default group is called `default` and the output file will be called the same as the input.  

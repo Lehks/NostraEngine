@@ -11,90 +11,81 @@
 \version 0.0.1
 \since   0.0.1
 
-\brief  A file that provides the base of any preprocessor class.
+\brief  A file that provides the preprocessor of the material language.
 */
 
-/**
-\brief This is an interface. Every other PreProcessor implementation has to inherit from this interface.
-       This preprocessor has to fulfill any duty and to adjust the sourcecode fitting for the compiler.
-*/
-namespace NOE::NOE_MATSYS
+
+namespace NOT
 {
     /**
-    \brief this class provides the base of any preprocessor
+    \brief This class handles every preprocess steps before the actual compiling process.
     */
     class NOU_CLASS PreProcessor
     {
-    private:
-        /**
-        \brief the outputfile
-        */
-        NOU::NOU_FILE_MNGT::File  *m_target;
-
-        /**
-        \brief the sourcecode
-        */
-        NOU::NOU_DAT_ALG::String8 m_code;
-        /**
-        \brief the sourcefile (nullptr if code was never read from a file)
-        */
-        NOU::NOU_FILE_MNGT::File *m_source;
-    
     public:
         /**
-        \brief the constructor of the PreProcessor
-        \param src the source File
-        \param trg the target File
+        \brief An integer describing some error case.
         */
-        PreProcessor(NOU::NOU_FILE_MNGT::File *src, NOU::NOU_FILE_MNGT::File *trg = nullptr);
-
-        /** a constructor of the PreProcessor
-        \param src A string containing the whole sourcecode
-        \param trg the target file
-        */
-        PreProcessor(const NOU::NOU_DAT_ALG::String8 &code, NOU::NOU_FILE_MNGT::File *trg = nullptr);
+        using ErrorCode = NOU::uint32;
 
         /**
-        \brief starts the preprocessor
+        \brief An integer describing some warning case.
         */
-        virtual void start(NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> args = NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>()) = 0;
-        
+        using WarningCode = NOU::uint32;
+
+    private:
         /**
-        \brief sets the sourcefile. ("What will be processed?")
-        \param src the sourcefile
+        \brief an enum describing all the states that the statemachine can be in.
+        \details
+            DEFAULT = The default state when no directive has been found.
+            PRE_PROCESSOR_DIRECTIVE = The state as soon as a \p # has been found.
+            DEFINE = The state as soon as a \p define directive has been found.
+            UNDEFINE = The state as soon as a \p undefine directive has been found.
+            INCLUDE = The state as soon as a \p include directive has been found.
+            IFDEF = The state as soon as a \p ifdef directive has been found.
+            IFNDEF = The state as soon as a \p ifndef directive has been found.
         */
-        void setSource(const NOU::NOU_FILE_MNGT::File *src);
+        enum class States
+        {
+            DEFAULT,
+            PRE_PROCESSOR_DIRECTIVE,
+            DEFINE,
+            UNDEFINE,
+            INCLUDE,
+            IFDEF,
+            IFNDEF,
+            GROUP
+        };
 
         /**
-        \brief sets the targetfile ("Where will the procsessed file be stored?")
-        \param trg the TargetFile
+        \brief The current state of the machine.
         */
-        void setTarget(NOU::NOU_FILE_MNGT::File *trg);
+        States m_currState;
 
         /**
-        \brief returns the assigned sourceFile
-        \return the assigned Targetfile
+        \brief A Hashmap that maps ErrorCodes to Human Readable ErrorMessages
         */
-        NOU::NOU_FILE_MNGT::File *getSource();
+        static NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_errors;
 
         /**
-        \brief returns the assigned Targetfile
-        \return the assigned Targetfile
+        \brief A Hashmap that maps WarningCodes to Human Readable WarningMessages
         */
-        NOU::NOU_FILE_MNGT::File *getTarget();
+        static NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_warnings;
+
+    public:
+        /**
+        \brief The constructor for this class
+        */
+        PreProcessor(const NOU::NOU_FILE_MNGT::File &f, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &args = NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>());
 
         /**
-        \brief setter for the code
-        \param code the sourcecode
+        \brief Starts the preprocessor on the given Files.7
         */
-        void setCode(const NOU::NOU_DAT_ALG::String8 &code);
+        void start();
 
-        /**
-        \brief getter for the code
-        \return A string containing the whole source code
-        */
-        const NOU::NOU_DAT_ALG::String8 &getCode();
-        
+    private:
+
+        void initializeStaticMembers();
     };
 }
 #endif
