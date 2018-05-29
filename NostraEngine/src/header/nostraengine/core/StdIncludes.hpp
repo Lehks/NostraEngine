@@ -13,9 +13,6 @@
 \brief A file that is usually included by all other files of the Nostra Engine.
 */
 
-/**
-\brief The name of the main namespace of the Nostra Engine.
-*/
 #ifndef NOE
 #define NOE nostra::engine
 #endif
@@ -28,19 +25,15 @@
 #endif
 
 /**
-\brief The name of the utility namespace of the Nostra Engine.
-*/
-#ifndef NOE_UTILITY
-#define NOE_UTILITY utility
-#endif
-
-/*
 \brief The name of the namespace that contains all window components.
 */
 #ifndef NOE_WINDOW
 #define NOE_WINDOW window
 #endif
 
+/**
+\brief The name of the namespace that contains all material system components.
+*/
 #ifndef NOE_MATSYS
 #define NOE_MATSYS material_system
 #endif
