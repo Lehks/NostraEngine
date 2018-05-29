@@ -1,5 +1,5 @@
-#ifndef NOE_NOSTRA_ENGINE_HPP
-#define NOE_NOSTRA_ENGINE_HPP
+#ifndef NOE_CORE_NOSTRA_ENGINE_HPP
+#define NOE_CORE_NOSTRA_ENGINE_HPP
 
 #include "nostrautils/NostraUtils.hpp"
 
