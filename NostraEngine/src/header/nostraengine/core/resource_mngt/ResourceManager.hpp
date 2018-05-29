@@ -6,6 +6,7 @@
 #include "nostraengine/core/resource_mngt/ResourceType.hpp"
 #include "nostraengine/core/resource_mngt/Resource.hpp"
 #include "nostraengine/core/resource_mngt/ResourceLoader.hpp"
+#include "nostraengine/core/Initializable.hpp"
 #include "nostraengine/utility/SQLite.hpp"
 
 /**
@@ -26,7 +27,7 @@ namespace NOE::NOE_CORE
 	The central class of the resource management system of the engine. For a full tutorial on how to use the 
 	resource management system, see \link resourceManagementSys this page\endlink.
 	*/
-	class NOU_CLASS ResourceManager final
+	class NOU_CLASS ResourceManager final : public Initializable
 	{
 	private:
 		/**
@@ -80,6 +81,16 @@ namespace NOE::NOE_CORE
 		\brief The name of the table "Types".
 		*/
 		static const NOU::NOU_DAT_ALG::StringView8 SQL_TABLENAME_TYPES;
+
+		/**
+		\brief The name of this initializable.
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 INITIALIZABLE_NAME;
+
+		/**
+		\brief The priority of this initializable.
+		*/
+		static const NOU::uint32 INITIALIZABLE_PRIORITY;
 
 		/**
 		\brief The database that is used by the resource manager.
@@ -420,12 +431,12 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Initializes the resource manager. It is only usable after this method has been called.
 		*/
-		void initalize();
+		virtual Initializable::ExitCode initialize() override;
 
 		/**
 		\brief Terminates the resource manager. After calling this method, it is not usable anymore.
 		*/
-		void terminate();
+		virtual void terminate() override;
 
 		/**
 		\return The underlying database.
@@ -433,6 +444,14 @@ namespace NOE::NOE_CORE
 		\brief Returns the underlying database.
 		*/
 		NOE::NOE_UTILITY::sqlite::Database& getUnderlying();
+
+		/**
+		\return The name of the resource manager initializable.
+
+		\brief Returns the name of the resource manager initializable.
+		*/
+		virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
+
 	};
 
 	template<typename T, typename... ARGS>

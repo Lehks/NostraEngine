@@ -3,6 +3,7 @@
 
 #include "nostraengine/core/NostraEngine.hpp"
 #include "nostraengine/core/PluginManager.hpp"
+#include "nostraengine/core/ResourceManagement.hpp"
 
 namespace NOE::NOE_CORE{
 
@@ -262,7 +263,11 @@ namespace NOE::NOE_CORE{
 
 		//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("NostraEngine Version ") + getVersion().rawStr());
 
-		NOE::NOE_CORE::PluginManager::get().initialize();
+		//construct instance of ResourceManager
+		ResourceManager::get();
+		
+		//initialize plugin manager
+		PluginManager::get().initialize();
 
 		if(preInitialize() == Initializable::ExitCode::ERROR)
 		{

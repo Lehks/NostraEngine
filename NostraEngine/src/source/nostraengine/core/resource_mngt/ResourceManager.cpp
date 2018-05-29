@@ -40,6 +40,10 @@ namespace NOE::NOE_CORE
 
 	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::SQL_TABLENAME_TYPES = "Types";
 
+	const NOU::NOU_DAT_ALG::StringView8 ResourceManager::INITIALIZABLE_NAME = "Resource Management";
+
+	const NOU::uint32 ResourceManager::INITIALIZABLE_PRIORITY = 250;
+
 	void ResourceManager::deallocateResourceLoader(ResourceLoader *loader)
 	{
 		delete loader;
@@ -60,6 +64,7 @@ namespace NOE::NOE_CORE
 	}
 
 	ResourceManager::ResourceManager() :
+		Initializable(INITIALIZABLE_PRIORITY),
 		m_database(DATABASE_PATH),
 		m_typeRemoveUpdates(1),
 		m_resourceRemoveUpdates(1)
@@ -292,15 +297,18 @@ namespace NOE::NOE_CORE
 		return m_resourceRemoveUpdates;
 	}
 
-	void ResourceManager::initalize()
+	Initializable::ExitCode ResourceManager::initialize()
 	{
-		m_database.open(); ///\todo add error handling
+		if(!m_database.open())
+			return Initializable::ExitCode::ERROR;
 
 		auto resultTypes = m_database.execute(SQL_CREATE_TABLE_TYPES);
 		resultTypes.next();
 
 		auto resultResources = m_database.execute(SQL_CREATE_TABLE_RESOURCES);
 		resultResources.next();
+
+		return Initializable::ExitCode::SUCCESS;
 	}
 
 	void ResourceManager::terminate()
@@ -311,5 +319,10 @@ namespace NOE::NOE_CORE
 	NOE::NOE_UTILITY::sqlite::Database& ResourceManager::getUnderlying()
 	{
 		return m_database;
+	}
+
+	const NOU::NOU_DAT_ALG::StringView8& ResourceManager::getName() const
+	{
+		return INITIALIZABLE_NAME;
 	}
 }
