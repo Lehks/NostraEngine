@@ -60,7 +60,7 @@ namespace NOE::NOE_CORE {
 			/**
 			\brief returns a name given to an instance of the class. Necessary for errorhandling
 			*/
-			virtual NOU::NOU_DAT_ALG::StringView8 getName() = 0;
+			virtual const NOU::NOU_DAT_ALG::StringView8& getName() const = 0;
 
 			/**
 			\brief If something has to be initialized before usage it has to be called in this method
