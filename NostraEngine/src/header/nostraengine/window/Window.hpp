@@ -4,7 +4,6 @@
 #include "nostrautils/NostraUtils.hpp"
 
 #include "nostraengine/core/StdIncludes.hpp"
-
 #include "nostraengine/window/Monitor.hpp"
 
 /**
