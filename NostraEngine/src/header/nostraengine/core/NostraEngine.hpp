@@ -1,9 +1,6 @@
 #ifndef NOSTRA_ENGINE_HPP
 #define NOSTRA_ENGINE_HPP
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-
 #include "nostrautils/NostraUtils.hpp"
 
 #include "nostraengine/core/StdIncludes.hpp"
@@ -24,7 +21,7 @@ Initialize-Method:	Every other "main" file , class or module needs to be initial
 Start-Method:		In the start Method is the main loop of the engine, if there is something in the render Method it will be updated here.
 Terminate-Method:	If the window gets closed , the terminate method will clean up and "terminate" every module which got initialized.
 */
-namespace NOE
+namespace NOE::NOE_CORE
 {
 	class NOU_CLASS NostraEngine
 	{

@@ -1,12 +1,12 @@
 #include "nostraengine/core/Updatable.hpp"
 
-namespace NOE
+namespace NOE::NOE_CORE
 {
-    void NOE::Updatable::earlyUpdate(){
+    void Updatable::earlyUpdate(){
 
     }
 
-    void NOE::Updatable::lateUpdate()
+    void Updatable::lateUpdate()
     {
     
     }

@@ -46,7 +46,7 @@ namespace NOU::NOU_MEM_MNGT
 	\brief		A class that defines the PoolAllocator.
 	*/
 	template <typename T>
-	class NOU_CLASS PoolAllocator
+	class PoolAllocator
 	{
 	private:
 		/**
@@ -92,7 +92,7 @@ namespace NOU::NOU_MEM_MNGT
 		*/
 		explicit PoolAllocator(sizeType size = POOL_ALLOCATOR_DEFAULT_SIZE, 
 			AllocationCallback<PoolBlock<T>*> &allocator = 
-			GenericAllocationCallback<PoolBlock<T>*>::getInstance());
+			GenericAllocationCallback<PoolBlock<T>*>::get());
 
 		/**
 		\brief Deleted copy constructor.

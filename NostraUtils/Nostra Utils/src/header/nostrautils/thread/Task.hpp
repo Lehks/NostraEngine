@@ -72,7 +72,7 @@ namespace NOU::NOU_THREAD
 	\p I must be an invocable according to nostra::utils::core::IsInvocableR<R, I, ARGS...>.
 	*/
 	template<typename R, typename I, typename... ARGS>
-	class NOU_CLASS Task final : public internal::AbstractTask
+	class Task final : public internal::AbstractTask
 	{
 #ifdef NOU_EXISTS_FEATURE_IS_INVOCABLE_R
 		static_assert(NOU_CORE::IsInvocableR<R, I, ARGS...>::value);
@@ -93,8 +93,8 @@ namespace NOU::NOU_THREAD
 		/**
 		\brief The arguments that will be passed to the invocable.
 		*/
-		//removeConst b/c otherwise it is not possible to pass const objects to the constructor
-		std::tuple<NOU_CORE::removeConst_t<ARGS>...> m_args;
+		//RemoveConst b/c otherwise it is not possible to pass const objects to the constructor
+		std::tuple<NOU_CORE::RemoveConst_t<ARGS>...> m_args;
 
 		/**
 		\brief The invocable.
@@ -167,7 +167,7 @@ namespace NOU::NOU_THREAD
 	///\cond
 	//A specialization for the task when the return type is void.
 	template<typename I, typename... ARGS>
-	class NOU_CLASS Task<void, I, ARGS...> final : public internal::AbstractTask
+	class Task<void, I, ARGS...> final : public internal::AbstractTask
 	{
 #ifdef NOU_EXISTS_FEATURE_IS_INVOCABLE_R
 		static_assert(NOU_CORE::IsInvocableR<void, I, ARGS...>::value);
@@ -178,7 +178,7 @@ namespace NOU::NOU_THREAD
 		using InvocableType = I;
 
 	private:
-		std::tuple<NOU_CORE::removeConst_t<ARGS>...> m_args;
+		std::tuple<NOU_CORE::RemoveConst_t<ARGS>...> m_args;
 		InvocableType m_invocable;
 
 	public:
@@ -211,7 +211,7 @@ namespace NOU::NOU_THREAD
 	after this object).
 	*/
 	template<typename I, typename... ARGS>
-	NOU_FUNC Task<NOU_CORE::InvokeResult_t<I, NOU_CORE::RemoveReference_t<ARGS>...>, I,
+	Task<NOU_CORE::InvokeResult_t<I, NOU_CORE::RemoveReference_t<ARGS>...>, I,
 		NOU_CORE::RemoveReference_t<ARGS>...> makeTask(I&& invocable, ARGS&&... args);
 
 	///\cond

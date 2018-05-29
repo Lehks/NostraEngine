@@ -3,7 +3,8 @@
 
 #include "nostraengine/core/NostraEngine.hpp"
 
-void NOE::NostraEngine::render()
+
+void NOE::NOE_CORE::NostraEngine::render()
 {
 	//------------------------------------------------------------
 	//
@@ -11,23 +12,17 @@ void NOE::NostraEngine::render()
 	//
 }
 
-NOE::NostraEngine::NostraEngine(NOU::int32 ID) :
+NOE::NOE_CORE::NostraEngine::NostraEngine(NOU::int32 ID) :
 	ID(ID)
 {
 	m_runState = 0;
 }
 
-NOU::int32 NOE::NostraEngine::init()
+NOU::int32 NOE::NOE_CORE::NostraEngine::init()
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//The two lines above mean OpenGL version 4.0.
+	
 
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+
 
 	//------------------------------------------------------------
 	//
@@ -38,7 +33,7 @@ NOU::int32 NOE::NostraEngine::init()
 	return 0;
 }
 
-NOU::int32 NOE::NostraEngine::start()
+NOU::int32 NOE::NOE_CORE::NostraEngine::start()
 {
 	NOU::uint64 renderBeginTime, renderEndTime;
 
@@ -65,10 +60,8 @@ NOU::int32 NOE::NostraEngine::start()
 	return 0;
 }
 
-NOU::int32 NOE::NostraEngine::terminate()
+NOU::int32 NOE::NOE_CORE::NostraEngine::terminate()
 {
-	glfwTerminate();
-
 	//------------------------------------------------------------
 	//
 	//DO YOUR STANDARD TERMINATE METHOD'S HERE !
@@ -76,38 +69,38 @@ NOU::int32 NOE::NostraEngine::terminate()
 	return 0;
 }
 
-void NOE::NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
+void NOE::NOE_CORE::NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
 {
 	m_frameTime = end - begin;
 	m_currFPS   = 1000 / ((m_frameTime != 0) ? m_frameTime : 1);
 }
 
-void NOE::NostraEngine::setMaxFPS(const NOU::uint64 maxFPS)
+void NOE::NOE_CORE::NostraEngine::setMaxFPS(const NOU::uint64 maxFPS)
 {
 	m_maxFPS = maxFPS;
 }
 
-void NOE::NostraEngine::terminateEngine()
+void NOE::NOE_CORE::NostraEngine::terminateEngine()
 {
 	m_runState = -1;
 }
 
-const NOU::uint64& NOE::NostraEngine::getCurrFPS()
+const NOU::uint64& NOE::NOE_CORE::NostraEngine::getCurrFPS()
 {
 	return m_currFPS;
 }
 
-const NOU::uint64& NOE::NostraEngine::getMaxFPS()
+const NOU::uint64& NOE::NOE_CORE::NostraEngine::getMaxFPS()
 {
 	return m_maxFPS;
 }
 
-const NOU::uint32& NOE::NostraEngine::getFrameTime()
+const NOU::uint32& NOE::NOE_CORE::NostraEngine::getFrameTime()
 {
 	return m_frameTime;
 }
 
-void NOE::NostraEngine::fpsLimitStart()
+void NOE::NOE_CORE::NostraEngine::fpsLimitStart()
 {
 	if(getMaxFPS() > 0)
 	{
