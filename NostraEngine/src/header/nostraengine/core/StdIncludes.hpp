@@ -41,6 +41,10 @@
 #define NOE_WINDOW window
 #endif
 
+#ifndef NOE_MATSYS
+#define NOE_MATSYS material_system
+#endif
+
 namespace NOE::internal
 {
 	/**
