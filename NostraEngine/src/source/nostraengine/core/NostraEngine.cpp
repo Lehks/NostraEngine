@@ -42,14 +42,14 @@ namespace NOE::NOE_CORE{
 		}
 	}
 
-	ExitCode NostraEngine::preInitialize()
+	Initializable::ExitCode NostraEngine::preInitialize()
 	{
-		ExitCode ret = ExitCode::SUCCESS;
+		Initializable::ExitCode ret = Initializable::ExitCode::SUCCESS;
 
 		if (!PluginManager::get().createPluginList())
 		{
 			//NOU_LOG_ERROR("Failed to create the plugin list.");
-			return ExitCode::ERROR;
+			return Initializable::ExitCode::ERROR;
 		}
 
 		NOU::sizeType s = PluginManager::get().getPlugins().size();
@@ -62,7 +62,7 @@ namespace NOE::NOE_CORE{
 			{
 			//	NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") could not be loaded.");
-				return ExitCode::ERROR;
+				return Initializable::ExitCode::ERROR;
 			}
 
 			Plugin::InitResult result = plugin->initialize(*this);
@@ -78,13 +78,13 @@ namespace NOE::NOE_CORE{
 			//	NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has finished with a warning.");
 
-				ret = ExitCode::WARNING;
+				ret = Initializable::ExitCode::WARNING;
 				m_preInitializedObjects++;
 				break;
 			case Plugin::InitResult::FAILED:
 			//	NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has failed.");
-				return ExitCode::ERROR;
+				return Initializable::ExitCode::ERROR;
 			}
 		}
 
@@ -94,7 +94,7 @@ namespace NOE::NOE_CORE{
 		return ret;
 	}
 
-	ExitCode NostraEngine::initialize()
+	Initializable::ExitCode NostraEngine::initialize()
 	{
 		setMaxFPS();		//disable the FPS limiter
 
@@ -102,43 +102,43 @@ namespace NOE::NOE_CORE{
 
 		for (NOU::sizeType i = 0; i < initSize; i++)
 		{
-			if(m_initializables[i]->initialize() == ExitCode::ERROR)
+			if(m_initializables[i]->initialize() == Initializable::ExitCode::ERROR)
 			{
-				return ExitCode::ERROR;
+				return Initializable::ExitCode::ERROR;
 			}
 			m_initializedObjects++;
 		}
 
-		return ExitCode::SUCCESS;
+		return Initializable::ExitCode::SUCCESS;
 	}
 
-	ExitCode NostraEngine::postInitialize()
+	Initializable::ExitCode NostraEngine::postInitialize()
 	{
 		NOU::sizeType initSize = m_initializables.size();
 
 		if(m_initializedObjects != initSize)
 		{
-			return ExitCode::ERROR;
+			return Initializable::ExitCode::ERROR;
 		}
 
 		for (NOU::sizeType i = 0; i < initSize; i++)
 		{
 			m_initializables[i]->postInitialize();
 		}
-		return ExitCode::SUCCESS;
+		return Initializable::ExitCode::SUCCESS;
 	}
 
-	ExitCode NostraEngine::terminate()
+	Initializable::ExitCode NostraEngine::terminate()
 	{
 
 		if (m_initializables.size() == 0)
 		{
-			return ExitCode::SUCCESS;
+			return Initializable::ExitCode::SUCCESS;
 		}
 
 		if(m_initializedObjects == 0)
 		{
-			return ExitCode::SUCCESS;
+			return Initializable::ExitCode::SUCCESS;
 		}
 
 		for (NOU::sizeType i = 0; i < m_initializedObjects; i++)
@@ -146,12 +146,12 @@ namespace NOE::NOE_CORE{
 			m_initializables[m_initializedObjects - i - 1]->terminate();
 		}
 
-		return ExitCode::SUCCESS;
+		return Initializable::ExitCode::SUCCESS;
 	}
 
-	ExitCode NostraEngine::postTerminate()
+	Initializable::ExitCode NostraEngine::postTerminate()
 	{
-		ExitCode ret = ExitCode::SUCCESS;
+		Initializable::ExitCode ret = Initializable::ExitCode::SUCCESS;
 
 		//iterate over all plugins that were initialized
 		for (NOU::sizeType i = m_preInitializedObjects - 1; i != -1; i--)
@@ -170,15 +170,15 @@ namespace NOE::NOE_CORE{
 			//	NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName() 
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has finished with a warning.");
 
-				if (ret != ExitCode::ERROR)
-					ret = ExitCode::WARNING;
+				if (ret != Initializable::ExitCode::ERROR)
+					ret = Initializable::ExitCode::WARNING;
 
 				break;
 			case Plugin::InitResult::FAILED:
 			//	NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has failed.");
 
-				ret = ExitCode::ERROR;
+				ret = Initializable::ExitCode::ERROR;
 
 				break;
 			}
@@ -188,7 +188,7 @@ namespace NOE::NOE_CORE{
 			//	NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
 			//		+ "(ID: " + plugin->getMetadata().getID() + "\") could not be unloaded.");
 
-				ret = ExitCode::ERROR;
+				ret = Initializable::ExitCode::ERROR;
 			}
 		}
 
@@ -264,18 +264,18 @@ namespace NOE::NOE_CORE{
 
 		NOE::NOE_CORE::PluginManager::get().initialize();
 
-		if(preInitialize() == ExitCode::ERROR)
+		if(preInitialize() == Initializable::ExitCode::ERROR)
 		{
 		//	NOU_LOG_ERROR("preInitialize(): An Error occurred during pre initialize.");
 			m_runState = -1;
 		}
-		else if (initialize() == ExitCode::ERROR)
+		else if (initialize() == Initializable::ExitCode::ERROR)
 		{
 
 		//	NOU_LOG_ERROR("Initialize(): An Error occurred during initialize.");
 			m_runState = -1;
 
-		}else if (postInitialize() == ExitCode::ERROR)
+		}else if (postInitialize() == Initializable::ExitCode::ERROR)
 		{
 		//	NOU_LOG_ERROR("postInitialize(): An Error occurred during post initialize.");
 			m_runState = -1;
@@ -283,12 +283,12 @@ namespace NOE::NOE_CORE{
 
 		mainLoop();
 
-		if (terminate() == ExitCode::ERROR)
+		if (terminate() == Initializable::ExitCode::ERROR)
 		{
 		//	NOU_LOG_ERROR("terminate(): An Error occurred during terminate.");
 		}
 
-		if (postTerminate() == ExitCode::ERROR)
+		if (postTerminate() == Initializable::ExitCode::ERROR)
 		{
 		//	NOU_LOG_ERROR("postTerminate(): An Error occurred during post terminate.");
 		}
