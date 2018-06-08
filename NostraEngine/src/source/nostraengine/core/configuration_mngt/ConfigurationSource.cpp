@@ -2,28 +2,28 @@
 
 namespace NOE::NOE_CORE
 {
-	void ConfigurationSource::addStorageBehavior(StorageBehavior::Value storageBehavior)
+	void ConfigurationSource::addStorageBehavior(StorageBehavior storageBehavior)
 	{
-		m_storageBehavior = static_cast<StorageBehavior::Value>(m_storageBehavior | storageBehavior);
+		m_storageBehavior = static_cast<StorageBehavior>(m_storageBehavior | storageBehavior);
 	}
 
-	void ConfigurationSource::removeStorageBehavior(StorageBehavior::Value storageBehavior)
+	void ConfigurationSource::removeStorageBehavior(StorageBehavior storageBehavior)
 	{
-		m_storageBehavior = static_cast<StorageBehavior::Value>(m_storageBehavior & ~storageBehavior);
+		m_storageBehavior = static_cast<StorageBehavior>(m_storageBehavior & ~storageBehavior);
 	}
 
-	ConfigurationSource::ConfigurationSource(StorageBehavior::Value storageBehavior) :
+	ConfigurationSource::ConfigurationSource(StorageBehavior storageBehavior) :
 		m_storageBehavior(storageBehavior)
 	{}
 	
-	ConfigurationSource::StorageBehavior::Value ConfigurationSource::getStorageBehavior() const
+	ConfigurationSource::StorageBehavior ConfigurationSource::getStorageBehavior() const
 	{
 		return m_storageBehavior;
 	}
 
-	NOU::boolean ConfigurationSource::hasStorageBehavior(StorageBehavior::Value storageBehavior) const
+	NOU::boolean ConfigurationSource::hasStorageBehavior(StorageBehavior storageBehavior) const
 	{
-		return m_storageBehavior & storageBehavior;
+		return static_cast<NOU::boolean>(m_storageBehavior & storageBehavior);
 	}
 
 }
