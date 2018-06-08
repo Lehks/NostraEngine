@@ -2,6 +2,7 @@
 #define NOU_CORE_CONFIGURATION_SOURCE_HPP
 
 #include "nostraengine/core/StdIncludes.hpp"
+#include "nostraengine/core/Initializable.hpp"
 
 namespace NOE::NOE_CORE
 {
@@ -96,7 +97,7 @@ namespace NOE::NOE_CORE
 	\brief A class that represents a single configuration file. See the class documentation of 
 	ConfigurationManager for further details.
 	*/
-	class NOU_CLASS ConfigurationSource
+	class NOU_CLASS ConfigurationSource : public Initializable
 	{
 	public:
 		/**
@@ -117,6 +118,52 @@ namespace NOE::NOE_CORE
 		   function in its class.
 		*/
 		using StorageBehavior = internal::StorageBehavior;
+
+		/**
+		\brief This enumeration provides different literals to identify the types in a configuration file.
+		*/
+		enum class TypeID
+		{
+			/**
+			\brief The ID for the type <tt>NOU::boolean</tt>.
+			*/
+			BOOLEAN,
+
+			/**
+			\brief The ID for the type <tt>NOU::NOU_DAT_ALG::String8</tt>.
+			*/
+			STRING,
+
+			/**
+			\brief The ID for the type <tt>NOU::int32</tt>.
+			*/
+			INT_32,
+
+			/**
+			\brief The ID for the type <tt>NOU::int64</tt>.
+			*/
+			INT_64,
+
+			/**
+			\brief The ID for the type <tt>NOU::float32</tt>.
+			*/
+			FLOAT_32,
+
+			/**
+			\brief The ID for the type <tt>NOU::float64</tt>.
+			*/
+			FLOAT_64,
+
+			/**
+			\brief The ID for the type <tt>void*</tt>.
+			*/
+			NOT_SET,
+
+			/**
+			\brief An invalid type. This type is set for entries that are invalid for any reason.
+			*/
+			INVALID
+		};
 
 	private:
 
@@ -150,6 +197,67 @@ namespace NOE::NOE_CORE
 		*/
 		void removeStorageBehavior(StorageBehavior behavior);
 
+		/**
+		\brief Initializes the configuration source.
+
+		\details
+		Initializes the configuration source.
+
+		This member function is supposed to load the configuration file and, if this function succeeded, turn
+		this instance into a state where it is possible to call any other function in this instance.
+
+		\note
+		The function getName() needs to be callable before this function was called.
+		*/
+		virtual Initializable::ExitCode initializeImpl() = 0;
+
+		/**
+		\brief Terminates the configuration source.
+
+		\details
+		Terminates the configuration source.
+
+		This member function is supposed to close the connection to the configuration source file. It
+		explicitly is NOT supposed to store data to that file.
+		*/
+		virtual Initializable::ExitCode terminateImpl() = 0;
+
+		/**
+		\brief Stores all entires in the configuration to its source file.
+
+		\details
+		Stores all entires in the configuration to its source file.
+
+		This function is called by the function flush() and terminate() when the storage behavior 
+		STORE_ON_TERMINATE is set.
+		*/
+		virtual void storeAll() = 0;
+
+		/**
+		\brief The name of the entry to check.
+
+		\return True, if the entry with the specified name exists, false if not.
+
+		\brief Returns whether an entry exists in this configuration source.
+
+		\details
+		Returns whether an entry exists in this configuration source. This function will be called by
+		hasEntry().
+		*/
+		virtual NOU::boolean hasEntryImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
+
+		/**
+		\brief The name of the entry to get the type of.
+
+		\return The type of the entry with the specified name, or TypeID::INVALID if the entry does not exist.
+
+		\brief Returns the type of an entry in the configuration source.
+
+		\details
+		Returns the type of an entry in the configuration source. This function will be called by getTypeOf().
+		*/
+		virtual TypeID getTypeOfImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
+
 	public:
 		/**
 		\param storageBehavior The initial storage behavior.
@@ -158,6 +266,19 @@ namespace NOE::NOE_CORE
 		*/
 		ConfigurationSource(StorageBehavior storageBehavior = 
 			StorageBehavior::STORE_ON_TERMINATE | StorageBehavior::STORE_ON_FLUSH);
+
+		/**
+		\brief Returns a unique name of the configuration source.
+
+		\details
+		Returns a unique name of the configuration source.
+
+		This name is the "source_name" part of the fully qualified name of an entry.
+
+		If there are multiple sources that share the same name, the configuration manager will trigger a
+		warning.
+		*/
+		virtual const NOU::NOU_DAT_ALG::StringView8& getName() = 0;
 
 		/**
 		\return The current storage behavior(s).
@@ -184,6 +305,48 @@ namespace NOE::NOE_CORE
 		\brief Checks whether the source has the passed storage behavior(s).
 		*/
 		NOU::boolean hasStorageBehavior(StorageBehavior storageBehavior) const;
+
+		/**
+		\return A value from the Initializable::ExitCode enum, in accordance to what the different literals
+		        are supposed to indicate as defined by the class Initializable.
+
+		\brief Called when the source is initialized.
+
+		\details
+		Called when the source is initialized. As of now, this always and only calls initializeImpl().
+		*/
+		virtual Initializable::ExitCode initialize() override final;
+
+		/**
+		\brief Called when the source is terminated.
+
+		\details Called when the source is terminated. As of now, this always calls terminateImpl() and, if 
+		the storage behavior STORE_ON_TERMINATE is set, also calls storeAll().
+		*/
+		virtual void terminate() override final;
+
+		/**
+		\brief If the behavior STORE_ON_FLUSH is set, stores all of the entires to the source file.
+		*/
+		void flush();
+
+		/**
+		\brief The name of the entry to check.
+
+		\return True, if the entry with the specified name exists, false if not.
+
+		\brief Returns whether an entry exists in this configuration source.
+		*/
+		NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+
+		/**
+		\brief The name of the entry to get the type of.
+
+		\return The type of the entry with the specified name, or TypeID::INVALID if the entry does not exist.
+
+		\brief Returns the type of an entry in the configuration source.
+		*/
+		TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 	};
 }
 
