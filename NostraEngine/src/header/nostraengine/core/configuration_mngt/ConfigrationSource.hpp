@@ -27,8 +27,10 @@ namespace NOE::NOE_CORE
 		This is to allow more complex sources, like databases, where a user may not have full control on when the
 		source is being stored.
 		*/
-		class StorageBehavior
+		struct StorageBehavior
 		{
+			StorageBehavior() = delete;
+
 			enum Value
 			{
 				/**
@@ -58,6 +60,65 @@ namespace NOE::NOE_CORE
 		\brief The storage behavior of the source.
 		*/
 		StorageBehavior::Value m_storageBehavior;
+
+	protected:
+		/**
+		\brief Adds the passed storage behavior(s) to the already set behaviors.
+
+		\details
+		Adds the passed storage behavior(s) to the already set behaviors.
+		Setting behaviors twice has no additional effect.
+
+		By default, this method is protected, hence it is not visible from the outside. This can of
+		course be changed by overriding this method in a child class and making that override public.
+		*/
+		void addStorageBehavior(StorageBehavior::Value behavior);
+
+		/**
+		\brief Removes the passed storage behavior(s) to the already set behaviors.
+
+		\details
+		Removes the passed storage behavior(s) to the already set behaviors.
+		Removing behaviors twice has no additional effect.
+
+		By default, this method is protected, hence it is not visible from the outside. This can of
+		course be changed by overriding this method in a child class and making that override public.
+		*/
+		void removeStorageBehavior(StorageBehavior::Value behavior);
+
+	public:
+		/**
+		\param storageBehavior The initial storage behavior.
+
+		\brief Constructs a new instance.
+		*/
+		ConfigurationSource(StorageBehavior::Value storageBehavior = StorageBehavior::STORE_ON_TERMINATE | StorageBehavior::STORE_ON_FLUSH);
+
+		/**
+		\return The current storage behavior(s).
+
+		\brief Returns the current storage behavior(s).
+
+		\note
+		Often, the returned value of this method is not suitable whether the source has a certain behavior set, e.g. 
+		the code
+		\code{.cpp}
+		//"source" is an instance of a child class of this class
+		source.getStorageBehavior() == StorageBehavior::STORE_ON_TERMINATE
+		\endcode
+		would return false, if both the behaviors STORE_ON_TERMINATE and STORE_ON_FLUSH are set. For that purpose,
+		hasStorageBehavior() is better suited.
+		*/
+		StorageBehavior::Value getStorageBehavior() const;
+
+		/**
+		\param storageBehavior The storage behavior(s) to check.
+
+		\return True, if the source has the passed storage behavior(s), false if not.
+
+		\brief Checks whether the source has the passed storage behavior(s).
+		*/
+		NOU::boolean hasStorageBehavior(StorageBehavior::Value storageBehavior) const;
 	};
 }
 
