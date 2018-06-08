@@ -44,13 +44,8 @@ add_dependencies("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
 set_target_properties("${TARGET_NAME}" PROPERTIES PREFIX "")
 set_target_properties("${TARGET_NAME}" PROPERTIES SUFFIX ".np")
 
-install(TARGETS "${TARGET_NAME}" DESTINATION "bin/plugins")
+install(TARGETS "${TARGET_NAME}" RUNTIME DESTINATION "bin/plugins" LIBRARY DESTINATION "bin/plugins")
 install(FILES "${TARGET_NAME}.pconf" DESTINATION "bin/plugins")
-
-
-if(WIN32)
-    file(REMOVE "${CMAKE_INSTALL_PREFIX}/bin/plugins/${TARGET_NAME}.lib")
-endif()
 
 
 
