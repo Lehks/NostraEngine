@@ -3,7 +3,8 @@
 
 #include "nostraengine/core/StdIncludes.hpp"
 
-#include "nostraengine/core/configuration_mngt/ConfigrationSource.hpp"
+#include "nostraengine/core/configuration_mngt/ConfigurationSource.hpp"
+#include "nostraengine/core/configuration_mngt/ConfigurationSourceFactory.hpp"
 
 /**
 \file    core/ConfigurationManagement.hpp
