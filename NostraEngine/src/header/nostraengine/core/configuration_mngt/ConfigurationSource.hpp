@@ -206,6 +206,8 @@ namespace NOE::NOE_CORE
 		void removeStorageBehavior(StorageBehavior behavior);
 
 		/**
+		\return True, if the initialization was successful, false if not.
+
 		\brief Initializes the configuration source.
 
 		\details
@@ -220,6 +222,8 @@ namespace NOE::NOE_CORE
 		virtual NOU::boolean initializeImpl() = 0;
 
 		/**
+		\return True, if the termination was successful, false if not.
+
 		\brief Terminates the configuration source.
 
 		\details
@@ -477,8 +481,7 @@ namespace NOE::NOE_CORE
 		NOU::boolean hasStorageBehavior(StorageBehavior storageBehavior) const;
 
 		/**
-		\return A value from the Initializable::ExitCode enum, in accordance to what the different literals
-		        are supposed to indicate as defined by the class Initializable.
+		\return True, if the initialization was successful, false if not.
 
 		\brief Called when the source is initialized.
 
@@ -488,6 +491,8 @@ namespace NOE::NOE_CORE
 		NOU::boolean initialize();
 
 		/**
+		\return True, if the termination was successful, false if not.
+
 		\brief Called when the source is terminated.
 
 		\details Called when the source is terminated. As of now, this always calls terminateImpl() and, if 
