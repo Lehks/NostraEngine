@@ -59,6 +59,8 @@ namespace NOT
 
         static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_INCLUDE;
 
+        static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_DEFINE;
+
         static const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> s_tokenSeperators;
 
         /**
@@ -119,6 +121,8 @@ namespace NOT
         */
         NOU::NOU_DAT_ALG::String8 m_targetCode;
 
+        NOU::NOU_DAT_ALG::String8 m_defineVars;
+
     public:
         /**
         \brief The constructor for this class
@@ -152,6 +156,8 @@ namespace NOT
         void directive(Iterator &it);
 
         void include(Iterator &it);
+
+        void define(Iterator &it);
     };
 }
 #endif

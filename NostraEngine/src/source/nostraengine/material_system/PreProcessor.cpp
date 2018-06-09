@@ -19,12 +19,15 @@ namespace NOT
 
     //-------PRE PROCESSOR KEYWORDS-------
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_DIRECTIVE_PREFIX = "#";
-    const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_INCLUDE = static_cast<NOU::NOU_DAT_ALG::StringView8>("include");
+    const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_INCLUDE = "include";
+    const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_DEFINE = "define";
+    
 
     PreProcessor::PreProcessor(NOU::NOU_FILE_MNGT::File &f, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &args):
     m_targetCode(""),
     m_currState(States::DEFAULT),
-    m_sourcePath(f.getPath())
+    m_sourcePath(f.getPath()),
+    m_defineVars(100)
     {
         initializeStaticMembers();
         if(f.isCurrentlyOpen())
@@ -57,7 +60,10 @@ namespace NOT
                     m_targetCode.append(line);
                     break;
                 case States::INCLUDE:
-                    include(it);
+                    // include(it);
+                    break;
+                case States::DEFINE:
+                    define(it);
                     break;
             }
 
@@ -117,8 +123,12 @@ namespace NOT
         s.remove(0,1);
         s.trim();
 
-        if(s.find(PRE_PROCESSOR_INCLUDE) == 0){
+        if(s.find(PRE_PROCESSOR_INCLUDE) == 0)
+        {
             m_currState = States::INCLUDE;
+        } else if(s.find(PRE_PROCESSOR_DEFINE) == 0) 
+        {
+            m_currState = States::DEFINE;
         } else {
             m_currState = States::DEFAULT;
         }
@@ -203,7 +213,45 @@ namespace NOT
             tmpf.write(m_sourceCode);
             tmpf.close();
         #endif
-        
+
+    }
+
+    void PreProcessor::define(Iterator &it)
+    {
+
+        /*
+        TODO:
+        - Add Error for missing ")"
+        - Add Error for incorrect syntax
+        - Add Warning for allready defined names
+        - Add actual replacing of defines in the src Code
+        */
+        NOU::sizeType pos, s;
+        NOU::NOU_DAT_ALG::String8 currLine, tmp;
+
+        currLine = it.getCurrentToken();
+        s = currLine.size();
+        currLine.trim();
+        currLine.remove(0, PRE_PROCESSOR_DIRECTIVE_PREFIX.size());
+        currLine.trim();
+        currLine.remove(0, PRE_PROCESSOR_DEFINE.size());
+        currLine.trim();
+
+        pos = currLine.find(" ");
+        if(currLine.find("(") > pos){
+            NOU::NOU_DAT_ALG::String8 name, value;
+            currLine.copySubstringTo(name, 0, pos);
+            currLine.remove(0, pos+1);
+            value = currLine;
+            s--;
+            for(NOU::sizeType i = 0; i < s; i++)
+            {
+                tmp.append(" ");
+            }
+            pos = it.getCurrentPosition() - it.getCurrentToken().size()-1;
+            m_sourceCode.replace(pos, tmp.size(), tmp);
+        }
+
 
     }
 
