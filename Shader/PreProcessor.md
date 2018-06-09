@@ -3,7 +3,7 @@
 ## §0 Word Definitions  
 In the following context by whitespace it is meant to include tabs and spaces only and nothing else.  
 By delimiter the following characters are meant: `\n`
-By alphabet is meant: every alphanumeric character + `_`  
+By alphabet is meant: every alphanumeric character + `_`, `-`  
 
 ## §1 General Preprocessor Directives  
 §1.1 Every directive begins with `#`.  
@@ -12,6 +12,8 @@ By alphabet is meant: every alphanumeric character + `_`
 §1.4 It is not possible to call multiple directives between delimiters.  
 §1.5 Preprocessor directives are case sensitive.  
 §1.6 Preprocessor directives can only contain characters from the alphabet.  
+§1.7 Preprocessor directives have to be the first statement in a line.
+§1.8 Preprocessor directives have to be the only statements in a line.
 
 ## §2 Define Directives  
 §2.1 A define directive is called by the keyword `define` followed by the keywords of the corresponding context.  

@@ -95,9 +95,10 @@ namespace NOT
             Iterator(const NOU::NOU_DAT_ALG::String8 &s, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &tokenSeperators, NOU::sizeType pos = 0);
 
             NOU::boolean hasNext() const;
-            const NOU::NOU_DAT_ALG::String8 &next();
+            NOU::NOU_DAT_ALG::String8 &next();
             const NOU::NOU_DAT_ALG::String8 &getCurrentToken() const;
             NOU::NOU_DAT_ALG::String8 &getCurrentToken();
+            NOU::sizeType getCurrentPosition() const;
 
         };
 
@@ -111,10 +112,12 @@ namespace NOT
         */
         NOU::NOU_DAT_ALG::String8 m_sourceCode;
 
+        NOU::NOU_FILE_MNGT::Path m_sourcePath;
+
         /**
         \brief a String containing the processed source code.
         */
-       NOU::NOU_DAT_ALG::String8 m_targetCode;
+        NOU::NOU_DAT_ALG::String8 m_targetCode;
 
     public:
         /**
@@ -127,7 +130,7 @@ namespace NOT
         */
         void start();
 
-                /**
+        /**
         \brief A Hashmap that maps ErrorCodes to Human Readable ErrorMessages
         */
         static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_errors;
@@ -144,9 +147,11 @@ namespace NOT
         */
         static void initializeStaticMembers();
 
-        void directive(const Iterator &it);
-
         void convertLineendings();
+
+        void directive(Iterator &it);
+
+        void include(Iterator &it);
     };
 }
 #endif
