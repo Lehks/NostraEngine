@@ -2,13 +2,13 @@
 
 ## §0 Word Definitions  
 In the following context by whitespace it is meant to include tabs and spaces only and nothing else.  
-By delimiter the following characters are meant: `;`, `{`  
+By delimiter the following characters are meant: `\n`
 By alphabet is meant: every alphanumeric character + `_`  
 
 ## §1 General Preprocessor Directives  
 §1.1 Every directive begins with `#`.  
 §1.2 A directive can have variable amounts of whitespace between the `#` and the actual  directive.  
-§1.3 A directive has to end with `;`.  
+§1.3 Only one directive can be written per line.
 §1.4 It is not possible to call multiple directives between delimiters.  
 §1.5 Preprocessor directives are case sensitive.  
 §1.6 Preprocessor directives can only contain characters from the alphabet.  
