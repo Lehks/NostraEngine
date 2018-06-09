@@ -20,9 +20,39 @@ namespace NOE::NOE_CORE
 	\brief A class that is used to construct child classes of the class ConfigurationSource. See the class 
 	documentation of ConfigurationManager for further details.
 	*/
-	class NOU_CLASS ConfigurationSourceFactory
+	class ConfigurationSourceFactory
 	{
+	protected:
+		/**
+		\tparam T    The child class type of ConfigurationSource.
+		\tparam ARGS The types of the parameters that will be passed to the constructor of \p T.
+
+		\param args The parameters that will be passed to the constructor of \p T.
+
+		\return A pointer to the allocated object.
+
+		\brief Dynamically allocates and constructs an instance of \p T.
+
+		\details
+		Dynamically allocates and constructs an instance of \p T. This function should always be used to
+		allocate instances of child classes of ConfigurationSource.
+		*/
+		template<typename T, template... ARGS>
+		static ConfigurationSource* allocateSource(ARGS&&... args);
+
 	public:
+		/**
+		\param source A pointer to the instance to deallocate.
+
+		\brief Deallocates the passed ConfigurationSource.
+
+		\details
+		Deallocates the passed ConfigurationSource. This function is the opposite to allocateSource() and it
+		is always able to deallocate objects that were allocated with that function. 
+		This function is used by the configuration manager to deallocate configuration sources.
+		*/
+		NOU_FUNC static void deallocateSource(ConfigurationSource *source);
+
 		/**
 		\return The file extension as a string.
 
@@ -47,6 +77,14 @@ namespace NOE::NOE_CORE
 		*/
 		virtual ConfigurationSource* build(const NOU::NOU_FILE_MNGT::Path &path) = 0;
 	};
+
+	template<typename T, template... ARGS>
+	ConfigurationSource* ConfigurationSourceFactory::allocateSource(ARGS&&... args)
+	{
+		static_assert(NOU::NOU_CORE::IsBaseOf<ConfigurationSource, T>::value);
+
+		return new T(NOU::NOU_CORE::forward<ARGS>(args)...);
+	}
 }
 
 #endif
