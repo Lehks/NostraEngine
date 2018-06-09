@@ -95,6 +95,42 @@ namespace NOE::NOE_CORE
 		{
 			m_loadMode = loadMode;
 		}
+#ifndef NOU_LOG_DEBUG_DISABLE
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to change the load mode of the configuration manager after "
+				"it was initialized. The changes were not made; the load mode is still the same.");
+		}
+#endif
+	}
+
+	ConfigurationSource::TypeID 
+		ConfigurationManager::getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getTypeOf(sourceName, qualified);
+	}
+
+	ConfigurationSource::TypeID 
+		ConfigurationManager::getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &sourceName, 
+			const NOU::NOU_DAT_ALG::StringView8 &qualified)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			configSource->getTypeOf(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get the type of an entry value in a configuration that does "
+				"not exist.");
+			return ConfigurationSource::TypeID::INVALID;
+		}
 	}
 
 	NOU::boolean ConfigurationManager::hasEntry(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified)
@@ -110,6 +146,17 @@ namespace NOE::NOE_CORE
 	NOU::boolean ConfigurationManager::hasEntry(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 		const NOU::NOU_DAT_ALG::StringView8 &qualified)
 	{
-		return getConfigurationSource(sourceName)->hasEntry(qualified);
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			configSource->hasEntry(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to check the availability of an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
 	}
 }

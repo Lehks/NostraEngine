@@ -204,9 +204,46 @@ namespace NOE::NOE_CORE
 		void addSourceFactory(ARGS&&... args);
 
 		/**
+		\param fullyQualified The fully qualified path to the entry.
+
+		\return The type of the entry with the passed fully qualified path. It will return 
+		        ConfigurationSource::TypeID::INVALID if the entry does not exist (Note: it is also possible
+				that the underlying configuration source instance returns that value).
+
+		\brief Returns the type of an entry in a configuration source.
+
+		\details
+		Returns the type of an entry in a configuration source.
+
+		This function is similar to getTypeOf(const NOU::NOU_DAT_ALG::StringView8&, const
+		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
+		*/
+		ConfigurationSource::TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified);
+
+		/**
+		\param sourceName The name of the configuration source.
+		\param qualified  The qualified path to the entry.
+
+		\return The type of the entry with the passed fully qualified path. It will return 
+		        ConfigurationSource::TypeID::INVALID if the entry does not exist (Note: it is also possible
+				that the underlying configuration source instance returns that value).
+
+		\brief Returns the type of an entry in a configuration source.
+
+		\details
+		Returns the type of an entry in a configuration source.
+
+		This function is similar to getTypeOf(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to do
+		additional name-resolving.
+		*/
+		ConfigurationSource::TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+			const NOU::NOU_DAT_ALG::StringView8 &qualified);
+
+		/**
 		\param fullyQualified The fully qualified path to the entry to check.
 
-		\return True, if the entry exists, false if not.
+		\return True, if the entry exists, false if not. It will also return false if the entry does not exist
+		        in the first place.
 
 		\brief Returns whether an entry exists.
 
@@ -222,7 +259,8 @@ namespace NOE::NOE_CORE
 		\param sourceName The name of the configuration source.
 		\param qualified  The qualified path to the entry.
 
-		\return True, if the entry exists, false if not.
+		\return True, if the entry exists, false if not. It will also return false if the entry does not exist
+		        in the first place.
 
 		\brief Returns whether an entry exists.
 
