@@ -20,7 +20,7 @@ namespace NOE::NOE_CORE
 	/**
 	\brief The central class of the configuration management.
 	*/
-	class NOU_CLASS ConfigurationManager final : public Initializable
+	class ConfigurationManager final : public Initializable
 	{
 	public:
 		
@@ -39,6 +39,11 @@ namespace NOE::NOE_CORE
 		\brief The load mode used by default.
 		*/
 		static const LoadMode DEFAULT_LOAD_MODE;
+
+		/**
+		\brief The bucket count of m_factoryNameDataMap.
+		*/
+		static const NOU::sizeType DEFAULT_FACTORY_MAP_CAPACITY;
 
 	private:
 		/**
@@ -87,6 +92,12 @@ namespace NOE::NOE_CORE
 		*/
 		NOU::boolean m_wasInitCalled;
 
+		/**
+		\brief Maps the name of a configuration source factories to the actual source.
+		*/
+		NOU::NOU_DAT_ALG::HashMap <NOU::NOU_DAT_ALG::String8, 
+		                    NOU::NOU_MEM_MNGT::UniquePtr<ConfigurationSourceFactory>> m_factoryNameDataMap;
+
 		ConfigurationManager();
 		ConfigurationManager(const ConfigurationManager&) = default;
 
@@ -95,13 +106,39 @@ namespace NOE::NOE_CORE
 		*/
 		void loadPluginList();
 
+		/**
+		\brief Deletes all elements in m_factoryNameDataMap
+		*/
+		void destroyFactoryMap();
+
+		/**
+		\param fullyQualified  The fully qualified path to resolve.
+		\param sourceName[out] After the function call, this will contain the name of the configuration 
+		                       source.
+		\param qualified[out]  After the function call, this will contain the qualified name of the entry.
+
+		\brief Splits up a fully qualified name into the name of the configuration source and the qualified
+		       path in that source.
+		*/
+		void resolveFullyQualifiedPath(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, 
+			NOU::NOU_DAT_ALG::StringView8 *sourceName, NOU::NOU_DAT_ALG::StringView8 *qualified);
+
+		/**
+		\param sourceName The name of the configuration source to get.
+
+		\return A pointer to the selected configuration source, or \p nullptr if the source does not exist.
+
+		\brief Returns a pointer to the configuration source with the passed name.
+		*/
+		ConfigurationSource* getConfigurationSource(const NOU::NOU_DAT_ALG::StringView8 &sourceName);
+
 	public:
 		/**
 		\return The singleton-instance of this class.
 
 		\brief Returns the singleton-instance of this class.
 		*/
-		static ConfigurationManager& get();
+		NOU_CLASS static ConfigurationManager& get();
 
 		/**
 		\return See detailed section.
@@ -122,39 +159,93 @@ namespace NOE::NOE_CORE
 			2. There are multiple, successfully loaded, configuration sources with the same name.
 		- ERROR: Currently not possible.
 		*/
-		virtual Initializable::ExitCode initialize() override;
+		NOU_CLASS virtual Initializable::ExitCode initialize() override;
 
 		/**
 		\brief Terminates the configuration management by terminating all initialized configuration sources.
 		*/
-		virtual void terminate() override;
+		NOU_CLASS virtual void terminate() override;
 
 		/**
 		\return The name of this initializable.
 
 		\brief Returns the name of this initializable.
 		*/
-		virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
+		NOU_CLASS virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
 
 		/**
 		\brief Flushes all configuration sources by calling ConfigurationSource::flush() for each source.
 		*/
-		void flush();
+		NOU_CLASS void flush();
 
 		/**
 		\return The currently activated load mode.
 
 		\brief Returns the currently activated load mode.
 		*/
-		LoadMode getLoadMode() const;
+		NOU_CLASS LoadMode getLoadMode() const;
 
 		/**
 		\param loadMode The mode to set.
 
 		\brief Sets the load mode. This function has no effect after the instance has been initialized.
 		*/
-		void setLoadMode(LoadMode loadMode);
+		NOU_CLASS void setLoadMode(LoadMode loadMode);
+
+		/**
+		\tparam T    The child class type of ConfigurationSourceFactory.
+		\tparam ARGS The types of the parameters that will be passed to the constructor of \p T.
+
+		\param args The parameters that will be passed to the constructor of \p T.
+
+		\brief Adds a new configuration source factory to the manager.
+		*/
+		template<typename T, typename... ARGS>
+		void addSourceFactory(ARGS&&... args);
+
+		/**
+		\param fullyQualified The fully qualified path to the entry to check.
+
+		\return True, if the entry exists, false if not.
+
+		\brief Returns whether an entry exists.
+
+		\details
+		Returns whether an entry exists.
+
+		This function is similar to hasEntry(const NOU::NOU_DAT_ALG::StringView8&, const 
+		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving. 
+		*/
+		NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified);
+
+		/**
+		\param sourceName The name of the configuration source.
+		\param qualified  The qualified path to the entry.
+
+		\return True, if the entry exists, false if not.
+
+		\brief Returns whether an entry exists.
+
+		\details
+		Returns whether an entry exists.
+
+		This function is similar to hasEntry(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to do
+		additional name-resolving.
+		*/
+		NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+			const NOU::NOU_DAT_ALG::StringView8 &qualified);
 	};
+
+	template<typename T, typename... ARGS>
+	void ConfigurationManager::addSourceFactory(ARGS&&... args)
+	{
+		static_assert(NOU::NOU_CORE::IsBaseOf<ConfigurationSourceFactory, T>::value);
+
+		NOU::NOU_MEM_MNGT::UniquePtr<ConfigurationSourceFactory> factory(
+			new T(NOU::NOU_CORE::forward<ARGS>(args)...), NOU::NOU_MEM_MNGT::defaultDeleter);
+
+		m_factoryNameDataMap.map(factory->getAssociatedExtension(), NOU::NOU_CORE::move(factory));
+	}
 }
 
 #endif
