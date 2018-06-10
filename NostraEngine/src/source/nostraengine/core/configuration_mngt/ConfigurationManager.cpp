@@ -123,7 +123,7 @@ namespace NOE::NOE_CORE
 
 		if (configSource)
 		{
-			configSource->getTypeOf(qualified);
+			return configSource->getTypeOf(qualified);
 		}
 		else
 		{
@@ -150,11 +150,404 @@ namespace NOE::NOE_CORE
 
 		if (configSource)
 		{
-			configSource->hasEntry(qualified);
+			return configSource->hasEntry(qualified);
 		}
 		else
 		{
 			NOU_LOG_DEBUG("It was attempted to check the availability of an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::getBoolean(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getBoolean(sourceName, qualified);
+	}
+
+	NOU::boolean ConfigurationManager::getBoolean(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified) const
+	{
+		ConfigurationSource *configSource = 
+			                     const_cast<ConfigurationManager*>(this)->getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->getBoolean(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::NOU_DAT_ALG::String8 
+		ConfigurationManager::getString(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getString(sourceName, qualified);
+	}
+
+	NOU::NOU_DAT_ALG::String8 ConfigurationManager::getString(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified) const
+	{
+		ConfigurationSource *configSource =
+			const_cast<ConfigurationManager*>(this)->getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->getString(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::int32 ConfigurationManager::getInt32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getInt32(sourceName, qualified);
+	}
+
+	NOU::int32 ConfigurationManager::getInt32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified) const
+	{
+		ConfigurationSource *configSource =
+			const_cast<ConfigurationManager*>(this)->getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->getInt32(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::int64 ConfigurationManager::getInt64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getInt32(sourceName, qualified);
+	}
+
+	NOU::int64 ConfigurationManager::getInt64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified) const
+	{
+		ConfigurationSource *configSource =
+			const_cast<ConfigurationManager*>(this)->getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->getInt64(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::float32 ConfigurationManager::getFloat32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getBoolean(sourceName, qualified);
+	}
+
+	NOU::float32 ConfigurationManager::getFloat32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified) const
+	{
+		ConfigurationSource *configSource =
+			const_cast<ConfigurationManager*>(this)->getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->getFloat32(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::float64 ConfigurationManager::getFloat64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getFloat64(sourceName, qualified);
+	}
+
+	NOU::float64 ConfigurationManager::getFloat64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified) const
+	{
+		ConfigurationSource *configSource =
+			const_cast<ConfigurationManager*>(this)->getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->getFloat64(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	void* ConfigurationManager::getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return getVoidPtr(sourceName, qualified);
+	}
+
+	void* ConfigurationManager::getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified) const
+	{
+		ConfigurationSource *configSource =
+			const_cast<ConfigurationManager*>(this)->getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->getVoidPtr(qualified);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::setBoolean(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, 
+		NOU::boolean v)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return setBoolean(sourceName, qualified, v);
+	}
+
+	NOU::boolean ConfigurationManager::setBoolean(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::boolean v)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->setBoolean(qualified, v);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::setString(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified,
+		NOU::NOU_DAT_ALG::String8 v)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return setString(sourceName, qualified, v);
+	}
+
+	NOU::boolean ConfigurationManager::setString(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::NOU_DAT_ALG::String8 v)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->setString(qualified, v);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::setInt32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, 
+		NOU::int32 v)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return setInt32(sourceName, qualified, v);
+	}
+
+	NOU::boolean ConfigurationManager::setInt32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int32 v)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->setInt32(qualified, v);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::setInt64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, 
+		NOU::int64 v)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return setInt64(sourceName, qualified, v);
+	}
+
+	NOU::boolean ConfigurationManager::setInt64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int64 v)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->setInt64(qualified, v);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::setFloat32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, 
+		NOU::float32 v)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return setFloat32(sourceName, qualified, v);
+	}
+
+	NOU::boolean ConfigurationManager::setFloat32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float32 v)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->setFloat32(qualified, v);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::setFloat64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified,
+		NOU::float64 v)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return setFloat64(sourceName, qualified, v);
+	}
+
+	NOU::boolean ConfigurationManager::setFloat64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float64 v)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->setFloat64(qualified, v);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
+				"does not exist.");
+			return false;
+		}
+	}
+
+	NOU::boolean ConfigurationManager::setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, 
+		void *v)
+	{
+		NOU::NOU_DAT_ALG::StringView8 sourceName;
+		NOU::NOU_DAT_ALG::StringView8 qualified;
+
+		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
+
+		return setVoidPtr(sourceName, qualified, v);
+	}
+
+	NOU::boolean ConfigurationManager::setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		const NOU::NOU_DAT_ALG::StringView8 &qualified, void *v)
+	{
+		ConfigurationSource *configSource = getConfigurationSource(sourceName);
+
+		if (configSource)
+		{
+			return configSource->setVoidPtr(qualified, v);
+		}
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
 				"does not exist.");
 			return false;
 		}
