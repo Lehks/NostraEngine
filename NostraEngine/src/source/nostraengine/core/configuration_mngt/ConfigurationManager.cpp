@@ -9,6 +9,8 @@ namespace NOE::NOE_CORE
 
 	const NOU::sizeType ConfigurationManager::DEFAULT_FACTORY_MAP_CAPACITY = 100;
 
+	const NOU::NOU_DAT_ALG::StringView8 ConfigurationManager::PATH_SEPARATOR = "::";
+
 	ConfigurationManager::ConfigurationManager() :
 		m_loadMode(DEFAULT_LOAD_MODE),
 		m_wasInitCalled(false),
@@ -26,6 +28,26 @@ namespace NOE::NOE_CORE
 		{
 			delete factory;
 		}
+	}
+
+	void ConfigurationManager::resolveFullyQualifiedPath(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified,
+		NOU::NOU_DAT_ALG::StringView8 *sourceName, NOU::NOU_DAT_ALG::StringView8 *qualified)
+	{
+		NOU::sizeType separator = fullyQualified.find(PATH_SEPARATOR);
+
+		if (separator == NOU::NOU_DAT_ALG::StringView8::NULL_INDEX)
+		{
+			//push error
+		}
+
+		*sourceName = fullyQualified.logicalSubstring(0, separator);
+		*qualified = fullyQualified.logicalSubstring(separator + PATH_SEPARATOR.size());
+	}
+
+	ConfigurationSource* 
+		ConfigurationManager::getConfigurationSource(const NOU::NOU_DAT_ALG::StringView8 &sourceName)
+	{
+		return m_nameDataMap.get(sourceName)->m_sourcePtr;
 	}
 
 	ConfigurationManager& ConfigurationManager::get()

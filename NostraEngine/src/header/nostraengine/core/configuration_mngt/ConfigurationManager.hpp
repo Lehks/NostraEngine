@@ -45,6 +45,11 @@ namespace NOE::NOE_CORE
 		*/
 		static const NOU::sizeType DEFAULT_FACTORY_MAP_CAPACITY;
 
+		/**
+		\brief The bucket count of m_factoryNameDataMap.
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 PATH_SEPARATOR;
+
 	private:
 		/**
 		\brief A bundle of data that is always stored with a configuration source.
