@@ -57,6 +57,11 @@ namespace NOE::NOE_CORE
 		*/
 		static const NOU::sizeType DEFAULT_FACTORY_MAP_CAPACITY;
 
+		/**
+		\brief The path to the configuration folder that is used by default.
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 DEFAULT_CONFIGURATION_PATH;
+
 	private:
 		/**
 		\brief A bundle of data that is always stored with a configuration source.
@@ -114,9 +119,17 @@ namespace NOE::NOE_CORE
 		ConfigurationManager(const ConfigurationManager&) = default;
 
 		/**
+		\return Returns the list of files that was created.
+
+		\brief Returns a list of all of the configuration source files.
+		*/
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> 
+			createFileList(const NOU::NOU_FILE_MNGT::Path &path) const;
+
+		/**
 		\brief Fills the map m_nameDataMap and the vector m_data.
 		*/
-		void loadPluginList();
+		void loadSourcesList();
 
 		/**
 		\brief Deletes all elements in m_factoryNameDataMap

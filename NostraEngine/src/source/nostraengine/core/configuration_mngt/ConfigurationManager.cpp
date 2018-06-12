@@ -1,5 +1,7 @@
 #include "nostraengine/core/configuration_mngt/ConfigurationManager.hpp"
 
+#include <filesystem>
+
 namespace NOE::NOE_CORE
 {
 	const NOU::NOU_DAT_ALG::StringView8 ConfigurationManager::INITIALIZABLE_NAME = "Configuration Management";
@@ -9,15 +11,36 @@ namespace NOE::NOE_CORE
 
 	const NOU::sizeType ConfigurationManager::DEFAULT_FACTORY_MAP_CAPACITY = 100;
 
+	const NOU::NOU_DAT_ALG::StringView8 ConfigurationManager::DEFAULT_CONFIGURATION_PATH = "./data/cfg";
+
 	ConfigurationManager::ConfigurationManager() :
 		m_loadMode(DEFAULT_LOAD_MODE),
 		m_wasInitCalled(false),
 		m_factoryNameDataMap(DEFAULT_FACTORY_MAP_CAPACITY)
 	{}
 
-	void ConfigurationManager::loadPluginList()
+	NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> 
+		ConfigurationManager::createFileList(const NOU::NOU_FILE_MNGT::Path &path) const
 	{
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> ret;
 
+		for (auto &f : std::filesystem::directory_iterator(path.getAbsolutePath().rawStr()))
+		{
+			if (f.is_regular_file())
+			{
+				ret.push(NOU::NOU_FILE_MNGT::File(f.path().string().c_str()));
+			}
+		}
+	}
+
+	void ConfigurationManager::loadSourcesList()
+	{
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> files = createFileList(DEFAULT_CONFIGURATION_PATH);
+
+		for (auto &file : files)
+		{
+
+		}
 	}
 
 	void ConfigurationManager::destroyFactoryMap()
@@ -39,7 +62,7 @@ namespace NOE::NOE_CORE
 		m_wasInitCalled = true;
 		//from here on, m_loadMode will not change its value
 
-		loadPluginList();
+		loadSourcesList();
 
 		//all configuration sources are constructed now and the factories are no longer needed
 		destroyFactoryMap();
