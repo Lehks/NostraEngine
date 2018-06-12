@@ -24,9 +24,21 @@ namespace NOE::NOE_CORE
 	{
 	public:
 		
+		/**
+		\brief The load mode defines the point in time when configuration sources will be loaded.
+		*/
 		enum class LoadMode
 		{
+			/**
+			\brief When this load mode is set, all of the configuration source will be initialized when the
+			       configuration management is initialized.
+			*/
 			LOAD_ON_INITIALIZE,
+
+			/**
+			\brief When this load mode is set, each configuration source will be initialized when it is accessed for
+			       the first time.
+			*/
 			LOAD_ON_DEMAND
 		};
 
