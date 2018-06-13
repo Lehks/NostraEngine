@@ -1,13 +1,70 @@
 #include "nostraengine/material_system/PreProcessor.hpp"
 
 
-#define DEBUG_STUFF_
+/**
+TODO:
+- Refactoring
+- Add method for adding DefineVars
+- Add argument to add defines before starting the preprocessor
+*/
+
+
+
+#define DEBUG_STUFF
 
 #ifdef DEBUG_STUFF
 #   include <iostream>
 #   define NOT_PRINT(ARG) std::cout<<ARG<<std::endl
+    void dbgPrintFile(NOU::NOU_DAT_ALG::String8 s)
+    {
+        NOU::sizeType counter, pos;
+        NOU::NOU_DAT_ALG::String8 replacement;
+
+        counter = 0;
+        replacement = "\\n\n";
+
+        for(NOU::sizeType i = 0; i < s.size(); i++)
+        {
+            if(counter != 0){
+                counter--;
+                continue;
+            }
+            if(s[i] == '\n')
+            {
+                s.remove(i, i+1);
+                s.insert(i, replacement);
+                counter += replacement.size()-1;
+            }
+
+        }
+
+        counter = 0;
+        replacement = "_";
+
+        for(NOU::sizeType i = 0; i < s.size(); i++)
+        {
+            if(counter != 0){
+                counter--;
+                continue;
+            }
+            if(s[i] == ' ')
+            {
+                s.remove(i, i+1);
+                s.insert(i, replacement);
+                counter += replacement.size()-1;
+            }
+
+        }
+
+        std::cout << s.rawStr() << std::endl;
+        std::cout << "------" << std::endl;
+    }
+#   define NOT_PRINT_FILE(ARG) dbgPrintFile(ARG)
+#   define NOT_PRINT_CODE NOT_PRINT_FILE(m_sourceCode)
 #else
 #   define NOT_PRINT(ARG)
+#   define NOT_PRINT_FILE(ARG)
+#   define NOT_PRINT_CODE
 #endif
 
 namespace NOT
@@ -57,7 +114,6 @@ namespace NOT
             switch(m_currState)
             {
                 case States::DEFAULT:
-                    m_targetCode.append(line);
                     break;
                 case States::INCLUDE:
                     // include(it);
@@ -66,17 +122,6 @@ namespace NOT
                     define(it);
                     break;
             }
-
-
-
-
-
-
-
-
-
-
-
         }
     }
 
@@ -84,15 +129,17 @@ namespace NOT
     {
         if(s_errors.size() == 0)
         {
+            ErrorCode i = 0;
             NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> *ec = const_cast<NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8>*>(&s_errors);
-            ec->map(1, "Test");
+            ec->map(i++, "Test");
             NOT_PRINT(s_errors.size());
         }
 
         if(s_warnings.size() == 0)
         {
+            WarningCode i = 0;
             NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8> *wc = const_cast<NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8>*>(&s_errors);
-            wc->map(1, "Test");
+            wc->map(i++, "Test");
             NOT_PRINT(s_warnings.size());
         }
 
@@ -148,7 +195,7 @@ namespace NOT
         static NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> allreadyIncluded;
         NOU::sizeType pos1, pos2, s;
         NOU::NOU_DAT_ALG::String8 tmp, pathString;
-
+        
         tmp  = it.getCurrentToken();
         pos1 = tmp.find("\"") + 1;
         pos2 = tmp.find("\"", pos1);
@@ -172,6 +219,7 @@ namespace NOT
                     }
 
                 m_sourceCode.replace(pos1, s, tmp); // remove directive
+                NOT_PRINT(m_sourceCode.rawStr());
                 return;
             }
         }
@@ -201,7 +249,9 @@ namespace NOT
         s++;
         m_sourceCode.insert(s, includeCode);
 
-        #ifdef DEBUG_STUFF
+        NOT_PRINT_CODE;
+
+        #ifdef DEBUG_STUF
             NOU::NOU_FILE_MNGT::File tmpf("C:/Users/Leslie/Desktop/NOMatTestFiles/out");
             if(tmpf.exists()){
                 tmpf.deleteFile();
@@ -228,7 +278,7 @@ namespace NOT
         */
         NOU::sizeType pos, s;
         NOU::NOU_DAT_ALG::String8 currLine, tmp;
-
+        NOT_PRINT_FILE(m_sourceCode);
         currLine = it.getCurrentToken();
         s = currLine.size();
         currLine.trim();
@@ -248,11 +298,24 @@ namespace NOT
             {
                 tmp.append(" ");
             }
-            pos = it.getCurrentPosition() - it.getCurrentToken().size()-1;
+            pos = it.getCurrentPosition() - it.getCurrentToken().size() - 1;
             m_sourceCode.replace(pos, tmp.size(), tmp);
         }
+    }
 
+    void PreProcessor::defaultDirective(Iterator &it)
+    {
+        NOU::NOU_DAT_ALG::String8 line;
+        NOU::sizeType s;
 
+        line = it.getCurrentPosition();
+        s = m_defineVars.size();
+        for(NOU::sizeType i = 0; i < s; i++)
+        {
+            m_defineVars[i];
+        }
+
+        m_targetCode.append(line);
     }
 
     // ------------------------ITERATOR--------------------------
@@ -267,7 +330,15 @@ namespace NOT
     NOU::boolean PreProcessor::Iterator::hasNext() const
     {
         NOU::boolean b;
-        b = m_currPos != m_currString.size();
+        NOU::sizeType s = m_currString.size();
+        /* #ifdef DEBUG_STUFF
+        if(m_currPos > 60)
+        {   
+            const NOU::char8 *tmp = m_currString.rawStr();
+            std::cout << m_currString.rawStr() << std::endl;
+        }
+        #endif */
+        b = m_currPos < s;
         return b;
     }
 
@@ -295,6 +366,7 @@ namespace NOT
         m_currToken.clear();
         m_currString.copySubstringTo(m_currToken, m_currPos, nextPos);
         m_currPos = nextPos;
+        NOT_PRINT("Iterator.position: " << m_currPos);
         return m_currToken;
     }
 
