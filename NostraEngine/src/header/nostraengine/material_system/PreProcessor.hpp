@@ -32,6 +32,43 @@ namespace NOT
         */
         using WarningCode = NOU::uint32;
 
+        class Message
+        {
+        private:
+            NOU::NOU_DAT_ALG::String8 m_message;
+            NOU::uint64 m_line;
+        public:
+            constexpr static NOU::uint64 NO_LINE_DISPLAY = -1;
+        public:
+            Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line = NO_LINE_DISPLAY);
+
+            const NOU::NOU_DAT_ALG::String8& getMessage() const;
+            NOU::uint64 getLine() const;
+
+            virtual ~Message() = default;
+        };
+
+        class Warning final : public Message
+        {
+        private:
+            WarningCode m_id;
+        public:
+            // -1 meaning the warning has no specific line
+            Warning(WarningCode id, NOU::NOU_DAT_ALG::String8 message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
+            WarningCode getID() const;
+            const NOU::NOU_DAT_ALG::String8& getWarningMessage();
+        };
+
+        class Error final : public Message
+        {
+        private:
+            ErrorCode   m_id;
+        public:
+            Error(ErrorCode id, NOU::NOU_DAT_ALG::String8 message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
+            ErrorCode getID() const;
+            const NOU::NOU_DAT_ALG::String8& getErrorMessage() const;
+        };
+
     private:
         /**
         \brief an enum describing all the states that the statemachine can be in.
@@ -104,6 +141,8 @@ namespace NOT
 
         };
 
+        NOU_DEFINE_PAIR(DefineVariable, name, value)
+
         /**
         \brief The current state of the machine.
         */
@@ -121,7 +160,25 @@ namespace NOT
         */
         NOU::NOU_DAT_ALG::String8 m_targetCode;
 
-        NOU::NOU_DAT_ALG::String8 m_defineVars;
+        /**
+        \brief a Vector containing all defined variables and their corresponding values
+        */
+        NOU::NOU_DAT_ALG::Vector<DefineVariable<NOU::NOU_DAT_ALG::String8, NOU::NOU_DAT_ALG::String8>> m_defineVars;
+
+        /**
+        \brief a Vector containing all thrown messages during the preprocessing process
+        */
+        NOU::NOU_DAT_ALG::Vector<Message> m_messages;
+
+        /**
+        \brief a Vector containing all thrown warnings during the preprocessing process
+        */
+        NOU::NOU_DAT_ALG::Vector<Warning> m_warnings;
+        
+        /**
+        \brief a Vector containing all thrown errors during the preprocessing process
+        */
+        NOU::NOU_DAT_ALG::Vector<Error>   m_errors;
 
     public:
         /**
@@ -160,6 +217,18 @@ namespace NOT
         void define(Iterator &it);
 
         void defaultDirective(Iterator &it);
+
+        // Helper functions
+
+        NOU::boolean addDefineVar(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &value);
+
+        void throwMessage(const Message &m);
+
+        void throwError(const Error &e);
+
+        void throwWarning(const Warning &w);
+        
     };
+    constexpr  NOU::uint64 PreProcessor::Message::NO_LINE_DISPLAY;
 }
 #endif

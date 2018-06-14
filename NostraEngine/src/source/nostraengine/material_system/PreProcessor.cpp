@@ -7,7 +7,8 @@ TODO:
 - Add method for adding DefineVars
 - Add argument to add defines before starting the preprocessor
 - make NOT expand to nostra::tools
-- stop making terrible jokes
+- start making more terrible jokes
+- use exceptions for warnings and Errors.
 */
 
 
@@ -76,7 +77,7 @@ namespace NOT
     const NOU::NOU_DAT_ALG::HashMap<PreProcessor::WarningCode, NOU::NOU_DAT_ALG::String8> PreProcessor::s_warnings;
     const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> PreProcessor::s_tokenSeperators;
 
-    //-------PRE PROCESSOR KEYWORDS-------
+    // -------PRE PROCESSOR KEYWORDS-------
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_DIRECTIVE_PREFIX = "#";
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_INCLUDE = "include";
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_DEFINE = "define";
@@ -254,7 +255,7 @@ namespace NOT
 
         NOT_PRINT_CODE;
 
-        #ifdef DEBUG_STUF
+        #ifdef DEBUG_STUFF
             NOU::NOU_FILE_MNGT::File tmpf("C:/Users/Leslie/Desktop/NOMatTestFiles/out");
             if(tmpf.exists()){
                 tmpf.deleteFile();
@@ -319,6 +320,27 @@ namespace NOT
         }
 
         m_targetCode.append(line);
+    }
+    // ------------------------HELPER-FUNCTIONS------------------
+
+    NOU::boolean PreProcessor::addDefineVar(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &value)
+    {
+        /* TODO:
+        - if var is allready contained throw warning
+        */
+        
+        NOU::sizeType s;
+
+        s = m_defineVars.size();
+        for (auto &s : m_defineVars)
+        {
+            if(s.name == name)
+            {
+                // add warning throw here
+                return false;
+            }
+            m_defineVars.emplaceBack(name, value);
+        }
     }
 
     // ------------------------ITERATOR--------------------------
@@ -389,4 +411,42 @@ namespace NOT
     {
         return m_currPos;
     }
+
+    // ------------------------EXCEPTION-SYSTEM-------------------------------
+
+    PreProcessor::Message::Message(const NOU::NOU_DAT_ALG::String8& message, const NOU::uint64 line):
+    m_message(message),
+    m_line(line)
+    { }
+
+    const NOU::NOU_DAT_ALG::String8& PreProcessor::Message::getMessage() const
+    {
+        return m_message;
+    }
+
+    NOU::uint64 PreProcessor::Message::getLine() const
+    {
+        return m_line;
+    }
+
+    PreProcessor::ErrorCode PreProcessor::Error::getID() const
+    {
+        return m_id;
+    }
+
+    const NOU::NOU_DAT_ALG::String8& PreProcessor::Error::getErrorMessage() const
+    {
+        static NOU::NOU_DAT_ALG::String8 tmp("");
+        /* if (s_errors.containsKey(m_id))
+        {
+            return s_errors.get(m_id);
+        }*/
+        return tmp;
+    }
+
+    PreProcessor::WarningCode PreProcessor::Warning::getID() const
+    {
+        return m_id;
+    }
+
 }
