@@ -24,9 +24,21 @@ namespace NOE::NOE_CORE
 	{
 	public:
 		
+		/**
+		\brief The load mode defines the point in time when configuration sources will be loaded.
+		*/
 		enum class LoadMode
 		{
+			/**
+			\brief When this load mode is set, all of the configuration source will be initialized when the
+			       configuration management is initialized.
+			*/
 			LOAD_ON_INITIALIZE,
+
+			/**
+			\brief When this load mode is set, each configuration source will be initialized when it is accessed for
+			       the first time.
+			*/
 			LOAD_ON_DEMAND
 		};
 
@@ -50,16 +62,30 @@ namespace NOE::NOE_CORE
 		*/
 		static const NOU::NOU_DAT_ALG::StringView8 PATH_SEPARATOR;
 
+		/**
+		\brief The path to the configuration folder that is used by default.
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 DEFAULT_CONFIGURATION_PATH;
+
 	private:
 		/**
 		\brief A bundle of data that is always stored with a configuration source.
 		*/
-		struct ConfigurationSourceData
+		struct ConfigurationSourceData final
 		{
+			/**
+			\param ptr  The pointer to the configuration source. Will be deleted using 
+			            NOU::NOU_DAT_ALG::defaultDeleter.
+			\param path The path to the configuration source.
+
+			\brief Constructs a new instance.
+			*/
+			ConfigurationSourceData(ConfigurationSource *ptr, const NOU::NOU_FILE_MNGT::Path &path);
+
 			/**
 			\brief The configuration source.
 			*/
-			ConfigurationSource *m_sourcePtr;
+			NOU::NOU_MEM_MNGT::UniquePtr<ConfigurationSource> m_sourcePtr;           
 
 			/**
 			\brief The path to the source.
@@ -107,9 +133,17 @@ namespace NOE::NOE_CORE
 		ConfigurationManager(const ConfigurationManager&) = default;
 
 		/**
+		\return Returns the list of files that was created.
+
+		\brief Returns a list of all of the configuration source files.
+		*/
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> 
+			createFileList(const NOU::NOU_FILE_MNGT::Path &path) const;
+
+		/**
 		\brief Fills the map m_nameDataMap and the vector m_data.
 		*/
-		void loadPluginList();
+		NOU::boolean loadSourcesList();
 
 		/**
 		\brief Deletes all elements in m_factoryNameDataMap
