@@ -40,6 +40,8 @@ namespace NOE::NOE_CORE
 				ret.push(NOU::NOU_FILE_MNGT::File(f.path().string().c_str()));
 			}
 		}
+
+		return ret;
 	}
 
 	NOU::boolean ConfigurationManager::loadSourcesList()
@@ -63,6 +65,7 @@ namespace NOE::NOE_CORE
 				ret = false;
 			}
 
+			//if factory could be found
 			if (fa)
 			{
 				ConfigurationSourceData data(fa->build(file.getPath()), file.getPath());
@@ -70,6 +73,12 @@ namespace NOE::NOE_CORE
 				data.m_path = file.getPath();
 
 				data.m_factory = fa;
+
+				m_data.push(NOU::NOU_CORE::move(data));
+				m_nameDataMap.map(m_data[m_data.size()].m_sourcePtr->getName(), &m_data[m_data.size()]);
+
+				///\todo add proper name
+				NOU_LOG_INFO("Successfully constructed configuration source NAME.");
 			}
 		}
 
@@ -78,7 +87,7 @@ namespace NOE::NOE_CORE
 
 	void ConfigurationManager::destroyFactoryMap()
 	{
-		for (auto &factory : m_factoryNameDataMap.entrySet())
+		//for (auto &factory : m_factoryNameDataMap.entrySet())
 		{
 		//	delete factory;
 		}
@@ -101,7 +110,7 @@ namespace NOE::NOE_CORE
 	ConfigurationSource* 
 		ConfigurationManager::getConfigurationSource(const NOU::NOU_DAT_ALG::StringView8 &sourceName)
 	{
-		return m_nameDataMap.get(sourceName)->m_sourcePtr;
+		return m_nameDataMap.get(sourceName)->m_sourcePtr.rawPtr();
 	}
 
 	ConfigurationManager& ConfigurationManager::get()
@@ -117,10 +126,13 @@ namespace NOE::NOE_CORE
 		m_wasInitCalled = true;
 		//from here on, m_loadMode will not change its value
 
-		if (!loadSourcesList())
+		if (!loadSourcesList()) //initialize() does logging
 		{
 			ret = Initializable::ExitCode::WARNING;
 		}
+
+		///\todo add proper count
+		NOU_LOG_INFO("Successfully loaded COUNT of COUNT configuration sources.");
 
 		//all configuration sources are constructed now and the factories are no longer needed
 		destroyFactoryMap();
@@ -132,7 +144,7 @@ namespace NOE::NOE_CORE
 			{
 				if (m_data[i].m_isInitialized)
 				{
-					if (!m_data[i].m_sourcePtr->initialize())
+					if (!m_data[i].m_sourcePtr->initialize()) //initialize() does logging
 					{
 						ret = Initializable::ExitCode::WARNING;
 					}

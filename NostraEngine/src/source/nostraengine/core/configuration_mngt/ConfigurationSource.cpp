@@ -1,18 +1,26 @@
-#include "nostraengine/core/configuration_mngt/ConfigrationSource.hpp"
+#include "nostraengine/core/configuration_mngt/ConfigurationSource.hpp"
 
 namespace NOE::NOE_CORE
 {
 #ifdef NOU_ASSERT //only required if NOU_ASSERT uses it
 	NOU::boolean isValidStorageBehavior(ConfigurationSource::StorageBehavior storageBehavior)
 	{
-		return storageBehavior == StorageBehavior::STORE_ON_TERMINATE || 
-			storageBehavior == StorageBehavior::STORE_ON_FLUSH || 
-			storageBehavior == StorageBehavior::STORE_ON_UPDATE || 
-			storageBehavior == (StorageBehavior::STORE_ON_TERMINATE | StorageBehavior::STORE_ON_FLUSH) ||
-			storageBehavior == (StorageBehavior::STORE_ON_TERMINATE | StorageBehavior::STORE_ON_UPDATE) ||
-			storageBehavior == (StorageBehavior::STORE_ON_FLUSH | StorageBehavior::STORE_ON_UPDATE) ||
-			storageBehavior == (StorageBehavior::STORE_ON_TERMINATE | StorageBehavior::STORE_ON_FLUSH 
-				| StorageBehavior::STORE_ON_UPDATE);
+		return storageBehavior == ConfigurationSource::StorageBehavior::STORE_ON_TERMINATE ||
+			storageBehavior == ConfigurationSource::StorageBehavior::STORE_ON_FLUSH || 
+			storageBehavior == ConfigurationSource::StorageBehavior::STORE_ON_UPDATE || 
+
+			storageBehavior == (ConfigurationSource::StorageBehavior::STORE_ON_TERMINATE | 
+				ConfigurationSource::StorageBehavior::STORE_ON_FLUSH) ||
+
+			storageBehavior == (ConfigurationSource::StorageBehavior::STORE_ON_TERMINATE | 
+				ConfigurationSource::StorageBehavior::STORE_ON_UPDATE) ||
+
+			storageBehavior == (ConfigurationSource::StorageBehavior::STORE_ON_FLUSH | 
+				ConfigurationSource::StorageBehavior::STORE_ON_UPDATE) ||
+
+			storageBehavior == (ConfigurationSource::StorageBehavior::STORE_ON_TERMINATE | 
+				ConfigurationSource::StorageBehavior::STORE_ON_FLUSH
+				| ConfigurationSource::StorageBehavior::STORE_ON_UPDATE);
 	}
 #endif
 
@@ -50,7 +58,25 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ConfigurationSource::initialize()
 	{
-		return initializeImpl();
+		///\todo add proper name
+		NOU_LOG_INFO("Initializing configuration source NAME...");
+
+		NOU::boolean ret = initializeImpl();
+
+		if (ret)
+		{
+			///\todo add proper name
+			NOU_LOG_INFO("Initializing of configuration source NAME was successful.");
+		}
+		else
+		{
+			///\todo add proper name
+			NOU_LOG_WARNING("Initializing configuration source NAME was not successful.");
+		}
+
+		
+
+		return ret;
 	}
 
 	NOU::boolean ConfigurationSource::terminate()
