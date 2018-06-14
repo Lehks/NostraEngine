@@ -158,6 +158,8 @@ namespace NOT
         void include(Iterator &it);
 
         void define(Iterator &it);
+
+        void defaultDirective(Iterator &it);
     };
 }
 #endif

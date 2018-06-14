@@ -6,11 +6,13 @@ TODO:
 - Refactoring
 - Add method for adding DefineVars
 - Add argument to add defines before starting the preprocessor
+- make NOT expand to nostra::tools
+- stop making terrible jokes
 */
 
 
 
-#define DEBUG_STUFF
+#define DEBUG_STUFF_
 
 #ifdef DEBUG_STUFF
 #   include <iostream>
@@ -114,12 +116,13 @@ namespace NOT
             switch(m_currState)
             {
                 case States::DEFAULT:
+                    // defaultDirective(it);
                     break;
                 case States::INCLUDE:
-                    // include(it);
+                    include(it);
                     break;
                 case States::DEFINE:
-                    define(it);
+                    // define(it);
                     break;
             }
         }
