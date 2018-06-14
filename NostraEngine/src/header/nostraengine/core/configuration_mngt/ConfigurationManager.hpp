@@ -66,12 +66,21 @@ namespace NOE::NOE_CORE
 		/**
 		\brief A bundle of data that is always stored with a configuration source.
 		*/
-		struct ConfigurationSourceData
+		struct ConfigurationSourceData final
 		{
+			/**
+			\param ptr  The pointer to the configuration source. Will be deleted using 
+			            NOU::NOU_DAT_ALG::defaultDeleter.
+			\param path The path to the configuration source.
+
+			\brief Constructs a new instance.
+			*/
+			ConfigurationSourceData(ConfigurationSource *ptr, const NOU::NOU_FILE_MNGT::Path &path);
+
 			/**
 			\brief The configuration source.
 			*/
-			ConfigurationSource *m_sourcePtr;
+			NOU::NOU_MEM_MNGT::UniquePtr<ConfigurationSource> m_sourcePtr;           
 
 			/**
 			\brief The path to the source.
@@ -129,7 +138,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Fills the map m_nameDataMap and the vector m_data.
 		*/
-		void loadSourcesList();
+		NOU::boolean loadSourcesList();
 
 		/**
 		\brief Deletes all elements in m_factoryNameDataMap

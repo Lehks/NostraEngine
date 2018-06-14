@@ -4,10 +4,17 @@
 
 namespace NOE::NOE_CORE
 {
-	const NOU::NOU_DAT_ALG::StringView8 ConfigurationManager::INITIALIZABLE_NAME = "Configuration Management";
+	ConfigurationManager::ConfigurationSourceData::ConfigurationSourceData(ConfigurationSource *ptr,
+		const NOU::NOU_FILE_MNGT::Path &path) :
+		m_sourcePtr(ptr, NOU::NOU_MEM_MNGT::defaultDeleter),
+		m_path(path)
+	{}
+
+	const NOU::NOU_DAT_ALG::StringView8 ConfigurationManager::INITIALIZABLE_NAME 
+		                                                                  = "Configuration Management";
 
 	const ConfigurationManager::LoadMode ConfigurationManager::DEFAULT_LOAD_MODE 
-		                                                                       = LoadMode::LOAD_ON_INITIALIZE;
+		                                                                = LoadMode::LOAD_ON_INITIALIZE;
 
 	const NOU::sizeType ConfigurationManager::DEFAULT_FACTORY_MAP_CAPACITY = 100;
 
@@ -33,21 +40,45 @@ namespace NOE::NOE_CORE
 		}
 	}
 
-	void ConfigurationManager::loadSourcesList()
+	NOU::boolean ConfigurationManager::loadSourcesList()
 	{
-		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> files = createFileList(DEFAULT_CONFIGURATION_PATH);
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> files 
+			                                        = createFileList(DEFAULT_CONFIGURATION_PATH);
+		NOU::boolean ret = true;
 
 		for (auto &file : files)
 		{
+			ConfigurationSourceFactory *fa = nullptr;
 
+			if (m_factoryNameDataMap.containsKey(file.getPath().getFileExtension()))
+			{
+				fa = m_factoryNameDataMap.get(file.getPath().getFileExtension()).rawPtr();
+			}
+			else
+			{
+				///\todo add proper file extension
+				NOU_LOG_WARNING("The factory for the file extension .ini could not be found.");
+				ret = false;
+			}
+
+			if (fa)
+			{
+				ConfigurationSourceData data(fa->build(file.getPath()), file.getPath());
+
+				data.m_path = file.getPath();
+
+				data.m_factory = fa;
+			}
 		}
+
+		return ret;
 	}
 
 	void ConfigurationManager::destroyFactoryMap()
 	{
 		for (auto &factory : m_factoryNameDataMap.entrySet())
 		{
-			delete factory;
+		//	delete factory;
 		}
 	}
 
@@ -59,10 +90,15 @@ namespace NOE::NOE_CORE
 
 	Initializable::ExitCode ConfigurationManager::initialize()
 	{
+		Initializable::ExitCode ret = Initializable::ExitCode::SUCCESS;
+
 		m_wasInitCalled = true;
 		//from here on, m_loadMode will not change its value
 
-		loadSourcesList();
+		if (!loadSourcesList())
+		{
+			ret = Initializable::ExitCode::WARNING;
+		}
 
 		//all configuration sources are constructed now and the factories are no longer needed
 		destroyFactoryMap();
@@ -74,10 +110,15 @@ namespace NOE::NOE_CORE
 			{
 				if (m_data[i].m_isInitialized)
 				{
-					m_data[i].m_sourcePtr->initialize();
+					if (!m_data[i].m_sourcePtr->initialize())
+					{
+						ret = Initializable::ExitCode::WARNING;
+					}
 				}
 			}
 		}
+
+		return ret;
 	}
 
 	void ConfigurationManager::terminate()
