@@ -1,14 +1,9 @@
 #include "nostraengine/NostraEngine.hpp"
 
-#include "src/window/GLFWWindow.hpp"
-
-namespace GLFWWindowPlugin
+namespace TestPluginPlugin
 {
-    class NOE_PLUGIN_CLASS GLFWWindowPlugin final : public NOE::NOE_CORE::Plugin
+    class NOE_PLUGIN_CLASS TestPluginPlugin final : public NOE::NOE_CORE::Plugin
     {
-	private:
-		NOU::NOU_DAT_ALG::Uninitialized<GLFWWindow> m_window;
-
     public:
         /**
          * Initializes the plugin.
@@ -26,3 +21,6 @@ namespace GLFWWindowPlugin
 		virtual void receive(NOE::NOE_CORE::Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags) override;
 	};
 }
+
+
+

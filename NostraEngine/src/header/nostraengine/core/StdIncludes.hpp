@@ -41,6 +41,17 @@
 #define NOE_WINDOW window
 #endif
 
+//If a plugin is being built
+#ifndef NOE_PLUGIN_CLASS
+//#define NOE_PLUGIN_CLASS NOU_EXPORT_CLASS
+#define NOE_PLUGIN_CLASS NOU_CLASS
+#endif
+
+#ifndef NOE_PLUGIN_FUNC
+//#define NOE_PLUGIN_FUNC NOU_EXPORT_FUNC
+#define NOE_PLUGIN_FUNC NOU_FUNC
+#endif
+
 namespace NOE::internal
 {
 	/**
