@@ -37,8 +37,8 @@ namespace NOE::NOE_CORE
 		Dynamically allocates and constructs an instance of \p T. This function should always be used to
 		allocate instances of child classes of ConfigurationSource.
 		*/
-		//template<typename T, template... ARGS>
-		//static ConfigurationSource* allocateSource(ARGS&&... args);
+		template<typename T, typename... ARGS>
+		static ConfigurationSource* allocateSource(ARGS&&... args);
 
 	public:
 		/**
@@ -78,13 +78,13 @@ namespace NOE::NOE_CORE
 		virtual ConfigurationSource* build(const NOU::NOU_FILE_MNGT::Path &path) = 0;
 	};
 
-	//template<typename T, template... ARGS>
-	//ConfigurationSource* ConfigurationSourceFactory::allocateSource(ARGS&&... args)
-	//{
-	//	static_assert(NOU::NOU_CORE::IsBaseOf<ConfigurationSource, T>::value);
-	//
-	//	return new T(NOU::NOU_CORE::forward<ARGS>(args)...);
-	//}
+	template<typename T, typename... ARGS>
+	ConfigurationSource* ConfigurationSourceFactory::allocateSource(ARGS&&... args)
+	{
+		static_assert(NOU::NOU_CORE::IsBaseOf<ConfigurationSource, T>::value);
+	
+		return new T(NOU::NOU_CORE::forward<ARGS>(args)...);
+	}
 }
 
 #endif
