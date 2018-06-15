@@ -9,9 +9,19 @@ namespace IniConfigurationPlugin
 */
 
 	void IniConfigurationSource::parsePath(const NOU::NOU_DAT_ALG::StringView8 &path,
-		const NOU::NOU_DAT_ALG::StringView8 *key, const NOU::NOU_DAT_ALG::StringView8 *section) const
+		NOU::NOU_DAT_ALG::StringView8 *key, NOU::NOU_DAT_ALG::StringView8 *section) const
 	{
-		
+		NOU::sizeType index = path.find('.');
+
+		if (index != NOU::NOU_DAT_ALG::StringView8::NULL_INDEX)
+		{
+			*key = path.logicalSubstring(index + 1);
+			*section = path.logicalSubstring(0, index);
+		}
+		else
+		{
+			*key = path;
+		}
 	}
 
 
@@ -71,7 +81,7 @@ namespace IniConfigurationPlugin
 	NOU::boolean IniConfigurationSource::getBooleanImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 
@@ -87,7 +97,7 @@ namespace IniConfigurationPlugin
 		NOU::boolean v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 
@@ -105,7 +115,7 @@ namespace IniConfigurationPlugin
 		IniConfigurationSource::getStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 
@@ -121,7 +131,7 @@ namespace IniConfigurationPlugin
 		const NOU::NOU_DAT_ALG::StringView8 &v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 
@@ -138,7 +148,7 @@ namespace IniConfigurationPlugin
 	NOU::int32 IniConfigurationSource::getInt32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 
@@ -154,7 +164,7 @@ namespace IniConfigurationPlugin
 		NOU::int32 v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 
@@ -182,7 +192,7 @@ namespace IniConfigurationPlugin
 	NOU::float32 IniConfigurationSource::getFloat32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 
@@ -198,7 +208,7 @@ namespace IniConfigurationPlugin
 		NOU::float32 v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section;
+		NOU::NOU_DAT_ALG::StringView8 section = "";
 
 		parsePath(qualified, &key, &section);
 

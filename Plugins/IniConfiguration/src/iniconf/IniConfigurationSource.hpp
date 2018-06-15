@@ -11,8 +11,8 @@ namespace IniConfigurationPlugin
 		NOU::NOU_FILE_MNGT::Path m_path;
 		NOU::NOU_FILE_MNGT::INIFile m_file;
 
-		void parsePath(const NOU::NOU_DAT_ALG::StringView8 &path, const NOU::NOU_DAT_ALG::StringView8 *key,
-			const NOU::NOU_DAT_ALG::StringView8 *section) const;
+		void parsePath(const NOU::NOU_DAT_ALG::StringView8 &path, NOU::NOU_DAT_ALG::StringView8 *key,
+			NOU::NOU_DAT_ALG::StringView8 *section) const;
 
 	protected:
 		virtual NOU::boolean initializeImpl() override;
