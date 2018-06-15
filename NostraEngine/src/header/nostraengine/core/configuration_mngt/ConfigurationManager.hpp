@@ -48,6 +48,11 @@ namespace NOE::NOE_CORE
 		static const NOU::NOU_DAT_ALG::StringView8 INITIALIZABLE_NAME;
 
 		/**
+		\brief The priority of this initializable.
+		*/
+		static const NOU::uint32 INITIALIZABLE_PRIORITY;
+
+		/**
 		\brief The load mode used by default.
 		*/
 		static const LoadMode DEFAULT_LOAD_MODE;

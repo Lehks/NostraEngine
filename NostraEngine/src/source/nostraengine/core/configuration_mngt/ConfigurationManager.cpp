@@ -13,6 +13,8 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 ConfigurationManager::INITIALIZABLE_NAME 
 		                                                                  = "Configuration Management";
 
+	const NOU::uint32 ConfigurationManager::INITIALIZABLE_PRIORITY = 250;
+
 	const ConfigurationManager::LoadMode ConfigurationManager::DEFAULT_LOAD_MODE 
 		                                                                = LoadMode::LOAD_ON_INITIALIZE;
 
@@ -21,6 +23,7 @@ namespace NOE::NOE_CORE
 	const NOU::NOU_DAT_ALG::StringView8 ConfigurationManager::DEFAULT_CONFIGURATION_PATH = "./data/cfg";
 
 	ConfigurationManager::ConfigurationManager() :
+		Initializable(INITIALIZABLE_PRIORITY),
 		m_loadMode(DEFAULT_LOAD_MODE),
 		m_wasInitCalled(false),
 		m_factoryNameDataMap(DEFAULT_FACTORY_MAP_CAPACITY)
