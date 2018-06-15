@@ -1,9 +1,12 @@
 #include "IniConfigurationPlugin.hpp"
+#include "src/iniconf/IniConfigurationSourceFactory.hpp"
 
 namespace IniConfigurationPlugin
 {
     NOE::NOE_CORE::Plugin::InitResult IniConfigurationPlugin::initialize(NOE::NOE_CORE::NostraEngine &engineInstance)
     {
+		NOE::NOE_CORE::ConfigurationManager::get().addSourceFactory<IniConfigurationSourceFactory>();
+
         return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
     }
 
