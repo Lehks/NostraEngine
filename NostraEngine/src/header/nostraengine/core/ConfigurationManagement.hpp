@@ -5,6 +5,7 @@
 
 #include "nostraengine/core/configuration_mngt/ConfigurationSource.hpp"
 #include "nostraengine/core/configuration_mngt/ConfigurationSourceFactory.hpp"
+#include "nostraengine/core/configuration_mngt/ConfigurationManager.hpp"
 
 /**
 \file    core/ConfigurationManagement.hpp

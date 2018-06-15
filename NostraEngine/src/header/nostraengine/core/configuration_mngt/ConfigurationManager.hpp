@@ -45,7 +45,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The name of this initializable. Returned by getName().
 		*/
-		static const NOU::NOU_DAT_ALG::StringView8 INITIALIZABLE_NAME;
+		NOU_FUNC static const NOU::NOU_DAT_ALG::StringView8 INITIALIZABLE_NAME;
 
 		/**
 		\brief The priority of this initializable.
@@ -55,23 +55,28 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The load mode used by default.
 		*/
-		static const LoadMode DEFAULT_LOAD_MODE;
+		NOU_FUNC static const LoadMode DEFAULT_LOAD_MODE;
 
 		/**
 		\brief The bucket count of m_factoryNameDataMap.
 		*/
-		static const NOU::sizeType DEFAULT_FACTORY_MAP_CAPACITY;
+		NOU_FUNC static const NOU::sizeType DEFAULT_FACTORY_MAP_CAPACITY;
+
+		/**
+		\brief The bucket count of m_factoryNameDataMap.
+		*/
+		NOU_FUNC static const NOU::NOU_DAT_ALG::StringView8 PATH_SEPARATOR;
 
 		/**
 		\brief The path to the configuration folder that is used by default.
 		*/
-		static const NOU::NOU_DAT_ALG::StringView8 DEFAULT_CONFIGURATION_PATH;
+		NOU_FUNC static const NOU::NOU_DAT_ALG::StringView8 DEFAULT_CONFIGURATION_PATH;
 
 	private:
 		/**
 		\brief A bundle of data that is always stored with a configuration source.
 		*/
-		struct ConfigurationSourceData final
+		struct NOU_FUNC ConfigurationSourceData final
 		{
 			/**
 			\param ptr  The pointer to the configuration source. Will be deleted using 
@@ -130,7 +135,7 @@ namespace NOE::NOE_CORE
 		                    NOU::NOU_MEM_MNGT::UniquePtr<ConfigurationSourceFactory>> m_factoryNameDataMap;
 
 		ConfigurationManager();
-		ConfigurationManager(const ConfigurationManager&) = default;
+		ConfigurationManager(const ConfigurationManager&) = delete;
 
 		/**
 		\return Returns the list of files that was created.
@@ -177,7 +182,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the singleton-instance of this class.
 		*/
-		NOU_CLASS static ConfigurationManager& get();
+		NOU_FUNC static ConfigurationManager& get();
 
 		/**
 		\return See detailed section.
@@ -198,38 +203,38 @@ namespace NOE::NOE_CORE
 			2. There are multiple, successfully loaded, configuration sources with the same name.
 		- ERROR: Currently not possible.
 		*/
-		NOU_CLASS virtual Initializable::ExitCode initialize() override;
+		NOU_FUNC virtual Initializable::ExitCode initialize() override;
 
 		/**
 		\brief Terminates the configuration management by terminating all initialized configuration sources.
 		*/
-		NOU_CLASS virtual void terminate() override;
+		NOU_FUNC virtual void terminate() override;
 
 		/**
 		\return The name of this initializable.
 
 		\brief Returns the name of this initializable.
 		*/
-		NOU_CLASS virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
+		NOU_FUNC virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
 
 		/**
 		\brief Flushes all configuration sources by calling ConfigurationSource::flush() for each source.
 		*/
-		NOU_CLASS void flush();
+		NOU_FUNC void flush();
 
 		/**
 		\return The currently activated load mode.
 
 		\brief Returns the currently activated load mode.
 		*/
-		NOU_CLASS LoadMode getLoadMode() const;
+		NOU_FUNC LoadMode getLoadMode() const;
 
 		/**
 		\param loadMode The mode to set.
 
 		\brief Sets the load mode. This function has no effect after the instance has been initialized.
 		*/
-		NOU_CLASS void setLoadMode(LoadMode loadMode);
+		NOU_FUNC void setLoadMode(LoadMode loadMode);
 
 		/**
 		\tparam T    The child class type of ConfigurationSourceFactory.
@@ -257,7 +262,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getTypeOf(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		ConfigurationSource::TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified);
+		NOU_FUNC ConfigurationSource::TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -275,7 +280,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getTypeOf(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to do
 		additional name-resolving.
 		*/
-		ConfigurationSource::TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC ConfigurationSource::TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified);
 
 		/**
@@ -292,7 +297,7 @@ namespace NOE::NOE_CORE
 		This function is similar to hasEntry(const NOU::NOU_DAT_ALG::StringView8&, const 
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving. 
 		*/
-		NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified);
+		NOU_FUNC NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -309,7 +314,7 @@ namespace NOE::NOE_CORE
 		This function is similar to hasEntry(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to do
 		additional name-resolving.
 		*/
-		NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified);
 
 		/**
@@ -326,7 +331,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getBoolean(const NOU::NOU_DAT_ALG::StringView8&, const 
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving. 
 		*/
-		NOU::boolean getBoolean(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
+		NOU_FUNC NOU::boolean getBoolean(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -343,7 +348,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getBoolean(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to 
 		do additional name-resolving.
 		*/
-		NOU::boolean getBoolean(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean getBoolean(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
@@ -360,7 +365,8 @@ namespace NOE::NOE_CORE
 		This function is similar to getString(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::NOU_DAT_ALG::String8 getString(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
+		NOU_FUNC NOU::NOU_DAT_ALG::String8 
+			getString(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -377,7 +383,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getString(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::NOU_DAT_ALG::String8 getString(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::NOU_DAT_ALG::String8 getString(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
@@ -394,7 +400,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getInt32(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::int32 getInt32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
+		NOU_FUNC NOU::int32 getInt32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -411,7 +417,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getInt32(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::int32 getInt32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::int32 getInt32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
@@ -428,7 +434,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getInt64(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::int64 getInt64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
+		NOU_FUNC NOU::int64 getInt64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -445,7 +451,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getInt64(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::int64 getInt64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::int64 getInt64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
@@ -462,7 +468,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getFloat32(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::float32 getFloat32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
+		NOU_FUNC NOU::float32 getFloat32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -479,7 +485,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getFloat32(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::float32 getFloat32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::float32 getFloat32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
@@ -496,7 +502,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getFloat64(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::float64 getFloat64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
+		NOU_FUNC NOU::float64 getFloat64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -513,7 +519,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getFloat64(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::float64 getFloat64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::float64 getFloat64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
@@ -530,7 +536,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getVoidPtr(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		void* getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
+		NOU_FUNC void* getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified) const;
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -547,7 +553,7 @@ namespace NOE::NOE_CORE
 		This function is similar to getVoidPtr(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		void* getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC void* getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 
@@ -565,7 +571,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setBoolean(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::boolean setBoolean(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::boolean v);
+		NOU_FUNC NOU::boolean setBoolean(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::boolean v);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -582,7 +588,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setBoolean(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::boolean setBoolean(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean setBoolean(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::boolean v);
 
 		/**
@@ -599,7 +605,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setString(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::boolean setString(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, 
+		NOU_FUNC NOU::boolean setString(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified,
 			NOU::NOU_DAT_ALG::String8 v);
 
 		/**
@@ -618,7 +624,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setString(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::boolean setString(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean setString(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::NOU_DAT_ALG::String8 v);
 
 		/**
@@ -635,7 +641,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setInt32(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::boolean setInt32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::int32 v);
+		NOU_FUNC NOU::boolean setInt32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::int32 v);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -653,7 +659,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setInt32(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::boolean setInt32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean setInt32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int32 v);
 
 		/**
@@ -670,7 +676,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setInt64(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::boolean setInt64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::int64 v);
+		NOU_FUNC NOU::boolean setInt64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::int64 v);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -688,7 +694,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setInt64(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::boolean setInt64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean setInt64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int64 v);
 
 		/**
@@ -705,7 +711,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setFloat32(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::boolean setFloat32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::float32 v);
+		NOU_FUNC NOU::boolean setFloat32(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::float32 v);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -723,7 +729,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setFloat32(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::boolean setFloat32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean setFloat32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float32 v);
 
 		/**
@@ -740,7 +746,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setFloat64(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::boolean setFloat64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::float64 v);
+		NOU_FUNC NOU::boolean setFloat64(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, NOU::float64 v);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -758,7 +764,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setFloat64(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::boolean setFloat64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean setFloat64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float64 v);
 
 		/**
@@ -775,7 +781,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setVoidPtr(const NOU::NOU_DAT_ALG::StringView8&, const
 		NOU::NOU_DAT_ALG::StringView8&) but it has to do additional name-resolving.
 		*/
-		NOU::boolean setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, void *v);
+		NOU_FUNC NOU::boolean setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &fullyQualified, void *v);
 
 		/**
 		\param sourceName The name of the configuration source.
@@ -793,7 +799,7 @@ namespace NOE::NOE_CORE
 		This function is similar to setVoidPtr(const NOU::NOU_DAT_ALG::StringView8&) but it does not have to
 		do additional name-resolving.
 		*/
-		NOU::boolean setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
+		NOU_FUNC NOU::boolean setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
 			const NOU::NOU_DAT_ALG::StringView8 &qualified, void *v);
 	};
 
