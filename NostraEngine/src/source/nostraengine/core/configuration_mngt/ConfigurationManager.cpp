@@ -75,7 +75,8 @@ namespace NOE::NOE_CORE
 				data.m_factory = fa;
 
 				m_data.push(NOU::NOU_CORE::move(data));
-				m_nameDataMap.map(m_data[m_data.size()].m_sourcePtr->getName(), &m_data[m_data.size()]);
+				m_nameDataMap.map(m_data[m_data.size() - 1].m_sourcePtr->getName(),
+					&m_data[m_data.size() - 1]);
 
 				///\todo add proper name
 				NOU_LOG_INFO("Successfully constructed configuration source NAME.");
