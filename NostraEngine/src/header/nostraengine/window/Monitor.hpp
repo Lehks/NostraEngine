@@ -24,6 +24,11 @@ namespace NOE::NOE_WINDOW
 	public:
 
 		/**
+		\brief			Default constructor.
+		*/
+		virtual ~Monitor() = default;
+
+		/**
 		\return			The width of the monitor resolution.
 
 		\brief			Returns the width of the monitor resolution.

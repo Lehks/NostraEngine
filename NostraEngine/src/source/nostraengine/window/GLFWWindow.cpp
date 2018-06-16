@@ -156,7 +156,7 @@ namespace NOE::NOE_WINDOW
 		for (int i = 0; i < size; i++)
 		{
 			if (const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
-				(GLFWWindow::getMonitors()).empty() == true)
+				(GLFWWindow::getMonitors()).empty())
 			{
 				for (int j = 0; j < size; j++)
 				{
