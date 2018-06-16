@@ -49,6 +49,7 @@ set(NOE_EXECUTABLE_SOURCE "main.cpp")
 #=== Variables for Test target
 set(NOE_TEST_EXECUTABLE "Test")
 set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
+set(NOE_TEST_EXECUTABLE_SOURCE_TEMPLATE "testmain.cpp.in")
 #===
 
 #=== Include directory variables
@@ -119,18 +120,18 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	#Create testmain.cpp if it does not exist
 	if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}")
 		message(STATUS "NOE:  ${NOE_TEST_EXECUTABLE_SOURCE} was not found. A default one will be generated.")
-		FILE(WRITE "${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}" "\n\nint main()\n{\n\treturn 0;\n}")
+		configure_file("${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE_TEMPLATE}" 
+								"${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}")
 	endif()
-	
 
 
 	add_executable("${NOE_TEST_EXECUTABLE}" "${NOE_TEST_EXECUTABLE_SOURCE}")
-
+	
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
-
+	
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
