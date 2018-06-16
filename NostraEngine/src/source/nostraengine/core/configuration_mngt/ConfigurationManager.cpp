@@ -315,7 +315,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
 				"does not exist.");
-			return false;
+			return "";
 		}
 	}
 
@@ -343,7 +343,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
 				"does not exist.");
-			return false;
+			return 0;
 		}
 	}
 
@@ -371,7 +371,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
 				"does not exist.");
-			return false;
+			return 0;
 		}
 	}
 
@@ -399,7 +399,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
 				"does not exist.");
-			return false;
+			return 0;
 		}
 	}
 
@@ -427,7 +427,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
 				"does not exist.");
-			return false;
+			return 0;
 		}
 	}
 
@@ -455,7 +455,7 @@ namespace NOE::NOE_CORE
 		{
 			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
 				"does not exist.");
-			return false;
+			return nullptr;
 		}
 	}
 

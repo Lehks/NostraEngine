@@ -81,7 +81,7 @@ namespace IniConfigurationPlugin
 	NOU::boolean IniConfigurationSource::getBooleanImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
@@ -97,7 +97,7 @@ namespace IniConfigurationPlugin
 		NOU::boolean v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
@@ -115,7 +115,7 @@ namespace IniConfigurationPlugin
 		IniConfigurationSource::getStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
@@ -124,14 +124,14 @@ namespace IniConfigurationPlugin
 			return const_cast<IniConfigurationSource*>(this)->m_file.getInt(key, section);
 		}
 		else
-			return NOU::float32(0);
+			return "";
 	}
 
 	NOU::boolean IniConfigurationSource::setStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
 		const NOU::NOU_DAT_ALG::StringView8 &v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
@@ -148,7 +148,7 @@ namespace IniConfigurationPlugin
 	NOU::int32 IniConfigurationSource::getInt32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
@@ -157,14 +157,14 @@ namespace IniConfigurationPlugin
 			return const_cast<IniConfigurationSource*>(this)->m_file.getFloat(key, section);
 		}
 		else
-			return NOU::float32(0);
+			return NOU::int32(0);
 	}
 
 	NOU::boolean IniConfigurationSource::setInt32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
 		NOU::int32 v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
