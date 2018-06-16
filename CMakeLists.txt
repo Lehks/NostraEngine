@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
-project("NostraEngine" CXX)
+project("NostraEngine" 
+	VERSION 0.0.1 
+	DESCRIPTION "A real-time game engine." 
+	HOMEPAGE_URL "https://github.com/Lehks/NostraEngine" 
+	LANGUAGES CXX)
 
 option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
 
@@ -37,7 +41,6 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #=== Set stdlib++ for AppleClang
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 	add_definitions("-stdlib=libc++ -lc++experimental")
-	
 endif()
 #===
 
