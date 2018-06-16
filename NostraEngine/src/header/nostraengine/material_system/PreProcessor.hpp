@@ -38,7 +38,7 @@ namespace NOT
             NOU::NOU_DAT_ALG::String8 m_message;
             NOU::uint64 m_line;
         public:
-            constexpr static NOU::uint64 NO_LINE_DISPLAY = -1;
+            constexpr static NOU::uint64 NO_LINE_DISPLAY = -1; // If m_line is set to this the line won't be shown in getMessage
         public:
             Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line = NO_LINE_DISPLAY);
 
