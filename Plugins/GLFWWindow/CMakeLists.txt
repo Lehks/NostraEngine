@@ -40,14 +40,19 @@ add_library("${TARGET_NAME}" SHARED "${files}" "GLFWWindowPlugin.cpp")
 
 target_link_libraries("${TARGET_NAME}" "${NOE_GLFW_LIB_NAME}")
 target_link_libraries("${TARGET_NAME}" "${NOE_GLAD_LIB_NAME}")
-target_link_libraries("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
-target_link_libraries("${TARGET_NAME}" "${NOE_NOE_LIB_NAME}")
 
 add_dependencies("${TARGET_NAME}" "${NOE_GLFW_LIB_NAME}")
-add_dependencies("${TARGET_NAME}" "${NOE_GLAD_LIB_NAME}")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+	target_link_libraries("${TARGET_NAME}" "${NOE_NOU_DBG_LIB_NAME}")
+	target_link_libraries("${TARGET_NAME}" "${NOE_NOE_DBG_LIB_NAME}")
 	add_dependencies("${TARGET_NAME}" "${NOE_NOU_DBG_LIB_NAME}")
+	add_dependencies("${TARGET_NAME}" "${NOE_NOE_DBG_LIB_NAME}")
+else()
+	target_link_libraries("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
+	target_link_libraries("${TARGET_NAME}" "${NOE_NOE_LIB_NAME}")
+	add_dependencies("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
+	add_dependencies("${TARGET_NAME}" "${NOE_NOE_LIB_NAME}")
 endif()
 
 set_target_properties("${TARGET_NAME}" PROPERTIES PREFIX "")

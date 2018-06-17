@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
-project("NostraEngine" 
+project("${NOE_PROJECT_NAME}" 
 	VERSION "${NOE_PROJECT_VERSION}"
 	DESCRIPTION "${NOE_PROJECT_DESCRIPTION}"
 	#HOMEPAGE_URL "${NOE_PROJECT_HOMEPAGE}" 
@@ -21,7 +21,7 @@ target_compile_definitions("${NOE_NOE_DBG_LIB_NAME}" PUBLIC -DNOU_DEBUG)
 
 target_link_libraries("${NOE_NOE_DBG_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
 target_link_libraries("${NOE_NOE_DBG_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
-target_link_libraries("${NOE_NOE_DBG_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
+target_link_libraries("${NOE_NOE_DBG_LIB_NAME}" "${NOE_NOU_DBG_LIB_NAME}")
 
 add_dependencies("${NOE_NOE_DBG_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_NOE_DBG_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
