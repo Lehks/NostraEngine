@@ -12,3 +12,5 @@ cmake-build-debug/
 /Build
 
 NostraEngine/doc/Warnings.txt
+
+CMakeSettings.json
