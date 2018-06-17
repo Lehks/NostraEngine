@@ -91,6 +91,12 @@ set(NOE_NOU_DBG_LIB_NAME "NostraUtilsDebug")
 set(NOE_DOC_TARGET  "Documentation")
 #===
 
+#=== README Variables
+set(NOE_INSTALL_README_IN  "INSTALL_README.md.in")
+set(NOE_INSTALL_README     "INSTALL_README.md")
+set(NOE_README_OUT         "README.md")
+#=== 
+
 #=== Install directory for default-plugins
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	set(NOE_PLUGIN_INSTALL_PREFIX "bin/plugins")
@@ -181,5 +187,9 @@ else()
 	set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
 	
 	include(CPack)
+
+	#Install README.md
+	configure_file("${NOE_INSTALL_README_IN}" "${NOE_INSTALL_README}")
+	install(FILES "${CMAKE_BINARY_DIR}/${NOE_INSTALL_README}" DESTINATION "." RENAME "${NOE_README_OUT}")
 
 endif()

@@ -1,17 +1,14 @@
-# NostraEngine
-A 3D game engine.
+# @NOE_PROJECT_NAME@
+**Version @NOE_PROJECT_VERSION@**  
+@NOE_PROJECT_DESCRIPTION@
 
-The NostraEngine is a project created by students of the htw saar (https://www.htwsaar.de/) and supervised by
-Dipl-Inf (FH) Christopher Olbertz.
+The @NOE_PROJECT_NAME@ is a project created by students of the htw saar (https://www.htwsaar.de/) and 
+supervised by Dipl-Inf (FH) Christopher Olbertz.
 
-GitHub: https://github.com/Lehks/NostraEngine
+GitHub: @NOE_PROJECT_HOMEPAGE@
 
-If you do not have the code yet, use the following command to clone the repository to your local
-machine:  
-```bash
-git clone https://github.com/Lehks/NostraEngine.git
-```` 
-or download the ZIP-compressed directly from GitHub using the link above.
+Since vital tools are missing, this installed version of the engine is not usable yet. This README file will 
+be updated as soon as the required tools are implemented and usable.
 
 ## Dependencies
 
