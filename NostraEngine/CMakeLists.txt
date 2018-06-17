@@ -6,6 +6,8 @@ project("NostraEngine"
 	#HOMEPAGE_URL "https://www.github.com/Lehks/NostraEngine" 
 	LANGUAGES C CXX)
 
+add_subdirectory("doc")
+
 file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
 include_directories("${NOE_NOE_INCLUDE_DIR}")

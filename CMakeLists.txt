@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
 option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
+option(NOE_GENERATE_DOC "Generate Doxygen-Documentation." ON)
 
 # Set language standard
 if ("${NOE_CPP14_COMPATIBLILTY_MODE}")
@@ -54,13 +55,14 @@ set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
 set(NOE_TEST_EXECUTABLE_SOURCE_TEMPLATE "testmain.cpp.in")
 #===
 
+#=== Replace all spaces with %20
+string(REPLACE " " "\ " CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+
 #=== Include directory variables
-set(NOE_GLAD_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLAD/include")
-set(NOE_NOE_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraEngine/src/header")
-set(NOE_NOU_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraUtils/Nostra Utils/src/header")
+set(NOE_GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/GLAD/include")
+set(NOE_NOE_INCLUDE_DIR  "${CMAKE_SOURCE_DIR}/NostraEngine/src/header")
+set(NOE_NOU_INCLUDE_DIR  "${CMAKE_SOURCE_DIR}/NostraUtils/Nostra Utils/src/header")
 #===
-
-
 
 #=== Variables for GLAD
 set(NOE_GLAD_LIB_NAME "glad")
@@ -74,9 +76,13 @@ set(NOE_SQLITE3_LIB_NAME "sqlite3")
 set(NOE_NOE_LIB_NAME "NostraEngine")
 #==
 
-#== Variables for Nostra Utils
+#=== Variables for Nostra Utils
 set(NOE_NOU_LIB_NAME "NostraUtils")
-#==
+#===
+
+#== Documentation target name
+set(NOE_DOC_TARGET  "Documentation")
+#===
 
 #Build GLAD
 add_subdirectory("GLAD")
