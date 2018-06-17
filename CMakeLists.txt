@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
-project("NostraEngine" 
-	VERSION 0.0.1 
-	DESCRIPTION "A real-time game engine." 
-	HOMEPAGE_URL "https://github.com/Lehks/NostraEngine" 
-	LANGUAGES CXX)
-
 option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
 
 # Set language standard
@@ -31,10 +25,15 @@ if (${NOE_COMPILE_AS_DEBUG})
 endif()
 #===
 
+#=== Install-subdirectories
+set(NOE_BINARY_INSTALL_DIR  "bin")
+set(NOE_DOC_INSTALL_DIR     "doc")
+set(NOE_INCLUDE_INSTALL_DIR "include")
+
 #=== Set RPATH
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/bin")
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${NOE_BINARY_INSTALL_DIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #===
 
@@ -113,7 +112,7 @@ add_dependencies("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 
-install(TARGETS ${NOE_EXECUTABLE} DESTINATION "bin")
+install(TARGETS "${NOE_EXECUTABLE}" DESTINATION "${NOE_BINARY_INSTALL_DIR}")
 #===
 
 #=== Build Test target
@@ -140,7 +139,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 	
-	install(TARGETS ${NOE_TEST_EXECUTABLE} DESTINATION "bin")
+	install(TARGETS "${NOE_TEST_EXECUTABLE}" DESTINATION "${NOE_BINARY_INSTALL_DIR}")
 else()
 	message(STATUS "NOE:  Building in Release mode, Test-executable will not be generated.")
 endif()

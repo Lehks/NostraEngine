@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
-project(NostraEngine CXX)
+project("NostraEngine" 
+	VERSION 0.0.1 
+	DESCRIPTION "A real-time game engine." 
+	#HOMEPAGE_URL "https://www.github.com/Lehks/NostraEngine" 
+	LANGUAGES C CXX)
 
 file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
@@ -19,6 +23,6 @@ add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
 add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
 
-install(TARGETS "${NOE_NOE_LIB_NAME}" DESTINATION "bin")
+install(TARGETS "${NOE_NOE_LIB_NAME}" DESTINATION "${NOE_BINARY_INSTALL_DIR}")
 
-install(DIRECTORY "${NOE_NOE_INCLUDE_DIR}/" DESTINATION "include")
+install(DIRECTORY "${NOE_NOE_INCLUDE_DIR}/" DESTINATION "${NOE_INCLUDE_INSTALL_DIR}")

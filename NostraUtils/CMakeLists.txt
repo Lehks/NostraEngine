@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
-project("NostraUtils" CXX)
-
 # Set language standard
 if ("${NOE_CPP14_COMPATIBLILTY_MODE}")
 	set (CMAKE_CXX_STANDARD 14)
