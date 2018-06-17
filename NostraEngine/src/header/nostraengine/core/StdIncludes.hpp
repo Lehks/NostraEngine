@@ -52,6 +52,20 @@
 #define NOE_PLUGIN_FUNC NOU_FUNC
 #endif
 
+/**
+\brief The version 0.0.1 of NOE.
+*/
+#ifndef NOE_VERSION_0_0_1
+#define NOE_VERSION_0_0_1 NOU_MAKE_VERSION(0, 0, 1)
+#endif
+
+/**
+\brief The current version of NOE.
+*/
+#ifndef NOE_VERSION
+#define NOE_VERSION NOE_VERSION_0_0_1
+#endif
+
 namespace NOE::internal
 {
 	/**
