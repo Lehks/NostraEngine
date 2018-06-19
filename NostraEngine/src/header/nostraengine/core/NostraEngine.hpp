@@ -1,5 +1,5 @@
-#ifndef NOSTRA_ENGINE_HPP
-#define NOSTRA_ENGINE_HPP
+#ifndef NOE_CORE_NOSTRA_ENGINE_HPP
+#define NOE_CORE_NOSTRA_ENGINE_HPP
 
 #include "nostrautils/NostraUtils.hpp"
 
@@ -112,21 +112,21 @@ namespace NOE::NOE_CORE
 		\return an eventual errorcode if something fails while pre Initialising
 		\brief Initialiation-Methode that runs directly before the initializing stage
 		*/
-		ExitCode preInitialize();
+		Initializable::ExitCode preInitialize();
 
 		/**
 		\return	an eventual errorcode if something fails while initializing
 
 		\brief Initialization-Method. Everything put in here will be initialized for later usage.
 		*/
-		ExitCode initialize();
+		Initializable::ExitCode initialize();
 
 
 		/**
 		\return an eventual errorcode if something fails while postInitialising
 		\brief Initialiation-Methode that runs directly after the initializing stage
 		*/
-		ExitCode postInitialize();
+		Initializable::ExitCode postInitialize();
 
 
 		/**
@@ -134,14 +134,14 @@ namespace NOE::NOE_CORE
 
 		\brief Terminate-Method. Everything put in here will be closed the right way if the program will be terminated.
 		*/
-		ExitCode terminate();
+		Initializable::ExitCode terminate();
 
 		/**
 		\return		NOU::int32
 
 		\brief post Terminate-Method. Every pulgin put in here will be closed the right way if the program will be terminated.
 		*/
-		ExitCode postTerminate();
+		Initializable::ExitCode postTerminate();
 
 		/**
 		\brief Standard constructor for now.
