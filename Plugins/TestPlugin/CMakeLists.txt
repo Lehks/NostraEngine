@@ -20,22 +20,14 @@ set(TARGET_NAME TestPlugin)
 
 file(GLOB_RECURSE "files" "src/*.cpp")
 
-include_directories("${NOE_NOE_INCLUDE_DIR}")
-include_directories("${NOE_NOU_INCLUDE_DIR}")
-include_directories("${CMAKE_SOURCE_DIR}")
-
 add_library("${TARGET_NAME}" SHARED "${files}" "TestPluginPlugin.cpp")
 
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	target_link_libraries("${TARGET_NAME}" "${NOE_NOU_DBG_LIB_NAME}")
-	target_link_libraries("${TARGET_NAME}" "${NOE_NOE_DBG_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOU_DBG_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOE_DBG_LIB_NAME}")
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+	target_link_libraries("${TARGET_NAME}" PRIVATE "${NOE_NOU_DBG_LIB_NAME}")
+	target_link_libraries("${TARGET_NAME}" PRIVATE NostraEngineDebug)
 else()
 	target_link_libraries("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
-	target_link_libraries("${TARGET_NAME}" "${NOE_NOE_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOE_LIB_NAME}")
+	target_link_libraries("${TARGET_NAME}" NostraEngine)
 endif()
 
 set_target_properties("${TARGET_NAME}" PROPERTIES PREFIX "")

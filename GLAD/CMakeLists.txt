@@ -1,12 +1,16 @@
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 project(GLAD C)
 
-include_directories("${NOE_GLAD_INCLUDE_DIR}")
+add_library(glad SHARED "src/glad.c")
 
-add_definitions(-DGLAD_GLAPI_EXPORT)
-add_definitions(-DGLAD_GLAPI_EXPORT_BUILD)
+target_compile_definitions(glad PRIVATE GLAD_GLAPI_EXPORT)
+target_compile_definitions(glad PRIVATE GLAD_GLAPI_EXPORT_BUILD)
 
-add_library("${NOE_GLAD_LIB_NAME}" SHARED "src/glad.c")
+target_include_directories(glad PUBLIC "./include/")
 
-install(TARGETS "${NOE_GLAD_LIB_NAME}" DESTINATION "bin")
+set_target_properties(glad PROPERTIES PREFIX "")
+
+#=== Install Targets
+#archive file is not required
+install(TARGETS glad LIBRARY DESTINATION "bin" RUNTIME DESTINATION "bin")

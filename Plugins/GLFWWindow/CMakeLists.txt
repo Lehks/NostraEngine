@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 project(GLFWWindow CXX)
 
@@ -31,28 +31,16 @@ set(TARGET_NAME GLFWWindow)
 
 file(GLOB_RECURSE "files" "src/*.cpp")
 
-include_directories("${NOE_NOE_INCLUDE_DIR}")
-include_directories("${NOE_GLAD_INCLUDE_DIR}")
-include_directories("${NOE_NOU_INCLUDE_DIR}")
-include_directories("${CMAKE_SOURCE_DIR}")
-
 add_library("${TARGET_NAME}" SHARED "${files}" "GLFWWindowPlugin.cpp")
 
-target_link_libraries("${TARGET_NAME}" "${NOE_GLFW_LIB_NAME}")
-target_link_libraries("${TARGET_NAME}" "${NOE_GLAD_LIB_NAME}")
+target_link_libraries("${TARGET_NAME}" PRIVATE "${NOE_GLFW_LIB_NAME}")
 
-add_dependencies("${TARGET_NAME}" "${NOE_GLFW_LIB_NAME}")
-
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	target_link_libraries("${TARGET_NAME}" "${NOE_NOU_DBG_LIB_NAME}")
-	target_link_libraries("${TARGET_NAME}" "${NOE_NOE_DBG_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOU_DBG_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOE_DBG_LIB_NAME}")
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+	target_link_libraries("${TARGET_NAME}" PRIVATE "${NOE_NOU_DBG_LIB_NAME}")
+	target_link_libraries("${TARGET_NAME}" PRIVATE NostraEngineDebug)
 else()
-	target_link_libraries("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
-	target_link_libraries("${TARGET_NAME}" "${NOE_NOE_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")
-	add_dependencies("${TARGET_NAME}" "${NOE_NOE_LIB_NAME}")
+	target_link_libraries("${TARGET_NAME}" PRIVATE "${NOE_NOU_LIB_NAME}")
+	target_link_libraries("${TARGET_NAME}" PRIVATE NostraEngine)
 endif()
 
 set_target_properties("${TARGET_NAME}" PROPERTIES PREFIX "")
