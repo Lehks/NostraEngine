@@ -263,20 +263,14 @@ namespace NOE::NOE_CORE
 		\brief Returns the window pointer
 		\return NOU::NOU_WINDOW::Window* (window pointer)
 		*/
-		NOE::NOE_WINDOW::Window* getWindowPointer()
-		{
-			return m_window;
-		}
+		NOE::NOE_WINDOW::Window* getWindowPointer();
 
 		/**
 		\brief Set's the pointer for the window
 
 		\param ptr_window		the new window pointer.
 		*/
-		void setWindowPointer(NOE::NOE_WINDOW::Window* ptr_window)
-		{
-			m_window = ptr_window;
-		}
+		void setWindowPointer(NOE::NOE_WINDOW::Window* ptr_window);
 	};
 }
 
