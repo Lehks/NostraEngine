@@ -32,11 +32,11 @@ namespace NOT
         */
         using WarningCode = NOU::uint32;
 
-        class Message
+        class NOU_CLASS Message
         {
         private:
-            NOU::NOU_DAT_ALG::String8 m_message;
-            NOU::uint64 m_line;
+            const NOU::NOU_DAT_ALG::String8 m_message;
+            const NOU::uint64 m_line;
         public:
             constexpr static NOU::uint64 NO_LINE_DISPLAY = -1; // If m_line is set to this the line won't be shown in getMessage
         public:
@@ -48,21 +48,21 @@ namespace NOT
             virtual ~Message() = default;
         };
 
-        class Warning final : public Message
+        class NOU_CLASS Warning final : public Message
         {
         private:
-            WarningCode m_id;
+            const WarningCode m_id;
         public:
             // -1 meaning the warning has no specific line
             Warning(WarningCode id, NOU::NOU_DAT_ALG::String8 message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
             WarningCode getID() const;
-            const NOU::NOU_DAT_ALG::String8& getWarningMessage();
+            const NOU::NOU_DAT_ALG::String8& getWarningMessage() const;
         };
 
-        class Error final : public Message
+        class NOU_CLASS Error final : public Message
         {
         private:
-            ErrorCode   m_id;
+            const ErrorCode   m_id;
         public:
             Error(ErrorCode id, NOU::NOU_DAT_ALG::String8 message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
             ErrorCode getID() const;

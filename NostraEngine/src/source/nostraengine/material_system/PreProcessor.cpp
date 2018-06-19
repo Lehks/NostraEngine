@@ -120,7 +120,7 @@ namespace NOT
                     // defaultDirective(it);
                     break;
                 case States::INCLUDE:
-                    include(it);
+                    // include(it);
                     break;
                 case States::DEFINE:
                     // define(it);
@@ -414,7 +414,9 @@ namespace NOT
 
     // ------------------------EXCEPTION-SYSTEM-------------------------------
 
-    PreProcessor::Message::Message(const NOU::NOU_DAT_ALG::String8& message, const NOU::uint64 line):
+    // Message
+
+    PreProcessor::Message::Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line):
     m_message(message),
     m_line(line)
     { }
