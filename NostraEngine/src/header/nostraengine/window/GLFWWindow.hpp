@@ -11,7 +11,7 @@
 /**
 \file window/GLFWWindow.hpp
 
-\author  Lukas Gross
+\author  Lukas Gross 
 \version 0.0.1
 \since   0.0.1
 
@@ -43,12 +43,12 @@ namespace NOE::NOE_WINDOW
 		static NOU::sizeType s_instanceCounter;
 
 		/**
-		\brief			The const vector that stores the monitors as GLFWMonitors.
+		\brief			The vector that stores the monitors as GLFWMonitors.
 		*/
 		static NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
 
 		/**
-		\brief			The const vector that stores the monitors as Monitor pointers.
+		\brief			The vector that stores the monitors as Monitor pointers.
 		*/
 		static NOU::NOU_DAT_ALG::Vector<const Monitor*> s_monitorPointer;
 
