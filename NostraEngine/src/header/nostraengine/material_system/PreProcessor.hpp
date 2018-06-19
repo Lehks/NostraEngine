@@ -37,13 +37,18 @@ namespace NOT
         private:
             const NOU::NOU_DAT_ALG::String8 m_message;
             const NOU::uint64 m_line;
+        protected:
+            const NOU::NOU_DAT_ALG::String8 m_constructedMessage;
         public:
             constexpr static NOU::uint64 NO_LINE_DISPLAY = -1; // If m_line is set to this the line won't be shown in getMessage
         public:
             Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line = NO_LINE_DISPLAY);
 
-            const NOU::NOU_DAT_ALG::String8& getMessage() const;
+            const virtual NOU::NOU_DAT_ALG::String8& getMessage() const;
             NOU::uint64 getLine() const;
+            const NOU::NOU_DAT_ALG::String8& getConstructedMessage() const;     
+
+            NOU::boolean operator==(const Message &other) const;
 
             virtual ~Message() = default;
         };
@@ -54,9 +59,11 @@ namespace NOT
             const WarningCode m_id;
         public:
             // -1 meaning the warning has no specific line
-            Warning(WarningCode id, NOU::NOU_DAT_ALG::String8 message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
+            Warning(WarningCode id,const NOU::NOU_DAT_ALG::String8 &message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
             WarningCode getID() const;
             const NOU::NOU_DAT_ALG::String8& getWarningMessage() const;
+
+            NOU::boolean operator== (const Message &other) const;
         };
 
         class NOU_CLASS Error final : public Message
@@ -64,9 +71,11 @@ namespace NOT
         private:
             const ErrorCode   m_id;
         public:
-            Error(ErrorCode id, NOU::NOU_DAT_ALG::String8 message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
+            Error(ErrorCode id,const NOU::NOU_DAT_ALG::String8 &message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
             ErrorCode getID() const;
             const NOU::NOU_DAT_ALG::String8& getErrorMessage() const;
+
+            NOU::boolean operator==(const Error &other) const;
         };
 
     private:
@@ -89,7 +98,9 @@ namespace NOT
             INCLUDE,
             IFDEF,
             IFNDEF,
-            GROUP
+            GROUP,
+            ERROR,
+            WARNING
         };
 
         static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_DIRECTIVE_PREFIX;
@@ -97,6 +108,8 @@ namespace NOT
         static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_INCLUDE;
 
         static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_DEFINE;
+
+        static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_ERROR;
 
         static const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> s_tokenSeperators;
 
@@ -212,9 +225,11 @@ namespace NOT
 
         void directive(Iterator &it);
 
-        void include(Iterator &it);
+        void includeDirective(Iterator &it);
 
-        void define(Iterator &it);
+        void defineDirective(Iterator &it);
+
+        void errorDirective(Iterator &it);
 
         void defaultDirective(Iterator &it);
 
@@ -222,11 +237,11 @@ namespace NOT
 
         NOU::boolean addDefineVar(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &value);
 
-        void throwMessage(const Message &m);
+        void emitMessage(const Message &m);
 
-        void throwError(const Error &e);
+        void emitError(const Error &e);
 
-        void throwWarning(const Warning &w);
+        void emitWarning(const Warning &w);
         
     };
     constexpr  NOU::uint64 PreProcessor::Message::NO_LINE_DISPLAY;

@@ -9,6 +9,7 @@ TODO:
 - make NOT expand to nostra::tools
 - start making more terrible jokes
 - use exceptions for warnings and Errors.
+- rebame DEBUG_STUFF
 */
 
 
@@ -81,6 +82,7 @@ namespace NOT
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_DIRECTIVE_PREFIX = "#";
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_INCLUDE = "include";
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_DEFINE = "define";
+    const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_ERROR = "error";
     
 
     PreProcessor::PreProcessor(NOU::NOU_FILE_MNGT::File &f, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &args):
@@ -120,11 +122,13 @@ namespace NOT
                     // defaultDirective(it);
                     break;
                 case States::INCLUDE:
-                    // include(it);
+                    // includeDirective(it);
                     break;
                 case States::DEFINE:
-                    // define(it);
+                    // defineDirective(it);
                     break;
+                case States::ERROR:
+                    errorDirective(it);
             }
         }
     }
@@ -135,7 +139,7 @@ namespace NOT
         {
             ErrorCode i = 0;
             NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> *ec = const_cast<NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8>*>(&s_errors);
-            ec->map(i++, "Test");
+            ec->map(i++, "User Defined");
             NOT_PRINT(s_errors.size());
         }
 
@@ -143,7 +147,7 @@ namespace NOT
         {
             WarningCode i = 0;
             NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8> *wc = const_cast<NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8>*>(&s_errors);
-            wc->map(i++, "Test");
+            wc->map(i++, "User Defined");
             NOT_PRINT(s_warnings.size());
         }
 
@@ -164,6 +168,9 @@ namespace NOT
 
     void PreProcessor::directive(Iterator &it)
     {
+        if(m_currState != States::DEFAULT){ 
+            return;
+        }
         NOU::NOU_DAT_ALG::String8 s = it.getCurrentToken();
         s.trim();
         if(!s.startsWith(PRE_PROCESSOR_DIRECTIVE_PREFIX))
@@ -180,12 +187,14 @@ namespace NOT
         } else if(s.find(PRE_PROCESSOR_DEFINE) == 0) 
         {
             m_currState = States::DEFINE;
+        } else if(s.find(PRE_PROCESSOR_ERROR) == 0){
+            m_currState = States::ERROR;
         } else {
             m_currState = States::DEFAULT;
         }
     }
 
-    void PreProcessor::include(Iterator &it)
+    void PreProcessor::includeDirective(Iterator &it)
     {
         /*
         TODO:
@@ -270,7 +279,7 @@ namespace NOT
 
     }
 
-    void PreProcessor::define(Iterator &it)
+    void PreProcessor::defineDirective(Iterator &it)
     {
 
         /*
@@ -305,6 +314,17 @@ namespace NOT
             pos = it.getCurrentPosition() - it.getCurrentToken().size() - 1;
             m_sourceCode.replace(pos, tmp.size(), tmp);
         }
+    }
+
+    void PreProcessor::errorDirective(Iterator &it)
+    {
+        NOU::NOU_DAT_ALG::String8 tmp(it.getCurrentToken());
+        
+        // temporary solution until new NOU Release
+        tmp.trim();
+        tmp.remove(0, PRE_PROCESSOR_ERROR.size());
+        tmp.trim();
+        emitError(Error(0, tmp));
     }
 
     void PreProcessor::defaultDirective(Iterator &it)
@@ -418,7 +438,10 @@ namespace NOT
 
     PreProcessor::Message::Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line):
     m_message(message),
-    m_line(line)
+    m_line(line),
+    m_constructedMessage((line == NO_LINE_DISPLAY ? NOU::NOU_DAT_ALG::String8("") : 
+    (NOU::NOU_DAT_ALG::String8("(") + NOU::NOU_DAT_ALG::String8(m_line) + NOU::NOU_DAT_ALG::String8(")"))) + 
+    NOU::NOU_DAT_ALG::String8(message))
     { }
 
     const NOU::NOU_DAT_ALG::String8& PreProcessor::Message::getMessage() const
@@ -429,6 +452,44 @@ namespace NOT
     NOU::uint64 PreProcessor::Message::getLine() const
     {
         return m_line;
+    }
+
+    NOU::boolean PreProcessor::Message::operator==(const Message &other) const
+    {
+        NOU::boolean b;
+        b = getLine() == other.getLine();
+        b &= getMessage() == other.getMessage();
+        return b;
+    }
+
+    const NOU::NOU_DAT_ALG::String8& PreProcessor::Message::getConstructedMessage() const
+    {
+        return m_constructedMessage;
+    }
+
+    // Error
+
+    PreProcessor::Error::Error(ErrorCode id, const NOU::NOU_DAT_ALG::String8 &message, NOU::uint64 line):
+    Message(message, line),
+    m_id(id)
+    {
+        NOU::NOU_DAT_ALG::String8 *tmp = const_cast<NOU::NOU_DAT_ALG::String8*>(&m_constructedMessage);
+        tmp->clear();
+        if(getLine() != NO_LINE_DISPLAY)
+        {
+            tmp->append("(");
+            tmp->append(getLine());
+            tmp->append(")");
+        }
+        tmp->append("PPE");
+        tmp->append(getID());
+        tmp->append(" ");
+        tmp->append(getErrorMessage());
+        if(getMessage() != "")  // TODO: Change to String::EMPTY STRING
+        {
+            tmp->append(" : ");
+            tmp->append(getMessage());
+        }
     }
 
     PreProcessor::ErrorCode PreProcessor::Error::getID() const
@@ -446,9 +507,81 @@ namespace NOT
         return tmp;
     }
 
+    NOU::boolean PreProcessor::Error::operator==(const Error &other) const
+    {
+        NOU::boolean b;
+        b = this->Message::operator==(other);
+        b &= getID() == other.getID();
+        return b;
+    }
+
+    // Warning
+
+    PreProcessor::Warning::Warning(WarningCode id, const NOU::NOU_DAT_ALG::String8 &message, NOU::uint64 line):
+    Message(message, line),
+    m_id(id)
+    {
+        NOU::NOU_DAT_ALG::String8 *tmp = const_cast<NOU::NOU_DAT_ALG::String8*>(&m_constructedMessage);
+        tmp->clear();
+        if(getLine() != NO_LINE_DISPLAY)
+        {
+            tmp->append("(");
+            tmp->append(getLine());
+            tmp->append(")");
+        }
+        tmp->append("PPW");
+        tmp->append(getID());
+        tmp->append(" ");
+        tmp->append(getWarningMessage());
+        if(getMessage() != "")  // TODO: Change to String::EMPTY STRING
+        {
+            tmp->append(" : ");
+            tmp->append(getMessage());
+        }
+        
+    }
+
     PreProcessor::WarningCode PreProcessor::Warning::getID() const
     {
         return m_id;
+    }
+
+    const NOU::NOU_DAT_ALG::String8& PreProcessor::Warning::getWarningMessage() const
+    {
+        static NOU::NOU_DAT_ALG::String8 tmp("testWarningMessage");
+        /* if (s_warnings.containsKey(m_id))
+        {
+            return s_warnings.get(m_id);
+        }*/
+        return tmp;
+    }
+
+    NOU::boolean PreProcessor::Warning::operator== (const Message &other) const
+    {
+        NOU::boolean b;
+
+        b = this->Message::operator==(other);
+        b &= getID(), getID();
+
+        return b; 
+    }
+
+    // emmitting Messages
+
+    void PreProcessor::emitMessage(const Message &m)
+    {
+        m_messages.pushBack(m);
+    }
+
+    void PreProcessor::emitError(const Error &e)
+    {
+        m_errors.pushBack(e);
+        throw e;
+    }
+
+    void PreProcessor::emitWarning(const Warning &w)
+    {
+        m_warnings.pushBack(w);
     }
 
 }
