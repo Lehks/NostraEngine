@@ -8,6 +8,8 @@
 #include "nostraengine/window/Window.hpp"
 #include "GLFWMonitor.hpp"
 
+#define NOE_PLUGIN_CLASS __declspec(dllexport)
+
 /**
 \file window/GLFWWindow.hpp
 

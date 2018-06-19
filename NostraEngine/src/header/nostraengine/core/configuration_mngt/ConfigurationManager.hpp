@@ -45,7 +45,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The name of this initializable. Returned by getName().
 		*/
-		NOU_FUNC static const NOU::NOU_DAT_ALG::StringView8 INITIALIZABLE_NAME;
+		static const NOU::NOU_DAT_ALG::StringView8 INITIALIZABLE_NAME;
 
 		/**
 		\brief The priority of this initializable.
@@ -55,28 +55,28 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The load mode used by default.
 		*/
-		NOU_FUNC static const LoadMode DEFAULT_LOAD_MODE;
+		static const LoadMode DEFAULT_LOAD_MODE;
 
 		/**
 		\brief The bucket count of m_factoryNameDataMap.
 		*/
-		NOU_FUNC static const NOU::sizeType DEFAULT_FACTORY_MAP_CAPACITY;
+		static const NOU::sizeType DEFAULT_FACTORY_MAP_CAPACITY;
 
 		/**
 		\brief The bucket count of m_factoryNameDataMap.
 		*/
-		NOU_FUNC static const NOU::NOU_DAT_ALG::StringView8 PATH_SEPARATOR;
+		static const NOU::NOU_DAT_ALG::StringView8 PATH_SEPARATOR;
 
 		/**
 		\brief The path to the configuration folder that is used by default.
 		*/
-		NOU_FUNC static const NOU::NOU_DAT_ALG::StringView8 DEFAULT_CONFIGURATION_PATH;
+		static const NOU::NOU_DAT_ALG::StringView8 DEFAULT_CONFIGURATION_PATH;
 
 	private:
 		/**
 		\brief A bundle of data that is always stored with a configuration source.
 		*/
-		struct NOU_FUNC ConfigurationSourceData final
+		struct ConfigurationSourceData final
 		{
 			/**
 			\param ptr  The pointer to the configuration source. Will be deleted using 
@@ -85,12 +85,12 @@ namespace NOE::NOE_CORE
 
 			\brief Constructs a new instance.
 			*/
-			ConfigurationSourceData(ConfigurationSource *ptr, const NOU::NOU_FILE_MNGT::Path &path);
+			NOU_FUNC ConfigurationSourceData(ConfigurationSource *ptr, const NOU::NOU_FILE_MNGT::Path &path);
 
 			/**
 			\brief The configuration source.
 			*/
-			NOU::NOU_MEM_MNGT::UniquePtr<ConfigurationSource> m_sourcePtr;           
+			NOU::NOU_MEM_MNGT::UniquePtr<ConfigurationSource> m_sourcePtr;
 
 			/**
 			\brief The path to the source.

@@ -1,9 +1,7 @@
-cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
 option(NOE_GENERATE_DOC "Generate Doxygen-Documentation." ON)
-
-message(STATUS "${CMAKE_BUILD_TYPE}")
 
 if((NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug") AND (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Release"))
 	
@@ -31,6 +29,7 @@ else()
 	message(STATUS "NOE:  Generating without C++14 compatibility mode.")
 endif()
 
+#TOOD: maybe? get rid of this (Mac required for testing)
 #=== Set RPATH
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
@@ -38,21 +37,11 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${NOE_BINARY_INSTALL_DIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #===
 
+#TOOD: get rid of this (Mac required for testing)
 #=== Set stdlib++ for AppleClang
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 	add_definitions("-stdlib=libc++ -lc++experimental")
 endif()
-#===
-
-#=== Variables for NostraEngine target
-set(NOE_EXECUTABLE "NostraEngineExe")
-set(NOE_EXECUTABLE_SOURCE "main.cpp")
-#===
-
-#=== Variables for Test target
-set(NOE_TEST_EXECUTABLE "Test")
-set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
-set(NOE_TEST_EXECUTABLE_SOURCE_TEMPLATE "testmain.cpp.in")
 #===
 
 #=== Install directory for default-plugins
@@ -85,25 +74,27 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	message(STATUS "NOE:  Building in Debug mode, Test-executables will be generated.")
 
 	#=== Build NostraEngine target
-	add_executable("${NOE_EXECUTABLE}" "${NOE_EXECUTABLE_SOURCE}")
+	add_executable(NostraEngineExe main.cpp)
 	
-	target_link_libraries("${NOE_EXECUTABLE}" "${NOE_NOU_DBG_LIB_NAME}")
+	target_link_libraries(NostraEngineExe 
+		PRIVATE
+			NostraEngineDbg)
 	
-	install(TARGETS "${NOE_EXECUTABLE}" DESTINATION "bin")
+	install(TARGETS NostraEngineExe DESTINATION bin)
 	#===
 	
 	#=== Build Test target
 	#Create testmain.cpp if it does not exist
-	if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}")
-		configure_file("${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE_TEMPLATE}" 
-								"${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}")
-		message(STATUS "NOE:  ${NOE_TEST_EXECUTABLE_SOURCE} was not found. A default one was generated.")
+	if(NOT EXISTS "${CMAKE_SOURCE_DIR}/testmain.cpp")
+		message(WARNING "NOE:  testmain.cpp was not found. NostraEngineTest will not be generated.")
+	else()
+		message(STATUS "NOE:  testmain.cpp was found. NostraEngineTest will be generated.")
+		add_executable(NostraEngineTest testmain.cpp)
+	
+		target_link_libraries(NostraEngineTest 
+			PRIVATE 
+				NostraEngineDbg)
 	endif()
-	
-	
-	add_executable("${NOE_TEST_EXECUTABLE}" "${NOE_TEST_EXECUTABLE_SOURCE}")
-	
-	target_link_libraries("${NOE_TEST_EXECUTABLE}" PRIVATE "${NOE_NOE_DBG_LIB_NAME}")
 	#=== 
 
 else()
@@ -131,7 +122,7 @@ install(FILES "CHANGELOG.md" DESTINATION ".")
 #=== Install readme
 #=== Either install the Install-Readme or Debug-Readme
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	install(TARGETS "${NOE_TEST_EXECUTABLE}" DESTINATION "bin")
+	install(TARGETS NostraEngineTest DESTINATION bin)
 else()
 	#Install README.md
 	configure_file("INSTALL_README.md.in" "INSTALL_README.md")

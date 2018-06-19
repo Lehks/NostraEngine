@@ -21,7 +21,7 @@ namespace NOE::NOE_CORE {
 	\brief This class will be used as interface for other subclasses that need to be initialized before specific tasks can happen.
 		   It also provides a constructor which sets a basic priority for when some objects have to be initialized before others.
 	*/
-	class NOU_CLASS Initializable 
+	class Initializable 
 	{
 		public:
 			enum class ExitCode
@@ -49,12 +49,12 @@ namespace NOE::NOE_CORE {
 			\brief The Constructor of the Initializable Interface
 			\param priority sets the internal priority rating of the object
 			*/
-			Initializable(NOU::uint32 priority = -1);
+			NOU_FUNC Initializable(NOU::uint32 priority = -1);
 
 			/**
 			\brief The destructor of the initializable Interface
 			*/
-			~Initializable();
+			NOU_FUNC ~Initializable();
 
 			/**
 			\brief returns a name given to an instance of the class. Necessary for errorhandling
@@ -70,7 +70,7 @@ namespace NOE::NOE_CORE {
 			\brief If something has to be done after the init stage but before the main loop
 				   it has to be called in this method
 			*/
-			virtual ExitCode postInitialize();
+			NOU_FUNC virtual ExitCode postInitialize();
 
 			/**
 			\brief If something has to be terminated after usage it has to be called in this method
@@ -82,60 +82,61 @@ namespace NOE::NOE_CORE {
 			\brief sets the priority rating
 			\param priority the priority rating
 			*/
-			void setPriority(NOU::uint32 priority);
+			NOU_FUNC void setPriority(NOU::uint32 priority);
 
 			/**
 			\brief gets the priority rating
 			\return the priority rating
 			*/
-			NOU::uint32 getPriority() const;
+			NOU_FUNC NOU::uint32 getPriority() const;
 
 			/**
 			\brief Returns the static HashMap as a reference.
 			\return the HashMap reference
 			*/
-			NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8 ,NOU::NOU_DAT_ALG::String8> & getMap();
+			NOU_FUNC NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8 ,NOU::NOU_DAT_ALG::String8> & 
+																									getMap();
 
 			/**
 			\brief compares two Initializables depending on their priority
 			\return true if the right one has higher priority, false if otherwise
 			\param i the right operator
 			*/
-			NOU::boolean operator<(const Initializable &i) const;
+			NOU_FUNC NOU::boolean operator<(const Initializable &i) const;
 			
 			/**
 			\brief compares two Initializables depending on their priority
 			\return true if the right one has higher priority, false if otherwise
 			\param i the right operator
 			*/
-			NOU::boolean operator>(const Initializable &i) const;
+			NOU_FUNC NOU::boolean operator>(const Initializable &i) const;
 
 			/**
 			\brief compares two Initializables depending on their priority
 			\return true if the right one has higher or the same priority, false if otherwise
 			\param i the right operator
 			*/
-			NOU::boolean operator<=(const Initializable &i) const;
+			NOU_FUNC NOU::boolean operator<=(const Initializable &i) const;
 			
 			/**
 			\brief compares two Initializables depending on their priority
 			\return true if the left one has higher or the same priority, false if otherwise
 			\param i the right operator
 			*/
-			NOU::boolean operator>=(const Initializable &i) const;
+			NOU_FUNC NOU::boolean operator>=(const Initializable &i) const;
 
 			/**
 			\brief compares two Initializables depending on their priority
 			\return true if they have the same priority, false if otherwise
 			\param i the right operator
 			*/
-			NOU::boolean operator==(const Initializable &i) const;
+			NOU_FUNC NOU::boolean operator==(const Initializable &i) const;
 			/**
 			\brief subtracts two Initializables from each other
 			\return left Initializables' priority - right Initializables' priority
 			\param i the right operator
 			*/
-			NOU::int64 operator-(const Initializable &i) const;
+			NOU_FUNC NOU::int64 operator-(const Initializable &i) const;
 	};
 }
 #endif

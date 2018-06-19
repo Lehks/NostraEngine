@@ -5,7 +5,7 @@
 
 namespace IniConfigurationPlugin
 {
-	class NOU_CLASS IniConfigurationSource final : public NOE::NOE_CORE::ConfigurationSource
+	class IniConfigurationSource final : public NOE::NOE_CORE::ConfigurationSource
 	{
 	private:
 		NOU::NOU_FILE_MNGT::Path m_path;
@@ -64,9 +64,9 @@ namespace IniConfigurationPlugin
 		virtual NOU::boolean store(const NOU::NOU_DAT_ALG::StringView8 &qualified) override;
 
 	public:
-		IniConfigurationSource(const NOU::NOU_FILE_MNGT::Path &path);
+		NOU_FUNC IniConfigurationSource(const NOU::NOU_FILE_MNGT::Path &path);
 
-		virtual const NOU::NOU_DAT_ALG::StringView8& getName() override;
+		NOU_FUNC virtual const NOU::NOU_DAT_ALG::StringView8& getName() override;
 
 	};
 }

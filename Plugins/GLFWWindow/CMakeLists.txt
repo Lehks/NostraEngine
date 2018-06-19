@@ -2,14 +2,6 @@ cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 project(GLFWWindow CXX)
 
-# Set language standard
-if ("${NOE_CPP14_COMPATIBLILTY_MODE}")
-	set (CMAKE_CXX_STANDARD 14)
-	add_definitions(-DNOU_CPP14_COMPATIBILITY)
-else()
-	set (CMAKE_CXX_STANDARD 17)
-endif()
-
 #===GLFW===
 
 #=== Variables for GLFW 
@@ -21,35 +13,36 @@ add_subdirectory("GLFW")
 
 #==========
 
-#=== Add flags for debugging
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	add_definitions (-DNOU_DEBUG)
-endif()
-#===
-
-set(TARGET_NAME GLFWWindow)
-
 file(GLOB_RECURSE "files" "src/*.cpp")
 
-add_library("${TARGET_NAME}" SHARED "${files}" "GLFWWindowPlugin.cpp")
-
-target_link_libraries("${TARGET_NAME}" PRIVATE "${NOE_GLFW_LIB_NAME}")
+add_library(GLFWWindow SHARED "${files}" "GLFWWindowPlugin.cpp")
 
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-	target_link_libraries("${TARGET_NAME}" PRIVATE "${NOE_NOU_DBG_LIB_NAME}")
-	target_link_libraries("${TARGET_NAME}" PRIVATE NostraEngineDebug)
+	target_link_libraries(GLFWWindow 
+		PRIVATE 
+			NostraEngineDbg
+			glfw)
 else()
-	target_link_libraries("${TARGET_NAME}" PRIVATE "${NOE_NOU_LIB_NAME}")
-	target_link_libraries("${TARGET_NAME}" PRIVATE NostraEngine)
+	target_link_libraries(GLFWWindow 
+		PRIVATE 
+			NostraEngine
+			glfw)
 endif()
 
-set_target_properties("${TARGET_NAME}" PROPERTIES PREFIX "")
-set_target_properties("${TARGET_NAME}" PROPERTIES SUFFIX ".np")
+target_compile_definitions(GLFWWindow 
+	PRIVATE
+		NOE_PLUGIN
+		GLFW_DLL)
 
-install(TARGETS "${TARGET_NAME}" 
+target_include_directories(GLFWWindow 
+	PRIVATE
+		"GLFW/include"
+		"src")
+
+set_target_properties(GLFWWindow PROPERTIES PREFIX "")
+set_target_properties(GLFWWindow PROPERTIES SUFFIX ".np")
+
+install(TARGETS GLFWWindow
 	RUNTIME DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}" 
 	LIBRARY DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")
-install(FILES "${TARGET_NAME}.pconf" DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")
-
-
-
+install(FILES "GLFWWindow.pconf" DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")

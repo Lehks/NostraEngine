@@ -21,7 +21,7 @@ namespace NOE::NOE_CORE
 	/**
 	\brief A resource type that contains the content of a file as a string.
 	*/
-	class NOU_CLASS TextResource final : public Resource
+	class TextResource final : public Resource
 	{
 	private:
 		/**
@@ -35,7 +35,7 @@ namespace NOE::NOE_CORE
 		\param name  The name of the loader that this resource was loaded with.
 		\param bytes The byte array.
 		*/
-		TextResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name,
+		NOU_FUNC TextResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name,
 			NOU::NOU_DAT_ALG::String8 &&text);
 
 		/**
@@ -43,20 +43,20 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the text.
 		*/
-		NOU::NOU_DAT_ALG::String8& getText();
+		NOU_FUNC NOU::NOU_DAT_ALG::String8& getText();
 
 		/**
 		\return The text.
 
 		\brief Returns the text.
 		*/
-		const NOU::NOU_DAT_ALG::String8& getText() const;
+		NOU_FUNC const NOU::NOU_DAT_ALG::String8& getText() const;
 	};
 
 	/**
 	\brief A loader for TextResource, a resource that stores the content of a class as a string.
 	*/
-	class NOU_CLASS TextResourceLoader final : public ResourceLoader
+	class TextResourceLoader final : public ResourceLoader
 	{
 	public:
 		/**
@@ -74,7 +74,7 @@ namespace NOE::NOE_CORE
 
 		\brief Stores the passed resource to the passed path.
 		*/
-		virtual NOU::boolean storeImpl(Resource *resource, const NOU::NOU_FILE_MNGT::Path& path) override;
+		NOU_FUNC virtual NOU::boolean storeImpl(Resource *resource, const NOU::NOU_FILE_MNGT::Path& path) override;
 
 		/**
 		\param resource Unused.
@@ -112,7 +112,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Constructs a new instance.
 		*/
-		TextResourceLoader();
+		NOU_FUNC TextResourceLoader();
 
 		/**
 		\param id The ID of the resource to check.
@@ -121,7 +121,7 @@ namespace NOE::NOE_CORE
 
 		\brief This loader can load any file, hence this method will always return true.
 		*/
-		virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
+		NOU_FUNC virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
 
 	};
 }

@@ -16,10 +16,6 @@ target_include_directories(NostraEngineDbg
 	PUBLIC 
 		"src/header")
 
-target_compile_definitions(NostraEngineDbg 
-	PUBLIC 
-		-DNOU_DEBUG)
-
 target_link_libraries(NostraEngineDbg 
 	PUBLIC 
 		NostraUtilsDbg

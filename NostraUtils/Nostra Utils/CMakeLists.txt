@@ -10,7 +10,11 @@ target_include_directories(NostraUtilsDbg
 	PUBLIC 
 		"src/header")
 
-target_compile_definitions(NostraUtilsDbg PUBLIC -DNOU_DEBUG)
+target_compile_definitions(NostraUtilsDbg 
+	PUBLIC 
+		NOU_DEBUG
+	INTERFACE
+		NOU_DLL)
 
 target_link_libraries(NostraUtilsDbg 
 	PRIVATE 
