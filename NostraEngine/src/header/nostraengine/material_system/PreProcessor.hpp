@@ -19,7 +19,7 @@ namespace NOT
     /**
     \brief This class handles every preprocess steps before the actual compiling process.
     */
-    class NOU_CLASS PreProcessor
+    class PreProcessor
     {
     public:
         /**
@@ -32,7 +32,7 @@ namespace NOT
         */
         using WarningCode = NOU::uint32;
 
-        class NOU_CLASS Message
+        class Message
         {
         private:
             const NOU::NOU_DAT_ALG::String8 m_message;
@@ -42,40 +42,42 @@ namespace NOT
         public:
             constexpr static NOU::uint64 NO_LINE_DISPLAY = -1; // If m_line is set to this the line won't be shown in getMessage
         public:
-            Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line = NO_LINE_DISPLAY);
+            NOU_FUNC Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line = NO_LINE_DISPLAY);
 
-            const virtual NOU::NOU_DAT_ALG::String8& getMessage() const;
-            NOU::uint64 getLine() const;
-            const NOU::NOU_DAT_ALG::String8& getConstructedMessage() const;     
+            NOU_FUNC const NOU::NOU_DAT_ALG::String8& getMessage() const;
+            NOU_FUNC NOU::uint64 getLine() const;
+            NOU_FUNC virtual const NOU::NOU_DAT_ALG::String8& getConstructedMessage() const;     
 
-            NOU::boolean operator==(const Message &other) const;
+            NOU_FUNC NOU::boolean operator==(const Message &other) const;
 
             virtual ~Message() = default;
         };
 
-        class NOU_CLASS Warning final : public Message
+        class Warning final : public Message
         {
         private:
             const WarningCode m_id;
         public:
             // -1 meaning the warning has no specific line
-            Warning(WarningCode id,const NOU::NOU_DAT_ALG::String8 &message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
-            WarningCode getID() const;
-            const NOU::NOU_DAT_ALG::String8& getWarningMessage() const;
+            NOU_FUNC Warning(WarningCode id,const NOU::NOU_DAT_ALG::String8 &message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
+            NOU_FUNC WarningCode getID() const;
+            NOU_FUNC const NOU::NOU_DAT_ALG::String8& getWarningMessage() const;
+            NOU_FUNC const NOU::NOU_DAT_ALG::String8& getConstructedMessage() const override;
 
-            NOU::boolean operator== (const Message &other) const;
+            NOU_FUNC NOU::boolean operator== (const Message &other) const;
         };
 
-        class NOU_CLASS Error final : public Message
+        class Error final : public Message
         {
         private:
             const ErrorCode   m_id;
         public:
-            Error(ErrorCode id,const NOU::NOU_DAT_ALG::String8 &message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
-            ErrorCode getID() const;
-            const NOU::NOU_DAT_ALG::String8& getErrorMessage() const;
+            NOU_FUNC Error(ErrorCode id,const NOU::NOU_DAT_ALG::String8 &message = "", NOU::uint64 line = Message::NO_LINE_DISPLAY);
+            NOU_FUNC ErrorCode getID() const;
+            NOU_FUNC const NOU::NOU_DAT_ALG::String8& getErrorMessage() const;
+            NOU_FUNC const NOU::NOU_DAT_ALG::String8& getConstructedMessage() const override;
 
-            NOU::boolean operator==(const Error &other) const;
+            NOU_FUNC NOU::boolean operator==(const Error &other) const;
         };
 
     private:
@@ -111,6 +113,8 @@ namespace NOT
 
         static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_ERROR;
 
+        static const NOU::NOU_DAT_ALG::StringView8 PRE_PROCESSOR_WARNING;
+
         static const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> s_tokenSeperators;
 
         /**
@@ -144,13 +148,13 @@ namespace NOT
             \param s The strin which will be iterated
             \param tokenSeperators specific Strings seperating the unique tokens
             */
-            Iterator(const NOU::NOU_DAT_ALG::String8 &s, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &tokenSeperators, NOU::sizeType pos = 0);
+            NOU_FUNC Iterator(const NOU::NOU_DAT_ALG::String8 &s, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &tokenSeperators, NOU::sizeType pos = 0);
 
-            NOU::boolean hasNext() const;
-            NOU::NOU_DAT_ALG::String8 &next();
-            const NOU::NOU_DAT_ALG::String8 &getCurrentToken() const;
-            NOU::NOU_DAT_ALG::String8 &getCurrentToken();
-            NOU::sizeType getCurrentPosition() const;
+            NOU_FUNC NOU::boolean hasNext() const;
+            NOU_FUNC NOU::NOU_DAT_ALG::String8 &next();
+            NOU_FUNC const NOU::NOU_DAT_ALG::String8 &getCurrentToken() const;
+            NOU_FUNC NOU::NOU_DAT_ALG::String8 &getCurrentToken();
+            NOU_FUNC NOU::sizeType getCurrentPosition() const;
 
         };
 
@@ -197,67 +201,70 @@ namespace NOT
         /**
         \brief The constructor for this class
         */
-        PreProcessor(NOU::NOU_FILE_MNGT::File &f, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &args = NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>());
+        NOU_FUNC PreProcessor(NOU::NOU_FILE_MNGT::File &f, const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &args = NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>());
 
         /**
         \brief Starts the preprocessor on the given Files.7
         */
-        void start();
+        NOU_FUNC void start();
 
         /**
         \brief A Hashmap that maps ErrorCodes to Human Readable ErrorMessages
         */
-        static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_errors;
+        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_errors;
 
         /**
         \brief A Hashmap that maps WarningCodes to Human Readable WarningMessages
         */
-        static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_warnings;
+        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_warnings;
 
-    private:
+    public:
         /**
         \brief initializes StaticMembers if they are not allready initialized
         \details Mostly used for adding IDs and Messages to the error/warning system
         */
-        static void initializeStaticMembers();
+        NOU_FUNC static void initializeStaticMembers();
 
-        void convertLineendings();
+        NOU_FUNC void convertLineendings();
 
-        void directive(Iterator &it);
+        NOU_FUNC void directive(Iterator &it);
 
-        void includeDirective(Iterator &it);
+        NOU_FUNC void includeDirective(Iterator &it);
 
-        void defineDirective(Iterator &it);
+        NOU_FUNC void defineDirective(Iterator &it);
 
-        void errorDirective(Iterator &it);
+        NOU_FUNC void errorDirective(Iterator &it);
 
-        void defaultDirective(Iterator &it);
+        NOU_FUNC void warningDirective(Iterator &it);
+
+        NOU_FUNC void defaultDirective(Iterator &it);
 
         // Helper functions
 
-        NOU::boolean addDefineVar(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &value);
+        NOU_FUNC NOU::boolean addDefineVar(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &value);
 
         // Error Handling
 
-        void emitMessage(const Message &m);
+        NOU_FUNC void emitMessage(const Message &m);
 
-        void emitError(const Error &e);
+        NOU_FUNC void emitError(const Error &e);
 
-        void emitWarning(const Warning &w);
+        NOU_FUNC void emitWarning(const Warning &w);
 
-        void errorHandler(const Error &e, Iterator &it);
+        NOU_FUNC void errorHandler(const Error &e, Iterator &it);
 
     public:
 
-        const NOU::NOU_DAT_ALG::Vector<Warning>& getThrownWarnings();
+        NOU_FUNC const NOU::NOU_DAT_ALG::Vector<Warning>& getThrownWarnings();
 
-        const NOU::NOU_DAT_ALG::Vector<Error>& getThrownErrors();
+        NOU_FUNC const NOU::NOU_DAT_ALG::Vector<Error>& getThrownErrors();
 
-        const NOU::NOU_DAT_ALG::Vector<Message>& getThrownMessages();
+        NOU_FUNC const NOU::NOU_DAT_ALG::Vector<Message>& getThrownMessages();
 
-        const NOU::NOU_DAT_ALG::Vector<const Message*> getAllThrownMessages();
+        NOU_FUNC const NOU::NOU_DAT_ALG::Vector<const Message*> getAllThrownMessages();
         
     };
     constexpr  NOU::uint64 PreProcessor::Message::NO_LINE_DISPLAY;
 }
+
 #endif

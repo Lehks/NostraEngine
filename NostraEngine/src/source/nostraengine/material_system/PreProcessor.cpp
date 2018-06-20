@@ -10,6 +10,7 @@ TODO:
 - start making more terrible jokes
 - use exceptions for warnings and Errors.
 - rebame DEBUG_STUFF
+- use constexpr much more
 */
 
 
@@ -83,6 +84,7 @@ namespace NOT
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_INCLUDE = "include";
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_DEFINE = "define";
     const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_ERROR = "error";
+    const NOU::NOU_DAT_ALG::StringView8 PreProcessor::PRE_PROCESSOR_WARNING = "warning";
 
     // -------Additional functions not stated in the PreProcessor--------
     
@@ -120,20 +122,27 @@ namespace NOT
             tmpStr = line;
 
             directive(it);
-
-            switch(m_currState)
+            try
             {
-                case States::DEFAULT:
-                    // defaultDirective(it);
-                    break;
-                case States::INCLUDE:
-                    // includeDirective(it);
-                    break;
-                case States::DEFINE:
-                    // defineDirective(it);
-                    break;
-                case States::ERROR:
-                    errorDirective(it);
+                switch(m_currState)
+                {
+                    case States::DEFAULT:
+                        // defaultDirective(it);
+                        break;
+                    case States::INCLUDE:
+                        // includeDirective(it);
+                        break;
+                    case States::DEFINE:
+                        // defineDirective(it);
+                        break;
+                    case States::ERROR:
+                        errorDirective(it);
+                    case States::WARNING:
+                        warningDirective(it);
+                }
+            } catch (Error e)
+            {
+                errorHandler(e, it);
             }
         }
     }
@@ -325,11 +334,23 @@ namespace NOT
     {
         NOU::NOU_DAT_ALG::String8 tmp(it.getCurrentToken());
         
-        // temporary solution until new NOU Release
+        // test after NOU has new release
         tmp.trim();
-        tmp.remove(0, PRE_PROCESSOR_ERROR.size());
+        tmp.remove(0, PRE_PROCESSOR_ERROR.size() + 1);
         tmp.trim();
         emitError(Error(0, tmp));
+    }
+
+    void PreProcessor::warningDirective(Iterator &it)
+    {
+        NOU::NOU_DAT_ALG::String8 tmp(it.getCurrentToken());
+
+        // test after NOU has new release
+
+        tmp.trim();
+        tmp.remove(0, PRE_PROCESSOR_WARNING.size() + 1);
+        tmp.trim();
+        emitWarning(Warning(0, tmp));
     }
 
     void PreProcessor::defaultDirective(Iterator &it)
@@ -443,10 +464,7 @@ namespace NOT
 
     PreProcessor::Message::Message(const NOU::NOU_DAT_ALG::String8 &message, const NOU::uint64 line):
     m_message(message),
-    m_line(line),
-    m_constructedMessage((line == NO_LINE_DISPLAY ? NOU::NOU_DAT_ALG::String8("") : 
-    (NOU::NOU_DAT_ALG::String8("(") + NOU::NOU_DAT_ALG::String8(m_line) + NOU::NOU_DAT_ALG::String8(")"))) + 
-    NOU::NOU_DAT_ALG::String8(message))
+    m_line(line)
     { }
 
     const NOU::NOU_DAT_ALG::String8& PreProcessor::Message::getMessage() const
@@ -469,6 +487,13 @@ namespace NOT
 
     const NOU::NOU_DAT_ALG::String8& PreProcessor::Message::getConstructedMessage() const
     {
+        if(m_constructedMessage.size() == 0){
+            NOU::NOU_DAT_ALG::String8 *tmp = const_cast<NOU::NOU_DAT_ALG::String8*>(&m_constructedMessage);
+            
+            tmp->append(((getLine() == NO_LINE_DISPLAY ? NOU::NOU_DAT_ALG::String8("") : 
+            (NOU::NOU_DAT_ALG::String8("(") + NOU::NOU_DAT_ALG::String8(m_line) + NOU::NOU_DAT_ALG::String8(")"))) + 
+            NOU::NOU_DAT_ALG::String8(getMessage())));
+        }
         return m_constructedMessage;
     }
 
@@ -478,23 +503,6 @@ namespace NOT
     Message(message, line),
     m_id(id)
     {
-        NOU::NOU_DAT_ALG::String8 *tmp = const_cast<NOU::NOU_DAT_ALG::String8*>(&m_constructedMessage);
-        tmp->clear();
-        if(getLine() != NO_LINE_DISPLAY)
-        {
-            tmp->append("(");
-            tmp->append(getLine());
-            tmp->append(")");
-        }
-        tmp->append("PPE");
-        tmp->append(getID());
-        tmp->append(" ");
-        tmp->append(getErrorMessage());
-        if(getMessage() != "")  // TODO: Change to String::EMPTY STRING
-        {
-            tmp->append(" : ");
-            tmp->append(getMessage());
-        }
     }
 
     PreProcessor::ErrorCode PreProcessor::Error::getID() const
@@ -504,12 +512,38 @@ namespace NOT
 
     const NOU::NOU_DAT_ALG::String8& PreProcessor::Error::getErrorMessage() const
     {
-        static NOU::NOU_DAT_ALG::String8 tmp("");
+        static NOU::NOU_DAT_ALG::String8 tmp("TEST ERROR");
         /* if (s_errors.containsKey(m_id))
         {
             return s_errors.get(m_id);
         }*/
         return tmp;
+    }
+
+    const NOU::NOU_DAT_ALG::String8& PreProcessor::Error::getConstructedMessage() const
+    {
+        if(m_constructedMessage.size() == 0)
+        {
+            NOU::NOU_DAT_ALG::String8 *tmp = const_cast<NOU::NOU_DAT_ALG::String8*>(&m_constructedMessage);
+            tmp->clear();
+            if(getLine() != NO_LINE_DISPLAY)
+            {
+                tmp->append("(");
+                tmp->append(getLine());
+                tmp->append(")");
+            }
+            tmp->append("PPE");
+            tmp->append(getID());
+            tmp->append(" ");
+            tmp->append(getErrorMessage());
+            if(getMessage() != "")  // TODO: Change to String::EMPTY STRING
+            {
+                tmp->append(" : ");
+                tmp->append(getMessage());
+            }
+        }
+
+        return m_constructedMessage;
     }
 
     NOU::boolean PreProcessor::Error::operator==(const Error &other) const
@@ -525,26 +559,7 @@ namespace NOT
     PreProcessor::Warning::Warning(WarningCode id, const NOU::NOU_DAT_ALG::String8 &message, NOU::uint64 line):
     Message(message, line),
     m_id(id)
-    {
-        NOU::NOU_DAT_ALG::String8 *tmp = const_cast<NOU::NOU_DAT_ALG::String8*>(&m_constructedMessage);
-        tmp->clear();
-        if(getLine() != NO_LINE_DISPLAY)
-        {
-            tmp->append("(");
-            tmp->append(getLine());
-            tmp->append(")");
-        }
-        tmp->append("PPW");
-        tmp->append(getID());
-        tmp->append(" ");
-        tmp->append(getWarningMessage());
-        if(getMessage() != "")  // TODO: Change to String::EMPTY STRING
-        {
-            tmp->append(" : ");
-            tmp->append(getMessage());
-        }
-        
-    }
+    { }
 
     PreProcessor::WarningCode PreProcessor::Warning::getID() const
     {
@@ -553,12 +568,36 @@ namespace NOT
 
     const NOU::NOU_DAT_ALG::String8& PreProcessor::Warning::getWarningMessage() const
     {
-        static NOU::NOU_DAT_ALG::String8 tmp("testWarningMessage");
+        static NOU::NOU_DAT_ALG::String8 tmp("TEST WARNING");
         /* if (s_warnings.containsKey(m_id))
         {
             return s_warnings.get(m_id);
         }*/
         return tmp;
+    }
+
+    const NOU::NOU_DAT_ALG::String8& PreProcessor::Warning::getConstructedMessage() const{
+        if(m_constructedMessage.size() == 0)
+        {
+            NOU::NOU_DAT_ALG::String8 *tmp = const_cast<NOU::NOU_DAT_ALG::String8*>(&m_constructedMessage);
+            tmp->clear();
+            if(getLine() != NO_LINE_DISPLAY)
+            {
+                tmp->append("(");
+                tmp->append(getLine());
+                tmp->append(")");
+            }
+            tmp->append("PPW");
+            tmp->append(getID());
+            tmp->append(" ");
+            tmp->append(getWarningMessage());
+            if(getMessage() != "")  // TODO: Change to String::EMPTY STRING
+            {
+                tmp->append(" : ");
+                tmp->append(getMessage());
+            }
+        }
+        return m_constructedMessage;
     }
 
     NOU::boolean PreProcessor::Warning::operator== (const Message &other) const
@@ -633,5 +672,8 @@ namespace NOT
         return ret;
     }
 
-    
+    void PreProcessor::errorHandler(const PreProcessor::Error &e, Iterator &it)
+    {
+        return;
+    }
 }
