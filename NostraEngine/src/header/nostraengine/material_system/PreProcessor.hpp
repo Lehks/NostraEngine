@@ -237,11 +237,15 @@ namespace NOT
 
         NOU::boolean addDefineVar(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &value);
 
+        // Error Handling
+
         void emitMessage(const Message &m);
 
         void emitError(const Error &e);
 
         void emitWarning(const Warning &w);
+
+        void errorHandler(const Error &e, Iterator &it);
 
     public:
 
