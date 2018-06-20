@@ -576,12 +576,56 @@ namespace NOT
     void PreProcessor::emitError(const Error &e)
     {
         m_errors.pushBack(e);
-        throw e;
+        // throw e; // Disabled because of debugging
     }
 
     void PreProcessor::emitWarning(const Warning &w)
     {
         m_warnings.pushBack(w);
+    }
+
+    const NOU::NOU_DAT_ALG::Vector<PreProcessor::Warning>& PreProcessor::getThrownWarnings()
+    {
+        return m_warnings;
+    }
+
+    const NOU::NOU_DAT_ALG::Vector<PreProcessor::Error>& PreProcessor::getThrownErrors()
+    {
+        return m_errors;
+    }
+
+    const NOU::NOU_DAT_ALG::Vector<PreProcessor::Message>& PreProcessor::getThrownMessages()
+    {
+        return m_messages;
+    }
+
+    const NOU::NOU_DAT_ALG::Vector<const PreProcessor::Message*> PreProcessor::getAllThrownMessages()
+    {
+        NOU::NOU_DAT_ALG::Vector<const PreProcessor::Message*> ret;
+        NOU::sizeType s;
+
+        // errors
+        s = m_errors.size();
+        for(NOU::sizeType i = 0; i < s; i++)
+        {
+            ret.pushBack(&m_errors[i]);
+        }
+
+        // warnings
+        s = m_warnings.size();
+        for(NOU::sizeType i = 0; i < s; i++)
+        {
+            ret.pushBack(&m_warnings[i]);
+        }
+
+        // messages
+        s = m_messages.size();
+        for(NOU::sizeType i = 0; i < s; i++)
+        {
+            ret.pushBack(&m_messages[i]);
+        }
+
+        return ret;
     }
 
 }

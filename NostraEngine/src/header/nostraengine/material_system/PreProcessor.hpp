@@ -242,6 +242,16 @@ namespace NOT
         void emitError(const Error &e);
 
         void emitWarning(const Warning &w);
+
+    public:
+
+        const NOU::NOU_DAT_ALG::Vector<Warning>& getThrownWarnings();
+
+        const NOU::NOU_DAT_ALG::Vector<Error>& getThrownErrors();
+
+        const NOU::NOU_DAT_ALG::Vector<Message>& getThrownMessages();
+
+        const NOU::NOU_DAT_ALG::Vector<const Message*> getAllThrownMessages();
         
     };
     constexpr  NOU::uint64 PreProcessor::Message::NO_LINE_DISPLAY;
