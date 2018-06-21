@@ -15,7 +15,7 @@ TODO:
 
 
 
-#define DEBUG_STUFF_
+#define DEBUG_STUFF
 
 #ifdef DEBUG_STUFF
 #   include <iostream>
@@ -112,7 +112,7 @@ namespace NOT
     {
         convertLineendings();
         Iterator it(m_sourceCode, s_tokenSeperators);
-        NOU::NOU_DAT_ALG::String8 line = "";
+        NOU::NOU_DAT_ALG::String8 line;
         NOU::NOU_DAT_ALG::String8 tmpStr;
         NOU::sizeType pos;
 
@@ -145,6 +145,19 @@ namespace NOT
                 errorHandler(e, it);
             }
         }
+
+        #ifdef DEBUG_STUFF
+            NOU::NOU_FILE_MNGT::File tmpf("C:/Users/Leslie/Desktop/NOMatTestFiles/out");
+            if(tmpf.exists()){
+                tmpf.deleteFile();
+                tmpf.createFile();
+            } else {
+                tmpf.createFile();
+            }
+            tmpf.open();
+            tmpf.write(m_sourceCode);
+            tmpf.close();
+        #endif
     }
 
     void PreProcessor::initializeStaticMembers()
@@ -203,6 +216,8 @@ namespace NOT
             m_currState = States::DEFINE;
         } else if(s.find(PRE_PROCESSOR_ERROR) == 0){
             m_currState = States::ERROR;
+        } else if(s.find(PRE_PROCESSOR_WARNING) == 0){
+            m_currState = States::WARNING;
         } else {
             m_currState = States::DEFAULT;
         }
@@ -278,19 +293,6 @@ namespace NOT
 
         NOT_PRINT_CODE;
 
-        #ifdef DEBUG_STUFF
-            NOU::NOU_FILE_MNGT::File tmpf("C:/Users/Leslie/Desktop/NOMatTestFiles/out");
-            if(tmpf.exists()){
-                tmpf.deleteFile();
-                tmpf.createFile();
-            } else {
-                tmpf.createFile();
-            }
-            tmpf.open();
-            tmpf.write(m_sourceCode);
-            tmpf.close();
-        #endif
-
     }
 
     void PreProcessor::defineDirective(Iterator &it)
@@ -338,18 +340,33 @@ namespace NOT
         tmp.trim();
         tmp.remove(0, PRE_PROCESSOR_ERROR.size() + 1);
         tmp.trim();
+        m_currState = States::DEFAULT;
         emitError(Error(0, tmp));
     }
 
     void PreProcessor::warningDirective(Iterator &it)
     {
         NOU::NOU_DAT_ALG::String8 tmp(it.getCurrentToken());
+        NOU::sizeType s;
+        NOU::NOU_DAT_ALG::String8 rep;
 
         // test after NOU has new release
 
         tmp.trim();
         tmp.remove(0, PRE_PROCESSOR_WARNING.size() + 1);
-        tmp.trim();
+        tmp.trim();        
+        m_currState = States::DEFAULT;
+
+        // remove directive
+        s = it.getCurrentToken().size();
+        for(NOU::sizeType i = 0; i < s; i++)
+        {
+            rep.append(" ");
+        }
+        rep.append("\n");
+        s = it.getCurrentPosition();
+        m_sourceCode.replace(s - rep.size(), s, rep);
+        
         emitWarning(Warning(0, tmp));
     }
 

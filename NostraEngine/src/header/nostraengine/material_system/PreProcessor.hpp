@@ -211,12 +211,12 @@ namespace NOT
         /**
         \brief A Hashmap that maps ErrorCodes to Human Readable ErrorMessages
         */
-        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_errors;
+        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> ERRORS;
 
         /**
         \brief A Hashmap that maps WarningCodes to Human Readable WarningMessages
         */
-        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> s_warnings;
+        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> ERRORS;
 
     public:
         /**
