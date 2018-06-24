@@ -15,6 +15,23 @@ namespace NOE::NOE_MATSYS
 {
     class NOU_CLASS Program
     {
+	protected:
+		/**
+		\brief A String for the vertex shader source.
+		*/
+		NOU::NOU_DAT_ALG::String8 m_vShaderSource;
+		/**
+		\brief A String for the fragment shader source.
+		*/
+		NOU::NOU_DAT_ALG::String8 m_fShaderSource;
+		/**
+		\brief A String for the geometry shader source.
+		*/
+		NOU::NOU_DAT_ALG::String8 m_gShaderSource;
+		/**
+		\brief A boolean to check if the shader is already compiled or not.
+		*/
+		NOU::boolean alreadyCompiled;
     public:
         enum class Variables
         {

@@ -4,12 +4,23 @@
 #include "nostrautils/NostraUtils.hpp"
 
 #include "nostraengine/NostraEngine.hpp"
+#include "nostraengine/material_system/Program.hpp"
 
 namespace NOE::NOE_MATSYS
 {
 	class NOU_CLASS Material
 	{
 	private:
+		/**
+		\brief A Program that creates the shader.
+		*/
+		Program m_shader;
+
+		/**
+		\brief A boolean to check if the shader is already compiled or not.
+		*/
+		NOU::boolean alreadyCompiled;
+
 		/**
 		\brief A function to call the createShader() method.
 
