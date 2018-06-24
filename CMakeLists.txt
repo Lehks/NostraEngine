@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
 
 project("NostraEngine" CXX)
 
@@ -52,16 +52,12 @@ set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
 #===
 
 #=== Include directory variables
-set(NOE_GLFW_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLFW/include")
 set(NOE_GLAD_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GLAD/include")
 set(NOE_NOE_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraEngine/src/header")
 set(NOE_NOU_INCLUDE_DIR  "${PROJECT_SOURCE_DIR}/NostraUtils/Nostra Utils/src/header")
 #===
 
-#=== Variables for GLFW 
-set(NOE_GLFW_LIB_NAME "glfw")
-set(NOE_GLFW_LIB_CONFIG "SHARED") #Either STATIC or SHARED
-#===
+
 
 #=== Variables for GLAD
 set(NOE_GLAD_LIB_NAME "glad")
@@ -79,9 +75,6 @@ set(NOE_NOE_LIB_NAME "NostraEngine")
 set(NOE_NOU_LIB_NAME "NostraUtils")
 #==
 
-#Build GLFW
-add_subdirectory ("GLFW")
-
 #Build GLAD
 add_subdirectory("GLAD")
 
@@ -94,8 +87,10 @@ add_subdirectory("NostraEngine")
 #Build Nostra Utils
 add_subdirectory("NostraUtils")
 
+#Build Plugins
+add_subdirectory("Plugins")
+
 #Add include directories
-include_directories("${NOE_GLFW_INCLUDE_DIR}")
 include_directories("${NOE_GLAD_INCLUDE_DIR}")
 include_directories("${NOE_NOE_INCLUDE_DIR}")
 include_directories("${NOE_NOU_INCLUDE_DIR}")
@@ -104,13 +99,11 @@ include_directories("${CMAKE_SOURCE_DIR}")
 #=== Build NostraEngine target
 add_executable("${NOE_EXECUTABLE}" "${NOE_EXECUTABLE_SOURCE}")
 
-target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
 target_link_libraries("${NOE_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 
-add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
@@ -133,13 +126,11 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 
 	add_executable("${NOE_TEST_EXECUTABLE}" "${NOE_TEST_EXECUTABLE_SOURCE}")
 
-	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
 	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_LIB_NAME}")
 
-	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLFW_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
 	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_LIB_NAME}")
