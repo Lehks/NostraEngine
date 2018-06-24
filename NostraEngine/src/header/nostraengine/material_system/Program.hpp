@@ -2,7 +2,14 @@
 #define NOE_MATSYS_PROGRAM_HPP
 
 #include "nostrautils/NostraUtils.hpp"
+
 #include "nostraengine/NostraEngine.hpp"
+
+/**
+\author	 Dennis Franz
+\version 1.0.0
+\since   1.0.0
+*/
 
 namespace NOE::NOE_MATSYS
 {
@@ -25,10 +32,19 @@ namespace NOE::NOE_MATSYS
         };
 
     public:
+		/**
+		\brief A default destructor.
+		*/
         virtual ~Program() = default;
 
+		/**
+		\brief A Method to create a Shader.
+		*/
         virtual NOU::boolean createShader() = 0;
 
+		/**
+		\brief A Method to bind a Shader to the corresponding program.
+		*/
         virtual NOU::boolean bind() = 0;
     };
 }
