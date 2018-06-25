@@ -6,24 +6,24 @@
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/window/Window.hpp"
-#include "GLFWMonitor.hpp"
+#include "nostraengine/window/GLFWMonitor.hpp"
 
 /**
 \file window/GLFWWindow.hpp
 
-\author  Lukas Gross
+\author  Lukas Gross 
 \version 0.0.1
 \since   0.0.1
 
 \brief A file that provides the functionality for creating and operating a window with GLFW.
 */
-namespace GLFWWindowPlugin
+namespace NOE::NOE_WINDOW
 {
 	/**
 	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
-	class NOU_CLASS GLFWWindow final : public NOE::NOE_WINDOW::Window
+	class NOU_CLASS GLFWWindow : public Window
 	{
 	private:
 
@@ -38,14 +38,19 @@ namespace GLFWWindowPlugin
 		NOU::NOU_DAT_ALG::String8 m_title;
 
 		/**
-		\brief			The const vector that stores the monitors as GLFWMonitors.
+		\brief			Stores the count of GLFW instances.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
+		static NOU::sizeType s_instanceCounter;
 
 		/**
-		\brief			The const vector that stores the monitors as Monitor pointers.
+		\brief			The vector that stores the monitors as GLFWMonitors.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
+		static NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
+
+		/**
+		\brief			The vector that stores the monitors as Monitor pointers.
+		*/
+		static NOU::NOU_DAT_ALG::Vector<const Monitor*> s_monitorPointer;
 
 	public:
 
@@ -57,9 +62,9 @@ namespace GLFWWindowPlugin
 		/**
 		\brief			Decreases the instance counter and terminates GLFW.
 		*/
+		virtual ~GLFWWindow();
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, 
-			const NOE::NOE_WINDOW::Monitor* monitor = nullptr) override;
+			const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor = nullptr) override;
 		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
@@ -68,28 +73,12 @@ namespace GLFWWindowPlugin
 		virtual void maximize()	override;
 		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
 			NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
-		virtual void setFullscreen(const NOE::NOE_WINDOW::Monitor* handle) override;
+		virtual void setFullscreen(const Monitor* handle) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
-		virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
-		virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& 
-			getConnectedMonitors() override;
+		virtual const Monitor* getPrimaryMonitor() override;
+		virtual const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
-
-		/**
-		\return			The s_monitor vector as a const reference.
-
-		\brief			Returns the s_monitor vector.
-		*/
-		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor>& getMonitors();
-
-		/**
-		\return			The s_monitorPointer vector as a const reference.
-
-		\brief			Returns the s_monitorPointer vector.
-		*/
-		static const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& getMonitorPointer();
-		
 	};
 
 	/**
