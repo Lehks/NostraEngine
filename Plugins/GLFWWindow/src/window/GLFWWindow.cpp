@@ -1,46 +1,26 @@
 #define GLAD_GLAPI_EXPORT //needed for exporting glad
 
-#include "nostraengine/window/GLFWWindow.hpp"
+#include "GLFWWindow.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-namespace NOE::NOE_WINDOW
+namespace GLFWWindowPlugin
 {
-	NOU::sizeType NOE::NOE_WINDOW::GLFWWindow::s_instanceCounter = 0;
+	NOU::sizeType GLFWWindow::s_instanceCounter = 0;
 
-	NOU::NOU_DAT_ALG::Vector<GLFWMonitor> NOE::NOE_WINDOW::GLFWWindow::s_monitors;
+	NOU::NOU_DAT_ALG::Vector<GLFWMonitor> GLFWWindow::s_monitors;
 
-	NOU::NOU_DAT_ALG::Vector<const Monitor*> NOE::NOE_WINDOW::GLFWWindow::s_monitorPointer;
+	NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> GLFWWindow::s_monitorPointer;
 
 	NOU::NOU_CORE::Logger& windowLog = NOU::NOU_CORE::Logger::get();
 
-	NOE::NOE_WINDOW::GLFWWindow::GLFWWindow() :
+	GLFWWindow::GLFWWindow() :
 		m_window(nullptr)
 	{
 		if (s_instanceCounter == 0)
 		{
-			if (!glfwInit())
-			{
-				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-					NOE::NOE_WINDOW::ErrorCodes::GLFW_INITIALIZATION_FAILED, "Could not initialize GLFW!");
-
-				NOU_LOG_DEBUG("GLFW initialization failed!");
-			}
-			else
-			{
-				glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-#ifdef __APPLE__
-				glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-				NOU_LOG_DEBUG("GLFW initialization successful!");
-				s_instanceCounter++;
-			}
+			s_instanceCounter++;
 		}
 	}
 

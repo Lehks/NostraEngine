@@ -6,7 +6,7 @@
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/window/Window.hpp"
-#include "nostraengine/window/GLFWMonitor.hpp"
+#include "GLFWMonitor.hpp"
 
 /**
 \file window/GLFWWindow.hpp
@@ -17,13 +17,13 @@
 
 \brief A file that provides the functionality for creating and operating a window with GLFW.
 */
-namespace NOE::NOE_WINDOW
+namespace GLFWWindowPlugin
 {
 	/**
 	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
-	class NOU_CLASS GLFWWindow : public Window
+	class NOU_CLASS GLFWWindow : public NOE::NOE_WINDOW::Window, public NOE::NOE_CORE::Initializable
 	{
 	private:
 
@@ -50,7 +50,7 @@ namespace NOE::NOE_WINDOW
 		/**
 		\brief			The vector that stores the monitors as Monitor pointers.
 		*/
-		static NOU::NOU_DAT_ALG::Vector<const Monitor*> s_monitorPointer;
+		static NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
 
 	public:
 
@@ -64,7 +64,7 @@ namespace NOE::NOE_WINDOW
 		*/
 		virtual ~GLFWWindow();
 		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor = nullptr) override;
+			const NOU::NOU_DAT_ALG::String8& title, const NOE::NOE_WINDOW::Monitor* monitor = nullptr) override;
 		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
@@ -73,11 +73,11 @@ namespace NOE::NOE_WINDOW
 		virtual void maximize()	override;
 		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
 			NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
-		virtual void setFullscreen(const Monitor* handle) override;
+		virtual void setFullscreen(const NOE::NOE_WINDOW::Monitor* handle) override;
 		virtual void update() override;
 		virtual void* getUnderlying() override;
-		virtual const Monitor* getPrimaryMonitor() override;
-		virtual const NOU::NOU_DAT_ALG::Vector<const Monitor*>& getConnectedMonitors() override;
+		virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
+		virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 	};
 
