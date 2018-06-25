@@ -9,10 +9,6 @@ namespace GLFWWindowPlugin
 {
 	NOU::sizeType GLFWWindow::s_instanceCounter = 0;
 
-	NOU::NOU_DAT_ALG::Vector<GLFWMonitor> GLFWWindow::s_monitors;
-
-	NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> GLFWWindow::s_monitorPointer;
-
 	NOU::NOU_CORE::Logger& windowLog = NOU::NOU_CORE::Logger::get();
 
 	GLFWWindow::GLFWWindow() :
@@ -24,7 +20,7 @@ namespace GLFWWindowPlugin
 		}
 	}
 
-	NOE::NOE_WINDOW::GLFWWindow::~GLFWWindow()
+	GLFWWindow::~GLFWWindow()
 	{
 		s_instanceCounter--;
 		if (s_instanceCounter == 0)
@@ -36,8 +32,8 @@ namespace GLFWWindowPlugin
 		}
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
-		const NOU::NOU_DAT_ALG::String8& title, const Monitor* monitor)
+	void GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
+		const NOU::NOU_DAT_ALG::String8& title, const NOE::NOE_WINDOW::Monitor* monitor)
 	{
 		GLFWmonitor* glfwMonitor;
 
@@ -64,63 +60,63 @@ namespace GLFWWindowPlugin
 		glfwSwapInterval(1);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setTitle(const NOU::NOU_DAT_ALG::String8& title)
+	void GLFWWindow::setTitle(const NOU::NOU_DAT_ALG::String8& title)
 	{
 		m_title = title;
 		glfwSetWindowTitle(reinterpret_cast<GLFWwindow*>(m_window), m_title.rawStr());
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setSize(NOU::sizeType width, NOU::sizeType height)
+	void GLFWWindow::setSize(NOU::sizeType width, NOU::sizeType height)
 	{
 		glfwSetWindowSize(reinterpret_cast<GLFWwindow*>(m_window), width, height);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setPosition(NOU::sizeType xpos, NOU::sizeType ypos)
+	void GLFWWindow::setPosition(NOU::sizeType xpos, NOU::sizeType ypos)
 	{
 		glfwSetWindowPos(reinterpret_cast<GLFWwindow*>(m_window), xpos, ypos);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::closeWindow()
+	void GLFWWindow::closeWindow()
 	{
 		glfwDestroyWindow(reinterpret_cast<GLFWwindow*>(m_window));
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::minimize()
+	void GLFWWindow::minimize()
 	{
 		glfwIconifyWindow(reinterpret_cast<GLFWwindow*>(m_window));
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::maximize()
+	void GLFWWindow::maximize()
 	{
 		glfwMaximizeWindow(reinterpret_cast<GLFWwindow*>(m_window));
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos,
+	void GLFWWindow::makeWindowed(NOU::sizeType xpos, NOU::sizeType ypos,
 		NOU::sizeType width, NOU::sizeType height, NOU::sizeType refreshRate)
 	{
 		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), 
 			nullptr, xpos, ypos, width, height, refreshRate);
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::setFullscreen(const Monitor* handle)
+	void GLFWWindow::setFullscreen(const NOE::NOE_WINDOW::Monitor* handle)
 	{
 		glfwSetWindowMonitor(reinterpret_cast<GLFWwindow*>(m_window), 
 			const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>(handle->getUnderlying())), 
 			0, 0, handle->getWidth(), handle->getHeight(), handle->getRefreshRate());
 	}
 
-	void NOE::NOE_WINDOW::GLFWWindow::update()
+	void GLFWWindow::update()
 	{
 		glfwSwapBuffers(reinterpret_cast<GLFWwindow*>(m_window));
 		glfwPollEvents();
 	}
 
-	void* NOE::NOE_WINDOW::GLFWWindow::getUnderlying()
+	void* GLFWWindow::getUnderlying()
 	{
 		return m_window;
 	}
 	
-	const NOE::NOE_WINDOW::Monitor* NOE::NOE_WINDOW::GLFWWindow::getPrimaryMonitor()
+	const NOE::NOE_WINDOW::Monitor* GLFWWindow::getPrimaryMonitor()
 	{
 		if (s_monitors.size() == 0)
 		{
@@ -130,7 +126,7 @@ namespace GLFWWindowPlugin
 		return s_monitorPointer.at(0);
 	}
 
-	const NOU::NOU_DAT_ALG::Vector<const Monitor*>& NOE::NOE_WINDOW::GLFWWindow::getConnectedMonitors()
+	const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& GLFWWindow::getConnectedMonitors()
 	{
 		int size;
 		GLFWmonitor** glfwMonitors = glfwGetMonitors(&size);
@@ -180,9 +176,24 @@ namespace GLFWWindowPlugin
 		return s_monitorPointer;
 	}
 
-	const NOU::NOU_DAT_ALG::String8& NOE::NOE_WINDOW::GLFWWindow::getTitle()
+	const NOU::NOU_DAT_ALG::String8& GLFWWindow::getTitle()
 	{
 		return m_title;
+	}
+
+	const NOU::NOU_DAT_ALG::StringView8& GLFWWindow::getName() const
+	{
+		
+	}
+	
+	NOE::NOE_CORE::Initializable::ExitCode GLFWWindow::initialize()
+	{
+
+	}
+
+	void GLFWWindow::terminate()
+	{
+
 	}
 
 #ifndef NOU_WINDOW_MAKE_ERROR

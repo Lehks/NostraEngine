@@ -4,6 +4,7 @@
 #include "nostrautils/NostraUtils.hpp"
 
 #include "nostraengine/core/StdIncludes.hpp"
+#include "nostraengine/core/Initializable.hpp"
 
 #include "nostraengine/window/Window.hpp"
 #include "GLFWMonitor.hpp"
@@ -23,7 +24,7 @@ namespace GLFWWindowPlugin
 	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
-	class NOE_PLUGIN_CLASS GLFWWindow final : public NOE::NOE_WINDOW::Window
+	class NOE_PLUGIN_CLASS GLFWWindow final : public NOE::NOE_WINDOW::Window, public NOE::NOE_CORE::Initializable
 	{
 	private:
 
@@ -45,12 +46,12 @@ namespace GLFWWindowPlugin
 		/**
 		\brief			The vector that stores the monitors as GLFWMonitors.
 		*/
-		static NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
+		NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
 
 		/**
 		\brief			The vector that stores the monitors as Monitor pointers.
 		*/
-		static NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
+		NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
 
 	public:
 
@@ -79,6 +80,11 @@ namespace GLFWWindowPlugin
 		virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
 		virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
+
+		//Functions of the Initializable class
+		virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
+		virtual NOE::NOE_CORE::Initializable::ExitCode initialize() override;
+		virtual void terminate() override;
 	};
 
 	/**
