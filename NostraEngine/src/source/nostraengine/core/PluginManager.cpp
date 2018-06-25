@@ -312,7 +312,7 @@ namespace NOE::NOE_CORE
 			return false;
 
 		//start the plugin
-		startupFunc();
+		startupFunc(getMetadata().getID());
 
 		m_library = lib;
 

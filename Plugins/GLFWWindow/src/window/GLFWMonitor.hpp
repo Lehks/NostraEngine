@@ -22,7 +22,7 @@ namespace GLFWWindowPlugin
 	\brief				A class that implements the provided functions of the Monitor class. The
 						behavior of all functions is defined in the Monitor class.
 	*/
-	class NOU_CLASS GLFWMonitor : public NOE::NOE_WINDOW::Monitor
+	class NOE_PLUGIN_CLASS GLFWMonitor : public NOE::NOE_WINDOW::Monitor
 	{
 	private:
 

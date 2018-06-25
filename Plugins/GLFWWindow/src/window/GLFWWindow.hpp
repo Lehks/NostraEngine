@@ -23,7 +23,7 @@ namespace GLFWWindowPlugin
 	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
-	class NOU_CLASS GLFWWindow : public NOE::NOE_WINDOW::Window, public NOE::NOE_CORE::Initializable
+	class NOE_PLUGIN_CLASS GLFWWindow final : public NOE::NOE_WINDOW::Window
 	{
 	private:
 

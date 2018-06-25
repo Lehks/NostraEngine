@@ -18,6 +18,8 @@ include_directories("${NOE_NOE_INCLUDE_DIR}")
 include_directories("${NOE_NOU_INCLUDE_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}")
 
+add_definitions(-DNOE_PLUGIN)
+
 add_library("${TARGET_NAME}" SHARED "${files}" "TestPluginPlugin2.cpp")
 
 target_link_libraries("${TARGET_NAME}" "${NOE_NOU_LIB_NAME}")

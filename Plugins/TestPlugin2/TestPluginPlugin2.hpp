@@ -2,7 +2,7 @@
 
 namespace TestPluginPlugin2
 {
-    class NOU_CLASS TestPluginPlugin2 final : public NOE::NOE_CORE::Plugin 
+    class NOE_PLUGIN_CLASS TestPluginPlugin2 final : public NOE::NOE_CORE::Plugin
     {
     public:
         /**

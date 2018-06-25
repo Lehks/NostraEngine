@@ -6,7 +6,9 @@ namespace TestPluginPlugin2
     {
 		std::cout << "TestPlugin2::initialize()" << std::endl;
 
-        return NOE::NOE_CORE::Plugin::InitResult::FAILED;
+		send(666941819, "Hello Plugin!", sizeof("Hello Plugin!"), 0);
+
+        return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
     }
 
 	NOE::NOE_CORE::Plugin::InitResult TestPluginPlugin2::terminate(NOE::NOE_CORE::NostraEngine &engineInstance)
