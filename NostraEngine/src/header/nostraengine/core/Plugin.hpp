@@ -146,7 +146,7 @@ namespace NOE::NOE_CORE
 	The plugin-side interface of a plugin. Every plugin needs to have a single class that inherits from this 
 	one to be able to be loaded as a plugin.
 	*/
-	class NOU_CLASS Plugin
+	class Plugin
 	{
 	public:
 		/**
@@ -211,7 +211,7 @@ namespace NOE::NOE_CORE
 
 		\brief Sets m_id.
 		*/
-		void setID(ID id);
+		NOU_FUNC void setID(ID id);
 
 	public:
 		Plugin() = default;
@@ -234,14 +234,14 @@ namespace NOE::NOE_CORE
 		- \p flags can be used to send additional data that might give a hint on what kind of data \p data 
 		  points to.
 		*/
-		SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
+		NOU_FUNC SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
 
 		/**
 		\return The ID of this plugin.
 
 		\brief Returns the ID of this plugin.
 		*/
-		ID getID() const;
+		NOU_FUNC ID getID() const;
 
 		/**
 		\return A literal from the InitResult enum, see detailed section for more information.

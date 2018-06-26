@@ -21,7 +21,7 @@ namespace NOE::NOE_CORE
 	A class that represents a single resource type in the resources database. For a full tutorial on how to 
 	use the resource management system, see \link resourceManagementSys this page\endlink.
 	*/
-	class NOU_CLASS ResourceType
+	class ResourceType
 	{
 	public:
 		/**
@@ -98,42 +98,42 @@ namespace NOE::NOE_CORE
 		the original ID is created afterwards, the instances of this class that were before that will NOT be
 		updated.
 		*/
-		explicit ResourceType(ID id = INVALID_ID);
+		NOU_FUNC explicit ResourceType(ID id = INVALID_ID);
 
 		/**
 		\return The ID of the type.
 
 		\brief Returns the ID of the type. If the type is invalid (it does not exist), INVALID_ID is returned.
 		*/
-		ID getID() const;
+		NOU_FUNC ID getID() const;
 
 		/**
 		\return The name of the type.
 
 		\brief Returns the name of the type.
 		*/
-		NOU::NOU_DAT_ALG::String8 getName() const;
+		NOU_FUNC NOU::NOU_DAT_ALG::String8 getName() const;
 
 		/**
 		\return The description of the type.
 
 		\brief Returns the description of the type.
 		*/
-		NOU::NOU_DAT_ALG::String8 getDescription() const;
+		NOU_FUNC NOU::NOU_DAT_ALG::String8 getDescription() const;
 
 		/**
 		\return True, if the type is valid, false if not.
 
 		\brief Returns whether the type is valid (it exists in the database) or not.
 		*/
-		NOU::boolean isValid() const;
+		NOU_FUNC NOU::boolean isValid() const;
 
 		/**
 		\return isValid()
 
 		\brief Same as isValid()
 		*/
-		operator NOU::boolean() const;
+		NOU_FUNC operator NOU::boolean() const;
 	};
 
 	constexpr typename ResourceType::ID ResourceType::INVALID_ID;

@@ -2,7 +2,6 @@
 
 #include "GLFWWindow.hpp"
 
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace GLFWWindowPlugin

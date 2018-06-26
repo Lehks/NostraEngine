@@ -1,6 +1,5 @@
 #include "GLFWWindowPlugin.hpp"
 
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace GLFWWindowPlugin
@@ -48,6 +47,8 @@ namespace GLFWWindowPlugin
 
     }
 }
+
+#define NOU_FUNC __declspec(dllexport)
 
 NOE_SET_AS_ACTIVE_PLUGIN_CLASS(GLFWWindowPlugin::GLFWWindowPlugin);
 
