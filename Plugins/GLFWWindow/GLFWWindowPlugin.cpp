@@ -26,11 +26,8 @@ namespace GLFWWindowPlugin
 		}
 		else
 		{
-			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
-				NOE::NOE_WINDOW::ErrorCodes::GLFW_INITIALIZATION_FAILED, "Could not initialize GLFW!");
-
 			NOU_LOG_DEBUG("GLFW initialization failed!");
-
+			
 			return NOE::NOE_CORE::Plugin::InitResult::FAILED;
 		}
     }
@@ -38,6 +35,8 @@ namespace GLFWWindowPlugin
 	NOE::NOE_CORE::Plugin::InitResult GLFWWindowPlugin::terminate(NOE::NOE_CORE::NostraEngine &engineInstance)
     {
 		glfwTerminate();
+		
+		NOU_LOG_DEBUG("GLFW successfully terminated!");
 
 		return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
     }

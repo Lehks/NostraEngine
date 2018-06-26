@@ -24,10 +24,8 @@ namespace GLFWWindowPlugin
 		s_instanceCounter--;
 		if (s_instanceCounter == 0)
 		{
-			NOU_LOG_DEBUG("GLFW successfully terminated!");
 			s_monitorPointer.clear();
 			s_monitors.clear();
-			glfwTerminate();
 		}
 	}
 
