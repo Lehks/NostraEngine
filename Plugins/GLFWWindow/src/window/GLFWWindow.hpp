@@ -55,6 +55,8 @@ namespace GLFWWindowPlugin
 		*/
 		NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
 
+		const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME = "GLFWWindow";
+
 	public:
 
 		/**
@@ -66,8 +68,9 @@ namespace GLFWWindowPlugin
 		\brief			Decreases the instance counter and terminates GLFW.
 		*/
 		virtual ~GLFWWindow();
-		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, const NOE::NOE_WINDOW::Monitor* monitor = nullptr) override;
+		virtual void createWindow(NOU::sizeType width = 500, NOU::sizeType height = 500,
+			const NOU::NOU_DAT_ALG::String8& title = "Window Name",
+			const NOE::NOE_WINDOW::Monitor* monitor = nullptr) override;
 		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
 		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
 		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
@@ -80,7 +83,8 @@ namespace GLFWWindowPlugin
 		virtual void update() override;
 		virtual void* getUnderlying() override;
 		virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
-		virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& getConnectedMonitors() override;
+		virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& 
+			getConnectedMonitors() override;
 		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
 		//Functions of the Initializable class

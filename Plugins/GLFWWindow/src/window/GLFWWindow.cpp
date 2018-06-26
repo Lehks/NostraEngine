@@ -180,17 +180,17 @@ namespace GLFWWindowPlugin
 
 	const NOU::NOU_DAT_ALG::StringView8& GLFWWindow::getName() const
 	{
-		
+		return CLASS_NAME;
 	}
 	
 	NOE::NOE_CORE::Initializable::ExitCode GLFWWindow::initialize()
 	{
-
+		createWindow();
 	}
 
 	void GLFWWindow::terminate()
 	{
-
+		closeWindow();
 	}
 
 #ifndef NOU_WINDOW_MAKE_ERROR
