@@ -21,8 +21,6 @@ namespace IniConfigurationPlugin
     }
 }
 
-#define NOU_FUNC __declspec(dllexport)
-
 NOE_SET_AS_ACTIVE_PLUGIN_CLASS(IniConfigurationPlugin::IniConfigurationPlugin);
 
 

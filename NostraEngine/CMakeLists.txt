@@ -21,6 +21,10 @@ target_link_libraries(NostraEngineDbg
 		Nostra::Utils
 	PRIVATE 
 		sqlite3)
+		
+target_compile_definitions(NostraEngineDbg 
+	INTERFACE 
+		"NOU_DLL")
 
 install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
 #[==[	
