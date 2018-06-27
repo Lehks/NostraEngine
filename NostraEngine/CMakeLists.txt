@@ -18,7 +18,7 @@ target_include_directories(NostraEngineDbg
 
 target_link_libraries(NostraEngineDbg 
 	PUBLIC 
-		NostraUtilsDbg
+		Nostra::Utils
 	PRIVATE 
 		sqlite3)
 
