@@ -26,6 +26,12 @@ target_compile_definitions(NostraEngineDbg
 	INTERFACE 
 		"NOU_DLL")
 
+if(MSVC)
+	target_compile_options(NostraEngineDbg
+		PRIVATE
+			"/wd4251")
+endif()
+
 install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
 #[==[	
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
