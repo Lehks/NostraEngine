@@ -119,12 +119,15 @@ namespace IniConfigurationPlugin
 
 		parsePath(qualified, &key, &section);
 
+		NOU::NOU_DAT_ALG::String8 str = section;
+		NOU::NOU_DAT_ALG::String8 str1 = key;
+
 		if (const_cast<IniConfigurationSource*>(this)->m_file.keyExists(key, section))
 		{
-			return const_cast<IniConfigurationSource*>(this)->m_file.getInt(key, section);
+			return const_cast<IniConfigurationSource*>(this)->m_file.getString(key, section);
 		}
 		else
-			return "";
+			return NOU::NOU_DAT_ALG::String8::EMPTY_STRING;
 	}
 
 	NOU::boolean IniConfigurationSource::setStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
@@ -154,7 +157,7 @@ namespace IniConfigurationPlugin
 
 		if (const_cast<IniConfigurationSource*>(this)->m_file.keyExists(key, section))
 		{
-			return const_cast<IniConfigurationSource*>(this)->m_file.getFloat(key, section);
+			return const_cast<IniConfigurationSource*>(this)->m_file.getInt(key, section);
 		}
 		else
 			return NOU::int32(0);
