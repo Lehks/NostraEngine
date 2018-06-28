@@ -365,33 +365,24 @@ namespace NOE::NOE_CORE{
 		m_maxFPS = maxFPS;
 	}
 
-	const NOU::uint64& NostraEngine::getCurrFPS()
+	const NOU::uint64& NostraEngine::getCurrFPS() const
 	{
 		return m_currFPS;
 	}
 
-	const NOU::uint64& NostraEngine::getMaxFPS()
+	const NOU::uint64& NostraEngine::getMaxFPS() const
 	{
 		return m_maxFPS;
 	}
 
-	const NOU::uint32& NostraEngine::getFrameTime()
+	const NOU::uint32& NostraEngine::getFrameTime() const
 	{
 		return m_frameTime;
 	}
 
-    const NOU::NOU_DAT_ALG::String8 & NostraEngine::getVersion()
+    const NOU::NOU_CORE::Version & NostraEngine::getVersion() const
     {
-
-		NOU::NOU_DAT_ALG::String8 ver;
-
-		ver.append(m_version.getMajor());
-		ver.append('.');
-		ver.append(m_version.getMinor());
-		ver.append('.');
-		ver.append(m_version.getPatch());
-
-        return ver;
+		return m_version;
     }
 
 	NOE::NOE_WINDOW::Window* NostraEngine::getWindowPointer()
