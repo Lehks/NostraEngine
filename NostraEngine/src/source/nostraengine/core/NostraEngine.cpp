@@ -60,8 +60,8 @@ namespace NOE::NOE_CORE{
 
 			if (!PluginManager::get().getPlugins()[i]->load())
 			{
-			//	NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") could not be loaded.");
+				NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") could not be loaded.");
 				return Initializable::ExitCode::ERROR;
 			}
 
@@ -70,20 +70,20 @@ namespace NOE::NOE_CORE{
 			switch (result)
 			{
 			case Plugin::InitResult::SUCCESS:
-			//	NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") was successful.");
+				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") was successful.");
 				m_preInitializedObjects++;
 				break;
 			case Plugin::InitResult::WARNING:
-			//	NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has finished with a warning.");
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") has finished with a warning.");
 
 				ret = Initializable::ExitCode::WARNING;
 				m_preInitializedObjects++;
 				break;
 			case Plugin::InitResult::FAILED:
-			//	NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has failed.");
+				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") has failed.");
 				return Initializable::ExitCode::ERROR;
 			}
 		}
@@ -163,20 +163,20 @@ namespace NOE::NOE_CORE{
 			switch (result)
 			{
 			case Plugin::InitResult::SUCCESS:
-			//	NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") was successful.");
+				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") was successful.");
 				break;
 			case Plugin::InitResult::WARNING:
-			//	NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName() 
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has finished with a warning.");
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName() 
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") has finished with a warning.");
 
 				if (ret != Initializable::ExitCode::ERROR)
 					ret = Initializable::ExitCode::WARNING;
 
 				break;
 			case Plugin::InitResult::FAILED:
-			//	NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") has failed.");
+				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") has failed.");
 
 				ret = Initializable::ExitCode::ERROR;
 
@@ -185,8 +185,8 @@ namespace NOE::NOE_CORE{
 
 			if (!PluginManager::get().getPlugins()[i]->unload())
 			{
-			//	NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
-			//		+ "(ID: " + plugin->getMetadata().getID() + "\") could not be unloaded.");
+				NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
+					+ " (ID: " + plugin->getMetadata().getID() + "\") could not be unloaded.");
 
 				ret = Initializable::ExitCode::ERROR;
 			}

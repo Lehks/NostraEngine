@@ -536,17 +536,14 @@ namespace NOE::NOE_CORE
 					m_idIndexMap.map(id, NOU::NOU_CORE::move(plugin));
 					loadedPlugins++;
 
-					///\todo Re-enable commented out code.
-					//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin ") +
-					//	pluginPtr->getMetadata().getName() + ".");
-					NOU_LOG_INFO("A plugin was successfully loaded.");
+					NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin \"") + 
+						pluginPtr->getMetadata().getName()
+						+ "\" (ID: " + pluginPtr->getMetadata().getID() + ").");
 				}
 				else
 				{
-					///\todo Re-enable commented out code.
-					//NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file ") + path.getName()
-					//	+ " could not be loaded.");
-					NOU_LOG_INFO("A plugin could not be loaded.");
+					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file \"") + path.getName()
+						+ "\" could not be loaded.");
 
 					m_createdPluginList = false;
 					return false;
@@ -559,9 +556,7 @@ namespace NOE::NOE_CORE
 
 		m_createdPluginList = true;
 
-		///\todo Re-enable commented out code.
-		//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
-		NOU_LOG_INFO("Successfully loaded all plugins.");
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
 
 		return true;
 	}
