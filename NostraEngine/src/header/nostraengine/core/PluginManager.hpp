@@ -416,7 +416,7 @@ namespace NOE::NOE_CORE
 		*/
 		NOU_FUNC EnginePlugin(EnginePlugin && other);
 
-		NOU_FUNC EnginePlugin(const EnginePlugin &other) = delete;
+		EnginePlugin(const EnginePlugin &other) = delete;
 
 		/**
 		\brief If the plugin is loaded, this will automatically unload it.

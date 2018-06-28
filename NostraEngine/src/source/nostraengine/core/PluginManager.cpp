@@ -7,15 +7,13 @@
 #include <dlfcn.h>
 #endif
 
-#include <filesystem>
-
 //w/o, logging functions do not work
 #undef ERROR
 
 namespace NOE::NOE_CORE
 {
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = "np";
-	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = ".pconf";
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = "pconf";
 	const PluginMetadata::Priority PluginMetadata::LOWEST_PRIORITY = 0;
 	const PluginMetadata::Priority PluginMetadata::HIGHEST_PRIORITY = -1;
 
@@ -342,7 +340,11 @@ namespace NOE::NOE_CORE
 				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 					PluginManager::ErrorCodes::COULD_NOT_FREE_LIBRARY,
 					"The system call to free the library failed.");
+
+				return false;
 			}
+
+			return true;
 		}
 		else
 		{
@@ -419,7 +421,7 @@ namespace NOE::NOE_CORE
 	{
 		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths;
 
-		std::filesystem::directory_iterator iter(m_loadPath.getAbsolutePath().rawStr());
+		/*std::filesystem::directory_iterator iter(m_loadPath.getAbsolutePath().rawStr());
 
 		for (auto file : iter)
 		{
@@ -429,18 +431,18 @@ namespace NOE::NOE_CORE
 				paths.push(file.path().string().c_str());
 			}
 		}
-
-		/*
+		*/
+		
 		NOU::NOU_FILE_MNGT::Folder folder(m_loadPath);
 
 		auto list = folder.listFiles();
 
-		for (auto file : list)
+		for (auto &file : list)
 		{
 			if (file.getPath().getFileExtension() == PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION)
 				paths.push(file.getPath());
 		}
-		*/
+		
 		return paths;
 	}
 
@@ -487,6 +489,8 @@ namespace NOE::NOE_CORE
 		}
 
 		plugin.receive(source, data, size, flags);
+
+		return Plugin::SendResult::SUCCESS;
 	}
 
 	PluginManager::PluginManager() : 
