@@ -7,7 +7,7 @@ namespace GLFWWindowPlugin
     class GLFWWindowPlugin final : public NOE::NOE_CORE::Plugin
     {
 	private:
-		NOU::NOU_DAT_ALG::Uninitialized<GLFWWindow> m_window;
+		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_MEM_MNGT::UniquePtr<GLFWWindow>> m_windowPtr;
 
     public:
         /**

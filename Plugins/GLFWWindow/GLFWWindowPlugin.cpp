@@ -17,7 +17,8 @@ namespace GLFWWindowPlugin
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-			m_window = GLFWWindow();
+			m_windowPtr = NOU::NOU_MEM_MNGT::UniquePtr<GLFWWindow>(new GLFWWindow(), 
+				NOU::NOU_MEM_MNGT::defaultDeleter);
 			//set window in main
 
 			NOU_LOG_DEBUG("GLFW initialization successful!");
