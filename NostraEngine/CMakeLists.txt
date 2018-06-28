@@ -18,9 +18,19 @@ target_include_directories(NostraEngineDbg
 
 target_link_libraries(NostraEngineDbg 
 	PUBLIC 
-		NostraUtilsDbg
+		Nostra::Utils
 	PRIVATE 
 		sqlite3)
+		
+target_compile_definitions(NostraEngineDbg 
+	INTERFACE 
+		"NOU_DLL")
+
+if(MSVC)
+	target_compile_options(NostraEngineDbg
+		PRIVATE
+			"/wd4251")
+endif()
 
 install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
 #[==[	
