@@ -1,5 +1,5 @@
-#ifndef NOE_WINDOW_GLFW_MONITOR_HPP
-#define NOE_WINDOW_GLFW_MONITOR_HPP
+#ifndef PLUGIN_GLFW_MONITOR_HPP
+#define PLUGIN_GLFW_MONITOR_HPP
 
 #include "nostrautils/NostraUtils.hpp"
 

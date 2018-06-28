@@ -1,5 +1,5 @@
-#ifndef NOE_WINDOW_GLFWWINDOW_HPP
-#define NOE_WINDOW_GLFWWINDOW_HPP
+#ifndef PLUGIN_GLFW_WINDOW_HPP
+#define PLUGIN_GLFW_WINDOW_HPP
 
 #include "nostrautils/NostraUtils.hpp"
 

@@ -1,3 +1,6 @@
+#ifndef PLUGIN_GLFW_WINDOW_PLUGIN_HPP
+#define PLUGIN_GLFW_WINDOW_PLUGIN_HPP
+
 #include "nostraengine/NostraEngine.hpp"
 
 #include "src/window/GLFWWindow.hpp"
@@ -26,3 +29,4 @@ namespace GLFWWindowPlugin
 		NOE_PLUGIN_FUNC virtual void receive(NOE::NOE_CORE::Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags) override;
 	};
 }
+#endif
