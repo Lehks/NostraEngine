@@ -118,6 +118,8 @@ namespace NOE::NOE_CORE
 
 		if (!row.isNull(0))
 			return ResourceType(row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER()));
+
+		return ResourceType();
 	}
 
 	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getPath() const

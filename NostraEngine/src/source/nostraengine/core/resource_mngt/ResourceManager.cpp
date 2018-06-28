@@ -115,7 +115,7 @@ namespace NOE::NOE_CORE
 		if (row.affectedRows() == 0)
 			return ResourceMetadata::INVALID_ID;
 		else
-			return row.lastRowId();
+			return ResourceMetadata::ID(row.lastRowId());
 	}
 
 	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ID id)
@@ -224,7 +224,7 @@ namespace NOE::NOE_CORE
 		if (row.affectedRows() == 0)
 			return ResourceType::INVALID_ID;
 		else
-			return row.lastRowId();
+			return ResourceMetadata::ID(row.lastRowId());
 	}
 
 	typename ResourceType::ID ResourceManager::addType(const NOU::NOU_DAT_ALG::StringView8 &name,
@@ -240,7 +240,7 @@ namespace NOE::NOE_CORE
 		if (row.affectedRows() == 0)
 			return ResourceType::INVALID_ID;
 		else
-			return row.lastRowId();
+			return ResourceMetadata::ID(row.lastRowId());
 	}
 
 	NOU::boolean ResourceManager::removeType(typename ResourceType::ID id)

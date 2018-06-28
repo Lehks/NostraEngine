@@ -29,6 +29,8 @@ namespace NOE::NOE_UTILITY
 
 				return m_errors + index;
 			}
+
+			return nullptr;
 		}
 
 
@@ -50,7 +52,8 @@ namespace NOE::NOE_UTILITY
 
 		NOU::float32 Row::valueAs(NOU::sizeType index, FLOAT) const
 		{
-			return sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index);
+			return static_cast<NOU::float32>
+					(sqlite3_column_double(reinterpret_cast<sqlite3_stmt*>(m_stmt->getUnderlying()), index));
 		}
 
 		NOU::float64 Row::valueAs(NOU::sizeType index, FLOAT_64) const
@@ -395,6 +398,8 @@ namespace NOE::NOE_UTILITY
 					return false;
 				}
 			}
+
+			return false;
 		}
 
 		NOU::boolean Database::close()

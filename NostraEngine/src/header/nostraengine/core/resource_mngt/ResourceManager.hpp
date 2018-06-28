@@ -197,7 +197,7 @@ namespace NOE::NOE_CORE
 		\details
 		Returns the instance of the resource manager. This method also stores the instance as a static local variable.
 		*/
-		NOU_FUNC static ResourceManager& const get();
+		NOU_FUNC static ResourceManager& get();
 
 		/**
 		\tparam T    The type resource loader to add. This must be a child class of ResourceLoader.
