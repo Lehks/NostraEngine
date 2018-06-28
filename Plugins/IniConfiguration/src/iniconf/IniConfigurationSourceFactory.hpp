@@ -5,14 +5,15 @@
 
 namespace IniConfigurationPlugin
 {
-	class NOU_CLASS IniConfigurationSourceFactory final : public NOE::NOE_CORE::ConfigurationSourceFactory
+	class IniConfigurationSourceFactory final : public NOE::NOE_CORE::ConfigurationSourceFactory
 	{
 	public:
 		static const NOU::NOU_DAT_ALG::StringView8 EXTENSION;
 
-		virtual const NOU::NOU_DAT_ALG::StringView8& getAssociatedExtension() const override;
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::StringView8& getAssociatedExtension() const override;
 
-		virtual NOE::NOE_CORE::ConfigurationSource* build(const NOU::NOU_FILE_MNGT::Path &path) override;
+		NOE_PLUGIN_FUNC virtual NOE::NOE_CORE::ConfigurationSource* 
+														build(const NOU::NOU_FILE_MNGT::Path &path) override;
 	};
 }
 
