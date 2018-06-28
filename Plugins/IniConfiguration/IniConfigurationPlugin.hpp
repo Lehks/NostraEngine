@@ -1,3 +1,6 @@
+#ifndef	INI_CONFIGURATION_PLUGIN_HPP
+#define	INI_CONFIGURATION_PLUGIN_HPP
+
 #include "nostraengine/NostraEngine.hpp"
 
 namespace IniConfigurationPlugin
@@ -25,5 +28,5 @@ namespace IniConfigurationPlugin
 	};
 }
 
-
+#endif
 
