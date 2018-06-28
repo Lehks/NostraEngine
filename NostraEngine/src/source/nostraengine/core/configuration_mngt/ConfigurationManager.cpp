@@ -1,7 +1,5 @@
 #include "nostraengine/core/configuration_mngt/ConfigurationManager.hpp"
 
-#include <filesystem>
-
 namespace NOE::NOE_CORE
 {
 	ConfigurationManager::ConfigurationSourceData::ConfigurationSourceData(ConfigurationSource *ptr,
@@ -34,17 +32,7 @@ namespace NOE::NOE_CORE
 	NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> 
 		ConfigurationManager::createFileList(const NOU::NOU_FILE_MNGT::Path &path) const
 	{
-		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> ret;
-
-		for (auto &f : std::filesystem::directory_iterator(path.getAbsolutePath().rawStr()))
-		{
-			if (f.is_regular_file())
-			{
-				ret.push(NOU::NOU_FILE_MNGT::File(f.path().string().c_str()));
-			}
-		}
-
-		return ret;
+		return NOU::NOU_FILE_MNGT::Folder(path).listFiles();
 	}
 
 	NOU::boolean ConfigurationManager::loadSourcesList()
@@ -63,8 +51,8 @@ namespace NOE::NOE_CORE
 			}
 			else
 			{
-				///\todo add proper file extension
-				NOU_LOG_WARNING("The factory for the file extension .ini could not be found.");
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The factory for the file extension .") +
+					file.getPath().getFileExtension() + " could not be found.");
 				ret = false;
 			}
 
@@ -81,10 +69,14 @@ namespace NOE::NOE_CORE
 				m_nameDataMap.map(m_data[m_data.size() - 1].m_sourcePtr->getName(),
 					&m_data[m_data.size() - 1]);
 
-				///\todo add proper name
-				NOU_LOG_INFO("Successfully constructed configuration source NAME.");
+				NOU_LOG_INFO(
+					NOU::NOU_DAT_ALG::String8("Successfully constructed configuration source ") +
+					m_data[m_data.size() - 1].m_sourcePtr->getName() + " .");
 			}
 		}
+
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + m_data.size() + " of " +
+		  	files.size() + " configuration sources.");
 
 		return ret;
 	}
@@ -134,9 +126,6 @@ namespace NOE::NOE_CORE
 		{
 			ret = Initializable::ExitCode::WARNING;
 		}
-
-		///\todo add proper count
-		NOU_LOG_INFO("Successfully loaded COUNT of COUNT configuration sources.");
 
 		//all configuration sources are constructed now and the factories are no longer needed
 		destroyFactoryMap();
