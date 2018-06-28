@@ -239,25 +239,25 @@ namespace NOE::NOE_CORE
 		\brief getter for m_currFPS
 		\return returns the current FPS
 		*/
-		NOU_FUNC const NOU::uint64& getCurrFPS();
+		NOU_FUNC const NOU::uint64& getCurrFPS() const;
 
 		/**
 		\brief getter for m_maxFPS
 		\return returns the maximum set FPS
 		*/
-		NOU_FUNC const NOU::uint64& getMaxFPS();
+		NOU_FUNC const NOU::uint64& getMaxFPS() const;
 
 		/**
 		\brief getter for m_frameTime
 		\return returns the current FrameTime
 		*/
-		NOU_FUNC const NOU::uint32& getFrameTime();
+		NOU_FUNC const NOU::uint32& getFrameTime() const;
 
 		/**
 		\brief Returns the version of the engine.
 		\return NOU::NOU_CORE::Version Type
 		*/
-		NOU_FUNC const NOU::NOU_DAT_ALG::String8 & getVersion();
+		NOU_FUNC const NOU::NOU_CORE::Version& getVersion() const;
 
 		/**
 		\brief Returns the window pointer
