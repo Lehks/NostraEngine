@@ -4,7 +4,7 @@ if(${NOE_GENERATE_DOC})
 	
 	message(STATUS "NOE:  Attempting to generate Doxygen-Doc.")
 
-	find_package(Doxygen REQUIRED dot)
+	find_package(Doxygen OPTIONAL_COMPONENTS dot)
 
 	if(${DOXYGEN_FOUND})
 		
