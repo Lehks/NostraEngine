@@ -71,7 +71,7 @@ namespace NOE::NOE_CORE
 
 				NOU_LOG_INFO(
 					NOU::NOU_DAT_ALG::String8("Successfully constructed configuration source ") +
-					m_data[m_data.size() - 1].m_sourcePtr->getName() + " .");
+					m_data[m_data.size() - 1].m_sourcePtr->getName() + ".");
 			}
 		}
 
@@ -83,9 +83,9 @@ namespace NOE::NOE_CORE
 
 	void ConfigurationManager::destroyFactoryMap()
 	{
-		//for (auto &factory : m_factoryNameDataMap.entrySet())
+		for (auto &key : m_factoryNameDataMap.keySet())
 		{
-		//	delete factory;
+			m_factoryNameDataMap.remove(*key);
 		}
 	}
 
@@ -157,6 +157,13 @@ namespace NOE::NOE_CORE
 				m_data[i].m_sourcePtr->terminate();
 			}
 		}
+
+		/*
+		 * Explicitly clear the vector to destroy all sources
+		 * Otherwise, the sources would be destroyed during the destruction of static objects aka. after the
+		 * plugins have been unloaded. This means, the destructors from the plugins can't be called anymore.
+		 */
+		m_data.clear();
 	}
 
 	const NOU::NOU_DAT_ALG::StringView8& ConfigurationManager::getName() const

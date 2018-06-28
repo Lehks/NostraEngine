@@ -58,20 +58,19 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ConfigurationSource::initialize()
 	{
-		///\todo add proper name
-		NOU_LOG_INFO("Initializing configuration source NAME...");
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Initializing configuration source \"") + getName() + "\"...");
 
 		NOU::boolean ret = initializeImpl();
 
 		if (ret)
 		{
-			///\todo add proper name
-			NOU_LOG_INFO("Initializing of configuration source NAME was successful.");
+			NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Initialization of configuration source \"") + getName() 
+				+ "\" was successful.");
 		}
 		else
 		{
-			///\todo add proper name
-			NOU_LOG_WARNING("Initializing configuration source NAME was not successful.");
+			NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Initialization configuration source \"") + getName() 
+				+ "\" was not successful.");
 		}
 
 		

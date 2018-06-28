@@ -76,7 +76,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief A bundle of data that is always stored with a configuration source.
 		*/
-		struct NOU_FUNC ConfigurationSourceData final
+		struct ConfigurationSourceData final
 		{
 			/**
 			\param ptr  The pointer to the configuration source. Will be deleted using 
@@ -85,7 +85,7 @@ namespace NOE::NOE_CORE
 
 			\brief Constructs a new instance.
 			*/
-			ConfigurationSourceData(ConfigurationSource *ptr, const NOU::NOU_FILE_MNGT::Path &path);
+			NOU_FUNC ConfigurationSourceData(ConfigurationSource *ptr, const NOU::NOU_FILE_MNGT::Path &path);
 
 			/**
 			\brief The configuration source.

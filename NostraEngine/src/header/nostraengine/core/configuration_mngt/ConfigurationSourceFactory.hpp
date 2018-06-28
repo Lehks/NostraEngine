@@ -41,6 +41,8 @@ namespace NOE::NOE_CORE
 		static ConfigurationSource* allocateSource(ARGS&&... args);
 
 	public:
+		virtual ~ConfigurationSourceFactory() = default;
+
 		/**
 		\param source A pointer to the instance to deallocate.
 

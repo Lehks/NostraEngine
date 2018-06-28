@@ -10,6 +10,8 @@ namespace IniConfigurationPlugin
 	public:
 		static const NOU::NOU_DAT_ALG::StringView8 EXTENSION;
 
+		virtual ~IniConfigurationSourceFactory() = default;
+
 		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::StringView8& getAssociatedExtension() const override;
 
 		NOE_PLUGIN_FUNC virtual NOE::NOE_CORE::ConfigurationSource* 

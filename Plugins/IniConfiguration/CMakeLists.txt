@@ -4,14 +4,14 @@ project(IniConfiguration CXX)
 
 file(GLOB_RECURSE "files" "src/*.cpp")
 
-add_library(IniConfigurationPlugin SHARED "${files}" "IniConfigurationPlugin.cpp")
+add_library(IniConfiguration SHARED "${files}" "IniConfigurationPlugin.cpp")
 
-target_link_libraries(IniConfigurationPlugin PRIVATE NostraEngineDbg)
+target_link_libraries(IniConfiguration PRIVATE NostraEngineDbg)
 
-set_target_properties(IniConfigurationPlugin PROPERTIES PREFIX "")
-set_target_properties(IniConfigurationPlugin PROPERTIES SUFFIX ".np")
+set_target_properties(IniConfiguration PROPERTIES PREFIX "")
+set_target_properties(IniConfiguration PROPERTIES SUFFIX ".np")
 
-install(TARGETS IniConfigurationPlugin RUNTIME DESTINATION "bin/plugins" LIBRARY DESTINATION "bin/plugins")
+install(TARGETS IniConfiguration RUNTIME DESTINATION "bin/plugins" LIBRARY DESTINATION "bin/plugins")
 install(FILES "IniConfiguration.pconf" DESTINATION "bin/plugins")
 
 
