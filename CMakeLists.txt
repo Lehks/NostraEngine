@@ -19,31 +19,6 @@ set(NOE_PROJECT_CREATORS    "The Nostra Project Team")
 set(NOE_PROJECT_HOMEPAGE    "https://www.github.com/Lehks/NostraEngine")
 #===
 
-# Set language standard
-if ("${NOE_CPP14_COMPATIBLILTY_MODE}")
-	set (CMAKE_CXX_STANDARD 14)
-	message(STATUS "NOE:  Generating for C++14 compatibility mode.")
-	add_definitions(-DNOU_CPP14_COMPATIBILITY)
-else()
-	set (CMAKE_CXX_STANDARD 17)
-	message(STATUS "NOE:  Generating without C++14 compatibility mode.")
-endif()
-
-#TOOD: maybe? get rid of this (Mac required for testing)
-#=== Set RPATH
-set(CMAKE_SKIP_BUILD_RPATH FALSE)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${NOE_BINARY_INSTALL_DIR}")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-#===
-
-#TOOD: get rid of this (Mac required for testing)
-#=== Set stdlib++ for AppleClang
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-	add_definitions("-stdlib=libc++ -lc++experimental")
-endif()
-#===
-
 #=== Install directory for default-plugins
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	set(NOE_PLUGIN_INSTALL_PREFIX "bin/plugins")
