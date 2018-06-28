@@ -1,5 +1,3 @@
-#define GLAD_GLAPI_EXPORT //needed for exporting glad
-
 #include "GLFWWindow.hpp"
 
 #include "GLFW/glfw3.h"
@@ -186,6 +184,7 @@ namespace GLFWWindowPlugin
 	NOE::NOE_CORE::Initializable::ExitCode GLFWWindow::initialize()
 	{
 		createWindow();
+		return NOE::NOE_CORE::Initializable::ExitCode::SUCCESS;
 	}
 
 	void GLFWWindow::terminate()

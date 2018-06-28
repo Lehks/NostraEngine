@@ -3,11 +3,10 @@
 
 #include "nostrautils/NostraUtils.hpp"
 
+#include "nostraengine/NostraEngine.hpp"
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/window/Monitor.hpp"
-
-#define NOE_PLUGIN_CLASS __declspec(dllexport)
 
 /**
 \file window/GLFWMonitor.hpp
@@ -24,7 +23,7 @@ namespace GLFWWindowPlugin
 	\brief				A class that implements the provided functions of the Monitor class. The
 						behavior of all functions is defined in the Monitor class.
 	*/
-	class NOE_PLUGIN_CLASS GLFWMonitor : public NOE::NOE_WINDOW::Monitor
+	class GLFWMonitor : public NOE::NOE_WINDOW::Monitor
 	{
 	private:
 
@@ -70,16 +69,16 @@ namespace GLFWWindowPlugin
 
 	public:
 
-		GLFWMonitor(const void *handle);
-		virtual ~GLFWMonitor() = default;
-		virtual NOU::sizeType getWidth() const override;
-		virtual NOU::sizeType getHeight() const override;
-		virtual NOU::sizeType getRefreshRate() const override;
-		virtual NOU::sizeType getRedBits() const override;
-		virtual NOU::sizeType getGreenBits() const override;
-		virtual NOU::sizeType getBlueBits() const override;
-		virtual const NOU::NOU_DAT_ALG::String8& getName() const override;
-		virtual const void* getUnderlying() const override;
+		NOE_PLUGIN_FUNC GLFWMonitor(const void *handle);
+		NOE_PLUGIN_FUNC virtual ~GLFWMonitor() = default;
+		NOE_PLUGIN_FUNC virtual NOU::sizeType getWidth() const override;
+		NOE_PLUGIN_FUNC virtual NOU::sizeType getHeight() const override;
+		NOE_PLUGIN_FUNC virtual NOU::sizeType getRefreshRate() const override;
+		NOE_PLUGIN_FUNC virtual NOU::sizeType getRedBits() const override;
+		NOE_PLUGIN_FUNC virtual NOU::sizeType getGreenBits() const override;
+		NOE_PLUGIN_FUNC virtual NOU::sizeType getBlueBits() const override;
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::String8& getName() const override;
+		NOE_PLUGIN_FUNC virtual const void* getUnderlying() const override;
 	};
 }
 #endif

@@ -3,13 +3,11 @@
 
 #include "nostrautils/NostraUtils.hpp"
 
+#include "nostraengine/NostraEngine.hpp"
 #include "nostraengine/core/StdIncludes.hpp"
-#include "nostraengine/core/Initializable.hpp"
 
 #include "nostraengine/window/Window.hpp"
 #include "GLFWMonitor.hpp"
-
-#define NOE_PLUGIN_CLASS __declspec(dllexport)
 
 /**
 \file window/GLFWWindow.hpp
@@ -26,7 +24,7 @@ namespace GLFWWindowPlugin
 	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
-	class NOE_PLUGIN_CLASS GLFWWindow final : public NOE::NOE_WINDOW::Window, public NOE::NOE_CORE::Initializable
+	class GLFWWindow final : public NOE::NOE_WINDOW::Window, public NOE::NOE_CORE::Initializable
 	{
 	private:
 
@@ -62,35 +60,35 @@ namespace GLFWWindowPlugin
 		/**
 		\brief			Checks if the instance counter is 0, increases the counter and initializes GLFW.
 		*/
-		GLFWWindow();
+		NOE_PLUGIN_FUNC GLFWWindow();
 
 		/**
 		\brief			Decreases the instance counter and terminates GLFW.
 		*/
-		virtual ~GLFWWindow();
-		virtual void createWindow(NOU::sizeType width = 500, NOU::sizeType height = 500,
+		NOE_PLUGIN_FUNC virtual ~GLFWWindow();
+		NOE_PLUGIN_FUNC virtual void createWindow(NOU::sizeType width = 500, NOU::sizeType height = 500,
 			const NOU::NOU_DAT_ALG::String8& title = "Window Name",
 			const NOE::NOE_WINDOW::Monitor* monitor = nullptr) override;
-		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
-		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
-		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
-		virtual void closeWindow() override;
-		virtual void minimize() override;
-		virtual void maximize()	override;
-		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
+		NOE_PLUGIN_FUNC virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
+		NOE_PLUGIN_FUNC virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
+		NOE_PLUGIN_FUNC virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
+		NOE_PLUGIN_FUNC virtual void closeWindow() override;
+		NOE_PLUGIN_FUNC virtual void minimize() override;
+		NOE_PLUGIN_FUNC virtual void maximize()	override;
+		NOE_PLUGIN_FUNC virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
 			NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
-		virtual void setFullscreen(const NOE::NOE_WINDOW::Monitor* handle) override;
-		virtual void update() override;
-		virtual void* getUnderlying() override;
-		virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
-		virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& 
+		NOE_PLUGIN_FUNC virtual void setFullscreen(const NOE::NOE_WINDOW::Monitor* handle) override;
+		NOE_PLUGIN_FUNC virtual void update() override;
+		NOE_PLUGIN_FUNC virtual void* getUnderlying() override;
+		NOE_PLUGIN_FUNC virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& 
 			getConnectedMonitors() override;
-		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
 		//Functions of the Initializable class
-		virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
-		virtual NOE::NOE_CORE::Initializable::ExitCode initialize() override;
-		virtual void terminate() override;
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
+		NOE_PLUGIN_FUNC virtual NOE::NOE_CORE::Initializable::ExitCode initialize() override;
+		NOE_PLUGIN_FUNC virtual void terminate() override;
 	};
 
 	/**

@@ -1,5 +1,3 @@
-#define GLAD_GLAPI_EXPORT //needed for exporting glad
-
 #include "GLFWMonitor.hpp"
 
 #include "GLFW/glfw3.h"
