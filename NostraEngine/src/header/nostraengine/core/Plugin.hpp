@@ -32,7 +32,7 @@ This macro defines the global functions that will be loaded by the plugin manage
 																										   \
 PLUGIN *pluginPtr;																						   \
 																										   \
-extern "C" NOU_FUNC void noePluginStartup(NOU::uint32 id)												   \
+extern "C" NOE_PLUGIN_FUNC void noePluginStartup(NOU::uint32 id)										   \
 {																										   \
     pluginPtr = new PLUGIN();															   				   \
 																										   \
@@ -40,7 +40,7 @@ extern "C" NOU_FUNC void noePluginStartup(NOU::uint32 id)												   \
 }																										   \
 																										   \
 /*shutdown*/																							   \
-extern "C" NOU_FUNC void noePluginShutdown()															   \
+extern "C" NOE_PLUGIN_FUNC void noePluginShutdown()														   \
 {																										   \
 	delete pluginPtr;																   					   \
 }																										   \
@@ -53,7 +53,7 @@ extern "C" void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType s
 }																										   \
 																										   \
 /*initialize*/																							   \
-extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void * engineInstance)								   \
+extern "C" NOE_PLUGIN_FUNC NOU::uint32 noePluginInitialize(void * engineInstance)						   \
 {																										   \
 	NOE::NOE_CORE::NostraEngine *engine = 															       \
 		reinterpret_cast<NOE::NOE_CORE::NostraEngine*>(engineInstance);                                    \
@@ -64,7 +64,7 @@ extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void * engineInstance)						
 }																										   \
 																										   \
 /*terminate*/																							   \
-extern "C" NOU_FUNC NOU::uint32 noePluginTerminate(void *engineInstance)								   \
+extern "C" NOE_PLUGIN_FUNC NOU::uint32 noePluginTerminate(void *engineInstance)							   \
 {																										   \
 	NOE::NOE_CORE::NostraEngine *engine = 															       \
 		reinterpret_cast<NOE::NOE_CORE::NostraEngine*>(engineInstance);                                    \
@@ -85,7 +85,7 @@ extern "C" NOU_FUNC NOU::uint32 noePluginTerminate(void *engineInstance)								
 Constructs a new instance of the user defined plugin class and sets that instance as active instance. This is 
 one of the functions that will be defined by NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
 */
-extern "C" NOU_FUNC void noePluginStartup(NOU::uint32 id);
+extern "C" NOE_PLUGIN_FUNC void noePluginStartup(NOU::uint32 id);
 
 /**
 \brief Deletes the instance of the user defined plugin class.
@@ -94,7 +94,7 @@ extern "C" NOU_FUNC void noePluginStartup(NOU::uint32 id);
 Deletes the instance of the user defined plugin class. This is one of the functions that will be defined by
 NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
 */
-extern "C" NOU_FUNC void noePluginShutdown();
+extern "C" NOE_PLUGIN_FUNC void noePluginShutdown();
 
 /**
 \param source The ID of the source plugin.
@@ -108,7 +108,7 @@ extern "C" NOU_FUNC void noePluginShutdown();
 The interface function for Plugin::receive(). This is one of the functions that will be defined by
 NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
 */
-extern "C" NOU_FUNC void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType size,
+extern "C" NOE_PLUGIN_FUNC void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType size,
 	NOU::uint32 flags);
 
 /**
@@ -122,7 +122,7 @@ extern "C" NOU_FUNC void noePluginReceive(NOU::uint32 source, void *data, NOU::s
 The interface function for Plugin::initialize(). This is one of the functions that will be defined by
 NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
 */
-extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void *engineInstance);
+extern "C" NOE_PLUGIN_FUNC NOU::uint32 noePluginInitialize(void *engineInstance);
 
 /**
 \param engineInstance A pointer to the instance of the engine.
@@ -135,7 +135,7 @@ extern "C" NOU_FUNC NOU::uint32 noePluginInitialize(void *engineInstance);
 The interface function for Plugin::terminate(). This is one of the functions that will be defined by
 NOE_SET_AS_ACTIVE_PLUGIN_CLASS.
 */
-extern "C" NOU_FUNC NOU::uint32 noePluginTerminate(void *engineInstance);
+extern "C" NOE_PLUGIN_FUNC NOU::uint32 noePluginTerminate(void *engineInstance);
 
 namespace NOE::NOE_CORE
 {
@@ -146,7 +146,7 @@ namespace NOE::NOE_CORE
 	The plugin-side interface of a plugin. Every plugin needs to have a single class that inherits from this 
 	one to be able to be loaded as a plugin.
 	*/
-	class NOU_CLASS Plugin
+	class Plugin
 	{
 	public:
 		/**
@@ -211,7 +211,7 @@ namespace NOE::NOE_CORE
 
 		\brief Sets m_id.
 		*/
-		void setID(ID id);
+		NOU_FUNC void setID(ID id);
 
 	public:
 		Plugin() = default;
@@ -234,14 +234,14 @@ namespace NOE::NOE_CORE
 		- \p flags can be used to send additional data that might give a hint on what kind of data \p data 
 		  points to.
 		*/
-		SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
+		NOU_FUNC SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
 
 		/**
 		\return The ID of this plugin.
 
 		\brief Returns the ID of this plugin.
 		*/
-		ID getID() const;
+		NOU_FUNC ID getID() const;
 
 		/**
 		\return A literal from the InitResult enum, see detailed section for more information.

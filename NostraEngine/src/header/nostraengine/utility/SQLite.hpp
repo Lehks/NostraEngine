@@ -112,45 +112,45 @@ namespace NOE::NOE_UTILITY
 		with each call to SQLStatement::next() and it will always only hold the information about the last
 		row that was queried using that method.
 		*/
-		class NOU_CLASS Row
+		class Row
 		{
 		private:
 			SQLStatement *m_stmt;
 			NOU::boolean m_valid;
 
 		public:
-			Row(SQLStatement &stmt);
+			NOU_FUNC Row(SQLStatement &stmt);
 
-			NOU::int32 valueAs(NOU::sizeType index, INTEGER) const;
+			NOU_FUNC NOU::int32 valueAs(NOU::sizeType index, INTEGER) const;
 
-			NOU::int64 valueAs(NOU::sizeType index, INTEGER_64) const;
+			NOU_FUNC NOU::int64 valueAs(NOU::sizeType index, INTEGER_64) const;
 
-			NOU::float32 valueAs(NOU::sizeType index, FLOAT) const;
+			NOU_FUNC NOU::float32 valueAs(NOU::sizeType index, FLOAT) const;
 
-			NOU::float64 valueAs(NOU::sizeType index, FLOAT_64) const;
+			NOU_FUNC NOU::float64 valueAs(NOU::sizeType index, FLOAT_64) const;
 
-			NOU::NOU_DAT_ALG::StringView8 valueAs(NOU::sizeType index, STRING) const;
+			NOU_FUNC NOU::NOU_DAT_ALG::StringView8 valueAs(NOU::sizeType index, STRING) const;
 
-			NOU::boolean isNull(NOU::sizeType index) const;
+			NOU_FUNC NOU::boolean isNull(NOU::sizeType index) const;
 
-			Type getType(NOU::sizeType index) const;
+			NOU_FUNC Type getType(NOU::sizeType index) const;
 
-			NOU::sizeType size() const;
+			NOU_FUNC NOU::sizeType size() const;
 
-			void setValid(NOU::boolean valid);
+			NOU_FUNC void setValid(NOU::boolean valid);
 
-			NOU::boolean isValid() const;
+			NOU_FUNC NOU::boolean isValid() const;
 
-			NOU::int64 affectedRows() const;
+			NOU_FUNC NOU::int64 affectedRows() const;
 
-			NOU::int64 lastRowId() const;
+			NOU_FUNC NOU::int64 lastRowId() const;
 		};
 
 		///\cond
 		class Database;
 		///\endcond
 
-		class NOU_CLASS SQLStatement
+		class SQLStatement
 		{
 		private:
 			enum class State
@@ -167,53 +167,53 @@ namespace NOE::NOE_UTILITY
 			Row m_row;
 
 		public:
-			SQLStatement(Database &db, const NOU::NOU_DAT_ALG::StringView8 &sql);
-			SQLStatement(Database &db);
+			NOU_FUNC SQLStatement(Database &db, const NOU::NOU_DAT_ALG::StringView8 &sql);
+			NOU_FUNC SQLStatement(Database &db);
 
 			SQLStatement(const SQLStatement &other) = delete;
-			SQLStatement(SQLStatement &&other);
+			NOU_FUNC SQLStatement(SQLStatement &&other);
 
 			~SQLStatement();
 
-			NOU::boolean isValid() const;
+			NOU_FUNC NOU::boolean isValid() const;
 			
-			void SQLStatement::bind(std::nullptr_t);
+			NOU_FUNC void SQLStatement::bind(std::nullptr_t);
 
-			void SQLStatement::bind(NOU::int32 i);
+			NOU_FUNC void SQLStatement::bind(NOU::int32 i);
 
-			void SQLStatement::bind(NOU::int32 *i);
+			NOU_FUNC void SQLStatement::bind(NOU::int32 *i);
 
-			void SQLStatement::bind(NOU::int64 i);
+			NOU_FUNC void SQLStatement::bind(NOU::int64 i);
 
-			void SQLStatement::bind(NOU::int64 *i);
+			NOU_FUNC void SQLStatement::bind(NOU::int64 *i);
 
-			void SQLStatement::bind(NOU::float32 f);
+			NOU_FUNC void SQLStatement::bind(NOU::float32 f);
 
-			void SQLStatement::bind(NOU::float32 *f);
+			NOU_FUNC void SQLStatement::bind(NOU::float32 *f);
 
-			void SQLStatement::bind(NOU::float64 f);
+			NOU_FUNC void SQLStatement::bind(NOU::float64 f);
 
-			void SQLStatement::bind(NOU::float64 *f);
+			NOU_FUNC void SQLStatement::bind(NOU::float64 *f);
 
-			void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 &str);
+			NOU_FUNC void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 &str);
 
-			void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 *str);
+			NOU_FUNC void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 *str);
 
-			Row& next();
+			NOU_FUNC Row& next();
 
-			NOU::boolean hasNext();
+			NOU_FUNC NOU::boolean hasNext();
 
-			void* getUnderlying();
+			NOU_FUNC void* getUnderlying();
 
-		    Database& getDatabase();
+			NOU_FUNC Database& getDatabase();
 
-			SQLStatement& operator = (SQLStatement &&other);
+			NOU_FUNC SQLStatement& operator = (SQLStatement &&other);
 		};
 
 		/**
 		\brief A class that is capable of connecting to a SQLite3 database.
 		*/
-		class NOU_CLASS Database
+		class Database
 		{
 		private:
 			/**
@@ -245,7 +245,7 @@ namespace NOE::NOE_UTILITY
 			\brief Constructs a new instance with the passed path. This does not establish a database
 				   connection yet.
 			*/
-			Database(const NOU::NOU_FILE_MNGT::Path &path);
+			NOU_FUNC Database(const NOU::NOU_FILE_MNGT::Path &path);
 
 			/**
 			\return True, if the operation was successful, false if not.
@@ -262,7 +262,7 @@ namespace NOE::NOE_UTILITY
 			  directory or not a database at all (the error message will hold further information).
 			- nostra::utils::core::ErrorCodes::UNKNOWN_ERROR: An unknown error occurred.
 			*/
-			NOU::boolean open();
+			NOU_FUNC NOU::boolean open();
 
 			/**
 			\return True, if the operation was successful, false if not.
@@ -278,9 +278,9 @@ namespace NOE::NOE_UTILITY
 			  (open() was not called).
 			- nostra::utils::core::ErrorCodes::UNKNOWN_ERROR: An unknown error occurred.
 			*/
-			NOU::boolean close();
+			NOU_FUNC NOU::boolean close();
 
-			SQLStatement execute(const NOU::NOU_DAT_ALG::StringView8 &sql);
+			NOU_FUNC SQLStatement execute(const NOU::NOU_DAT_ALG::StringView8 &sql);
 
 			//const QueryResult executeSQL(SQLStatement &sql);
 
@@ -289,21 +289,21 @@ namespace NOE::NOE_UTILITY
 
 			\brief Returns the path to the database file.
 			*/
-			const NOU::NOU_FILE_MNGT::Path & getPath() const;
+			NOU_FUNC const NOU::NOU_FILE_MNGT::Path & getPath() const;
 
 			/**
 			\return True, if the connection is open, false if not.
 
 			\brief Returns whether the connection to the database is established or not.
 			*/
-			NOU::boolean isOpen() const;
+			NOU_FUNC NOU::boolean isOpen() const;
 
 			/**
 			\return The underlying database handle.
 
 			\brief Returns the underlying database handle.
 			*/
-			void* getUnderlying();
+			NOU_FUNC void* getUnderlying();
 		};
 	}
 }

@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
-project(SQLITE3 C)
+project(sqlite3 C)
 
-add_definitions(-DNOU_SQLITE3_EXPORT)
-add_definitions(-DNOU_SQLITE3_EXPORT_BUILD)
+add_library(sqlite3 SHARED sqlite3.c)
 
-add_library("${NOE_SQLITE3_LIB_NAME}" SHARED "sqlite3.c")
+#the sqlite3.h is contained within the sqlite3.c, therefore INTERFACE is enough
+target_include_directories(sqlite3 INTERFACE "include")
 
-install(TARGETS "${NOE_SQLITE3_LIB_NAME}" DESTINATION "bin")
+target_compile_definitions(sqlite3 PUBLIC NOU_SQLITE3_EXPORT)
+target_compile_definitions(sqlite3 PUBLIC NOU_SQLITE3_EXPORT_BUILD)
+
+install(TARGETS sqlite3 DESTINATION bin)
