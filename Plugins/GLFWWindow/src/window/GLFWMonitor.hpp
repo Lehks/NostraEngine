@@ -7,6 +7,8 @@
 
 #include "nostraengine/window/Monitor.hpp"
 
+#define NOE_PLUGIN_CLASS __declspec(dllexport)
+
 /**
 \file window/GLFWMonitor.hpp
 

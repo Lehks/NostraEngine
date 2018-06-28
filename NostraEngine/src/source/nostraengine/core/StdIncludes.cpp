@@ -3,7 +3,7 @@
 
 namespace NOE::internal
 {
-	NOU_FUNC void forceLibGen()
+	void forceLibGen()
 	{
 		//Do nothing
 	}

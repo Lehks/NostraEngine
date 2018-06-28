@@ -18,7 +18,6 @@
 #include "nostraengine/core/Plugin.hpp"
 #include "nostraengine/core/PluginManager.hpp"
 #include "nostraengine/core/ResourceManagement.hpp"
-#include "nostraengine/core/ConfigurationManagement.hpp"
 
 #include "nostraengine/window/Monitor.hpp"
 #include "nostraengine/window/Window.hpp"

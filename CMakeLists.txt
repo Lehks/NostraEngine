@@ -1,9 +1,7 @@
-cmake_minimum_required(VERSION 3.8.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 option(NOE_CPP14_COMPATIBLILTY_MODE "Disables some C++17-only features." OFF)
 option(NOE_GENERATE_DOC "Generate Doxygen-Documentation." ON)
-
-message(STATUS "${CMAKE_BUILD_TYPE}")
 
 if((NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug") AND (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Release"))
 	
@@ -31,11 +29,7 @@ else()
 	message(STATUS "NOE:  Generating without C++14 compatibility mode.")
 endif()
 
-#=== Install-subdirectories
-set(NOE_BINARY_INSTALL_DIR  "bin")
-set(NOE_DOC_INSTALL_DIR     "doc")
-set(NOE_INCLUDE_INSTALL_DIR "include")
-
+#TOOD: maybe? get rid of this (Mac required for testing)
 #=== Set RPATH
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
@@ -43,59 +37,12 @@ set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${NOE_BINARY_INSTALL_DIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 #===
 
+#TOOD: get rid of this (Mac required for testing)
 #=== Set stdlib++ for AppleClang
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 	add_definitions("-stdlib=libc++ -lc++experimental")
 endif()
 #===
-
-#=== Variables for NostraEngine target
-set(NOE_EXECUTABLE "NostraEngineExe")
-set(NOE_EXECUTABLE_SOURCE "main.cpp")
-#===
-
-#=== Variables for Test target
-set(NOE_TEST_EXECUTABLE "Test")
-set(NOE_TEST_EXECUTABLE_SOURCE "testmain.cpp")
-set(NOE_TEST_EXECUTABLE_SOURCE_TEMPLATE "testmain.cpp.in")
-#===
-
-#=== Replace all spaces with %20
-string(REPLACE " " "\ " CMAKE_SOURCE_DIR ${CMAKE_SOURCE_DIR})
-
-#=== Include directory variables
-set(NOE_GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/GLAD/include")
-set(NOE_NOE_INCLUDE_DIR  "${CMAKE_SOURCE_DIR}/NostraEngine/src/header")
-set(NOE_NOU_INCLUDE_DIR  "${CMAKE_SOURCE_DIR}/NostraUtils/Nostra Utils/src/header")
-#===
-
-#=== Variables for GLAD
-set(NOE_GLAD_LIB_NAME "glad")
-#===
-
-#=== Variables for SQLite3
-set(NOE_SQLITE3_LIB_NAME "sqlite3")
-#===
-
-#== Variables for Nostra Engine
-set(NOE_NOE_LIB_NAME "NostraEngine")
-set(NOE_NOE_DBG_LIB_NAME "NostraEngineDebug")
-#==
-
-#=== Variables for Nostra Utils
-set(NOE_NOU_LIB_NAME "NostraUtils")
-set(NOE_NOU_DBG_LIB_NAME "NostraUtilsDebug")
-#===
-
-#== Documentation target name
-set(NOE_DOC_TARGET  "Documentation")
-#===
-
-#=== README Variables
-set(NOE_INSTALL_README_IN  "INSTALL_README.md.in")
-set(NOE_INSTALL_README     "INSTALL_README.md")
-set(NOE_README_OUT         "README.md")
-#=== 
 
 #=== Install directory for default-plugins
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
@@ -126,50 +73,28 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 
 	message(STATUS "NOE:  Building in Debug mode, Test-executables will be generated.")
 
-	#Add include directories
-	include_directories("${NOE_GLAD_INCLUDE_DIR}")
-	include_directories("${NOE_NOE_INCLUDE_DIR}")
-	include_directories("${NOE_NOU_INCLUDE_DIR}")
-	include_directories("${CMAKE_SOURCE_DIR}")
-	
 	#=== Build NostraEngine target
-	add_executable("${NOE_EXECUTABLE}" "${NOE_EXECUTABLE_SOURCE}")
+	add_executable(NostraEngineExe main.cpp)
 	
-	target_link_libraries("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
-	target_link_libraries("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
-	target_link_libraries("${NOE_EXECUTABLE}" "${NOE_NOE_DBG_LIB_NAME}")
-	target_link_libraries("${NOE_EXECUTABLE}" "${NOE_NOU_DBG_LIB_NAME}")
+	target_link_libraries(NostraEngineExe 
+		PRIVATE
+			NostraEngineDbg)
 	
-	add_dependencies("${NOE_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
-	add_dependencies("${NOE_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
-	add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOE_DBG_LIB_NAME}")
-	add_dependencies("${NOE_EXECUTABLE}" "${NOE_NOU_DBG_LIB_NAME}")
-	
-	install(TARGETS "${NOE_EXECUTABLE}" DESTINATION "${NOE_BINARY_INSTALL_DIR}")
+	install(TARGETS NostraEngineExe DESTINATION bin)
 	#===
 	
 	#=== Build Test target
 	#Create testmain.cpp if it does not exist
-	if(NOT EXISTS "${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}")
-		configure_file("${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE_TEMPLATE}" 
-								"${CMAKE_SOURCE_DIR}/${NOE_TEST_EXECUTABLE_SOURCE}")
-		message(STATUS "NOE:  ${NOE_TEST_EXECUTABLE_SOURCE} was not found. A default one was generated.")
+	if(NOT EXISTS "${CMAKE_SOURCE_DIR}/testmain.cpp")
+		message(WARNING "NOE:  testmain.cpp was not found. NostraEngineTest will not be generated.")
+	else()
+		message(STATUS "NOE:  testmain.cpp was found. NostraEngineTest will be generated.")
+		add_executable(NostraEngineTest testmain.cpp)
+	
+		target_link_libraries(NostraEngineTest 
+			PRIVATE 
+				NostraEngineDbg)
 	endif()
-	
-	
-	add_executable("${NOE_TEST_EXECUTABLE}" "${NOE_TEST_EXECUTABLE_SOURCE}")
-	
-	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
-	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
-	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_DBG_LIB_NAME}")
-	target_link_libraries("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_DBG_LIB_NAME}")
-	
-	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_GLAD_LIB_NAME}")
-	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_SQLITE3_LIB_NAME}")
-	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOE_DBG_LIB_NAME}")
-	add_dependencies("${NOE_TEST_EXECUTABLE}" "${NOE_NOU_DBG_LIB_NAME}")
-	
-	install(TARGETS "${NOE_TEST_EXECUTABLE}" DESTINATION "${NOE_BINARY_INSTALL_DIR}")
 	#=== 
 
 else()
@@ -187,12 +112,19 @@ else()
 	set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
 	
 	include(CPack)
-
-	#Install README.md
-	configure_file("${NOE_INSTALL_README_IN}" "${NOE_INSTALL_README}")
-	install(FILES "${CMAKE_BINARY_DIR}/${NOE_INSTALL_README}" DESTINATION "." RENAME "${NOE_README_OUT}")
-
 endif()
 
 #Install license file
 install(FILES "LICENSE.md" DESTINATION ".")
+
+install(FILES "CHANGELOG.md" DESTINATION ".")
+
+#=== Install readme
+#=== Either install the Install-Readme or Debug-Readme
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+	install(TARGETS NostraEngineTest DESTINATION bin)
+else()
+	#Install README.md
+	configure_file("INSTALL_README.md.in" "INSTALL_README.md")
+	install(FILES "${CMAKE_BINARY_DIR}/INSTALL_README.md" DESTINATION "." RENAME "README.md")
+endif()

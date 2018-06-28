@@ -17,7 +17,7 @@ namespace NOE::NOE_CORE
 	A class that represents the data that is stored in the Plugin-Configuration (.pconf) file of a single 
 	plugin. Each loaded plugin has an instance of this class associated with it. 
 	*/
-	class NOU_CLASS PluginMetadata final
+	class PluginMetadata final
 	{
 	public:
 		/**
@@ -177,12 +177,12 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new instance from the passed configuration file.
 		*/
-		explicit PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config);
+		NOU_FUNC explicit PluginMetadata(const NOU::NOU_FILE_MNGT::Path &config);
 
 		/**
 		\brief Constructs an invalid plugin. The ID will be EnginePlugin::INVALID_ID.
 		*/
-		PluginMetadata();
+		NOU_FUNC PluginMetadata();
 
 		/**
 		\return The ID of the plugin that this metadata is associated with, or EnginePlugin::INVALID_ID if 
@@ -190,35 +190,35 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the ID of the plugin that this metadata is associated with.
 		*/
-		Plugin::ID getID() const;
+		NOU_FUNC Plugin::ID getID() const;
 
 		/**
 		\return The name of the plugin that this metadata is associated with.
 
 		\brief Returns the name of the plugin that this metadata is associated with.
 		*/
-		const NOU::NOU_DAT_ALG::String8& getName() const;
+		NOU_FUNC const NOU::NOU_DAT_ALG::String8& getName() const;
 
 		/**
 		\return The description of the plugin that this metadata is associated with.
 
 		\brief Returns the description of the plugin that this metadata is associated with.
 		*/
-		const NOU::NOU_DAT_ALG::String8& getDescription() const;
+		NOU_FUNC const NOU::NOU_DAT_ALG::String8& getDescription() const;
 
 		/**
 		\return The version of the plugin that this metadata is associated with.
 
 		\brief Returns the version of the plugin that this metadata is associated with.
 		*/
-		const NOU::NOU_CORE::Version& getPluginVersion() const;
+		NOU_FUNC const NOU::NOU_CORE::Version& getPluginVersion() const;
 
 		/**
 		\return The minimum engine version that is required for the plugin to run.
 
 		\brief Returns the minimum engine version that is required for the plugin to run.
 		*/
-		const NOU::NOU_CORE::Version& getRequiredVersion() const;
+		NOU_FUNC const NOU::NOU_CORE::Version& getRequiredVersion() const;
 
 		/**
 		\return The path to the shared library file of the plugin that this metadata is associated with.
@@ -226,14 +226,14 @@ namespace NOE::NOE_CORE
 		\brief Returns the path to the shared library file of the plugin that this metadata is associated 
 		       with.
 		*/
-		NOU::NOU_FILE_MNGT::Path getPath() const;
+		NOU_FUNC NOU::NOU_FILE_MNGT::Path getPath() const;
 
 		/**
 		\return The priority of the plugin that this metadata is associated with.
 
 		\brief Returns the priority of the plugin that this metadata is associated with.
 		*/
-		Priority getPriority() const;
+		NOU_FUNC Priority getPriority() const;
 
 		/**
 		\brief Returns whether this plugin is valid (it exists and can be loaded).
@@ -243,7 +243,7 @@ namespace NOE::NOE_CORE
 		no other methods can called for this class (except getID(), which will return 
 		EnginePlugin::INVALID_ID).
 		*/
-		NOU::boolean isValid() const;
+		NOU_FUNC NOU::boolean isValid() const;
 
 		/**
 		\brief Returns whether the plugin is enabled or not.
@@ -256,14 +256,14 @@ namespace NOE::NOE_CORE
 		\note
 		A disabled plugin implies that the plugin is also invalid.
 		*/
-		NOU::boolean isEnabled() const;
+		NOU_FUNC NOU::boolean isEnabled() const;
 
 		/**
 		\return isValid()
 
 		\brief The same as isValid().
 		*/
-		operator NOU::boolean() const;
+		NOU_FUNC operator NOU::boolean() const;
 	};
 
 	/**
@@ -273,7 +273,7 @@ namespace NOE::NOE_CORE
 	The engine-side interface of a plugin. This class is able to build up a connection to a plugin and call 
 	the functions in that plugin.
 	*/
-	class NOU_CLASS EnginePlugin final
+	class EnginePlugin final
 	{
 	public:
 		/**
@@ -397,7 +397,7 @@ namespace NOE::NOE_CORE
 		load the metadata of the plugin but it does not load the shared library (this needs to be done with
 		load()).
 		*/
-		explicit EnginePlugin(const NOU::NOU_FILE_MNGT::Path &config);
+		NOU_FUNC explicit EnginePlugin(const NOU::NOU_FILE_MNGT::Path &config);
 
 		/**
 		\brief Constructs an invalid instance.
@@ -406,7 +406,7 @@ namespace NOE::NOE_CORE
 		Constructs an invalid instance. The metadata of this instance will be invalid as well and the plugin
 		can never be loaded.
 		*/
-		EnginePlugin();
+		NOU_FUNC EnginePlugin();
 
 		/**
 		\param other The instance to move the data from.
@@ -414,9 +414,9 @@ namespace NOE::NOE_CORE
 		\brief Moves the data from the passed instance to the one that is being constructed by this 
 		       constructor.
 		*/
-		EnginePlugin(EnginePlugin && other);
+		NOU_FUNC EnginePlugin(EnginePlugin && other);
 
-		EnginePlugin(const EnginePlugin &other) = delete;
+		NOU_FUNC EnginePlugin(const EnginePlugin &other) = delete;
 
 		/**
 		\brief If the plugin is loaded, this will automatically unload it.
@@ -430,7 +430,7 @@ namespace NOE::NOE_CORE
 			unload();
 		\endcode
 		*/
-		~EnginePlugin();
+		NOU_FUNC ~EnginePlugin();
 
 		/**
 		\brief Loads the plugin.
@@ -463,7 +463,7 @@ namespace NOE::NOE_CORE
 		multiple errors are pushed to the error handler, one for each function that could not be loaded 
 		(which is 5 functions at most).
 		*/
-		NOU::boolean load();
+		NOU_FUNC NOU::boolean load();
 
 		/**
 		\brief Unloads the plugin.
@@ -483,7 +483,7 @@ namespace NOE::NOE_CORE
 		  library failed.
 		- PluginManager::ErrorCodes::PLUGIN_NOT_LOADED: The plugin was not loaded.
 		*/
-		NOU::boolean unload();
+		NOU_FUNC NOU::boolean unload();
 
 		/**
 		\return True, if the plugin is loaded and false if not.
@@ -493,7 +493,7 @@ namespace NOE::NOE_CORE
 		\details
 		Returns whether the plugin is loaded or not. A plugin is loaded, if a call to load() was successful.
 		*/
-		NOU::boolean isLoaded() const;
+		NOU_FUNC NOU::boolean isLoaded() const;
 
 		/**
 		\return The value that was returned by Plugin::initialize().
@@ -504,7 +504,7 @@ namespace NOE::NOE_CORE
 		Initializes the plugin by calling Plugin::initialize(). This function will fail (and most likely 
 		crash the program) if the plugin is not loaded yet.
 		*/
-		typename Plugin::InitResult initialize(NostraEngine &engineInstance);
+		NOU_FUNC typename Plugin::InitResult initialize(NostraEngine &engineInstance);
 
 		/**
 		\return The value that was returned by Plugin::terminate().
@@ -515,7 +515,7 @@ namespace NOE::NOE_CORE
 		Initializes the plugin by calling Plugin::terminate(). This function will fail (and most likely
 		crash the program) if the plugin is not loaded yet.
 		*/
-		typename Plugin::InitResult terminate(NostraEngine &engineInstance);
+		NOU_FUNC typename Plugin::InitResult terminate(NostraEngine &engineInstance);
 
 		/**
 		\brief Initializes the plugin by calling Plugin::receive().
@@ -527,20 +527,20 @@ namespace NOE::NOE_CORE
 		\note
 		This method is not meant to be called directly by a user.
 		*/
-		void receive(Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags);
+		NOU_FUNC void receive(Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags);
 
 		/**
 		\return The metadata of this plugin.
 
 		\brief Returns the metadata of this plugin.
 		*/
-		const PluginMetadata& getMetadata() const;
+		NOU_FUNC const PluginMetadata& getMetadata() const;
 	};
 
 	/**
 	\brief A class that gives access to all plugins. 
 	*/
-	class NOU_CLASS PluginManager final
+	class PluginManager final
 	{
 	public:
 		/**
@@ -654,10 +654,10 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Returns the instance of the class.
 		*/
-		static PluginManager& get();
+		NOU_FUNC static PluginManager& get();
 
-		PluginManager(const PluginManager &other) = delete;
-		PluginManager(PluginManager &&) = delete;
+		NOU_FUNC PluginManager(const PluginManager &other) = delete;
+		NOU_FUNC PluginManager(PluginManager &&) = delete;
 
 		/**
 		\param path The path to load the plugins from.
@@ -668,14 +668,14 @@ namespace NOE::NOE_CORE
 		Sets the path that the plugins should be loaded from. Loading the plugins will occur non-recursively.
 		After createPluginList() has been called successfully, this method will do nothing anymore.
 		*/
-		void setPluginLoadPath(const NOU::NOU_FILE_MNGT::Path &path);
+		NOU_FUNC void setPluginLoadPath(const NOU::NOU_FILE_MNGT::Path &path);
 
 		/**
 		\return The path that the plugins will be/were loaded from.
 
 		\brief Returns the path that the plugins will be/were loaded from.
 		*/
-		const NOU::NOU_FILE_MNGT::Path& getPluginLoadPath() const;
+		NOU_FUNC const NOU::NOU_FILE_MNGT::Path& getPluginLoadPath() const;
 
 		/**
 		\brief Initializes the plugin manager.
@@ -684,7 +684,7 @@ namespace NOE::NOE_CORE
 		Initializes the plugin manager. This function must be called before any of the other methods are
 		usable.
 		*/
-		void initialize();
+		NOU_FUNC void initialize();
 
 		/**
 		\brief Terminates the plugin manager.
@@ -693,7 +693,7 @@ namespace NOE::NOE_CORE
 		Terminates the plugin manager. This function must be called before any of the other methods are 
 		usable.
 		*/
-		void terminate();
+		NOU_FUNC void terminate();
 
 		/**
 		\param id The ID of the plugin.
@@ -706,7 +706,7 @@ namespace NOE::NOE_CORE
 
 		To use this method, createPluginList() needs to have been called before.
 		*/
-		EnginePlugin& getPlugin(Plugin::ID id);
+		NOU_FUNC EnginePlugin& getPlugin(Plugin::ID id);
 
 		/**
 		\param recipient The ID of the plugin that should receive the message.
@@ -723,7 +723,8 @@ namespace NOE::NOE_CORE
 		To use this method, createPluginList() needs to have been called before and the recipient plugin 
 		needs to be loaded.
 		*/
-		Plugin::SendResult send(Plugin::ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
+		NOU_FUNC Plugin::SendResult send(Plugin::ID recipient, void *data, 
+			NOU::sizeType size, NOU::uint32 flags);
 
 		/**
 		\param recipient The ID of the plugin that should receive the message.
@@ -738,8 +739,8 @@ namespace NOE::NOE_CORE
 		\note
 		This method is not supposed to be used by a user, it is only called by other methods of the engine.
 		*/
-		Plugin::SendResult sendImpl(Plugin::ID recipient, Plugin::ID source, void *data, NOU::sizeType size,
-			NOU::uint32 flags);
+		NOU_FUNC Plugin::SendResult sendImpl(Plugin::ID recipient, Plugin::ID source, void *data, 
+			NOU::sizeType size, NOU::uint32 flags);
 
 		/**
 		\return True, if the method was successful, false if not.
@@ -753,14 +754,14 @@ namespace NOE::NOE_CORE
 		\note
 		This method only constructs the plugin instances - it does not load them.
 		*/
-		NOU::boolean createPluginList();
+		NOU_FUNC NOU::boolean createPluginList();
 
 		/**
 		\return True, if the plugin list was successfully created, false if not.
 
 		\brief Returns whether the plugin list was successfully created.
 		*/
-		NOU::boolean isPluginListCreated() const;
+		NOU_FUNC NOU::boolean isPluginListCreated() const;
 
 		/**
 		\brief Returns a list of all of the plugins sorted after their priority.
@@ -770,7 +771,7 @@ namespace NOE::NOE_CORE
 
 		To use this method, createPluginList() needs to have been called before.
 		*/
-		NOU::NOU_DAT_ALG::Vector<EnginePlugin*>& getPlugins();
+		NOU_FUNC NOU::NOU_DAT_ALG::Vector<EnginePlugin*>& getPlugins();
 	};
 
 	constexpr Plugin::ID EnginePlugin::ENGINE_ID;
