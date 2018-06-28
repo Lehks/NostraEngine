@@ -1,7 +1,5 @@
 #include "nostraengine/utility/SQLite.hpp"
 
-#define NOU_SQLITE3_EXPORT
-
 #include "SQLite3/sqlite3.h"
 
 namespace NOE::NOE_UTILITY

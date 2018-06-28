@@ -10,3 +10,7 @@ cmake-build-debug/
 
 #Directory that, according to the README.md, should be used as build directory for CMake
 /Build
+
+NostraEngine/doc/Warnings.txt
+
+CMakeSettings.json

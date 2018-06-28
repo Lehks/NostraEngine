@@ -22,7 +22,7 @@ namespace NOE::NOE_CORE
 	A class that can be used to read the meta data of a single resource. For a full tutorial on how to use the
 	resource management system, see \link resourceManagementSys this page\endlink.
 	*/
-	class NOU_CLASS ResourceMetadata
+	class ResourceMetadata
 	{
 	public:
 
@@ -106,7 +106,7 @@ namespace NOE::NOE_CORE
 		the original ID is created afterwards, the instances of this class that were before that will NOT be
 		updated.
 		*/
-		explicit ResourceMetadata(ID id = INVALID_ID);
+		NOU_FUNC explicit ResourceMetadata(ID id = INVALID_ID);
 
 		/**
 		\return The ID of the resource.
@@ -114,28 +114,28 @@ namespace NOE::NOE_CORE
 		\brief Returns the ID of the resource. If the resource is invalid (it does not exist), INVALID_ID is
 		       returned.
 		*/
-		ID getID() const;
+		NOU_FUNC ID getID() const;
 
 		/**
 		\return The type of the resource.
 
 		\brief Returns the type of the resource.
 		*/
-		ResourceType getType() const;
+		NOU_FUNC ResourceType getType() const;
 
 		/**
 		\return The path to the source file of the resource.
 
 		\brief Returns the path to the source file of the resource.
 		*/
-		NOU::NOU_FILE_MNGT::Path getPath() const;
+		NOU_FUNC NOU::NOU_FILE_MNGT::Path getPath() const;
 
 		/**
 		\return True, if the resource is cached and false if not.
 
 		\brief Returns whether the resource is cached or not.
 		*/
-		NOU::boolean isCached() const;
+		NOU_FUNC NOU::boolean isCached() const;
 
 		/**
 		\return The path the cache file.
@@ -145,21 +145,21 @@ namespace NOE::NOE_CORE
 		\warning
 		The result of this method is only valid if <tt>isCached()</tt> returns true.
 		*/
-		NOU::NOU_FILE_MNGT::Path getCachePath() const;
+		NOU_FUNC NOU::NOU_FILE_MNGT::Path getCachePath() const;
 
 		/**
 		\return True, if the meta data is valid, false if not.
 
 		\brief Returns whether the meta data is valid or not.
 		*/
-		NOU::boolean isValid() const;
+		NOU_FUNC NOU::boolean isValid() const;
 
 		/**
 		\return isValid()
 
 		\brief Same as isValid()
 		*/
-		operator NOU::boolean() const;
+		NOU_FUNC operator NOU::boolean() const;
 	};
 
 	constexpr ResourceMetadata::ID ResourceMetadata::INVALID_ID;

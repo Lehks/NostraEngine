@@ -24,7 +24,7 @@ namespace NOE::NOE_CORE
 	A class that is the base class of any resource loader that is managed by the ResourceManager. For a full 
 	tutorial on how to use the resource management system, see \link resourceManagementSys this page\endlink.
 	*/
-	class NOU_CLASS ResourceLoader
+	class ResourceLoader
 	{
 	private:
 		/**
@@ -106,7 +106,7 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new resource loader with the passed name.
 		*/
-		ResourceLoader(const NOU::NOU_DAT_ALG::String8 &name);
+		NOU_FUNC ResourceLoader(const NOU::NOU_DAT_ALG::String8 &name);
 
 		ResourceLoader(const ResourceLoader &) = delete;
 		ResourceLoader(ResourceLoader &&) = delete;
@@ -119,7 +119,7 @@ namespace NOE::NOE_CORE
 		\note
 		It required for a resource loader class that all instances of that class share the same name.
 		*/
-		const NOU::NOU_DAT_ALG::StringView8& getName() const;
+		NOU_FUNC const NOU::NOU_DAT_ALG::StringView8& getName() const;
 
 		/**
 		\param enable If true, caching will be enabled, if false, caching will be disabled.
@@ -145,14 +145,14 @@ namespace NOE::NOE_CORE
 		By default, caching is enabled for a loader (but this may be overwritten by the resource loader's
 		constructor).
 		*/
-		void enableCaching(NOU::boolean enable);
+		NOU_FUNC void enableCaching(NOU::boolean enable);
 
 		/**
 		\return Whether caching is enabled or disabled for this resource loader.
 
 		\brief Returns whether caching is enabled or disabled for this resource loader.
 		*/
-		NOU::boolean isCachingEnabled();
+		NOU_FUNC NOU::boolean isCachingEnabled();
 
 		/**
 		\param id The ID of the resource to load.
@@ -167,7 +167,7 @@ namespace NOE::NOE_CORE
 		\note
 		A resource that has been loaded, needs to be closed with close() after it is not used anymore.
 		*/
-		Resource* load(ResourceMetadata::ID id);
+		NOU_FUNC Resource* load(ResourceMetadata::ID id);
 
 		/**
 		\param resource The resource to store.
@@ -179,7 +179,7 @@ namespace NOE::NOE_CORE
 		\note
 		It is only valid to store a resource using a loader when isValidResource() returns true.
 		*/
-		NOU::boolean store(Resource *resource);
+		NOU_FUNC NOU::boolean store(Resource *resource);
 
 		/**
 		\param resource The resource to close.
@@ -194,7 +194,7 @@ namespace NOE::NOE_CORE
 		\note
 		After a resource is closed, it is not usable anymore.
 		*/
-		void close(Resource *resource);
+		NOU_FUNC void close(Resource *resource);
 
 		/**
 		\return True, if the resource is valid, false if not.

@@ -23,7 +23,7 @@ namespace NOE::NOE_CORE
 	A class that is the base class of any resource that is managed by the ResourceManager. For a full tutorial
 	on how to use the resource management system, see \link resourceManagementSys this page\endlink.
 	*/
-	class NOU_CLASS Resource
+	class Resource
 	{
 	private:
 		/**
@@ -47,14 +47,14 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new instance.
 		*/
-		Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name);
+		NOU_FUNC Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name);
 
 		/**
 		\return The meta data of the resource.
 
 		\brief Returns the meta data of the resource.
 		*/
-		const ResourceMetadata& getMetadata() const;
+		NOU_FUNC const ResourceMetadata& getMetadata() const;
 
 		/**
 		\return The name of the resource loader that this resource was loaded with.
@@ -67,7 +67,7 @@ namespace NOE::NOE_CORE
 		store the resource with this loader (unless another error occurs, e.g. the process does not have the
 		permission to write the source file of the resource).
 		*/
-		const NOU::NOU_DAT_ALG::String8& getLoaderName() const;
+		NOU_FUNC const NOU::NOU_DAT_ALG::String8& getLoaderName() const;
 
 		/**
 		\return True, if the resource was successfully stored, false if not.
@@ -80,7 +80,7 @@ namespace NOE::NOE_CORE
 		ResourceManager::get().getLoader(this->getLoaderName()).store(this->getMetadata().getID())
 		\endcode
 		*/
-		NOU::boolean store();
+		NOU_FUNC NOU::boolean store();
 
 		/**
 		\param enableCache If true, caching will be enables for this resource, if false, caching will be
@@ -98,7 +98,8 @@ namespace NOE::NOE_CORE
 
 		Since this method calls ResourceManager::cache(), the same errors can occur in this method.
 		*/
-		NOU::boolean cache(NOU::boolean enableCache = true, const NOU::NOU_FILE_MNGT::Path &path = "./");
+		NOU_FUNC NOU::boolean 
+			cache(NOU::boolean enableCache = true, const NOU::NOU_FILE_MNGT::Path &path = "./");
 
 		/**
 		\return True, if the cache file was deleted, false if not.
@@ -116,7 +117,7 @@ namespace NOE::NOE_CORE
 		\note
 		If the resource is not cached, this method will not do anything.
 		*/
-		NOU::boolean deleteCache();
+		NOU_FUNC NOU::boolean deleteCache();
 	};
 }
 

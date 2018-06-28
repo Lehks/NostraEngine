@@ -41,15 +41,22 @@
 #define NOE_WINDOW window
 #endif
 
-//If a plugin is being built
-#ifndef NOE_PLUGIN_CLASS
-//#define NOE_PLUGIN_CLASS NOU_EXPORT_CLASS
-#define NOE_PLUGIN_CLASS NOU_CLASS
+#ifndef NOE_PLUGIN_FUNC
+#define NOE_PLUGIN_FUNC NOU_EXPORT_FUNC
 #endif
 
-#ifndef NOE_PLUGIN_FUNC
-//#define NOE_PLUGIN_FUNC NOU_EXPORT_FUNC
-#define NOE_PLUGIN_FUNC NOU_FUNC
+/**
+\brief The version 0.0.1 of NOE.
+*/
+#ifndef NOE_VERSION_0_0_1
+#define NOE_VERSION_0_0_1 NOU_MAKE_VERSION(0, 0, 1)
+#endif
+
+/**
+\brief The current version of NOE.
+*/
+#ifndef NOE_VERSION
+#define NOE_VERSION NOE_VERSION_0_0_1
 #endif
 
 namespace NOE::internal

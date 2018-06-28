@@ -1,0 +1,22 @@
+# @NOE_PROJECT_NAME@
+**Version @NOE_PROJECT_VERSION@**  
+@NOE_PROJECT_DESCRIPTION@
+
+The @NOE_PROJECT_NAME@ is a project created by students of the htw saar (https://www.htwsaar.de/) and 
+supervised by Dipl-Inf (FH) Christopher Olbertz.
+
+GitHub: @NOE_PROJECT_HOMEPAGE@
+
+Since vital tools are missing, this installed version of the engine is not usable yet. This README file will 
+be updated as soon as the required tools are implemented and usable.
+
+## Dependencies
+
+This Engine relies on a bunch of 3rd Party libraries. Here is a full list of all of them:
+
+- **GLFW** (http://www.glfw.org/): Source Code has not been altered, but only the files that are required for 
+  building the library (this excludes e.g. the examples) have been imported. The CMakeLists.txt files have
+  been altered.
+- **GLAD** (http://glad.dav1d.de/): None of the files have been altered.
+- **SQLite3** (https://www.sqlite.org/index.html): Both the sqlite3.c and sqlite3.h files were altered to 
+  allow for the generation of shared libraries.

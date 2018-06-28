@@ -1,8 +1,8 @@
 # NostraEngine
 A 3D game engine.
 
-It is a project made by students of the htw saar (https://www.htwsaar.de/) and supervised by Dipl-Inf (FH) 
-Christopher Olbertz.
+The NostraEngine is a project created by students of the htw saar (https://www.htwsaar.de/) and supervised by
+Dipl-Inf (FH) Christopher Olbertz.
 
 GitHub: https://github.com/Lehks/NostraEngine
 
