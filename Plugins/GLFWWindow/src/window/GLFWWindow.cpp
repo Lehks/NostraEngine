@@ -8,6 +8,8 @@ namespace GLFWWindowPlugin
 
 	NOU::NOU_CORE::Logger& windowLog = NOU::NOU_CORE::Logger::get();
 
+	GLFWWindow::CallbackType GLFWWindow::s_callback = GLFWWindow::window_close_callback;
+
 	GLFWWindow::GLFWWindow() :
 		m_window(nullptr)
 	{
@@ -190,6 +192,14 @@ namespace GLFWWindowPlugin
 	void GLFWWindow::terminate()
 	{
 		closeWindow();
+	}
+
+	void GLFWWindow::window_close_callback(void* window)
+	{
+		if (glfwWindowShouldClose(reinterpret_cast<GLFWwindow*>(window)))
+		{
+			NOE::NOE_CORE::NostraEngine::get().terminateEngine();
+		}
 	}
 
 #ifndef NOU_WINDOW_MAKE_ERROR
