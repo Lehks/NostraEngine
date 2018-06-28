@@ -1,3 +1,6 @@
+#ifndef NOE_CORE_PLUGIN_MANAGER_HPP
+#define NOE_CORE_PLUGIN_MANAGER_HPP
+
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/core/Plugin.hpp"
@@ -773,3 +776,5 @@ namespace NOE::NOE_CORE
 	constexpr Plugin::ID EnginePlugin::ENGINE_ID;
 	constexpr Plugin::ID EnginePlugin::INVALID_ID;
 }
+
+#endif

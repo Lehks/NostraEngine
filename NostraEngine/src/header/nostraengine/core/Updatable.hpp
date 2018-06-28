@@ -39,6 +39,16 @@ namespace NOE::NOE_CORE
                     unique behaviour
             */
             virtual void lateUpdate();
+
+            /**
+            \brief A basic constructor for this interface, it suits no purpose than automatically adding the current object to the update vector
+            */
+            Updatable();
+        
+            /**
+            \brief A basic destructor for this interface, it suits no purpose than automatically removing the current object from the update vector
+            */
+            ~Updatable();
     };
 }
 #endif
