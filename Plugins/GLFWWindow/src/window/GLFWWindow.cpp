@@ -2,9 +2,13 @@
 
 namespace GLFWWindowPlugin
 {
+	NOU::NOU_CORE::Logger& windowLog = NOU::NOU_CORE::Logger::get();
+
 	NOU::sizeType GLFWWindow::s_instanceCounter = 0;
 
-	NOU::NOU_CORE::Logger& windowLog = NOU::NOU_CORE::Logger::get();
+	const NOU::uint32 INITIALIZABLE_PRIORITY = 200;
+
+	const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME = "GLFWWindow";
 
 	void GLFWWindow::windowCloseCallback(GLFWwindow *win)
 	{
@@ -15,6 +19,7 @@ namespace GLFWWindowPlugin
 	}
 
 	GLFWWindow::GLFWWindow() :
+		Initializable(INITIALIZABLE_PRIORITY),
 		m_window(nullptr)
 	{
 		if (s_instanceCounter == 0)

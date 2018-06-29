@@ -56,9 +56,14 @@ namespace GLFWWindowPlugin
 		NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
 
 		/**
+		\brief			A constant that stores the priority of the class.
+		*/
+		static const NOU::uint32 INITIALIZABLE_PRIORITY;
+
+		/**
 		\brief			A constant that stores the name of the class.
 		*/
-		const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME = "GLFWWindow";
+		static const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME;
 
 	public:
 		/**
