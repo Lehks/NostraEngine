@@ -77,7 +77,7 @@ namespace NOE::NOE_CORE
 		The value of ResourceManager::getResourceRemoveUpdates() from the last validity check. See 
 		ResourceManager::m_resourceRemoveUpdates for further information.
 		*/
-		mutable NOU::uint32 m_removeUpdate; //mutable for isValid()
+		mutable NOU::int32 m_removeUpdate; //mutable for isValid()
 
 		/**
 		\param attribute The name of the attribute to get the value from.
