@@ -6,9 +6,9 @@ namespace GLFWWindowPlugin
 
 	NOU::sizeType GLFWWindow::s_instanceCounter = 0;
 
-	const NOU::uint32 INITIALIZABLE_PRIORITY = 200;
+	const NOU::uint32 GLFWWindow::INITIALIZABLE_PRIORITY = 200;
 
-	const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME = "GLFWWindow";
+	const NOU::NOU_DAT_ALG::StringView8 GLFWWindow::CLASS_NAME = "GLFWWindow";
 
 	void GLFWWindow::windowCloseCallback(GLFWwindow *win)
 	{
