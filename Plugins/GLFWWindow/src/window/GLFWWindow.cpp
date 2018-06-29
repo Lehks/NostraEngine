@@ -1,14 +1,18 @@
 #include "GLFWWindow.hpp"
 
-#include "GLFW/glfw3.h"
-
 namespace GLFWWindowPlugin
 {
 	NOU::sizeType GLFWWindow::s_instanceCounter = 0;
 
 	NOU::NOU_CORE::Logger& windowLog = NOU::NOU_CORE::Logger::get();
 
-	GLFWWindow::CallbackType GLFWWindow::s_callback = GLFWWindow::window_close_callback;
+	void GLFWWindow::windowCloseCallback(GLFWwindow *win)
+	{
+		if (glfwWindowShouldClose(win))
+		{
+			NOE::NOE_CORE::NostraEngine::get().terminateEngine();
+		}
+	}
 
 	GLFWWindow::GLFWWindow() :
 		m_window(nullptr)
@@ -55,6 +59,9 @@ namespace GLFWWindowPlugin
 
 		glfwMakeContextCurrent(reinterpret_cast<GLFWwindow*>(m_window));
 		glfwSwapInterval(1);
+
+		glfwSetWindowCloseCallback(reinterpret_cast<GLFWwindow*>(m_window),
+			GLFWWindow::windowCloseCallback);
 	}
 
 	void GLFWWindow::setTitle(const NOU::NOU_DAT_ALG::String8& title)
@@ -192,14 +199,6 @@ namespace GLFWWindowPlugin
 	void GLFWWindow::terminate()
 	{
 		closeWindow();
-	}
-
-	void GLFWWindow::window_close_callback(void* window)
-	{
-		if (glfwWindowShouldClose(reinterpret_cast<GLFWwindow*>(window)))
-		{
-			NOE::NOE_CORE::NostraEngine::get().terminateEngine();
-		}
 	}
 
 #ifndef NOU_WINDOW_MAKE_ERROR

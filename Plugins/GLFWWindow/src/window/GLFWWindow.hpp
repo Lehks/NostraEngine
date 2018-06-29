@@ -9,6 +9,8 @@
 #include "nostraengine/window/Window.hpp"
 #include "GLFWMonitor.hpp"
 
+#include "GLFW/glfw3.h"
+
 /**
 \file window/GLFWWindow.hpp
 
@@ -58,18 +60,9 @@ namespace GLFWWindowPlugin
 		*/
 		const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME = "GLFWWindow";
 
-		/**
-		\brief The callback type
-		*/
-		using CallbackType = void(*)(void* cb);
-
 	public:
-
-		/**
-		\brief A CallbackType where cb is a reference to the callback.
-		*/
-		NOE_PLUGIN_FUNC static CallbackType s_callback;
-
+		static void windowCloseCallback(GLFWwindow *win);
+		
 		/**
 		\brief			Checks if the instance counter is 0, increases the counter and initializes GLFW.
 		*/
@@ -102,11 +95,6 @@ namespace GLFWWindowPlugin
 		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
 		NOE_PLUGIN_FUNC virtual NOE::NOE_CORE::Initializable::ExitCode initialize() override;
 		NOE_PLUGIN_FUNC virtual void terminate() override;
-
-		/**
-		\brief Sets the callback in s_callback.
-		*/
-		NOE_PLUGIN_FUNC static void window_close_callback(void* window);
 	};
 
 	/**

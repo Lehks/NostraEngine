@@ -19,7 +19,7 @@ namespace GLFWWindowPlugin
 
 			m_windowPtr = NOU::NOU_MEM_MNGT::UniquePtr<GLFWWindow>(new GLFWWindow(), 
 				NOU::NOU_MEM_MNGT::defaultDeleter);
-			//set window in main
+			NOE::NOE_CORE::NostraEngine::get().setWindowPointer(m_windowPtr->rawPtr());
 
 			NOU_LOG_DEBUG("GLFW initialization successful!");
 
