@@ -61,6 +61,9 @@ namespace GLFWWindowPlugin
 		const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME = "GLFWWindow";
 
 	public:
+		/**
+		\brief The callback that is called by GLFW when the window should be closed.
+		*/
 		static void windowCloseCallback(GLFWwindow *win);
 		
 		/**
