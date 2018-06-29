@@ -94,7 +94,7 @@ namespace NOE::NOE_CORE {
 			\brief Returns the static HashMap as a reference.
 			\return the HashMap reference
 			*/
-			NOU_FUNC NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8 ,NOU::NOU_DAT_ALG::String8> & 
+			NOU_FUNC static NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8 ,NOU::NOU_DAT_ALG::String8> &
 																									getMap();
 
 			/**
