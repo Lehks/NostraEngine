@@ -109,6 +109,11 @@ namespace NOE::NOE_CORE
 		};
 
 		/**
+		\brief The path that the configuration files will be loaded from.
+		*/
+		NOU::NOU_FILE_MNGT::Path m_loadPath;
+
+		/**
 		\brief The single configuration sources, unsorted.
 		*/
 		NOU::NOU_DAT_ALG::Vector<ConfigurationSourceData> m_data;
@@ -236,6 +241,20 @@ namespace NOE::NOE_CORE
 		*/
 		NOU_FUNC void setLoadMode(LoadMode loadMode);
 
+		/**
+		\return The currently set load path.
+
+		\brief Returns the currently set load path.
+		*/
+		const NOU::NOU_FILE_MNGT::Path& ConfigurationManager::getPath() const;
+
+		/**
+		\param path The path to set.
+
+		\brief Sets path from where the configuration files will be loaded. This function has no effect after 
+		       the instance has been initialized.
+		*/
+		void ConfigurationManager::setPath(const NOU::NOU_FILE_MNGT::Path &path);
 		/**
 		\tparam T    The child class type of ConfigurationSourceFactory.
 		\tparam ARGS The types of the parameters that will be passed to the constructor of \p T.

@@ -24,6 +24,7 @@ namespace NOE::NOE_CORE
 
 	ConfigurationManager::ConfigurationManager() :
 		Initializable(INITIALIZABLE_PRIORITY),
+		m_loadPath(DEFAULT_CONFIGURATION_PATH),
 		m_loadMode(DEFAULT_LOAD_MODE),
 		m_wasInitCalled(false),
 		m_factoryNameDataMap(DEFAULT_FACTORY_MAP_CAPACITY)
@@ -37,8 +38,7 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean ConfigurationManager::loadSourcesList()
 	{
-		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> files 
-			                                        = createFileList(DEFAULT_CONFIGURATION_PATH);
+		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::File> files = createFileList(m_loadPath);
 		NOU::boolean ret = true;
 
 		for (auto &file : files)
@@ -198,6 +198,26 @@ namespace NOE::NOE_CORE
 		{
 			NOU_LOG_DEBUG("It was attempted to change the load mode of the configuration manager after "
 				"it was initialized. The changes were not made; the load mode is still the same.");
+		}
+#endif
+	}
+
+	const NOU::NOU_FILE_MNGT::Path& ConfigurationManager::getPath() const
+	{
+		return m_loadPath;
+	}
+
+	void ConfigurationManager::setPath(const NOU::NOU_FILE_MNGT::Path &path)
+	{
+		if (!m_wasInitCalled)
+		{
+			m_loadPath = path;
+		}
+#ifndef NOU_LOG_DEBUG_DISABLE
+		else
+		{
+			NOU_LOG_DEBUG("It was attempted to change the load path of the configuration manager after "
+				"it was initialized. The changes were not made; the path is still the same.");
 		}
 #endif
 	}
