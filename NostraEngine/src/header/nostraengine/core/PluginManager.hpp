@@ -45,12 +45,12 @@ namespace NOE::NOE_CORE
 		/**
 		\brief The lowest possible priority of a plugin.
 		*/
-		static const Priority LOWEST_PRIORITY;
+		static constexpr Priority LOWEST_PRIORITY = 0;
 
 		/**
 		\brief The highest possible priority of a plugin.
 		*/
-		static const Priority HIGHEST_PRIORITY;
+		static constexpr Priority HIGHEST_PRIORITY = -1;
 
 		/**
 		\brief The name of the core section in the .pconf file.
@@ -656,8 +656,8 @@ namespace NOE::NOE_CORE
 		*/
 		NOU_FUNC static PluginManager& get();
 
-		NOU_FUNC PluginManager(const PluginManager &other) = delete;
-		NOU_FUNC PluginManager(PluginManager &&) = delete;
+		PluginManager(const PluginManager &other) = delete;
+		PluginManager(PluginManager &&) = delete;
 
 		/**
 		\param path The path to load the plugins from.
@@ -773,6 +773,9 @@ namespace NOE::NOE_CORE
 		*/
 		NOU_FUNC NOU::NOU_DAT_ALG::Vector<EnginePlugin*>& getPlugins();
 	};
+
+	constexpr PluginMetadata::Priority PluginMetadata::LOWEST_PRIORITY;
+	constexpr PluginMetadata::Priority PluginMetadata::HIGHEST_PRIORITY;
 
 	constexpr Plugin::ID EnginePlugin::ENGINE_ID;
 	constexpr Plugin::ID EnginePlugin::INVALID_ID;
