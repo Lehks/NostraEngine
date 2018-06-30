@@ -228,5 +228,7 @@ namespace GLFWWindowPlugin
 
 			return m_errors + index;
 		}
+
+		return nullptr;
 	}
 }

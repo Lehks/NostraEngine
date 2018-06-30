@@ -9,7 +9,7 @@
 #include "nostraengine/window/Window.hpp"
 #include "GLFWMonitor.hpp"
 
-#include "GLFW/glfw3.h"
+#include "../../GLFW/include/GLFW/glfw3.h"
 
 /**
 \file window/GLFWWindow.hpp
