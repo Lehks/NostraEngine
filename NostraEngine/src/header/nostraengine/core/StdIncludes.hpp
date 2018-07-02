@@ -27,6 +27,13 @@
 #define NOE_CORE core
 #endif
 
+/*
+\brief The name of the namespace that contains all rendering components.
+*/
+#ifndef NOE_RENDERER
+#define NOE_RENDERER renderer
+#endif
+
 /**
 \brief The name of the utility namespace of the Nostra Engine.
 */
