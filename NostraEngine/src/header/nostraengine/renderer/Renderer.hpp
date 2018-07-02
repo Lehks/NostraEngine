@@ -42,7 +42,7 @@ namespace NOE::NOE_RENDERER
 
 		virtual ~Optimizer() = default;
 
-		virtual void optimize(RenderableActor renderable) = 0;
+		virtual void optimize(RenderableActor renderable) const = 0;
 	};
 
 	class RenderableList

@@ -19,7 +19,7 @@ namespace NOE::NOE_RENDERER
 	{
 		virtual ~RenderableImpl() = default;
 
-		virtual void bind() = 0;
+		virtual void bind() const = 0;
 	};
 }
 

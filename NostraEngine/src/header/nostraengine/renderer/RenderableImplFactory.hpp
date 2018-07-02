@@ -21,7 +21,7 @@ namespace NOE::NOE_RENDERER
 	{
 		virtual ~RenderableImplFactory() = default;
 
-		virtual RenderableImpl* construct() = 0;
+		virtual RenderableImpl* construct() const = 0;
 	};
 }
 
