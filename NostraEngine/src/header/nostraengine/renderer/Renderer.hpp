@@ -40,6 +40,8 @@ namespace NOE::NOE_RENDERER
 
 	public:
 
+		virtual ~Optimizer() = default;
+
 		virtual void optimize(RenderableActor renderable) = 0;
 	};
 
