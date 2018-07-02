@@ -216,7 +216,7 @@ namespace NOT
         /**
         \brief A Hashmap that maps WarningCodes to Human Readable WarningMessages
         */
-        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> ERRORS;
+        NOU_FUNC static const NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8> WARNINGS;
 
     public:
         /**

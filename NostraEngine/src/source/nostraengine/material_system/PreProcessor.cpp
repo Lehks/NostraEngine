@@ -11,6 +11,8 @@ TODO:
 - use exceptions for warnings and Errors.
 - rebame DEBUG_STUFF
 - use constexpr much more
+- throw error when File does not exist
+- make PPW0 -> PPW0000
 */
 
 
@@ -75,8 +77,8 @@ TODO:
 namespace NOT
 {
 
-    const NOU::NOU_DAT_ALG::HashMap<PreProcessor::ErrorCode, NOU::NOU_DAT_ALG::String8> PreProcessor::s_errors;
-    const NOU::NOU_DAT_ALG::HashMap<PreProcessor::WarningCode, NOU::NOU_DAT_ALG::String8> PreProcessor::s_warnings;
+    const NOU::NOU_DAT_ALG::HashMap<PreProcessor::ErrorCode, NOU::NOU_DAT_ALG::String8> PreProcessor::ERRORS;
+    const NOU::NOU_DAT_ALG::HashMap<PreProcessor::WarningCode, NOU::NOU_DAT_ALG::String8> PreProcessor::WARNINGS;
     const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> PreProcessor::s_tokenSeperators;
 
     // -------PRE PROCESSOR KEYWORDS-------
@@ -162,20 +164,20 @@ namespace NOT
 
     void PreProcessor::initializeStaticMembers()
     {
-        if(s_errors.size() == 0)
+        if(ERRORS.size() == 0)
         {
             ErrorCode i = 0;
-            NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> *ec = const_cast<NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8>*>(&s_errors);
+            NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8> *ec = const_cast<NOU::NOU_DAT_ALG::HashMap<ErrorCode, NOU::NOU_DAT_ALG::String8>*>(&ERRORS);
             ec->map(i++, "User Defined");
-            NOT_PRINT(s_errors.size());
+            NOT_PRINT(ERRORS.size());
         }
 
-        if(s_warnings.size() == 0)
+        if(WARNINGS.size() == 0)
         {
             WarningCode i = 0;
-            NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8> *wc = const_cast<NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8>*>(&s_errors);
+            NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8> *wc = const_cast<NOU::NOU_DAT_ALG::HashMap<WarningCode, NOU::NOU_DAT_ALG::String8>*>(&WARNINGS);
             wc->map(i++, "User Defined");
-            NOT_PRINT(s_warnings.size());
+            NOT_PRINT(WARNINGS.size());
         }
 
         if(s_tokenSeperators.size() == 0)
@@ -344,6 +346,14 @@ namespace NOT
         emitError(Error(0, tmp));
     }
 
+
+
+
+    // a = 1234 
+    // b = abcdefghij
+    // b.replace (2, 3, a)
+
+
     void PreProcessor::warningDirective(Iterator &it)
     {
         NOU::NOU_DAT_ALG::String8 tmp(it.getCurrentToken());
@@ -353,19 +363,21 @@ namespace NOT
         // test after NOU has new release
 
         tmp.trim();
-        tmp.remove(0, PRE_PROCESSOR_WARNING.size() + 1);
+        tmp.remove(0,1);        //remove #
+        tmp.trim();
+        tmp.remove(0, PRE_PROCESSOR_WARNING.size());
         tmp.trim();        
         m_currState = States::DEFAULT;
 
         // remove directive
         s = it.getCurrentToken().size();
-        for(NOU::sizeType i = 0; i < s; i++)
-        {
-            rep.append(" ");
-        }
-        rep.append("\n");
+        NOT_PRINT_CODE;
         s = it.getCurrentPosition();
-        m_sourceCode.replace(s - rep.size(), s, rep);
+        NOT_PRINT(it.getCurrentToken().rawStr());
+        rep.append("\n");
+        m_sourceCode.replace(s - it.getCurrentToken().size(), s, rep);
+
+        NOT_PRINT_CODE;
         
         emitWarning(Warning(0, tmp));
     }
