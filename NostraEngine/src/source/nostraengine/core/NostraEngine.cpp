@@ -208,7 +208,7 @@ namespace NOE::NOE_CORE{
 
 	void NostraEngine::renderMain()
 	{
-
+		m_window->update();
 	}
 
 	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)
@@ -303,7 +303,6 @@ namespace NOE::NOE_CORE{
 	void NostraEngine::mainLoop()
 	{
 		NOU::uint64 renderBeginTime, renderEndTime;
-		//@Lukas Groß: please add || (statement of window) so that the engine can be terminated with the x button of the window.
 		while(m_runState != -1)
         {
             renderBeginTime = NOU::NOU_CORE::currentTimeNanos();
@@ -311,9 +310,6 @@ namespace NOE::NOE_CORE{
             renderMain();
             renderEndTime   = NOU::NOU_CORE::currentTimeNanos();
             updateFrameInformations(renderBeginTime, renderEndTime);
-
-            //Engine Runs just 1 time.
-            terminateEngine();
         }
 	}
 
