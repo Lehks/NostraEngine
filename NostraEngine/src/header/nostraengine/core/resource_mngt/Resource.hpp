@@ -47,14 +47,14 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new instance.
 		*/
-		NOU_FUNC Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name);
+		NOE_FUNC Resource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name);
 
 		/**
 		\return The meta data of the resource.
 
 		\brief Returns the meta data of the resource.
 		*/
-		NOU_FUNC const ResourceMetadata& getMetadata() const;
+		NOE_FUNC const ResourceMetadata& getMetadata() const;
 
 		/**
 		\return The name of the resource loader that this resource was loaded with.
@@ -67,7 +67,7 @@ namespace NOE::NOE_CORE
 		store the resource with this loader (unless another error occurs, e.g. the process does not have the
 		permission to write the source file of the resource).
 		*/
-		NOU_FUNC const NOU::NOU_DAT_ALG::String8& getLoaderName() const;
+		NOE_FUNC const NOU::NOU_DAT_ALG::String8& getLoaderName() const;
 
 		/**
 		\return True, if the resource was successfully stored, false if not.
@@ -80,7 +80,7 @@ namespace NOE::NOE_CORE
 		ResourceManager::get().getLoader(this->getLoaderName()).store(this->getMetadata().getID())
 		\endcode
 		*/
-		NOU_FUNC NOU::boolean store();
+		NOE_FUNC NOU::boolean store();
 
 		/**
 		\param enableCache If true, caching will be enables for this resource, if false, caching will be
@@ -98,7 +98,7 @@ namespace NOE::NOE_CORE
 
 		Since this method calls ResourceManager::cache(), the same errors can occur in this method.
 		*/
-		NOU_FUNC NOU::boolean 
+		NOE_FUNC NOU::boolean 
 			cache(NOU::boolean enableCache = true, const NOU::NOU_FILE_MNGT::Path &path = "./");
 
 		/**
@@ -117,7 +117,7 @@ namespace NOE::NOE_CORE
 		\note
 		If the resource is not cached, this method will not do anything.
 		*/
-		NOU_FUNC NOU::boolean deleteCache();
+		NOE_FUNC NOU::boolean deleteCache();
 	};
 }
 

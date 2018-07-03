@@ -106,7 +106,7 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new resource loader with the passed name.
 		*/
-		NOU_FUNC ResourceLoader(const NOU::NOU_DAT_ALG::String8 &name);
+		NOE_FUNC ResourceLoader(const NOU::NOU_DAT_ALG::String8 &name);
 
 		ResourceLoader(const ResourceLoader &) = delete;
 		ResourceLoader(ResourceLoader &&) = delete;
@@ -119,7 +119,7 @@ namespace NOE::NOE_CORE
 		\note
 		It required for a resource loader class that all instances of that class share the same name.
 		*/
-		NOU_FUNC const NOU::NOU_DAT_ALG::StringView8& getName() const;
+		NOE_FUNC const NOU::NOU_DAT_ALG::StringView8& getName() const;
 
 		/**
 		\param enable If true, caching will be enabled, if false, caching will be disabled.
@@ -145,14 +145,14 @@ namespace NOE::NOE_CORE
 		By default, caching is enabled for a loader (but this may be overwritten by the resource loader's
 		constructor).
 		*/
-		NOU_FUNC void enableCaching(NOU::boolean enable);
+		NOE_FUNC void enableCaching(NOU::boolean enable);
 
 		/**
 		\return Whether caching is enabled or disabled for this resource loader.
 
 		\brief Returns whether caching is enabled or disabled for this resource loader.
 		*/
-		NOU_FUNC NOU::boolean isCachingEnabled();
+		NOE_FUNC NOU::boolean isCachingEnabled();
 
 		/**
 		\param id The ID of the resource to load.
@@ -167,7 +167,7 @@ namespace NOE::NOE_CORE
 		\note
 		A resource that has been loaded, needs to be closed with close() after it is not used anymore.
 		*/
-		NOU_FUNC Resource* load(ResourceMetadata::ID id);
+		NOE_FUNC Resource* load(ResourceMetadata::ID id);
 
 		/**
 		\param resource The resource to store.
@@ -179,7 +179,7 @@ namespace NOE::NOE_CORE
 		\note
 		It is only valid to store a resource using a loader when isValidResource() returns true.
 		*/
-		NOU_FUNC NOU::boolean store(Resource *resource);
+		NOE_FUNC NOU::boolean store(Resource *resource);
 
 		/**
 		\param resource The resource to close.
@@ -194,7 +194,7 @@ namespace NOE::NOE_CORE
 		\note
 		After a resource is closed, it is not usable anymore.
 		*/
-		NOU_FUNC void close(Resource *resource);
+		NOE_FUNC void close(Resource *resource);
 
 		/**
 		\return True, if the resource is valid, false if not.

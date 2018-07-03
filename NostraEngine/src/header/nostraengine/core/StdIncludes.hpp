@@ -82,7 +82,7 @@ namespace NOE::internal
 	\brief A function that has no functionality, but because of StdIncludes.cpp will always force a compiler
 	       to generate a library file.
 	*/
-	NOU_FUNC void forceLibGen();
+	NOE_FUNC void forceLibGen();
 }
 
 #endif

@@ -198,66 +198,66 @@ namespace NOE::NOE_CORE
 		\return		NOU::int8
 		\brief Start-Method. Holds the main loop of the engine.
 		*/
-		NOU_FUNC NOU::int32 start();
+		NOE_FUNC NOU::int32 start();
 
 		/**
 		\brief creates an instance of the engine but only once
 		\return a pointer to the instance of the engine or nullptr if it has been created once
 		*/
-		NOU_FUNC static NostraEngine *createInstance();
+		NOE_FUNC static NostraEngine *createInstance();
 
 		/**
 		\brief Returns a reference to the instance
 		\return a reference to the instance
 		*/
-		NOU_FUNC static NostraEngine &get();
+		NOE_FUNC static NostraEngine &get();
 
 		/**
 		\brief sets an instance of the Engine as the current active instance
 		\param instance the instance that will be set as active
 		*/
-		NOU_FUNC static void setActiveInstance(NostraEngine &instance);
+		NOE_FUNC static void setActiveInstance(NostraEngine &instance);
 
 		/**
 		\brief Terminates the engine if this method is called.
 		*/
-		NOU_FUNC void terminateEngine();
+		NOE_FUNC void terminateEngine();
 
 		/**
 		\brief calls the update Method of each updatable
 		\return true on success, false if not
 		*/
-		NOU_FUNC void updateUpdatables();
+		NOE_FUNC void updateUpdatables();
 
 		/**
 		\brief sets the maximum frames that are rendered per second.
 		\param maXFPS sets the maximum FPS to the given value, if the value is zero, the frame limiter gets disabled
 		*/
-		NOU_FUNC void setMaxFPS(const NOU::uint64 maxFPS = 0);
+		NOE_FUNC void setMaxFPS(const NOU::uint64 maxFPS = 0);
 
 		/**
 		\brief getter for m_currFPS
 		\return returns the current FPS
 		*/
-		NOU_FUNC const NOU::uint64& getCurrFPS() const;
+		NOE_FUNC const NOU::uint64& getCurrFPS() const;
 
 		/**
 		\brief getter for m_maxFPS
 		\return returns the maximum set FPS
 		*/
-		NOU_FUNC const NOU::uint64& getMaxFPS() const;
+		NOE_FUNC const NOU::uint64& getMaxFPS() const;
 
 		/**
 		\brief getter for m_frameTime
 		\return returns the current FrameTime
 		*/
-		NOU_FUNC const NOU::uint32& getFrameTime() const;
+		NOE_FUNC const NOU::uint32& getFrameTime() const;
 
 		/**
 		\brief Returns the version of the engine.
 		\return NOU::NOU_CORE::Version Type
 		*/
-		NOU_FUNC const NOU::NOU_CORE::Version& getVersion() const;
+		NOE_FUNC const NOU::NOU_CORE::Version& getVersion() const;
 
 		/**
 		\brief Returns the window pointer

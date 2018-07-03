@@ -211,7 +211,7 @@ namespace NOE::NOE_CORE
 
 		\brief Sets m_id.
 		*/
-		NOU_FUNC void setID(ID id);
+		NOE_FUNC void setID(ID id);
 
 	public:
 		Plugin() = default;
@@ -234,14 +234,14 @@ namespace NOE::NOE_CORE
 		- \p flags can be used to send additional data that might give a hint on what kind of data \p data 
 		  points to.
 		*/
-		NOU_FUNC SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
+		NOE_FUNC SendResult send(ID recipient, void *data, NOU::sizeType size, NOU::uint32 flags);
 
 		/**
 		\return The ID of this plugin.
 
 		\brief Returns the ID of this plugin.
 		*/
-		NOU_FUNC ID getID() const;
+		NOE_FUNC ID getID() const;
 
 		/**
 		\return A literal from the InitResult enum, see detailed section for more information.
