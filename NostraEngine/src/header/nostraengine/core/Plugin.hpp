@@ -46,7 +46,7 @@ extern "C" NOE_PLUGIN_FUNC void noePluginShutdown()														   \
 }																										   \
 																										   \
 /*receive*/																								   \
-extern "C" void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType size,					   \
+extern "C" NOE_PLUGIN_FUNC void noePluginReceive(NOU::uint32 source, void *data, NOU::sizeType size,	   \
 	NOU::uint32 flags)																					   \
 {																										   \
 	pluginPtr->receive(source, data, size, flags);									   					   \
