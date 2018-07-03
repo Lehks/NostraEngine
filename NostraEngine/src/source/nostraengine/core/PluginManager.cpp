@@ -14,8 +14,6 @@ namespace NOE::NOE_CORE
 {
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = "np";
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = "pconf";
-	const PluginMetadata::Priority PluginMetadata::LOWEST_PRIORITY = 0;
-	const PluginMetadata::Priority PluginMetadata::HIGHEST_PRIORITY = -1;
 
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_SECTION_CORE = "core";
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_SECTION_META = "meta";
