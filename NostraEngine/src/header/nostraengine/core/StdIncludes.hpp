@@ -66,13 +66,30 @@
 #define NOE_VERSION NOE_VERSION_0_0_1
 #endif
 
+/**
+\brief A macro that either exports or imports a function from a library.
+
+\details
+A macro that either exports or imports a function from a library.
+
+This macro will import, if NOE_DLL is defined and export if it is not. NOE_DLL definitions should always be
+correctly handled by CMake and does not need user-interaction.
+*/
+#ifndef NOE_FUNC
+#    ifdef NOE_DLL
+#        define NOE_FUNC NOU_IMPORT_FUNC
+#    else
+#        define NOE_FUNC NOU_EXPORT_FUNC
+#    endif
+#endif
+
 namespace NOE::internal
 {
 	/**
 	\brief A function that has no functionality, but because of StdIncludes.cpp will always force a compiler
 	       to generate a library file.
 	*/
-	NOU_FUNC void forceLibGen();
+	NOE_FUNC void forceLibGen();
 }
 
 #endif

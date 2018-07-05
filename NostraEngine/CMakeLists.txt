@@ -24,7 +24,7 @@ target_link_libraries(NostraEngineDbg
 		
 target_compile_definitions(NostraEngineDbg 
 	INTERFACE 
-		"NOU_DLL")
+		"NOE_DLL")
 
 if(MSVC)
 	target_compile_options(NostraEngineDbg

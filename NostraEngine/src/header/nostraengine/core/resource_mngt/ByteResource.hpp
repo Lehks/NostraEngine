@@ -46,14 +46,14 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the byte array.
 		*/
-		NOU_FUNC NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes();
+		NOE_FUNC NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes();
 
 		/**
 		\return The byte array.
 
 		\brief Returns the byte array.
 		*/
-		NOU_FUNC const NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes() const;
+		NOE_FUNC const NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes() const;
 	};
 
 	/**
@@ -115,7 +115,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Constructs a new instance.
 		*/
-		NOU_FUNC ByteResourceLoader();
+		NOE_FUNC ByteResourceLoader();
 
 		/**
 		\param id The ID of the resource to check.
@@ -124,7 +124,7 @@ namespace NOE::NOE_CORE
 
 		\brief This loader can load any file, hence this method will always return true.
 		*/
-		NOU_FUNC virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
+		NOE_FUNC virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
 
 	};
 }
