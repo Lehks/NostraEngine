@@ -97,7 +97,9 @@ install(FILES "CHANGELOG.md" DESTINATION ".")
 #=== Install readme
 #=== Either install the Install-Readme or Debug-Readme
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	install(TARGETS NostraEngineTest DESTINATION bin)
+	if(TARGET NostraEngineTest)
+		install(TARGETS NostraEngineTest DESTINATION bin)
+	endif()
 else()
 	#Install README.md
 	configure_file("INSTALL_README.md.in" "INSTALL_README.md")
