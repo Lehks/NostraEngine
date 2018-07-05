@@ -1,6 +1,10 @@
 
 #include "nostraengine/core/ResourceManagement.hpp"
 
+#if NOU_COMPILER == NOU_COMPILER_VISUAL_CPP
+#     pragma warning(disable : 4996)
+#endif
+
 namespace NOE::NOE_CORE
 {
 	NOU::NOU_FILE_MNGT::Path ResourceManager::DATABASE_PATH = "./Resources.db";

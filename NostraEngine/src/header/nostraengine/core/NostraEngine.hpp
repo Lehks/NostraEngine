@@ -64,7 +64,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief the time in ms a frame took to render;
 		*/
-		NOU::uint32 m_frameTime;
+		NOU::uint64 m_frameTime;
 
 		/**
 		\brief the maximum Frames that are rendered per second. If the value is zero, the frame limiter gets disabled
@@ -101,7 +101,7 @@ namespace NOE::NOE_CORE
 		\param begin the begintime of the current render iteration
 		\param end the end time of the current render iteration
 		*/
-		void updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end);
+		void updateFrameInformations(const NOU::uint64 begin, const NOU::uint64 end);
 
 		/**
 		\brief limits the fps measured by the set maxFPS
@@ -251,7 +251,7 @@ namespace NOE::NOE_CORE
 		\brief getter for m_frameTime
 		\return returns the current FrameTime
 		*/
-		NOE_FUNC const NOU::uint32& getFrameTime() const;
+		NOE_FUNC const NOU::uint64& getFrameTime() const;
 
 		/**
 		\brief Returns the version of the engine.
