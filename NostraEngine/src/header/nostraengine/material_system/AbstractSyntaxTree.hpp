@@ -5,8 +5,9 @@
 
 namespace NOT
 {
-    class ASTNode{
+    class NOU_CLASS ASTNode{
         public:
+
             enum class Types{
                 ENTRY,
                 FUNC_DEC,
@@ -34,31 +35,42 @@ namespace NOT
         private:
             Types m_type;
             NOU::NOU_DAT_ALG::String8 m_value;
+            NOU::NOU_DAT_ALG::Vector<ASTNode> m_childs;
+            ASTNode* m_parent:
         public:
-            const Types& getType() const;
+            ASTNode(Types type,const NOU::NOU_DAT_ALG::String8& value);
+
+            Types getType() const;
             void setType(Types type);
 
             const NOU::NOU_DAT_ALG::String8& getValue() const;
-            void setValue(NOU::NOU_DAT_ALG::String8 value);
+            void setValue(const NOU::NOU_DAT_ALG::String8& value);
             NOU::boolean hasValue() const;
 
-            const ASTNode* const getChild() const;
-            const NOU::NOU_DAT_ALG::Vector<const ASTNode* const> getChilds() const;
-            NOU::boolean hasChild();
+            const ASTNode* const getChild(NOU::sizeType pos) const;
+            ASTNode* getChild(NOU::sizeType pos);
+            NOU::sizeType getChildCount();
+            const NOU::NOU_DAT_ALG::Vector<const ASTNode*>& getChilds() const;
+            NOU::NOU_DAT_ALG::Vector<const ASTNode*>& getChilds();
+            NOU::boolean hasChild() const;
 
             const ASTNode* const getParent() const;
+            ASTNode* getParent();
             NOU::boolean hasParent() const;
 
             NOU::boolean isLeaf() const;
             NOU::boolean isRoot() const;
 
             NOU::boolean insertNode(NOU::sizeType pos, const ASTNode& n);
-            void appendNode(ASTNode n);
-            removeNode(NOU::sizeType pos, ASTNode* n = nullptr);
+            void appendNode(const ASTNode& n);
+            NOU::boolean removeNode(NOU::sizeType pos, ASTNode* n = nullptr);
 
 
 
     };
+
+    // for easier usage
+    using AbstractSyntaxTree = ASTNode;
 
 }
 
