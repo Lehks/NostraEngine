@@ -41,6 +41,12 @@ namespace NOT
             ASTNode* m_parent;
         public:
             ASTNode(Types type,const NOU::NOU_DAT_ALG::String8& value = "");
+            ASTNode(ASTNode&& other);
+            // Copy eeds testing if any inconsistent states will occur because of the m_parent pointer.
+            // Needs some Depthsearch deep copy
+
+            // Hope deleting a whole tree will work
+            ~ASTNode() = default;
 
             Types getType() const;
             void setType(Types type);
@@ -65,6 +71,16 @@ namespace NOT
             NOU::boolean insertNode(NOU::sizeType pos, Types type, const NOU::NOU_DAT_ALG::String8& value = "");
             void appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
             NOU::boolean removeNode(NOU::sizeType pos, ASTNode* n = nullptr);
+
+
+            NOU::boolean operator==(const ASTNode& other) const;
+            void operator=(const ASTNode& other);
+
+            const ASTNode* const operator[](NOU::sizeType i) const;
+            
+            ASTNode* operator[](NOU::sizeType i);
+
+            void operator+=(const ASTNode& other);
 
     };
 

@@ -8,6 +8,18 @@ namespace NOT
         m_parent(nullptr)
         { }
 
+        ASTNode::ASTNode(ASTNode&& other):
+        m_type(NOU::NOU_CORE::move(other.m_type)),
+        m_value(NOU::NOU_CORE::move(other.m_value)),
+        m_parent(other.m_parent),
+        m_childs(NOU::NOU_CORE::move(other.m_childs))
+        {
+            other.m_parent = nullptr;
+        }
+
+
+
+
     	ASTNode::Types ASTNode::getType() const
         {
             return m_type;
@@ -124,13 +136,46 @@ namespace NOT
             {
                 if(n != nullptr)
                 {
-                    *n = m_childs[pos];
+                    *n = NOU::NOU_CORE::move(m_childs[pos]);
                 }
                 m_childs.remove(pos);
                 return true;
             }
             return false;
         }
+
+        NOU::boolean ASTNode::operator==(const ASTNode& other) const
+        {
+            NOU::boolean r;
+            r = m_type == other.m_type;
+            r &= m_value == other.m_value;
+            return r;
+        }
+
+        void ASTNode::operator=(const ASTNode& other)
+        {
+            m_type = other.m_type;
+            m_value = other.m_value;
+            m_childs = other.m_childs;
+        }
+
+        const ASTNode* const ASTNode::operator[](NOU::sizeType i) const
+        {
+            return getChild(i);
+        }
+
+        ASTNode* ASTNode::operator[](NOU::sizeType i)
+        {
+            return getChild(i);
+        }
+
+        void ASTNode::operator+=(const ASTNode& other)
+        {
+            appendNode(other.getType(), other.getValue());
+            getChild(getChildCount() - 1)->m_childs = other.m_childs;
+
+        }
+        
         
 
 }
