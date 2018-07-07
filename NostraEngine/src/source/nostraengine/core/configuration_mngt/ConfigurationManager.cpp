@@ -67,7 +67,7 @@ namespace NOE::NOE_CORE
 
 				m_data.push(NOU::NOU_CORE::move(data));
 				m_nameDataMap.map(m_data[m_data.size() - 1].m_sourcePtr->getName(),
-					&m_data[m_data.size() - 1]);
+					m_data.size() - 1);
 
 				NOU_LOG_INFO(
 					NOU::NOU_DAT_ALG::String8("Successfully constructed configuration source ") +
@@ -106,7 +106,7 @@ namespace NOE::NOE_CORE
 	ConfigurationSource* 
 		ConfigurationManager::getConfigurationSource(const NOU::NOU_DAT_ALG::StringView8 &sourceName)
 	{
-		return m_nameDataMap.get(sourceName)->m_sourcePtr.rawPtr();
+		return m_data[m_nameDataMap.get(sourceName)].m_sourcePtr.rawPtr();
 	}
 
 	ConfigurationManager& ConfigurationManager::get()

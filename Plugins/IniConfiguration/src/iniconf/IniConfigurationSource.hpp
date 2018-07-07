@@ -33,7 +33,7 @@ namespace IniConfigurationPlugin
 		NOE_PLUGIN_FUNC virtual NOU::boolean setBooleanImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
 			NOU::boolean v) override;
 
-		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::String8&
+		NOE_PLUGIN_FUNC virtual NOU::NOU_DAT_ALG::String8
 			getStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const override;
 
 		NOE_PLUGIN_FUNC virtual NOU::boolean setStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified,

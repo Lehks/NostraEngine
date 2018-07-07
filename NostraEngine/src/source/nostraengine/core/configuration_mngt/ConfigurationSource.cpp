@@ -129,7 +129,7 @@ namespace NOE::NOE_CORE
 		return ret;
 	}
 
-	const NOU::NOU_DAT_ALG::String8& 
+	NOU::NOU_DAT_ALG::String8 
 		ConfigurationSource::getString(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU_ASSERT(getTypeOf(qualified) == TypeID::STRING);

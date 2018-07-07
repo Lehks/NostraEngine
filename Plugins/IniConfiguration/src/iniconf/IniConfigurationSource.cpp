@@ -111,7 +111,7 @@ namespace IniConfigurationPlugin
 			return false;
 	}
 
-	const NOU::NOU_DAT_ALG::String8&
+	NOU::NOU_DAT_ALG::String8
 		IniConfigurationSource::getStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;

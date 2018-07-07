@@ -121,7 +121,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Maps the name of a configuration source to the actual source. For faster and easier access.
 		*/
-		NOU::NOU_DAT_ALG::HashMap <NOU::NOU_DAT_ALG::String8, ConfigurationSourceData*> m_nameDataMap;
+		NOU::NOU_DAT_ALG::HashMap <NOU::NOU_DAT_ALG::String8, NOU::sizeType> m_nameDataMap;
 
 		/**
 		\brief The mode that is used to load entires.

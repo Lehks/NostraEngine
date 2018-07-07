@@ -299,7 +299,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		virtual const NOU::NOU_DAT_ALG::String8& 
+		virtual NOU::NOU_DAT_ALG::String8
 			getStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
 
 		/**
@@ -553,7 +553,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC const NOU::NOU_DAT_ALG::String8& getString(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOU_FUNC NOU::NOU_DAT_ALG::String8 getString(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
