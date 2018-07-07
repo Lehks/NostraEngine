@@ -4,9 +4,9 @@ namespace NOT
 {
         ASTNode::ASTNode(Types type, const NOU::NOU_DAT_ALG::String8& value) :
         m_type(type),
-        m_value(value) { }
-
-
+        m_value(value),
+        m_parent(nullptr)
+        { }
 
     	ASTNode::Types ASTNode::getType() const
         {
@@ -34,53 +34,54 @@ namespace NOT
             return m_value.size() != 0;
         }
 
-        // needs to be implemented
+
         const ASTNode* const ASTNode::getChild(NOU::sizeType pos) const
         {
-            return nullptr;
+            if(pos > m_childs.size())
+            {
+                return nullptr;
+            } else
+            {
+                return &m_childs[pos];
+            }
         }
-        // needs to be implemented
+        
         ASTNode* ASTNode::getChild(NOU::sizeType pos)
         {
-            return nullptr;
+            if(pos > m_childs.size())
+            {
+                return nullptr;
+            } else
+            {
+                return &m_childs[pos];
+            }
         }
-        // needs to be implemented
+        
         NOU::sizeType ASTNode::getChildCount()
         {
-            return 0;
+            return m_childs.size();
         }
-        // needs to be implemented
-        const NOU::NOU_DAT_ALG::Vector<const ASTNode*>& ASTNode::getChilds() const
-        {
-            static NOU::NOU_DAT_ALG::Vector<const ASTNode*> r;
-            return r;
-        }
-        // needs to be implemented
-        NOU::NOU_DAT_ALG::Vector<const ASTNode*>& ASTNode::getChilds()
-        {
-            static NOU::NOU_DAT_ALG::Vector<const ASTNode*> r;
-            return r;
-        }
-        // needs to be implemented
+        
+
         NOU::boolean ASTNode::hasChild() const
         {
-            return false;
+            return m_childs.size() != 0;
         }
 
-        // needs to be implemented
+
         const ASTNode* const ASTNode::getParent() const
         {
-            return nullptr;
+            return m_parent;
         }
-        // needs to be implemented
+        
         ASTNode* ASTNode::getParent()
         {
-            return nullptr;
+            return m_parent;
         }
-        // needs to be implemented
+        
         NOU::boolean ASTNode::hasParent() const
         {
-            return nullptr;
+            return m_parent != nullptr;
         }
 
         NOU::boolean ASTNode::isLeaf() const
@@ -93,20 +94,41 @@ namespace NOT
             return hasParent();
         }
 
-        // needs to be implemented
-        NOU::boolean ASTNode::insertNode(NOU::sizeType pos, const ASTNode& n)
+        NOU::boolean ASTNode::insertNode(NOU::sizeType pos, Types type, const NOU::NOU_DAT_ALG::String8& value)
         {
-            return false;
+            ASTNode tmp(type, value);
+            tmp.m_parent = this;
+            if(pos >= m_childs.size())
+            {
+                m_childs.emplaceBack(NOU::NOU_CORE::move(tmp));
+                return false;
+            } else
+            {
+                m_childs.insert(pos, NOU::NOU_CORE::move(tmp));
+                return true;
+            }
         }
 
-        // needs to be implemented
-        void appendNode(const ASTNode& n)
-        {
 
-        }
-        // needs to be implemented
-        NOU::boolean removeNode(NOU::sizeType pos, ASTNode* n)
+        void ASTNode::appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value)
         {
+            ASTNode tmp(type, value);
+            tmp.m_parent = this;
+
+            m_childs.emplaceBack(NOU::NOU_CORE::move(tmp));
+        }
+        
+        NOU::boolean ASTNode::removeNode(NOU::sizeType pos, ASTNode* n)
+        {
+            if(pos < m_childs.size())
+            {
+                if(n != nullptr)
+                {
+                    *n = m_childs[pos];
+                }
+                m_childs.remove(pos);
+                return true;
+            }
             return false;
         }
         

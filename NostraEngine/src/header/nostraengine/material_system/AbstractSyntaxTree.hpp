@@ -8,6 +8,8 @@ namespace NOT
     class NOU_CLASS ASTNode{
         public:
 
+            friend class ASTNode;
+
             enum class Types{
                 ENTRY,
                 FUNC_DEC,
@@ -36,9 +38,9 @@ namespace NOT
             Types m_type;
             NOU::NOU_DAT_ALG::String8 m_value;
             NOU::NOU_DAT_ALG::Vector<ASTNode> m_childs;
-            ASTNode* m_parent:
+            ASTNode* m_parent;
         public:
-            ASTNode(Types type,const NOU::NOU_DAT_ALG::String8& value);
+            ASTNode(Types type,const NOU::NOU_DAT_ALG::String8& value = "");
 
             Types getType() const;
             void setType(Types type);
@@ -50,8 +52,6 @@ namespace NOT
             const ASTNode* const getChild(NOU::sizeType pos) const;
             ASTNode* getChild(NOU::sizeType pos);
             NOU::sizeType getChildCount();
-            const NOU::NOU_DAT_ALG::Vector<const ASTNode*>& getChilds() const;
-            NOU::NOU_DAT_ALG::Vector<const ASTNode*>& getChilds();
             NOU::boolean hasChild() const;
 
             const ASTNode* const getParent() const;
@@ -61,11 +61,10 @@ namespace NOT
             NOU::boolean isLeaf() const;
             NOU::boolean isRoot() const;
 
-            NOU::boolean insertNode(NOU::sizeType pos, const ASTNode& n);
-            void appendNode(const ASTNode& n);
+            // returns true if inserted and false if appended pos >= m_childs.size
+            NOU::boolean insertNode(NOU::sizeType pos, Types type, const NOU::NOU_DAT_ALG::String8& value = "");
+            void appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
             NOU::boolean removeNode(NOU::sizeType pos, ASTNode* n = nullptr);
-
-
 
     };
 
