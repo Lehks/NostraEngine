@@ -70,7 +70,7 @@ namespace NOE::NOE_CORE
 		The value of ResourceManager::getTypeRemoveUpdates() from the last validity check. See 
 		ResourceManager::m_typeRemoveUpdates for further information.
 		*/
-		mutable NOU::uint32 m_removeUpdate; //mutable for isValid()
+		mutable NOU::int32 m_removeUpdate; //mutable for isValid()
 
 		/**
 		\param attribute The name of the attribute to get the value from.
@@ -98,42 +98,42 @@ namespace NOE::NOE_CORE
 		the original ID is created afterwards, the instances of this class that were before that will NOT be
 		updated.
 		*/
-		NOU_FUNC explicit ResourceType(ID id = INVALID_ID);
+		NOE_FUNC explicit ResourceType(ID id = INVALID_ID);
 
 		/**
 		\return The ID of the type.
 
 		\brief Returns the ID of the type. If the type is invalid (it does not exist), INVALID_ID is returned.
 		*/
-		NOU_FUNC ID getID() const;
+		NOE_FUNC ID getID() const;
 
 		/**
 		\return The name of the type.
 
 		\brief Returns the name of the type.
 		*/
-		NOU_FUNC NOU::NOU_DAT_ALG::String8 getName() const;
+		NOE_FUNC NOU::NOU_DAT_ALG::String8 getName() const;
 
 		/**
 		\return The description of the type.
 
 		\brief Returns the description of the type.
 		*/
-		NOU_FUNC NOU::NOU_DAT_ALG::String8 getDescription() const;
+		NOE_FUNC NOU::NOU_DAT_ALG::String8 getDescription() const;
 
 		/**
 		\return True, if the type is valid, false if not.
 
 		\brief Returns whether the type is valid (it exists in the database) or not.
 		*/
-		NOU_FUNC NOU::boolean isValid() const;
+		NOE_FUNC NOU::boolean isValid() const;
 
 		/**
 		\return isValid()
 
 		\brief Same as isValid()
 		*/
-		NOU_FUNC operator NOU::boolean() const;
+		NOE_FUNC operator NOU::boolean() const;
 	};
 
 	constexpr typename ResourceType::ID ResourceType::INVALID_ID;

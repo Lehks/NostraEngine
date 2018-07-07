@@ -29,9 +29,9 @@ target_include_directories(NostraUtils
 	PUBLIC 
 		"src/header")
 
-#target_compile_definitions(NostraUtils
-#	INTERFACE
-#		"NOU_DLL")
+target_compile_definitions(NostraUtils
+	INTERFACE
+		"NOU_DLL")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	target_compile_definitions(NostraUtils

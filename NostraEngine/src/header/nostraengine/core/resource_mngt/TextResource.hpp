@@ -35,7 +35,7 @@ namespace NOE::NOE_CORE
 		\param name  The name of the loader that this resource was loaded with.
 		\param bytes The byte array.
 		*/
-		NOU_FUNC TextResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name,
+		NOE_FUNC TextResource(ResourceMetadata::ID id, const NOU::NOU_DAT_ALG::String8& name,
 			NOU::NOU_DAT_ALG::String8 &&text);
 
 		/**
@@ -43,14 +43,14 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the text.
 		*/
-		NOU_FUNC NOU::NOU_DAT_ALG::String8& getText();
+		NOE_FUNC NOU::NOU_DAT_ALG::String8& getText();
 
 		/**
 		\return The text.
 
 		\brief Returns the text.
 		*/
-		NOU_FUNC const NOU::NOU_DAT_ALG::String8& getText() const;
+		NOE_FUNC const NOU::NOU_DAT_ALG::String8& getText() const;
 	};
 
 	/**
@@ -74,7 +74,7 @@ namespace NOE::NOE_CORE
 
 		\brief Stores the passed resource to the passed path.
 		*/
-		NOU_FUNC virtual NOU::boolean storeImpl(Resource *resource, const NOU::NOU_FILE_MNGT::Path& path) override;
+		NOE_FUNC virtual NOU::boolean storeImpl(Resource *resource, const NOU::NOU_FILE_MNGT::Path& path) override;
 
 		/**
 		\param resource Unused.
@@ -112,7 +112,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Constructs a new instance.
 		*/
-		NOU_FUNC TextResourceLoader();
+		NOE_FUNC TextResourceLoader();
 
 		/**
 		\param id The ID of the resource to check.
@@ -121,7 +121,7 @@ namespace NOE::NOE_CORE
 
 		\brief This loader can load any file, hence this method will always return true.
 		*/
-		NOU_FUNC virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
+		NOE_FUNC virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
 
 	};
 }
