@@ -28,11 +28,11 @@ namespace NOE::NOE_SCENE
 
 		NOE_FUNC ~RenderableActor();
 
-		NOE_FUNC NOU::boolean getEnabled();
+		NOE_FUNC NOU::boolean getEnabled() const;
 
 		NOE_FUNC void setEnabled(NOU::boolean enable);
 		
-		NOE_FUNC void bind(const RenderableActor renderable);
+		NOE_FUNC void bind(const RenderableActor renderable) const;
 
 		NOE_FUNC void addFactory(NOE::NOE_RENDERER::RenderableImplFactory* factory, NOU::sizeType identifier);
 	};
