@@ -27,6 +27,13 @@
 #define NOE_CORE core
 #endif
 
+/**
+\brief The name of the namespace that contains all scene components.
+*/
+#ifndef NOE_SCENE
+#define NOE_SCENE scene
+#endif
+
 /*
 \brief The name of the namespace that contains all rendering components.
 */

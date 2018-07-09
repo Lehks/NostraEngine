@@ -4,7 +4,10 @@
 #include "nostrautils/NostraUtils.hpp"
 
 #include "nostraengine/NostraEngine.hpp"
+
 #include "nostraengine/core/StdIncludes.hpp"
+
+#include "nostraengine/scene/RenderableActor.hpp"
 
 /**
 \file renderer/Renderer.hpp
@@ -21,17 +24,24 @@ namespace NOE::NOE_RENDERER
 	{
 	private:
 
+		RenderableList m_renderableList;
+
 	public:
 
-		RenderableList getRenderables();
+		NOE_FUNC Renderer();
 
-		void render();
+		NOE_FUNC ~Renderer();
 
-		void setOptimizer(Optimizer optimizer);
+		NOE_FUNC RenderableList getRenderables();
 
-		void renderOptimized();
+		NOE_FUNC void render();
 
-		NOU::int32 comparable(RenderableActor firstActor, RenderableActor secondActor);
+		NOE_FUNC void setOptimizer();
+
+		NOE_FUNC void renderOptimized();
+
+		NOE_FUNC static NOU::int32 comparable(NOE::NOE_SCENE::RenderableActor firstActor,
+			NOE::NOE_SCENE::RenderableActor secondActor);
 	};
 
 	class Optimizer
@@ -42,20 +52,26 @@ namespace NOE::NOE_RENDERER
 
 		virtual ~Optimizer() = default;
 
-		virtual void optimize(RenderableActor renderable) const = 0;
+		virtual void optimize(NOE::NOE_SCENE::RenderableActor renderable) const = 0;
 	};
 
 	class RenderableList
 	{
 	private:
 
-		NOU::NOU_DAT_ALG::Vector<RenderableActor> m_renderables;
+		NOU::NOU_DAT_ALG::Vector<NOE::NOE_SCENE::RenderableActor> m_renderables;
 
 	public:
 
-		RenderableActor at(NOU::int32 index);
+		NOE_FUNC RenderableList();
 
-		void insertSorted();
+		NOE_FUNC ~RenderableList();
+
+		NOE_FUNC NOE::NOE_SCENE::RenderableActor at(NOU::int32 index);
+
+		NOE_FUNC void insertSorted(NOE::NOE_SCENE::RenderableActor renderable);
+
+		NOE_FUNC void clear();
 
 	};
 }

@@ -1,6 +1,8 @@
 #ifndef NOE_RENDERER_RENDERABLE_IMPL_HPP
 #define NOE_RENDERER_RENDERABLE_IMPL_HPP
 
+#include "nostrautils/NostraUtils.hpp"
+
 #include "nostraengine/core/StdIncludes.hpp"
 #include "nostraengine/core/NostraEngine.hpp"
 
@@ -20,6 +22,8 @@ namespace NOE::NOE_RENDERER
 		virtual ~RenderableImpl() = default;
 
 		virtual void bind() const = 0;
+
+		virtual NOU::boolean setAttribute(NOU::NOU_DAT_ALG::String8 str, void* ptr) const = 0;
 	};
 }
 
