@@ -159,21 +159,15 @@ namespace NOT
             m_childs = other.m_childs;
         }
 
-        const ASTNode* const ASTNode::operator[](NOU::sizeType i) const
+
+        ASTNode& ASTNode::operator[](NOU::sizeType i)
         {
-            return getChild(i);
+            return *getChild(i);
         }
 
-        ASTNode* ASTNode::operator[](NOU::sizeType i)
+        const ASTNode& ASTNode::operator[](NOU::sizeType i) const
         {
-            return getChild(i);
-        }
-
-        void ASTNode::operator+=(const ASTNode& other)
-        {
-            appendNode(other.getType(), other.getValue());
-            getChild(getChildCount() - 1)->m_childs = other.m_childs;
-
+            return *getChild(i);
         }
         
         

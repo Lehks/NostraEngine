@@ -44,7 +44,7 @@ namespace NOT
             ASTNode(ASTNode&& other);
             // Copy eeds testing if any inconsistent states will occur because of the m_parent pointer.
             // Needs some Depthsearch deep copy
-
+            ASTNode(const ASTNode& other) = default;
             // Hope deleting a whole tree will work
             ~ASTNode() = default;
 
@@ -76,11 +76,9 @@ namespace NOT
             NOU::boolean operator==(const ASTNode& other) const;
             void operator=(const ASTNode& other);
 
-            const ASTNode* const operator[](NOU::sizeType i) const;
+            ASTNode& operator[](NOU::sizeType i);
             
-            ASTNode* operator[](NOU::sizeType i);
-
-            void operator+=(const ASTNode& other);
+            const ASTNode& operator[](NOU::sizeType i) const;
 
     };
 
