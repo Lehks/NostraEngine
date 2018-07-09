@@ -20,29 +20,7 @@
 */
 namespace NOE::NOE_RENDERER
 {
-	class Renderer
-	{
-	private:
-
-		RenderableList m_renderableList;
-
-	public:
-
-		NOE_FUNC Renderer();
-
-		NOE_FUNC ~Renderer();
-
-		NOE_FUNC RenderableList getRenderables() const;
-
-		NOE_FUNC void render() const;
-
-		NOE_FUNC void setOptimizer();
-
-		NOE_FUNC virtual void renderOptimized() const = 0;
-
-		NOE_FUNC static NOU::int32 comparable(NOE::NOE_SCENE::RenderableActor firstActor,
-			NOE::NOE_SCENE::RenderableActor secondActor);
-	};
+	
 
 	class Optimizer
 	{
@@ -73,6 +51,30 @@ namespace NOE::NOE_RENDERER
 
 		NOE_FUNC void clear();
 
+	};
+
+	class Renderer
+	{
+	private:
+
+		RenderableList m_renderableList;
+
+	public:
+
+		NOE_FUNC Renderer();
+
+		NOE_FUNC ~Renderer();
+
+		NOE_FUNC RenderableList getRenderables() const;
+
+		NOE_FUNC void render() const;
+
+		NOE_FUNC void setOptimizer();
+
+		NOE_FUNC virtual void renderOptimized() const = 0;
+
+		NOE_FUNC static NOU::int32 comparable(NOE::NOE_SCENE::RenderableActor firstActor,
+			NOE::NOE_SCENE::RenderableActor secondActor);
 	};
 }
 

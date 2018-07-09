@@ -11,7 +11,7 @@ namespace NOE::NOE_SCENE
 		m_factories.clear();
 	}
 
-	NOU::boolean RenderableActor::getEnabled()
+	NOU::boolean RenderableActor::getEnabled() const
 	{
 		return m_renderingEnabled;
 	}
@@ -21,7 +21,7 @@ namespace NOE::NOE_SCENE
 		m_renderingEnabled = enable;
 	}
 		
-	void RenderableActor::bind(const RenderableActor renderable)
+	void RenderableActor::bind(const RenderableActor renderable) const
 	{
 		//todo
 	}
