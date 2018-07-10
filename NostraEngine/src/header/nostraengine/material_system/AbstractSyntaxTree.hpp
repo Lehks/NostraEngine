@@ -12,7 +12,7 @@ namespace NOT
         public:
             AbstractSyntaxTree();
             AbstractSyntaxTree(const AbstractSyntaxTree& other) = delete;
-            AbstractSyntaxTree(AbstractSyntaxTree&& other) = delete;
+            AbstractSyntaxTree(AbstractSyntaxTree&& other);
 
 
             class NOU_CLASS ASTNode{

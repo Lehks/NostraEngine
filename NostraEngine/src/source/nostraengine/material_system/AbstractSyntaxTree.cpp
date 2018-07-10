@@ -13,17 +13,17 @@ namespace NOT
         m_childPool[0]->m_assignedTree = this;
     }
 
-    // needs debugging
-    /* NOT_AST::AbstractSyntaxTree(AbstractSyntaxTree&& other) :
-    m_childPool(NOU::NOU_CORE::move(other.m_childPool))
+    NOT_AST::AbstractSyntaxTree(AbstractSyntaxTree&& other) :
+        m_childPool(NOU::NOU_CORE::move(other.m_childPool))
     {
-        NOU::sizeType s = other.m_childPool.size();
+        NOU::sizeType s = m_childPool.size();
         for(NOU::sizeType i = 0; i < s; i++)
         {
             m_childPool[i]->m_assignedTree = this;
         }
 
-    }*/
+    }
+
     NOT_AST::ASTNode* NOT_AST::getRoot()
     {
         return m_childPool[0].rawPtr();
