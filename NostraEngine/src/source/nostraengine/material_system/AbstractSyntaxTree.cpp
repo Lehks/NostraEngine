@@ -58,7 +58,7 @@ namespace NOT
         return m_value.size() != 0;
     }
 
-    // on  both following methods add nullptr return
+
     const NOT_AST::ASTNode* const NOT_AST::ASTNode::getChild(NOU::sizeType pos) const
     {
         if(pos >= m_children.size())
@@ -94,6 +94,10 @@ namespace NOT
 
     NOT_AST::ASTNode* NOT_AST::ASTNode::getParent()
     {
+        if(!hasParent())
+        {
+            return nullptr;
+        }
         ASTNode* ret;
         auto& tmpVec = m_assignedTree->m_childPool;
         auto& tmpPtr = tmpVec[m_parent];
