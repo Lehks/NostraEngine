@@ -26,7 +26,7 @@ namespace NOE::NOE_CORE
 	The central class of the resource management system of the engine. For a full tutorial on how to use the 
 	resource management system, see \link resourceManagementSys this page\endlink.
 	*/
-	class NOU_CLASS ResourceManager final
+	class ResourceManager final
 	{
 	private:
 		/**
@@ -187,7 +187,7 @@ namespace NOE::NOE_CORE
 
 		\brief Deallocates a resource that was previously allocated with allocateResource().
 		*/
-		void deallocateResource(Resource *resource);
+		NOE_FUNC void deallocateResource(Resource *resource);
 
 		/**
 		\return The static instance of the resource manager.
@@ -197,7 +197,7 @@ namespace NOE::NOE_CORE
 		\details
 		Returns the instance of the resource manager. This method also stores the instance as a static local variable.
 		*/
-		static ResourceManager& const get();
+		NOE_FUNC static ResourceManager& get();
 
 		/**
 		\tparam T    The type resource loader to add. This must be a child class of ResourceLoader.
@@ -229,12 +229,12 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the loader with the passed name.
 		*/
-		ResourceLoader* getLoader(const NOU::NOU_DAT_ALG::String8 &name);
+		NOE_FUNC ResourceLoader* getLoader(const NOU::NOU_DAT_ALG::String8 &name);
 
 		/**
 		\brief Deletes the cache files of all resources.
 		*/
-		void deleteCaches();
+		NOE_FUNC void deleteCaches();
 
 		/**
 		\param path        The path to the resource. It is not allowed to have different resources that have
@@ -267,7 +267,7 @@ namespace NOE::NOE_CORE
 		over multiple executions (if a resource is removed and then added again, the ID may, and most likely
 		will, change).
 		*/
-		typename ResourceMetadata::ID addResource(const NOU::NOU_FILE_MNGT::Path &path,
+		NOE_FUNC typename ResourceMetadata::ID addResource(const NOU::NOU_FILE_MNGT::Path &path,
 			typename ResourceType::ID type, NOU::boolean enableCache = false,
 			const NOU::NOU_FILE_MNGT::Path &cachePath = "./");
 
@@ -283,7 +283,7 @@ namespace NOE::NOE_CORE
 		This method does not delete the files that were associated with that resource (that is the source and
 		a possible cache file).
 		*/
-		NOU::boolean removeResource(typename ResourceMetadata::ID id);
+		NOE_FUNC NOU::boolean removeResource(typename ResourceMetadata::ID id);
 
 		/**
 		\return The amount of resources that were removed.
@@ -293,7 +293,7 @@ namespace NOE::NOE_CORE
 		\note
 		This method behaves as if removeResource() was called for each resource.
 		*/
-		NOU::uint32 cleanupResources();
+		NOE_FUNC NOU::uint32 cleanupResources();
 
 		/**
 		\param id          The ID of the resource.
@@ -314,7 +314,7 @@ namespace NOE::NOE_CORE
 		- ErrorCodes::RESOURCE_NOT_PRESENT: A resource with the passed ID does not exist.
 		(Note that this list does not include errors that may be pushed be e.g. an underlying container)
 		*/
-		NOU::boolean cache(typename ResourceMetadata::ID id, NOU::boolean enableCache,
+		NOE_FUNC NOU::boolean cache(typename ResourceMetadata::ID id, NOU::boolean enableCache,
 			const NOU::NOU_FILE_MNGT::Path &path = "./");
 
 		/**
@@ -333,7 +333,7 @@ namespace NOE::NOE_CORE
 		If the resource exists but is not cached, this method will not do anything (but it will still return
 		true).
 		*/
-		NOU::boolean deleteCache(typename ResourceMetadata::ID id);
+		NOE_FUNC NOU::boolean deleteCache(typename ResourceMetadata::ID id);
 
 		/**
 		\param id The ID of the resource.
@@ -343,14 +343,14 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the meta data of a single resource.
 		*/
-		ResourceMetadata getMetadata(typename ResourceMetadata::ID id) const;
+		NOE_FUNC ResourceMetadata getMetadata(typename ResourceMetadata::ID id) const;
 
 		/**
 		\return A list that contains the meta data of all resources in the database.
 
 		\brief Returns a list that contains the meta data of all resources in the database.
 		*/
-		NOU::NOU_DAT_ALG::Vector<ResourceMetadata> listMetadata();
+		NOE_FUNC NOU::NOU_DAT_ALG::Vector<ResourceMetadata> listMetadata();
 
 		/**
 		\param name The name of the type.
@@ -360,7 +360,7 @@ namespace NOE::NOE_CORE
 
 		\brief Adds a new type with the name \p name and the description \p NULL.
 		*/
-		typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name);
+		NOE_FUNC typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name);
 
 		/**
 		\param name        The name of the type.
@@ -371,7 +371,7 @@ namespace NOE::NOE_CORE
 
 		\brief Adds a new type with the name \p name and the description \p description.
 		*/
-		typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name,
+		NOE_FUNC typename ResourceType::ID addType(const NOU::NOU_DAT_ALG::StringView8 &name,
 			const NOU::NOU_DAT_ALG::StringView8 &description);
 
 		/**
@@ -381,21 +381,21 @@ namespace NOE::NOE_CORE
 
 		\brief Removes a type from the database.
 		*/
-		NOU::boolean removeType(typename ResourceType::ID id);
+		NOE_FUNC NOU::boolean removeType(typename ResourceType::ID id);
 
 		/**
 		\param id The ID of the type to get.
 
 		\brief Returns the type with the passed ID. That type may be invalid.
 		*/
-		ResourceType getType(typename ResourceType::ID id) const;
+		NOE_FUNC ResourceType getType(typename ResourceType::ID id) const;
 
 		/**
 		\return A list that contains all types in the database.
 
 		\brief Returns a list that contains all types in the database.
 		*/
-		NOU::NOU_DAT_ALG::Vector<ResourceType> listTypes();
+		NOE_FUNC NOU::NOU_DAT_ALG::Vector<ResourceType> listTypes();
 
 		/**
 		\return The count of type removes.
@@ -405,7 +405,7 @@ namespace NOE::NOE_CORE
 		\details
 		Returns the count of type removes. See m_typeRemoveUpdates for further information.
 		*/
-		NOU::int32 getTypeRemoveUpdates() const;
+		NOE_FUNC NOU::int32 getTypeRemoveUpdates() const;
 
 		/**
 		\return The count of resources removes.
@@ -415,24 +415,24 @@ namespace NOE::NOE_CORE
 		\details
 		Returns the resources of type removes. See m_resourceRemoveUpdates for further information.
 		*/
-		NOU::int32 getResourceRemoveUpdates() const;
+		NOE_FUNC NOU::int32 getResourceRemoveUpdates() const;
 
 		/**
 		\brief Initializes the resource manager. It is only usable after this method has been called.
 		*/
-		void initalize();
+		NOE_FUNC void initalize();
 
 		/**
 		\brief Terminates the resource manager. After calling this method, it is not usable anymore.
 		*/
-		void terminate();
+		NOE_FUNC void terminate();
 
 		/**
 		\return The underlying database.
 
 		\brief Returns the underlying database.
 		*/
-		NOE::NOE_UTILITY::sqlite::Database& getUnderlying();
+		NOE_FUNC NOE::NOE_UTILITY::sqlite::Database& getUnderlying();
 	};
 
 	template<typename T, typename... ARGS>

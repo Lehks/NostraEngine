@@ -1,6 +1,10 @@
 
 #include "nostraengine/core/ResourceManagement.hpp"
 
+#if NOU_COMPILER == NOU_COMPILER_VISUAL_CPP
+#     pragma warning(disable : 4996)
+#endif
+
 namespace NOE::NOE_CORE
 {
 	const NOU::NOU_DAT_ALG::StringView8 ResourceMetadata::SQL_GENERIC =
@@ -118,6 +122,8 @@ namespace NOE::NOE_CORE
 
 		if (!row.isNull(0))
 			return ResourceType(row.valueAs(0, NOE::NOE_UTILITY::sqlite::INTEGER()));
+
+		return ResourceType();
 	}
 
 	NOU::NOU_FILE_MNGT::Path ResourceMetadata::getPath() const

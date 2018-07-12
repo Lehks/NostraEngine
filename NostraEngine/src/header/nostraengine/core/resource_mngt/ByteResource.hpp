@@ -24,7 +24,7 @@ namespace NOE::NOE_CORE
 	\brief A resource type that contains the content of a file as byte array. This loader is mostly used for
 	other loaders to build upon it.
 	*/
-	class NOU_CLASS ByteResource final : public Resource
+	class ByteResource final : public Resource
 	{
 	private:
 		/**
@@ -46,20 +46,20 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the byte array.
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes();
+		NOE_FUNC NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes();
 
 		/**
 		\return The byte array.
 
 		\brief Returns the byte array.
 		*/
-		const NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes() const;
+		NOE_FUNC const NOU::NOU_DAT_ALG::Vector<NOU::byte>& getBytes() const;
 	};
 
 	/**
 	\brief A loader for ByteResource, a resource that stores the content of a class as byte array.
 	*/
-	class NOU_CLASS ByteResourceLoader final : public ResourceLoader 
+	class ByteResourceLoader final : public ResourceLoader 
 	{
 	public:
 		/**
@@ -115,7 +115,7 @@ namespace NOE::NOE_CORE
 		/**
 		\brief Constructs a new instance.
 		*/
-		ByteResourceLoader();
+		NOE_FUNC ByteResourceLoader();
 
 		/**
 		\param id The ID of the resource to check.
@@ -124,7 +124,7 @@ namespace NOE::NOE_CORE
 
 		\brief This loader can load any file, hence this method will always return true.
 		*/
-		virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
+		NOE_FUNC virtual NOU::boolean isResourceValid(typename ResourceMetadata::ID id) const override;
 
 	};
 }

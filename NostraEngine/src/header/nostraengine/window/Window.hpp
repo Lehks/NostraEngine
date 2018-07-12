@@ -20,9 +20,14 @@ namespace NOE::NOE_WINDOW
 	/**
 	\brief A pure virtual class that provides a template for the implementation of a window.
 	*/
-	class NOU_CLASS Window
+	class Window
 	{
 	public:
+
+		/**
+		\brief			Default constructor.
+		*/
+		virtual ~Window() = default;
 
 		/**
 		\param width	The width of the window.

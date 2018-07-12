@@ -17,7 +17,7 @@
 namespace NOE::NOE_CORE
 {
 
-    class NOU_CLASS Updatable
+    class Updatable
     {
         public:
             
@@ -26,7 +26,7 @@ namespace NOE::NOE_CORE
                     Defaults to an enmpty function, so nothing will be done by default. Can be overwritten to add 
                     unique behaviour
             */
-            virtual void earlyUpdate();
+			NOE_FUNC virtual void earlyUpdate();
             /**
             \brief Abstract function that defines some functionallity the implemented object does every Render iteration
             \detail For example if a player wants to move the ingame Player object, the object has to scan for input every
@@ -38,17 +38,17 @@ namespace NOE::NOE_CORE
                     Defaults to an enmpty function, so nothing will be done by default. Can be overwritten to add 
                     unique behaviour
             */
-            virtual void lateUpdate();
+			NOE_FUNC virtual void lateUpdate();
 
             /**
             \brief A basic constructor for this interface, it suits no purpose than automatically adding the current object to the update vector
             */
-            Updatable();
+			NOE_FUNC Updatable();
         
             /**
             \brief A basic destructor for this interface, it suits no purpose than automatically removing the current object from the update vector
             */
-            ~Updatable();
+			NOE_FUNC ~Updatable();
     };
 }
 #endif

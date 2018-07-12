@@ -19,9 +19,14 @@ namespace NOE::NOE_WINDOW
 	/**
 	\brief A abstract class that defines the functionality for accessing monitors.
 	*/
-	class NOU_CLASS Monitor
+	class Monitor
 	{
 	public:
+
+		/**
+		\brief			Default constructor.
+		*/
+		virtual ~Monitor() = default;
 
 		/**
 		\return			The width of the monitor resolution.

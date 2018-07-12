@@ -12,7 +12,7 @@
 /** \file StringView.hpp
 \author	 Lukas Reichmann
 \since   1.0.0
-\version 1.0.0
+\version 1.0.1
 \brief   This file provides the StringView which is an interface between \link nostra::utils::dat_alg::String 
          String\endlink and C-Strings.
 
@@ -72,8 +72,11 @@ namespace NOU::NOU_DAT_ALG
 		*/
 		using ConstCharType = const CharType;
 
-		using StringConstIterator = VectorConstIterator<ConstCharType>;
-		using StringReverseConstIterator = VectorReverseConstIterator<ConstCharType>;
+		using StringConstIterator = VectorConstIterator<ConstCharType, 
+			NOU_MEM_MNGT::GenericAllocationCallback>;
+
+		using StringReverseConstIterator = VectorReverseConstIterator<ConstCharType,
+			NOU_MEM_MNGT::GenericAllocationCallback>;
 
 		/**
 		\brief The character that is used to separate the decimal places from the remaining digits by stringToFloat32()
@@ -632,8 +635,12 @@ namespace NOU::NOU_DAT_ALG
 			}
 		}
 
-		if (isNegative)
-			ret = -ret;
+		//to avoid compile warning
+		if constexpr(!std::is_unsigned_v<OT>)
+		{
+			if (isNegative)
+				ret = -ret;
+		}
 
 		return ret;
 	}

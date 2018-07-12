@@ -7,17 +7,13 @@
 #include <dlfcn.h>
 #endif
 
-#include <filesystem>
-
 //w/o, logging functions do not work
 #undef ERROR
 
 namespace NOE::NOE_CORE
 {
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_FILE_EXTENSION = "np";
-	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = ".pconf";
-	const PluginMetadata::Priority PluginMetadata::LOWEST_PRIORITY = 0;
-	const PluginMetadata::Priority PluginMetadata::HIGHEST_PRIORITY = -1;
+	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION = "pconf";
 
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_SECTION_CORE = "core";
 	const NOU::NOU_DAT_ALG::StringView8 PluginMetadata::PCONF_SECTION_META = "meta";
@@ -312,7 +308,7 @@ namespace NOE::NOE_CORE
 			return false;
 
 		//start the plugin
-		startupFunc();
+		startupFunc(getMetadata().getID());
 
 		m_library = lib;
 
@@ -342,7 +338,11 @@ namespace NOE::NOE_CORE
 				NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 					PluginManager::ErrorCodes::COULD_NOT_FREE_LIBRARY,
 					"The system call to free the library failed.");
+
+				return false;
 			}
+
+			return true;
 		}
 		else
 		{
@@ -419,7 +419,7 @@ namespace NOE::NOE_CORE
 	{
 		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths;
 
-		std::filesystem::directory_iterator iter(m_loadPath.getAbsolutePath().rawStr());
+		/*std::filesystem::directory_iterator iter(m_loadPath.getAbsolutePath().rawStr());
 
 		for (auto file : iter)
 		{
@@ -429,18 +429,18 @@ namespace NOE::NOE_CORE
 				paths.push(file.path().string().c_str());
 			}
 		}
-
-		/*
+		*/
+		
 		NOU::NOU_FILE_MNGT::Folder folder(m_loadPath);
 
 		auto list = folder.listFiles();
 
-		for (auto file : list)
+		for (auto &file : list)
 		{
 			if (file.getPath().getFileExtension() == PluginMetadata::PLUGIN_CONFIGURATION_FILE_EXTENSION)
 				paths.push(file.getPath());
 		}
-		*/
+		
 		return paths;
 	}
 
@@ -487,6 +487,8 @@ namespace NOE::NOE_CORE
 		}
 
 		plugin.receive(source, data, size, flags);
+
+		return Plugin::SendResult::SUCCESS;
 	}
 
 	PluginManager::PluginManager() : 
@@ -532,17 +534,14 @@ namespace NOE::NOE_CORE
 					m_idIndexMap.map(id, NOU::NOU_CORE::move(plugin));
 					loadedPlugins++;
 
-					///\todo Re-enable commented out code.
-					//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin ") +
-					//	pluginPtr->getMetadata().getName() + ".");
-					NOU_LOG_INFO("A plugin was successfully loaded.");
+					NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin \"") + 
+						pluginPtr->getMetadata().getName()
+						+ "\" (ID: " + pluginPtr->getMetadata().getID() + ").");
 				}
 				else
 				{
-					///\todo Re-enable commented out code.
-					//NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file ") + path.getName()
-					//	+ " could not be loaded.");
-					NOU_LOG_INFO("A plugin could not be loaded.");
+					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file \"") + path.getName()
+						+ "\" could not be loaded.");
 
 					m_createdPluginList = false;
 					return false;
@@ -555,9 +554,7 @@ namespace NOE::NOE_CORE
 
 		m_createdPluginList = true;
 
-		///\todo Re-enable commented out code.
-		//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
-		NOU_LOG_INFO("Successfully loaded all plugins.");
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
 
 		return true;
 	}

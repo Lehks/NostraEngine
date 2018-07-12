@@ -1,6 +1,10 @@
 
 #include "nostraengine/core/ResourceManagement.hpp"
 
+#if NOU_COMPILER == NOU_COMPILER_VISUAL_CPP
+#     pragma warning(disable : 4996)
+#endif
+
 namespace NOE::NOE_CORE
 {
 	NOU::NOU_FILE_MNGT::Path ResourceManager::DATABASE_PATH = "./Resources.db";
@@ -115,7 +119,7 @@ namespace NOE::NOE_CORE
 		if (row.affectedRows() == 0)
 			return ResourceMetadata::INVALID_ID;
 		else
-			return row.lastRowId();
+			return ResourceMetadata::ID(row.lastRowId());
 	}
 
 	NOU::boolean ResourceManager::removeResource(typename ResourceMetadata::ID id)
@@ -224,7 +228,7 @@ namespace NOE::NOE_CORE
 		if (row.affectedRows() == 0)
 			return ResourceType::INVALID_ID;
 		else
-			return row.lastRowId();
+			return ResourceMetadata::ID(row.lastRowId());
 	}
 
 	typename ResourceType::ID ResourceManager::addType(const NOU::NOU_DAT_ALG::StringView8 &name,
@@ -240,7 +244,7 @@ namespace NOE::NOE_CORE
 		if (row.affectedRows() == 0)
 			return ResourceType::INVALID_ID;
 		else
-			return row.lastRowId();
+			return ResourceMetadata::ID(row.lastRowId());
 	}
 
 	NOU::boolean ResourceManager::removeType(typename ResourceType::ID id)
