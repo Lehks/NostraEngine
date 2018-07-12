@@ -1,4 +1,5 @@
 #include "nostraengine/renderer/Renderer.hpp"
+#include "nostrautils/dat_alg/BinarySearch.hpp"
 
 namespace NOE::NOE_RENDERER
 {
@@ -17,30 +18,11 @@ namespace NOE::NOE_RENDERER
 
 	void RenderableList::insertSorted(NOE::NOE_SCENE::RenderableActor renderable)
 	{
-		NOU::int32 compareResult = 0;
+		NOU::int64 insertionIndex;
+		
+		NOU::NOU_DAT_ALG::binarySearch(m_renderables, renderable, 0, -1, &insertionIndex);
 
-		NOU::boolean inserted = false;
-
-		for (NOU::sizeType i = 0; i < m_renderables.size(); i++)
-		{
-			compareResult = Renderer::comparable(m_renderables.at(i), renderable);
-
-			if (compareResult < NOU::int32(0))
-			{
-				m_renderables.insert(NOU::int32(0), renderable);
-				inserted = true;
-			}
-			else if (compareResult == NOU::int32(0))
-			{
-				m_renderables.insert(compareResult, renderable);
-				inserted = true;
-			}
-		}
-
-		if (!inserted)
-		{
-			m_renderables.pushBack(renderable);
-		}
+		m_renderables.insert(insertionIndex, renderable);
 	}
 
 	void RenderableList::clear()
