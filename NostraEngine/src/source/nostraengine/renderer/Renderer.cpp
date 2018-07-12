@@ -7,7 +7,7 @@ namespace NOE::NOE_RENDERER
 
 	RenderableList::~RenderableList()
 	{
-		m_renderables.clear();
+		clear();
 	}
 
 	NOE::NOE_SCENE::RenderableActor RenderableList::at(NOU::int32 index) const
