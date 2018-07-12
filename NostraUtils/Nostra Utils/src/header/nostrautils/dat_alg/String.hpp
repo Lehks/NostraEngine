@@ -30,8 +30,9 @@ namespace NOU::NOU_DAT_ALG
 		using CharType = typename StringView<CHAR_TYPE>::CharType;
 		using ConstCharType = typename StringView<CHAR_TYPE>::ConstCharType;
 
-		using StringIterator = VectorIterator<CharType>;
-		using StringReverseIterator = VectorReverseIterator<CharType>;
+		using StringIterator = VectorIterator<CharType, NOU_MEM_MNGT::GenericAllocationCallback>;
+		using StringReverseIterator = VectorReverseIterator<CharType, 
+			NOU_MEM_MNGT::GenericAllocationCallback>;
 
 	private:
 
@@ -82,7 +83,7 @@ namespace NOU::NOU_DAT_ALG
 	    /**
         \brief An empty static const String member variable.
         */
-        static const String<CHAR_TYPE> EMPTY_STRING;
+        static const String<CHAR_TYPE>& getEmptyString();
 
 		/**
 		\param b The boolean to convert.
@@ -993,7 +994,11 @@ namespace NOU::NOU_DAT_ALG
 	using String32 = String<char32>;
 
 	template<typename CHAR_TYPE>
-	const String<CHAR_TYPE> String<CHAR_TYPE>::EMPTY_STRING = "";
+	const String<CHAR_TYPE>& String<CHAR_TYPE>::getEmptyString()
+	{
+		static String<CHAR_TYPE> str = "";
+		return str;
+	}
 
     template<typename CHAR_TYPE>
 	template<typename IT>
@@ -1080,7 +1085,7 @@ namespace NOU::NOU_DAT_ALG
 
 		if (tempFloat == 0)
 		{
-			str.insert(0, '0');
+			str.insert(str.size(), '0');
 			return str;
 		}
 
@@ -1311,7 +1316,7 @@ namespace NOU::NOU_DAT_ALG
 	template<typename CHAR_TYPE>
 	String<CHAR_TYPE>& String<CHAR_TYPE>::insert(sizeType index, CharType c)
 	{
-		NOU_COND_PUSH_ERROR((index > StringView<CHAR_TYPE>::m_size),
+		NOU_COND_PUSH_ERROR((index > StringView<CHAR_TYPE>::size() + 1),
 			NOU_CORE::getErrorHandler(), NOU_CORE::ErrorCodes::INDEX_OUT_OF_BOUNDS, "An index was out of bounds.");
 
 		m_data.insert(index, c);
@@ -1323,7 +1328,7 @@ namespace NOU::NOU_DAT_ALG
 	String<CHAR_TYPE>& String<CHAR_TYPE>::insert(sizeType index, const StringView<CHAR_TYPE>& str)
 	{
 
-		NOU_COND_PUSH_ERROR((index > StringView<CHAR_TYPE>::m_size),
+		NOU_COND_PUSH_ERROR((index > StringView<CHAR_TYPE>::size() + 1),
 			NOU_CORE::getErrorHandler(), NOU_CORE::ErrorCodes::INDEX_OUT_OF_BOUNDS, "An index was out of bounds.");
 
 		sizeType counter = 0;
@@ -1345,11 +1350,11 @@ namespace NOU::NOU_DAT_ALG
 
 		for (sizeType j = 0; j < tmpstr.size(); j++)
 		{
-			m_data.insert(m_data.size() - 1, tmpstr[j]);
+			m_data.insert(str.size() + index + j, tmpstr[j]);
 		}
 
-
-		setSize(StringView<CHAR_TYPE>::m_size + str.size());
+		setSize(StringView<CHAR_TYPE>::m_size + str.size() - 1);
+		insert(StringView<CHAR_TYPE>::size() + 1, StringView<CHAR_TYPE>::NULL_TERMINATOR);
 		return *this;
 	}
 
@@ -1465,7 +1470,7 @@ namespace NOU::NOU_DAT_ALG
 		if (end == StringView<CHAR_TYPE>::NULL_INDEX)
 			end = StringView<CHAR_TYPE>::m_size;
 
-		NOU_COND_PUSH_ERROR((start > StringView<CHAR_TYPE>::m_size || end > StringView<CHAR_TYPE>::m_size),
+		NOU_COND_PUSH_ERROR((start > StringView<CHAR_TYPE>::size() || end > StringView<CHAR_TYPE>::size()),
 			NOU_CORE::getErrorHandler(), NOU_CORE::ErrorCodes::INDEX_OUT_OF_BOUNDS, "An index was out of bounds.");
 
 		for (sizeType i = start; i < end; i++)
@@ -1488,6 +1493,7 @@ namespace NOU::NOU_DAT_ALG
 		NOU_COND_PUSH_ERROR((start > StringView<CHAR_TYPE>::size() || end > StringView<CHAR_TYPE>::size()),
 			NOU_CORE::getErrorHandler(), NOU_CORE::ErrorCodes::INDEX_OUT_OF_BOUNDS, "An index was out of bounds.");
 
+
 		for(sizeType i = start; i < end; i++)
 		{
 			if(target == this->logicalSubstring(i, target.size() + i) ) {
@@ -1509,25 +1515,28 @@ namespace NOU::NOU_DAT_ALG
                         counter++;
                     }
 
-                    i = i + replacement.size();
+                    i = i + replacement.size() - 1;
+					end = end + replacement.size();
                 } else
                 {
                     sizeType oldsize = StringView<CHAR_TYPE>::size();
                     sizeType counter = 0;
                     sizeType counter2 = 0;
 
-                    for (sizeType j = i; j < oldsize; j++) {
+
+                    for (sizeType j = i; j < oldsize - (target.size() - replacement.size()); j++) {
                         if (counter < replacement.size()) {
                             replace(j, replacement[counter]);
                             counter++;
                         } else {
-                            m_data[j] = m_data[(target.size() - counter) + j];
+                            m_data.replace(j , m_data[(target.size() - counter) + j]);
                             counter2++;
                         };
                     }
                     setSize((oldsize - target.size()) + replacement.size());
 
                     i = i + replacement.size();
+					end = (end - target.size()) + replacement.size();
                 }
 			}
 		}
@@ -1541,7 +1550,7 @@ namespace NOU::NOU_DAT_ALG
 		if (end == StringView<CHAR_TYPE>::NULL_INDEX)
 			end = StringView<CHAR_TYPE>::size();
 
-		NOU_COND_PUSH_ERROR((start > StringView<CHAR_TYPE>::size() + 1 || end > StringView<CHAR_TYPE>::size() + 1),
+		NOU_COND_PUSH_ERROR((start > StringView<CHAR_TYPE>::size() || end > StringView<CHAR_TYPE>::size()),
 							NOU_CORE::getErrorHandler(), NOU_CORE::ErrorCodes::INDEX_OUT_OF_BOUNDS, "An index was out of bounds.");
 
 		if(end - start < replacement.size())
@@ -1553,11 +1562,11 @@ namespace NOU::NOU_DAT_ALG
                 counter++;
             }
 
-            for(sizeType i = end ; i < replacement.size(); i++)
-            {
-                insert(i,replacement[counter]);
-                counter++;
-            };
+           for(sizeType i = end ; i < replacement.size(); i++)
+           {
+               insert(i,replacement[counter]);
+               counter++;
+           };
 
         } else if(end - start == replacement.size())
         {
@@ -1585,8 +1594,9 @@ namespace NOU::NOU_DAT_ALG
 					counter2++;
 			}
 
-			insert(end, StringView<CHAR_TYPE>::NULL_TERMINATOR);
             setSize((oldsize - (end - start)) + replacement.size());
+            insert(StringView<CHAR_TYPE>::size(), StringView<CHAR_TYPE>::NULL_TERMINATOR);
+            setSize(StringView<CHAR_TYPE>::size() - 1);
 		}
 
 		return *this;
@@ -1906,7 +1916,7 @@ namespace NOU::NOU_DAT_ALG
 			if (m_data.at(i) >= '\u0040' && m_data.at(i) <= '\u005A') // \u0040 (A) upper letter unicode, \u005A upper letter unicode (Z) 
 			{
 				String<CHAR_TYPE>::CharType c = m_data.at(i) + 32;  // adds +32 to convert the upper case letter \u0040 - \u005A to lower case letter \u0060 - \u007A
-				m_data.replace(c, i);								// example: A (\u0040) toLowerCase = a (\u0060)
+				m_data.replace(i, c);								// example: A (\u0040) toLowerCase = a (\u0060)
 			}
 		}
 
@@ -1921,7 +1931,7 @@ namespace NOU::NOU_DAT_ALG
 			if (m_data.at(i) >= '\u0060' && m_data.at(i) <= '\u007A') //same just vice versa toLowerCase.
 			{
 				String<CHAR_TYPE>::CharType c = m_data.at(i) - 32;
-				m_data.replace(c, i);
+				m_data.replace(i, c);
 			}
 		}
 
