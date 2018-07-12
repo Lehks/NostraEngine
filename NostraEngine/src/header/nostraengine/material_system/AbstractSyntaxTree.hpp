@@ -5,7 +5,7 @@
 
 namespace NOT
 {
-    class NOU_CLASS AbstractSyntaxTree
+    class NOE_FUNC AbstractSyntaxTree
     {
 
 
@@ -28,7 +28,7 @@ namespace NOT
             /**
             \brief A class that represents a Node inside the Abstract Syntax Tree.
             */
-            class NOU_CLASS ASTNode{
+            class NOE_FUNC ASTNode{
                 friend AbstractSyntaxTree::AbstractSyntaxTree();
                 friend AbstractSyntaxTree::AbstractSyntaxTree(AbstractSyntaxTree&& other);
 
