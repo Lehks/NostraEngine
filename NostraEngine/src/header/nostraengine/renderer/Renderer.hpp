@@ -20,8 +20,6 @@
 */
 namespace NOE::NOE_RENDERER
 {
-	
-
 	class Optimizer
 	{
 	private:
@@ -30,7 +28,8 @@ namespace NOE::NOE_RENDERER
 
 		virtual ~Optimizer() = default;
 
-		virtual void optimize(NOE::NOE_SCENE::RenderableActor renderable) const = 0;
+		virtual NOU::NOU_DAT_ALG::Vector<NOE::NOE_SCENE::RenderableActor> 
+			optimize(NOE::NOE_SCENE::RenderableActor renderable) const = 0;
 	};
 
 	class RenderableList
@@ -59,6 +58,8 @@ namespace NOE::NOE_RENDERER
 
 		RenderableList m_renderableList;
 
+		Optimizer* m_optimizer;
+
 	public:
 
 		NOE_FUNC Renderer();
@@ -69,7 +70,7 @@ namespace NOE::NOE_RENDERER
 
 		NOE_FUNC void render() const;
 
-		NOE_FUNC void setOptimizer();
+		NOE_FUNC void setOptimizer(Optimizer* optimizer);
 
 		NOE_FUNC virtual void renderOptimized() const = 0;
 
