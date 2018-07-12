@@ -30,7 +30,7 @@ namespace NOE::NOE_RENDERER
 
 		virtual RenderableImpl* build() const = 0;
 
-		NOE_FUNC static void deallocate(RenderableImpl* ptr)
+		NOE_FUNC static void deallocate(RenderableImpl* ptr);
 	};
 }
 
