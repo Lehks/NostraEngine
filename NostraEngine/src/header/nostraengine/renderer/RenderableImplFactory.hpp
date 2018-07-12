@@ -19,9 +19,18 @@ namespace NOE::NOE_RENDERER
 {
 	class RenderableImplFactory
 	{
+	protected:
+
+		template<typename T, typename... ARGS>
+		static RenderableImpl* allocate(ARGS&&... args);
+
+	public:
+
 		virtual ~RenderableImplFactory() = default;
 
-		virtual RenderableImpl* construct() const = 0;
+		virtual RenderableImpl* build() const = 0;
+
+		NOE_FUNC static void deallocate(RenderableImpl* ptr)
 	};
 }
 
