@@ -97,6 +97,10 @@ namespace NOE::NOE_CORE
 		if (separator == NOU::NOU_DAT_ALG::StringView8::NULL_INDEX)
 		{
 			//push error
+			NOU_LOG_DEBUG("It was attempted to resolve a path that did not have separator (::) in it.");
+			*sourceName = "";
+			*qualified = "";
+			return;
 		}
 
 		*sourceName = fullyQualified.logicalSubstring(0, separator);
@@ -106,6 +110,9 @@ namespace NOE::NOE_CORE
 	ConfigurationSource* 
 		ConfigurationManager::getConfigurationSource(const NOU::NOU_DAT_ALG::StringView8 &sourceName)
 	{
+		if (!m_nameDataMap.containsKey(sourceName))
+			return nullptr;
+
 		return m_data[m_nameDataMap.get(sourceName)].m_sourcePtr.rawPtr();
 	}
 

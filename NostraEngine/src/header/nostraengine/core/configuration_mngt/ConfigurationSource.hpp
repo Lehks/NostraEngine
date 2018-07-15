@@ -191,7 +191,7 @@ namespace NOE::NOE_CORE
 		By default, this method is protected, hence it is not visible from the outside. This can of
 		course be changed by overriding this method in a child class and making that override public.
 		*/
-		NOU_FUNC void addStorageBehavior(StorageBehavior behavior);
+		NOE_FUNC void addStorageBehavior(StorageBehavior behavior);
 
 		/**
 		\brief Removes the passed storage behavior(s) to the already set behaviors.
@@ -203,7 +203,7 @@ namespace NOE::NOE_CORE
 		By default, this method is protected, hence it is not visible from the outside. This can of
 		course be changed by overriding this method in a child class and making that override public.
 		*/
-		NOU_FUNC void removeStorageBehavior(StorageBehavior behavior);
+		NOE_FUNC void removeStorageBehavior(StorageBehavior behavior);
 
 		/**
 		\return True, if the initialization was successful, false if not.
@@ -433,7 +433,7 @@ namespace NOE::NOE_CORE
 
 		\brief Constructs a new instance.
 		*/
-		NOU_FUNC ConfigurationSource(StorageBehavior storageBehavior =
+		NOE_FUNC ConfigurationSource(StorageBehavior storageBehavior =
 			StorageBehavior::STORE_ON_TERMINATE | StorageBehavior::STORE_ON_FLUSH);
 
 		/**
@@ -469,7 +469,7 @@ namespace NOE::NOE_CORE
 		would return false, if both the behaviors STORE_ON_TERMINATE and STORE_ON_FLUSH are set. For that 
 		purpose, hasStorageBehavior() is better suited.
 		*/
-		NOU_FUNC StorageBehavior getStorageBehavior() const;
+		NOE_FUNC StorageBehavior getStorageBehavior() const;
 
 		/**
 		\param storageBehavior The storage behavior(s) to check.
@@ -478,7 +478,7 @@ namespace NOE::NOE_CORE
 
 		\brief Checks whether the source has the passed storage behavior(s).
 		*/
-		NOU_FUNC NOU::boolean hasStorageBehavior(StorageBehavior storageBehavior) const;
+		NOE_FUNC NOU::boolean hasStorageBehavior(StorageBehavior storageBehavior) const;
 
 		/**
 		\return True, if the initialization was successful, false if not.
@@ -488,7 +488,7 @@ namespace NOE::NOE_CORE
 		\details
 		Called when the source is initialized. As of now, this always and only calls initializeImpl().
 		*/
-		NOU_FUNC NOU::boolean initialize();
+		NOE_FUNC NOU::boolean initialize();
 
 		/**
 		\return True, if the termination was successful, false if not.
@@ -498,12 +498,12 @@ namespace NOE::NOE_CORE
 		\details Called when the source is terminated. As of now, this always calls terminateImpl() and, if 
 		the storage behavior STORE_ON_TERMINATE is set, also calls storeAll().
 		*/
-		NOU_FUNC NOU::boolean terminate();
+		NOE_FUNC NOU::boolean terminate();
 
 		/**
 		\brief If the behavior STORE_ON_FLUSH is set, stores all of the entires to the source file.
 		*/
-		NOU_FUNC void flush();
+		NOE_FUNC void flush();
 
 		/**
 		\brief The name of the entry to check.
@@ -512,7 +512,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns whether an entry exists in this configuration source.
 		*/
-		NOU_FUNC NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC NOU::boolean hasEntry(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\brief The name of the entry to get the type of.
@@ -521,7 +521,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the type of an entry in the configuration source.
 		*/
-		NOU_FUNC TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC TypeID getTypeOf(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -530,7 +530,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC NOU::boolean getBoolean(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC NOU::boolean getBoolean(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -544,7 +544,7 @@ namespace NOE::NOE_CORE
 		Sets the value of the entry with the passed name. If the storage behavior STORE_ON_UPDATE is set, this
 		will also store the value to the source file.
 		*/
-		NOU_FUNC NOU::boolean setBoolean(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::boolean v);
+		NOE_FUNC NOU::boolean setBoolean(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::boolean v);
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -553,7 +553,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC NOU::NOU_DAT_ALG::String8 getString(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC NOU::NOU_DAT_ALG::String8 getString(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -567,7 +567,7 @@ namespace NOE::NOE_CORE
 		Sets the value of the entry with the passed name. If the storage behavior STORE_ON_UPDATE is set, this
 		will also store the value to the source file.
 		*/
-		NOU_FUNC NOU::boolean setString(const NOU::NOU_DAT_ALG::StringView8 &qualified,
+		NOE_FUNC NOU::boolean setString(const NOU::NOU_DAT_ALG::StringView8 &qualified,
 			const NOU::NOU_DAT_ALG::StringView8 &v);
 
 		/**
@@ -577,7 +577,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC NOU::int32 getInt32(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC NOU::int32 getInt32(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -591,7 +591,7 @@ namespace NOE::NOE_CORE
 		Sets the value of the entry with the passed name. If the storage behavior STORE_ON_UPDATE is set, this
 		will also store the value to the source file.
 		*/
-		NOU_FUNC NOU::boolean setInt32(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int32 v);
+		NOE_FUNC NOU::boolean setInt32(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int32 v);
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -600,7 +600,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC NOU::int64 getInt64(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC NOU::int64 getInt64(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -614,7 +614,7 @@ namespace NOE::NOE_CORE
 		Sets the value of the entry with the passed name. If the storage behavior STORE_ON_UPDATE is set, this
 		will also store the value to the source file.
 		*/
-		NOU_FUNC NOU::boolean setInt64(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int64 v);
+		NOE_FUNC NOU::boolean setInt64(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::int64 v);
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -623,7 +623,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC NOU::float32 getFloat32(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC NOU::float32 getFloat32(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -637,7 +637,7 @@ namespace NOE::NOE_CORE
 		Sets the value of the entry with the passed name. If the storage behavior STORE_ON_UPDATE is set, this
 		will also store the value to the source file.
 		*/
-		NOU_FUNC NOU::boolean setFloat32(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float32 v);
+		NOE_FUNC NOU::boolean setFloat32(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float32 v);
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -646,7 +646,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC NOU::float64 getFloat64(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC NOU::float64 getFloat64(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -660,7 +660,7 @@ namespace NOE::NOE_CORE
 		Sets the value of the entry with the passed name. If the storage behavior STORE_ON_UPDATE is set, this
 		will also store the value to the source file.
 		*/
-		NOU_FUNC NOU::boolean setFloat64(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float64 v);
+		NOE_FUNC NOU::boolean setFloat64(const NOU::NOU_DAT_ALG::StringView8 &qualified, NOU::float64 v);
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -669,7 +669,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the value of the entry with the passed value (read-only).
 		*/
-		NOU_FUNC void* getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
+		NOE_FUNC void* getVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &qualified) const;
 
 		/**
 		\param qualified The qualified path to the entry.
@@ -683,7 +683,7 @@ namespace NOE::NOE_CORE
 		Sets the value of the entry with the passed name. If the storage behavior STORE_ON_UPDATE is set, this
 		will also store the value to the source file.
 		*/
-		NOU_FUNC NOU::boolean setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &qualified, void *v);
+		NOE_FUNC NOU::boolean setVoidPtr(const NOU::NOU_DAT_ALG::StringView8 &qualified, void *v);
 
 	};
 }

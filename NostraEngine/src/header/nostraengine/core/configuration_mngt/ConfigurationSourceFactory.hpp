@@ -53,7 +53,7 @@ namespace NOE::NOE_CORE
 		is always able to deallocate objects that were allocated with that function. 
 		This function is used by the configuration manager to deallocate configuration sources.
 		*/
-		NOU_FUNC static void deallocateSource(ConfigurationSource *source);
+		NOE_FUNC static void deallocateSource(ConfigurationSource *source);
 
 		/**
 		\return The file extension as a string.

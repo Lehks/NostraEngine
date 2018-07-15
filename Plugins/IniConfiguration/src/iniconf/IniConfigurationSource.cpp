@@ -3,11 +3,6 @@
 
 namespace IniConfigurationPlugin
 {
-/**
-\todo remove const_cast
-\todo replace literals with constants in getTypeOfImpl()
-*/
-
 	void IniConfigurationSource::parsePath(const NOU::NOU_DAT_ALG::StringView8 &path,
 		NOU::NOU_DAT_ALG::StringView8 *key, NOU::NOU_DAT_ALG::StringView8 *section) const
 	{
@@ -47,7 +42,7 @@ namespace IniConfigurationPlugin
 
 		parsePath(qualified, &key, &section);
 
-		return const_cast<IniConfigurationSource*>(this)->m_file.keyExists(key, section);
+		return m_file.keyExists(key, section);
 	}
 
 	NOE::NOE_CORE::ConfigurationSource::TypeID 
@@ -58,17 +53,17 @@ namespace IniConfigurationPlugin
 
 		parsePath(qualified, &key, &section);
 
-		NOU::int32 type = const_cast<IniConfigurationSource*>(this)->m_file.getDataType(key, section);
+		NOU::int32 type = m_file.getDataType(key, section);
 
-		if (type == 1)//NOU::NOU_FILE_MNGT::INIFile::INI_TYPE_NouString)
+		if (type == NOU::NOU_FILE_MNGT::INIFile::INI_TYPE_NouString)
 		{
 			return NOE::NOE_CORE::ConfigurationSource::TypeID::STRING;
 		}
-		else if (type == 2)//NOU::NOU_FILE_MNGT::INIFile::INI_TYPE_INT)
+		else if (type == NOU::NOU_FILE_MNGT::INIFile::INI_TYPE_INT)
 		{
 			return NOE::NOE_CORE::ConfigurationSource::TypeID::INT_32;
 		}
-		else if (type == 3)//NOU::NOU_FILE_MNGT::INIFile::INI_TYPE_FLOAT)
+		else if (type == NOU::NOU_FILE_MNGT::INIFile::INI_TYPE_FLOAT)
 		{
 			return NOE::NOE_CORE::ConfigurationSource::TypeID::FLOAT_32;
 		}
@@ -85,9 +80,9 @@ namespace IniConfigurationPlugin
 
 		parsePath(qualified, &key, &section);
 
-		if (const_cast<IniConfigurationSource*>(this)->m_file.keyExists(key, section))
+		if (m_file.keyExists(key, section))
 		{
-			return const_cast<IniConfigurationSource*>(this)->m_file.getInt(key, section);
+			return m_file.getInt(key, section);
 		}
 		else
 			return NOU::float32(0);
@@ -122,12 +117,12 @@ namespace IniConfigurationPlugin
 		NOU::NOU_DAT_ALG::String8 str = section;
 		NOU::NOU_DAT_ALG::String8 str1 = key;
 
-		if (const_cast<IniConfigurationSource*>(this)->m_file.keyExists(key, section))
+		if (m_file.keyExists(key, section))
 		{
-			return const_cast<IniConfigurationSource*>(this)->m_file.getString(key, section);
+			return m_file.getString(key, section);
 		}
 		else
-			return NOU::NOU_DAT_ALG::String8::EMPTY_STRING;
+			return NOU::NOU_DAT_ALG::String8::getEmptyString();
 	}
 
 	NOU::boolean IniConfigurationSource::setStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
@@ -155,9 +150,9 @@ namespace IniConfigurationPlugin
 
 		parsePath(qualified, &key, &section);
 
-		if (const_cast<IniConfigurationSource*>(this)->m_file.keyExists(key, section))
+		if (m_file.keyExists(key, section))
 		{
-			return const_cast<IniConfigurationSource*>(this)->m_file.getInt(key, section);
+			return m_file.getInt(key, section);
 		}
 		else
 			return NOU::int32(0);
@@ -199,9 +194,9 @@ namespace IniConfigurationPlugin
 
 		parsePath(qualified, &key, &section);
 
-		if (const_cast<IniConfigurationSource*>(this)->m_file.keyExists(key, section))
+		if (m_file.keyExists(key, section))
 		{
-			return const_cast<IniConfigurationSource*>(this)->m_file.getFloat(key, section);
+			return m_file.getFloat(key, section);
 		}
 		else
 			return NOU::float32(0);
