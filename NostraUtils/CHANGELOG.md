@@ -6,10 +6,13 @@
 
 - **Additions**
     - Added NOU_EXPORT_FUNC and NOU_IMPORT_FUNC.
-    - Added a remove function for the folder class .
+    - Added functionality to remove a folder.
+    - Added functionality to check if a folder exists.
+    - Added String::getEmptyString() which returns an empty string which is stored on static memory.
 
 - **Deletions**
     - Removed NOU_CLASS.
+    - Removed NOU\::NOU_DAT_ALG::AllocationCallback.
 
 - **Deprecations**
     - None
@@ -21,10 +24,10 @@
 - Improved CMake build process. The library should now work better when build as a sub-project of another 
   project.
 - Improved String Replace and Insert method's.
-- Added an empty static const string member variable to the string.
 - Changed the return type of NOU\::NOU_FILE_MGNT\::Folder\::listFiles(). The function now returns a vector of
   files instead of folders.
--
+- Improved the allocation callback system. The page "Allocation Callback system" provides more information
+  on that new system.
 
 ### Fixes
 - Fixed a wrong attribute type that resulted in an incorrect display of logging messages.
@@ -37,7 +40,9 @@
 - Fixed an issue where the quicksort wouldn't work with comparators.
 - Fixed an issue, where the returned values of NOU\::NOU_FILE_MGNT\::Folder\::listFiles() and ::listFolders() 
   would have the wrong path.
-  
+- Fixed an issue where Folder::listFiles() would not work on POSIX systems.
+- Fixed an issue that caused the class INIFile to incorrectly read strings and that would crash the program 
+  when reading empty strings.
 
 
 ## Version 1.0.0

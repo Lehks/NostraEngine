@@ -21,10 +21,11 @@ namespace NOE::NOE_CORE{
 		m_preInitializedObjects(0)
 	{}
 
-	void NostraEngine::updateFrameInformations(const NOU::uint32 begin, const NOU::uint32 end)
+	void NostraEngine::updateFrameInformations(const NOU::uint64 begin, const NOU::uint64 end)
 	{
 		m_frameTime = end - begin;
-		m_currFPS = 1000 / ((m_frameTime != 0) ? m_frameTime : 1);
+		m_currFPS = NOU::uint64(1000) / 
+									((m_frameTime != NOU::uint64(0)) ? m_frameTime : NOU::uint64(1));
 	}
 
 	void NostraEngine::fpsLimitStart()
@@ -375,7 +376,7 @@ namespace NOE::NOE_CORE{
 		return m_maxFPS;
 	}
 
-	const NOU::uint32& NostraEngine::getFrameTime() const
+	const NOU::uint64& NostraEngine::getFrameTime() const
 	{
 		return m_frameTime;
 	}

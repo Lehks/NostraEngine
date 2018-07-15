@@ -29,7 +29,8 @@ target_compile_definitions(NostraEngineDbg
 if(MSVC)
 	target_compile_options(NostraEngineDbg
 		PRIVATE
-			"/wd4251")
+			"/wd4251"
+			"/WX")
 endif()
 
 install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
