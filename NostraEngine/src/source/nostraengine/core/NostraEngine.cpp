@@ -50,7 +50,7 @@ namespace NOE::NOE_CORE{
 
 		if (!PluginManager::get().createPluginList())
 		{
-			//NOU_LOG_ERROR("Failed to create the plugin list.");
+			NOU_LOG_ERROR("Failed to create the plugin list.");
 			return Initializable::ExitCode::ERROR;
 		}
 
@@ -267,24 +267,25 @@ namespace NOE::NOE_CORE{
 		//construct instance of ConfigurationManager	
 		NOE::NOE_CORE::ConfigurationManager::get();
 
-		//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("NostraEngine Version ") + getVersion().rawStr());
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("NostraEngine Version ") + 
+			getVersion().getMajor() + "." + getVersion().getMinor() + "." + getVersion().getPatch());
 
 		NOE::NOE_CORE::PluginManager::get().initialize();
 
 		if(preInitialize() == Initializable::ExitCode::ERROR)
 		{
-		//	NOU_LOG_ERROR("preInitialize(): An Error occurred during pre initialize.");
+			NOU_LOG_ERROR("An Error occurred during pre-initialization.");
 			m_runState = -1;
 		}
 		else if (initialize() == Initializable::ExitCode::ERROR)
 		{
 
-		//	NOU_LOG_ERROR("Initialize(): An Error occurred during initialize.");
+			NOU_LOG_ERROR("An Error occurred during initialization.");
 			m_runState = -1;
 
 		}else if (postInitialize() == Initializable::ExitCode::ERROR)
 		{
-		//	NOU_LOG_ERROR("postInitialize(): An Error occurred during post initialize.");
+			NOU_LOG_ERROR("An Error occurred during post-initialization.");
 			m_runState = -1;
 		}
 
@@ -292,12 +293,12 @@ namespace NOE::NOE_CORE{
 
 		if (terminate() == Initializable::ExitCode::ERROR)
 		{
-		//	NOU_LOG_ERROR("terminate(): An Error occurred during terminate.");
+			NOU_LOG_ERROR("An Error occurred during termination.");
 		}
 
 		if (postTerminate() == Initializable::ExitCode::ERROR)
 		{
-		//	NOU_LOG_ERROR("postTerminate(): An Error occurred during post terminate.");
+			NOU_LOG_ERROR("postTerminate(): An Error occurred during post-termination.");
 		}
 
 		NOE::NOE_CORE::PluginManager::get().terminate();
@@ -338,7 +339,8 @@ namespace NOE::NOE_CORE{
 	{
 		if (&instance == nullptr)
 		{
-		//	NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, "Cannot set the instance to a nullptr");
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, 
+				"Cannot set the instance to a nullptr");
 		}
 		else
 		{
