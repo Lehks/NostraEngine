@@ -396,7 +396,7 @@ namespace NOE::NOE_CORE
 
 		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
 
-		return getInt32(sourceName, qualified);
+		return getInt64(sourceName, qualified);
 	}
 
 	NOU::int64 ConfigurationManager::getInt64(const NOU::NOU_DAT_ALG::StringView8 &sourceName,
@@ -422,7 +422,7 @@ namespace NOE::NOE_CORE
 
 		resolveFullyQualifiedPath(fullyQualified, &sourceName, &qualified);
 
-		return getBoolean(sourceName, qualified);
+		return getFloat32(sourceName, qualified);
 	}
 
 	NOU::float32 ConfigurationManager::getFloat32(const NOU::NOU_DAT_ALG::StringView8 &sourceName,

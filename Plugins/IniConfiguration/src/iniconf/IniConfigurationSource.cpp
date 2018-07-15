@@ -204,7 +204,7 @@ namespace IniConfigurationPlugin
 	NOU::float32 IniConfigurationSource::getFloat32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
@@ -225,7 +225,7 @@ namespace IniConfigurationPlugin
 		NOU::float32 v)
 	{
 		NOU::NOU_DAT_ALG::StringView8 key;
-		NOU::NOU_DAT_ALG::StringView8 section = "";
+		NOU::NOU_DAT_ALG::StringView8 section = NOU::NOU_FILE_MNGT::INIFile::INI_DEFAULT_SECTION;
 
 		parsePath(qualified, &key, &section);
 
