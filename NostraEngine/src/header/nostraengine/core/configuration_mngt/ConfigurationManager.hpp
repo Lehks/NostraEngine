@@ -23,7 +23,59 @@ namespace NOE::NOE_CORE
 	class ConfigurationManager final : public Initializable
 	{
 	public:
-		
+		/**
+		\brief An enumeration that contains all of the error codes that are used by the configuration 
+		       management.
+		*/
+		class ErrorCodes
+		{
+		public:
+			enum  Codes
+			{
+				/**
+				\brief Not an actual error, but always the first element in the enum.
+				*/
+				FIRST_ELEMENT = 5150,
+
+				/**
+				\brief A fully qualified path was passed in an invalid format, the double colon (::) was 
+				       missing.
+				*/
+				INVALID_FULLY_QUALIFIED_PATH,
+
+				/**
+				\brief A configuration source name was passed, but no source with that name exists.
+				*/
+				SOURCE_NOT_FOUND,
+
+				/**
+				\brief A name to an entry in a configuration source was passed, but an entry with that name
+				       does not exist.
+				*/
+				ENTRY_NOT_FOUND,
+
+				/**
+				\brief Not an actual error, but always the last element in the enum.
+				*/
+				LAST_ELEMENT
+			};
+		};
+
+		/**
+		\brief The error pool that provides the errors that are used by the configuration management.
+		*/
+		class ErrorPool : public NOU::NOU_CORE::ErrorPool
+		{
+		private:
+			NOU::NOU_CORE::Error m_errors[ErrorCodes::LAST_ELEMENT - ErrorCodes::FIRST_ELEMENT - 1];
+
+		public:
+			ErrorPool();
+
+			virtual const NOU::NOU_CORE::Error* queryError
+				(typename NOU::NOU_CORE::ErrorHandler::ErrorType id) const override;
+		};
+
 		/**
 		\brief The load mode defines the point in time when configuration sources will be loaded.
 		*/
@@ -236,25 +288,27 @@ namespace NOE::NOE_CORE
 
 		/**
 		\param loadMode The mode to set.
+		\return True, if the mode was actually set, false if not.
 
 		\brief Sets the load mode. This function has no effect after the instance has been initialized.
 		*/
-		NOE_FUNC void setLoadMode(LoadMode loadMode);
+		NOE_FUNC NOU::boolean setLoadMode(LoadMode loadMode);
 
 		/**
 		\return The currently set load path.
 
 		\brief Returns the currently set load path.
 		*/
-		const NOU::NOU_FILE_MNGT::Path& ConfigurationManager::getPath() const;
+		NOE_FUNC const NOU::NOU_FILE_MNGT::Path& ConfigurationManager::getPath() const;
 
 		/**
 		\param path The path to set.
+		\return True, if the path was actually set, false if not.
 
 		\brief Sets path from where the configuration files will be loaded. This function has no effect after 
 		       the instance has been initialized.
 		*/
-		void ConfigurationManager::setPath(const NOU::NOU_FILE_MNGT::Path &path);
+		NOE_FUNC NOU::boolean ConfigurationManager::setPath(const NOU::NOU_FILE_MNGT::Path &path);
 		/**
 		\tparam T    The child class type of ConfigurationSourceFactory.
 		\tparam ARGS The types of the parameters that will be passed to the constructor of \p T.

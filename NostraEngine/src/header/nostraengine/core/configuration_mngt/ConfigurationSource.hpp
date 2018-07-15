@@ -278,6 +278,12 @@ namespace NOE::NOE_CORE
 		\return The value of the entry, or an undefined value if the entry does not exist.
 
 		\brief Returns the value of the entry with the passed value (read-only).
+
+		\details 
+		Returns the value of the entry with the passed value (read-only).
+
+		If the entry with the specified name could not be found, the error 
+		NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND should be pushed.
 		*/
 		virtual NOU::boolean getBooleanImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
 
@@ -298,6 +304,12 @@ namespace NOE::NOE_CORE
 		\return The value of the entry, or an undefined value if the entry does not exist.
 
 		\brief Returns the value of the entry with the passed value (read-only).
+
+		\details
+		Returns the value of the entry with the passed value (read-only).
+
+		If the entry with the specified name could not be found, the error 
+		NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND should be pushed.
 		*/
 		virtual NOU::NOU_DAT_ALG::String8
 			getStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
@@ -319,6 +331,12 @@ namespace NOE::NOE_CORE
 		\return The value of the entry, or an undefined value if the entry does not exist.
 
 		\brief Returns the value of the entry with the passed value (read-only).
+
+		\details
+		Returns the value of the entry with the passed value (read-only).
+
+		If the entry with the specified name could not be found, the error 
+		NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND should be pushed.
 		*/
 		virtual NOU::int32 getInt32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
 
@@ -339,6 +357,12 @@ namespace NOE::NOE_CORE
 		\return The value of the entry, or an undefined value if the entry does not exist.
 
 		\brief Returns the value of the entry with the passed value (read-only).
+
+		\details
+		Returns the value of the entry with the passed value (read-only).
+
+		If the entry with the specified name could not be found, the error 
+		NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND should be pushed.
 		*/
 		virtual NOU::int64 getInt64Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
 
@@ -359,6 +383,12 @@ namespace NOE::NOE_CORE
 		\return The value of the entry, or an undefined value if the entry does not exist.
 
 		\brief Returns the value of the entry with the passed value (read-only).
+
+		\details
+		Returns the value of the entry with the passed value (read-only).
+
+		If the entry with the specified name could not be found, the error 
+		NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND should be pushed.
 		*/
 		virtual NOU::float32 getFloat32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
 
@@ -379,6 +409,12 @@ namespace NOE::NOE_CORE
 		\return The value of the entry, or an undefined value if the entry does not exist.
 
 		\brief Returns the value of the entry with the passed value (read-only).
+
+		\details
+		Returns the value of the entry with the passed value (read-only).
+
+		If the entry with the specified name could not be found, the error 
+		NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND should be pushed.
 		*/
 		virtual NOU::float64 getFloat64Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
 
@@ -399,6 +435,12 @@ namespace NOE::NOE_CORE
 		\return The value of the entry, or an undefined value if the entry does not exist.
 
 		\brief Returns the value of the entry with the passed value (read-only).
+
+		\details
+		Returns the value of the entry with the passed value (read-only).
+
+		If the entry with the specified name could not be found, the error 
+		NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND should be pushed.
 		*/
 		virtual void* getVoidPtrImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified) const = 0;
 

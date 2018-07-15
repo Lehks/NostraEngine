@@ -85,7 +85,11 @@ namespace IniConfigurationPlugin
 			return m_file.getInt(key, section);
 		}
 		else
-			return NOU::float32(0);
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), 
+				NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND, "An entry with that name does not exist.");
+			return false;
+		}
 	}
 
 	NOU::boolean IniConfigurationSource::setBooleanImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
@@ -122,7 +126,12 @@ namespace IniConfigurationPlugin
 			return m_file.getString(key, section);
 		}
 		else
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND, "An entry with that name does not exist.");
+
 			return NOU::NOU_DAT_ALG::String8::getEmptyString();
+		}
 	}
 
 	NOU::boolean IniConfigurationSource::setStringImpl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
@@ -155,7 +164,12 @@ namespace IniConfigurationPlugin
 			return m_file.getInt(key, section);
 		}
 		else
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND, "An entry with that name does not exist.");
+
 			return NOU::int32(0);
+		}
 	}
 
 	NOU::boolean IniConfigurationSource::setInt32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified,
@@ -199,7 +213,12 @@ namespace IniConfigurationPlugin
 			return m_file.getFloat(key, section);
 		}
 		else
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
+				NOE::NOE_CORE::ConfigurationManager::ErrorCodes::ENTRY_NOT_FOUND, "An entry with that name does not exist.");
+
 			return NOU::float32(0);
+		}
 	}
 
 	NOU::boolean IniConfigurationSource::setFloat32Impl(const NOU::NOU_DAT_ALG::StringView8 &qualified,

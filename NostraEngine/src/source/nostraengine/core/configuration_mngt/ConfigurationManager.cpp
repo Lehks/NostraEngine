@@ -2,6 +2,24 @@
 
 namespace NOE::NOE_CORE
 {
+	ConfigurationManager::ErrorPool::ErrorPool() :
+		m_errors
+		{
+			NOU::NOU_CORE::Error("INVALID_FULLY_QUALIFIED_PATH", ErrorCodes::INVALID_FULLY_QUALIFIED_PATH),
+			NOU::NOU_CORE::Error("SOURCE_NOT_FOUND", ErrorCodes::SOURCE_NOT_FOUND),
+			NOU::NOU_CORE::Error("ENTRY_NOT_FOUND", ErrorCodes::ENTRY_NOT_FOUND)
+		}
+	{}
+
+	const NOU::NOU_CORE::Error* ConfigurationManager::ErrorPool::queryError
+	(typename NOU::NOU_CORE::ErrorHandler::ErrorType id) const
+	{
+		if (id > ErrorCodes::FIRST_ELEMENT && id < ErrorCodes::LAST_ELEMENT)
+			return m_errors + id;
+		else
+			return nullptr;
+	}
+
 	ConfigurationManager::ConfigurationSourceData::ConfigurationSourceData(ConfigurationSource *ptr,
 		const NOU::NOU_FILE_MNGT::Path &path) :
 		m_sourcePtr(ptr, NOU::NOU_MEM_MNGT::defaultDeleter),
@@ -96,7 +114,8 @@ namespace NOE::NOE_CORE
 
 		if (separator == NOU::NOU_DAT_ALG::StringView8::NULL_INDEX)
 		{
-			//push error
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), ErrorCodes::INVALID_FULLY_QUALIFIED_PATH, 
+				"A fully qualified path could not be resolved because the double colon (::) was missing.");
 			NOU_LOG_DEBUG("It was attempted to resolve a path that did not have separator (::) in it.");
 			*sourceName = "";
 			*qualified = "";
@@ -111,7 +130,13 @@ namespace NOE::NOE_CORE
 		ConfigurationManager::getConfigurationSource(const NOU::NOU_DAT_ALG::StringView8 &sourceName)
 	{
 		if (!m_nameDataMap.containsKey(sourceName))
+		{
+			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), ErrorCodes::SOURCE_NOT_FOUND, "A configuration "
+				"source with that name does not exist.");
+			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
+				"does not exist.");
 			return nullptr;
+		}
 
 		return m_data[m_nameDataMap.get(sourceName)].m_sourcePtr.rawPtr();
 	}
@@ -194,17 +219,19 @@ namespace NOE::NOE_CORE
 		return m_loadMode;
 	}
 
-	void ConfigurationManager::setLoadMode(LoadMode loadMode)
+	NOU::boolean ConfigurationManager::setLoadMode(LoadMode loadMode)
 	{
 		if (!m_wasInitCalled)
 		{
 			m_loadMode = loadMode;
+			return true;
 		}
 #ifndef NOU_LOG_DEBUG_DISABLE
 		else
 		{
 			NOU_LOG_DEBUG("It was attempted to change the load mode of the configuration manager after "
 				"it was initialized. The changes were not made; the load mode is still the same.");
+			return false;
 		}
 #endif
 	}
@@ -214,17 +241,19 @@ namespace NOE::NOE_CORE
 		return m_loadPath;
 	}
 
-	void ConfigurationManager::setPath(const NOU::NOU_FILE_MNGT::Path &path)
+	NOU::boolean ConfigurationManager::setPath(const NOU::NOU_FILE_MNGT::Path &path)
 	{
 		if (!m_wasInitCalled)
 		{
 			m_loadPath = path;
+			return true;
 		}
 #ifndef NOU_LOG_DEBUG_DISABLE
 		else
 		{
 			NOU_LOG_DEBUG("It was attempted to change the load path of the configuration manager after "
 				"it was initialized. The changes were not made; the path is still the same.");
+			return false;
 		}
 #endif
 	}
@@ -252,8 +281,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get the type of an entry value in a configuration that does "
-				"not exist.");
 			return ConfigurationSource::TypeID::INVALID;
 		}
 	}
@@ -279,8 +306,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to check the availability of an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -307,8 +332,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -336,8 +359,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
-				"does not exist.");
 			return "";
 		}
 	}
@@ -364,8 +385,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
-				"does not exist.");
 			return 0;
 		}
 	}
@@ -392,8 +411,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
-				"does not exist.");
 			return 0;
 		}
 	}
@@ -420,8 +437,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
-				"does not exist.");
 			return 0;
 		}
 	}
@@ -448,8 +463,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
-				"does not exist.");
 			return 0;
 		}
 	}
@@ -476,8 +489,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to get a value from an entry in a configuration that "
-				"does not exist.");
 			return nullptr;
 		}
 	}
@@ -504,8 +515,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -532,8 +541,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -560,8 +567,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -588,8 +593,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -616,8 +619,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -644,8 +645,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
@@ -672,8 +671,6 @@ namespace NOE::NOE_CORE
 		}
 		else
 		{
-			NOU_LOG_DEBUG("It was attempted to set a value from an entry in a configuration that "
-				"does not exist.");
 			return false;
 		}
 	}
