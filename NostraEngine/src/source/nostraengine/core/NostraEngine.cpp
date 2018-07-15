@@ -3,6 +3,7 @@
 
 #include "nostraengine/core/NostraEngine.hpp"
 #include "nostraengine/core/PluginManager.hpp"
+#include "nostraengine/core/ConfigurationManagement.hpp"
 
 namespace NOE::NOE_CORE{
 
@@ -262,6 +263,9 @@ namespace NOE::NOE_CORE{
 	{
 		NOU::NOU_CORE::Logger::get().pushLogger<NOU::NOU_CORE::ConsoleLogger>();
 		//NOU::NOU_CORE::Logger::get().pushLogger<NOU::NOU_CORE::FileLogger>();
+
+		//construct instance of ConfigurationManager	
+		NOE::NOE_CORE::ConfigurationManager::get();
 
 		//NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("NostraEngine Version ") + getVersion().rawStr());
 
