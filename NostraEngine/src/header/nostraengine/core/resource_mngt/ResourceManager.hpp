@@ -444,17 +444,17 @@ namespace NOE::NOE_CORE
 	}
 
 	template<typename T, typename ...ARGS>
-	static ResourceLoader* ResourceManager::allocateResourceLoader(ARGS&&... args)
+	ResourceLoader* ResourceManager::allocateResourceLoader(ARGS&&... args)
 	{
 		static_assert(NOU::NOU_CORE::IsBaseOf<ResourceLoader, T>::value);
 
-		return new T(NOU_CORE::forward<ARGS>(args)...);
+		return new T(NOU::NOU_CORE::forward<ARGS>(args)...);
 	}
 
 	template<typename T, typename ...ARGS>
 	NOU::boolean ResourceManager::addLoader(ARGS&&... args)
 	{
-		ResourceLoader *loader = allocateResourceLoader<T>(NOU_CORE::forward<ARGS>(args)...);
+		ResourceLoader *loader = allocateResourceLoader<T>(NOU::NOU_CORE::forward<ARGS>(args)...);
 
 		if (!m_loaders.containsKey(loader->getName()))
 		{

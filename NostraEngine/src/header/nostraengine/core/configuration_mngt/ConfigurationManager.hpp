@@ -299,7 +299,7 @@ namespace NOE::NOE_CORE
 
 		\brief Returns the currently set load path.
 		*/
-		NOE_FUNC const NOU::NOU_FILE_MNGT::Path& ConfigurationManager::getPath() const;
+		NOE_FUNC const NOU::NOU_FILE_MNGT::Path& getPath() const;
 
 		/**
 		\param path The path to set.
@@ -308,7 +308,7 @@ namespace NOE::NOE_CORE
 		\brief Sets path from where the configuration files will be loaded. This function has no effect after 
 		       the instance has been initialized.
 		*/
-		NOE_FUNC NOU::boolean ConfigurationManager::setPath(const NOU::NOU_FILE_MNGT::Path &path);
+		NOE_FUNC NOU::boolean setPath(const NOU::NOU_FILE_MNGT::Path &path);
 		/**
 		\tparam T    The child class type of ConfigurationSourceFactory.
 		\tparam ARGS The types of the parameters that will be passed to the constructor of \p T.

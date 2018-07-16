@@ -230,7 +230,7 @@ namespace NOE::NOE_CORE
 #if NOU_OS_LIBRARY == NOU_OS_LIBRARY_WIN_H
 		HMODULE lib = LoadLibrary(path.getAbsolutePath().rawStr());
 #elif NOU_OS_LIBRARY == NOU_OS_LIBRARY_POSIX
-		void *lib = dlopen(path.cstr(), RTLD_NOW);
+		void *lib = dlopen(path.getAbsolutePath().rawStr(), RTLD_NOW);
 #endif
 
 		//error loading the library
