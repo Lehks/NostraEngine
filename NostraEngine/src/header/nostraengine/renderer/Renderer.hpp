@@ -37,7 +37,8 @@ namespace NOE::NOE_RENDERER
 
 		\brief				Optimizes the renderable to be rendered or not.
 		*/
-		virtual void optimize(NOE::NOE_SCENE::RenderableActor renderable) const = 0;
+		virtual NOU::NOU_DAT_ALG::Vector<NOE::NOE_SCENE::RenderableActor>
+			optimize(NOE::NOE_SCENE::RenderableActor renderable) const = 0;
 	};
 
 	/**
@@ -104,6 +105,11 @@ namespace NOE::NOE_RENDERER
 		\brief				An object of the RenderableList that stores all renderables.
 		*/
 		RenderableList m_renderableList;
+
+		/**
+		\brief				The optimizer that is used.
+		*/
+		Optimizer* m_optimizer;
 
 	public:
 

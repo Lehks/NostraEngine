@@ -22,6 +22,11 @@ namespace NOE::NOE_RENDERER
 	*/
 	class RenderableImplFactory
 	{
+	protected:
+
+		template<typename T, typename... ARGS>
+		static RenderableImpl* allocate(ARGS&&... args);
+
 	public:
 
 		/**
@@ -29,12 +34,13 @@ namespace NOE::NOE_RENDERER
 		*/
 		virtual ~RenderableImplFactory() = default;
 
+		NOE_FUNC static void deallocate(RenderableImpl* ptr);
 		/**
 		\return				A new instance of a RenderableImpl.
 
 		\brief				Creates a new instance of a RenderableImpl.
 		*/
-		virtual RenderableImpl* construct() const = 0;
+		virtual RenderableImpl* build() const = 0;
 
 		/**
 		\param identifier	The identifier of the factory.
