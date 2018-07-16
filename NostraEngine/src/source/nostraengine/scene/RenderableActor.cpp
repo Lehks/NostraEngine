@@ -10,7 +10,7 @@ namespace NOE::NOE_SCENE
 		{
 			if (elem->getIdentifier() == identifier)
 			{
-				m_ptr = elem->construct();
+				m_ptr = elem->build();
 				break;
 			}
 		}
