@@ -19,9 +19,14 @@ namespace NOE::NOE_RENDERER
 {
 	class RenderableImplFactory
 	{
+	public:
 		virtual ~RenderableImplFactory() = default;
 
 		virtual RenderableImpl* construct() const = 0;
+
+		virtual void setIdentifier(NOU::sizeType identifier) const = 0;
+
+		virtual NOU::sizeType getIdentifier() const = 0;
 	};
 }
 
