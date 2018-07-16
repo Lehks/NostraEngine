@@ -17,15 +17,37 @@
 */
 namespace NOE::NOE_RENDERER
 {
+	/**
+	\brief					A pure virtual class that provides the basic functions for a RenderableImplFactory.
+	*/
 	class RenderableImplFactory
 	{
 	public:
+
+		/**
+		\brief				Default destructor.
+		*/
 		virtual ~RenderableImplFactory() = default;
 
+		/**
+		\return				A new instance of a RenderableImpl.
+
+		\brief				Creates a new instance of a RenderableImpl.
+		*/
 		virtual RenderableImpl* construct() const = 0;
 
+		/**
+		\param identifier	The identifier of the factory.
+
+		\brief				Sets the identifier of the factory to the passed value.
+		*/
 		virtual void setIdentifier(NOU::sizeType identifier) const = 0;
 
+		/**
+		\return				The identifier of the factory.
+
+		\brief				Returns the identifier of the factory.
+		*/
 		virtual NOU::sizeType getIdentifier() const = 0;
 	};
 }

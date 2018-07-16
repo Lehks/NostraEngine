@@ -19,10 +19,17 @@ namespace NOE::NOE_RENDERER
 {
 	class RenderableImpl
 	{
+	public:
+
+		/**
+		\brief			Default destructor.
+		*/
 		virtual ~RenderableImpl() = default;
 
+		///todo doc
 		virtual void bind() const = 0;
 
+		///todo doc
 		virtual NOU::boolean setAttribute(NOU::NOU_DAT_ALG::String8 str, void* ptr) const = 0;
 	};
 }
