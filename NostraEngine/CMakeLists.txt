@@ -30,9 +30,9 @@ if(MSVC)
 	target_compile_options(NostraEngineDbg
 		PRIVATE
 			"/wd4251"
+			"/wd4005"
 			"/WX")
 endif()
-
 install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
 #[==[	
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")

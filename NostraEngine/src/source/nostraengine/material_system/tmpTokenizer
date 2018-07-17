@@ -1,33 +1,4 @@
-%option noyywrap nounistd never-interactive outfile="Tokenizer.cpp" yylineno
-
-%{
-    #include "nostraengine/material_system/Tokenizer.hpp"
-    #define NOT_TYPE NOT::Tokenizer::Types
-    #define NOT_TOKEN NOT::Tokenizer::Token
-
-    NOT_TOKEN tmp(NOT_TYPE::EOC, "");
-%} 
-
-%%
-"\n" { tmp = NOT_TOKEN(NOT_TOKEN::OPERATOR, yytext, yytext, yylineno); return 0};
-%%
-
-
-// THIS IS THE START METHOD OF THE TOKENIZER
-void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>& args)
-{
-    while(yylex())
-}
-
-
-
-
-
-
-
-
-
-
+#include "nostraengine/material_system/Tokenizer.hpp"
 namespace NOT
 {
     // 

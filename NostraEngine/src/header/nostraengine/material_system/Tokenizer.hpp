@@ -9,27 +9,21 @@ namespace NOT
     {
     public:
 
-        class Types
-        {
-        private:
-            Types() = default;
-
-        public:
-            enum Types_ : NOU::uint8
-            {
-                EOC, // End of Code
-                IDENTIFIER
-            };
-            private:
+        enum class Types{
+            EOC, // End of Code -> if the m_Code input is done flex will return this
+            IDENTIFIER,
+            OPERATOR
         };
 
         struct Token
         {
-            Types::Types_ m_type;
+            Types m_type;
             NOU::NOU_DAT_ALG::String8 m_value;
             NOU::NOU_DAT_ALG::String8 m_raw;
+            NOU::sizeType m_currLine;
+            constexpr static NOU::sizeType NO_LINE_DISPLAY = -1;
 
-            Token(Types type, NOU::NOU_DAT_ALG::String8 value = "", NOU::NOU_DAT_ALG::String8 raw = "");
+            Token(Types type, NOU::NOU_DAT_ALG::String8 raw, NOU::NOU_DAT_ALG::String8 value = "", NOU::sizeType currLine = NO_LINE_DISPLAY);
         };
 
     private:
