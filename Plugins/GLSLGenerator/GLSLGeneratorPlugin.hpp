@@ -3,7 +3,7 @@
 
 #include "nostraengine/NostraEngine.hpp"
 
-#include "src/generator/GLSLGenerator.hpp
+#include "src/generator/GLSLGenerator.hpp"
 
 namespace GLSLGeneratorPlugin
 {

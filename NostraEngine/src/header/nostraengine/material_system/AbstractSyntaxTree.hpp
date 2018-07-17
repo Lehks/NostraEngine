@@ -35,8 +35,71 @@ namespace NOT
             public:
                 /**
                 \brief Enum representing all Types of Tokens found analysing the structure of the source code.
+
+                \detail The types get's stored in a tuple.
+
+
+                 Meaning of the Types:
+
+                -ENTRY:
+                 Entry defines the start of the tree, typically it is root.
+
+                -FUNC_DEC:
+                 Func_dec defines a function declaration. It's second attribute is the function name.
+                 usually it contains a BODY, RET_TYPE and a PARAM_LIST child node.
+
+                -PARAM_LIST:
+                 Param_list contains on or several other PARAM child nodes. It has no second attribute.
+
+                -RET_TYPE:
+                 Ret_type defines the return type of the function (FUNC_DEC). It's second attribute
+                 is the actual return type (int, float, custom...).
+
+                -TYPE:
+                 Type defines the type of an attribute. It's second attribute is usually
+                 the actual return type (int, float, custom...).
+
+                -BODY:
+                 Body defines the actual body of a function (FUNC_DEC). It's child node's are the body block of code.
+                 It has no second attribute.
+
+                -VAR_DEC:
+                 Var_dec defines a variable declaration. It contains a TYPE child node and
+                 maybe a KEYWORD (e.g const) node. It's second attribute is the variable name.
+
+                -ASSIGN:
+                 Assign defines a assign operation (=). It usually contains a VAR child node and a
+                 "passable value" node (e.g CONST_VALUE or VAR_CALL). It has no second attribute.
+
+                -VAR:
+                 Var defines a variable name the is mostly used as a child node of ASSIGN. It's second attribute is
+                 the var name.
+                 NOTE that this node don't declare , defines or initialise a variable.
+
+                -OPERATOR:
+                 Operator defines an operator operation (e.g += , + or -). It usually contains a VAR_CALL or CONST_VALUE
+                 child node. It's second attribute is the actual operator.
+
+                -VAR_CALL:
+                 Var_call defines a "variable call" similar to a function call or an rvalue. It's second attribute is
+                 the actual name of the variable.
+                 NOTE that this node don't declare , defines or initialise a variable.
+
+                -RETURN:
+                 Return defines the return type. IT can have different "passable value" child node's (e.g VAR_CALL or
+                 CONST_VALUE). It has no second attribute.
+
+                -CONST_VALUE:
+                 Const_value defines a constant value. It' second type is the actual value (e.g '5' '463' "Hello").
+
+                -FUNC_CALL:
+                 Func_call defines a "function call" similar to the variable call or a standard function call (c++, java).
+
+                -BREAK:
+                 Break defines a break. It behaves like the break everyone knows. It has no second attribute.
                 */
-                enum class Types{
+                enum class Types
+                {
                     ENTRY,
                     FUNC_DEC,
                     PARAM_LIST,
@@ -57,7 +120,11 @@ namespace NOT
                     WHILE,
                     COND,
                     IF,
-                    ELSE    
+                    ELSE,
+                    KEYWORD,
+                    ARR_DEF,
+                    SIZE,
+                    STRUCT_DEF
                 };
 
             private:

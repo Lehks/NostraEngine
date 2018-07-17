@@ -20,6 +20,8 @@ namespace GLSLGeneratorPlugin
     class GLSLGenerator : public NOE::NOE_MATSYS::Generator
     {
     private:
+        NOU::NOU_FILE_MNGT::File outputSourceFile;
+        NOU::NOU_DAT_ALG::String8 outputSourceString;
         NOE_PLUGIN_FUNC virtual NOU::boolean processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) override;
     public:
         NOE_PLUGIN_FUNC virtual NOU::boolean processTree(NOT::AbstractSyntaxTree::ASTNode *m_ast) override;

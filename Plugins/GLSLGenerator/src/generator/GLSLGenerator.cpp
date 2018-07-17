@@ -5,7 +5,7 @@ namespace GLSLGeneratorPlugin
 
         NOU::boolean GLSLGenerator::processState(const NOT::AbstractSyntaxTree::ASTNode::Types &STATE)
         {
-
+            return true;
         }
 
         NOU::boolean GLSLGenerator::processTree(NOT::AbstractSyntaxTree::ASTNode *m_ast)
@@ -18,11 +18,13 @@ namespace GLSLGeneratorPlugin
                 currentNode = currentNode->getChild(i);
                 processTree(currentNode);
             }
+
+            return true;
         }
 
         NOU::boolean GLSLGenerator::generateSource()
         {
-
+            return true;
         }
 
 }
