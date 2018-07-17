@@ -22,7 +22,7 @@ namespace NOE::NOE_RENDERER
 		
 		NOU::NOU_DAT_ALG::binarySearch(m_renderables, renderable, 0, -1, &insertionIndex);
 
-		m_renderables.insert(insertionIndex, renderable);
+		m_renderables.insert(static_cast<NOU::sizeType>(insertionIndex), renderable);
 	}
 
 	void RenderableList::clear()

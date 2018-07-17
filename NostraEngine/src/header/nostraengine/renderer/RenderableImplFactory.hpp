@@ -35,6 +35,7 @@ namespace NOE::NOE_RENDERER
 		virtual ~RenderableImplFactory() = default;
 
 		NOE_FUNC static void deallocate(RenderableImpl* ptr);
+
 		/**
 		\return				A new instance of a RenderableImpl.
 
@@ -56,6 +57,11 @@ namespace NOE::NOE_RENDERER
 		*/
 		virtual NOU::sizeType getIdentifier() const = 0;
 	};
-}
 
+	template<typename T, typename... ARGS>
+	RenderableImpl* RenderableImplFactory::allocate(ARGS&&... args)
+	{
+		return new T(NOU::NOU_CORE::forward<ARGS>(args)...);
+	}
+}
 #endif

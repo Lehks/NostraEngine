@@ -89,7 +89,8 @@ namespace NOE::NOE_SCENE
 		\param factory		The factory that is passed.
 		\param identifier	The identifier of the factory.
 
-		\return				Returns 1 if a factory was added and -1 if the operation failed.
+		\return				Returns true if a factory was added and false if the operation failed.
+
 		\brief				Adds a factory to the m_factories vector. 
 		
 		\details			The identifier is use to:
@@ -97,8 +98,35 @@ namespace NOE::NOE_SCENE
 							-And for creating an renderable with this identifier (For further details take a 
 							look in the constructor documentation of this class). 
 		*/
-		NOE_FUNC static NOU::int8 addFactory(NOE::NOE_RENDERER::RenderableImplFactory* factory,
+		NOE_FUNC static NOU::boolean addFactory(NOE::NOE_RENDERER::RenderableImplFactory* factory,
 			NOU::sizeType identifier);
+
+		/**
+		\param other		The RenderableActor that will be compared.
+
+		\return				True if the RenderableActors are equal, false if not.
+
+		\brief				Checks if the underlying RenderableImpl is the same.
+		*/
+		NOU::boolean operator == (const RenderableActor& other) const;
+
+		/**
+		\param other		The RenderableActor that will be compared.
+
+		\return				True if the RenderableActors are smaller, false if not.
+
+		\brief				Checks if the underlying RenderableImpl is smaller.
+		*/
+		NOU::boolean operator < (const RenderableActor& other) const;
+
+		/**
+		\param other		The RenderableActor that will be compared.
+
+		\return				True if the RenderableActors are bigger, false if not.
+
+		\brief				Checks if the underlying RenderableImpl is bigger.
+		*/
+		NOU::boolean operator > (const RenderableActor& other) const;
 	};
 }
 

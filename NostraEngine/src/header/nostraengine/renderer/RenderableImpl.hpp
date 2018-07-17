@@ -31,6 +31,8 @@ namespace NOE::NOE_RENDERER
 
 		///todo doc
 		virtual NOU::boolean setAttribute(NOU::NOU_DAT_ALG::String8 str, void* ptr) const = 0;
+
+		virtual NOU::NOU_DAT_ALG::CompareResult compare(const RenderableImpl& other) const = 0;
 	};
 }
 

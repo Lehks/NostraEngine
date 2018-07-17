@@ -36,7 +36,7 @@ namespace NOE::NOE_SCENE
 		//todo
 	}
 		
-	NOU::int8 RenderableActor::addFactory(NOE::NOE_RENDERER::RenderableImplFactory* factory,
+	NOU::boolean RenderableActor::addFactory(NOE::NOE_RENDERER::RenderableImplFactory* factory,
 		NOU::sizeType identifier)
 	{
 		NOU::boolean found = false;
@@ -53,8 +53,23 @@ namespace NOE::NOE_SCENE
 			factory->setIdentifier(identifier);
 			m_factories.pushBack(factory);
 
-			return 1;
+			return true;
 		}
-		return -1;
+		return false;
+	}
+
+	NOU::boolean RenderableActor::operator == (const RenderableActor& other) const
+	{
+		return m_ptr->compare(*other.m_ptr) == 0;
+	}
+
+	NOU::boolean RenderableActor::operator > (const RenderableActor& other) const
+	{
+		return m_ptr->compare(*other.m_ptr) > 0;
+	}
+
+	NOU::boolean RenderableActor::operator < (const RenderableActor& other) const
+	{
+		return m_ptr->compare(*other.m_ptr) < 0;
 	}
 }
