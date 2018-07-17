@@ -9,7 +9,8 @@
 %} 
 
 %%
-"\n" { tmp = NOT_TOKEN(NOT_TOKEN::OPERATOR, yytext, yytext, yylineno); return 0};
+"\n"    { tmp = NOT_TOKEN(NOT_TYPE::OPERATOR, yytext, yytext, yylineno); return 1;};
+<<EOF>> { tmp = NOT_TOKEN(NOT_TYPE::EOC, yytext); return 0; }
 %%
 
 
@@ -17,6 +18,10 @@
 void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>& args)
 {
     while(yylex())
+    {
+        m_token.emplaceBack(tmp);
+    }
+    m_token.emplaceBack(tmp);
 }
 
 

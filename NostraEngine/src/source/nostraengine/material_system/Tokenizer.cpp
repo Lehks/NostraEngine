@@ -175,8 +175,27 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
 
-    #define YY_LESS_LINENO(n)
-    #define YY_LINENO_REWIND_TO(ptr)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE yylex. 
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                int yyl;\
+                for ( yyl = n; yyl < yyleng; ++yyl )\
+                    if ( yytext[yyl] == '\n' )\
+                        --yylineno;\
+            }while(0)
+    #define YY_LINENO_REWIND_TO(dst) \
+            do {\
+                const char *p;\
+                for ( p = yy_cp-1; p >= (dst); --p)\
+                    if ( *p == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -450,6 +469,11 @@ static yyconst flex_int16_t yy_chk[7] =
         1,    1,    3,    6,    6,    6
     } ;
 
+/* Table of booleans, true if rule could match eol. */
+static yyconst flex_int32_t yy_rule_can_match_eol[3] =
+    {   0,
+1, 0,     };
+
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
@@ -468,8 +492,11 @@ char *yytext;
 #define YY_NO_UNISTD_H 1
 #line 4 "Tokenizer.l"
     #include "nostraengine/material_system/Tokenizer.hpp"
-    int a = 0;
-#line 473 "Tokenizer.cpp"
+    #define NOT_TYPE NOT::Tokenizer::Types
+    #define NOT_TOKEN NOT::Tokenizer::Token
+
+    NOT_TOKEN tmp(NOT_TYPE::EOC, "");
+#line 500 "Tokenizer.cpp"
 
 #define INITIAL 0
 
@@ -687,9 +714,9 @@ YY_DECL
 		}
 
 	{
-#line 8 "Tokenizer.l"
+#line 11 "Tokenizer.l"
 
-#line 693 "Tokenizer.cpp"
+#line 720 "Tokenizer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -731,6 +758,16 @@ yy_find_action:
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			yy_size_t yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					   
+    yylineno++;
+;
+			}
+
 do_action:	/* This label is used only to access EOF actions. */
 
 		switch ( yy_act )
@@ -745,17 +782,19 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 9 "Tokenizer.l"
-{a++;}
+#line 12 "Tokenizer.l"
+{ tmp = NOT_TOKEN(NOT_TYPE::OPERATOR, yytext, yytext, yylineno); return 1;};
+	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 13 "Tokenizer.l"
+{ tmp = NOT_TOKEN(NOT_TYPE::EOC, yytext); return 0; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 10 "Tokenizer.l"
+#line 14 "Tokenizer.l"
 ECHO;
 	YY_BREAK
-#line 757 "Tokenizer.cpp"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
+#line 798 "Tokenizer.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1118,6 +1157,10 @@ static int yy_get_next_buffer (void)
 
 	*--yy_cp = (char) c;
 
+    if ( c == '\n' ){
+        --yylineno;
+    }
+
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
 	(yy_c_buf_p) = yy_cp;
@@ -1194,6 +1237,11 @@ static int yy_get_next_buffer (void)
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
+
+	if ( c == '\n' )
+		   
+    yylineno++;
+;
 
 	return c;
 }
@@ -1661,6 +1709,9 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
+    /* We do not touch yylineno unless the option is enabled. */
+    yylineno =  1;
+    
     (yy_buffer_stack) = 0;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -1755,6 +1806,68 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 10 "Tokenizer.l"
+#line 14 "Tokenizer.l"
 
 
+
+
+// THIS IS THE START METHOD OF THE TOKENIZER
+void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>& args)
+{
+    while(yylex())
+    {
+        m_token.emplaceBack(tmp);
+    }
+    m_token.emplaceBack(tmp);
+}
+
+
+
+
+
+
+
+
+
+
+namespace NOT
+{
+    // 
+    // Token
+    // 
+    constexpr NOU::sizeType Tokenizer::Token::NO_LINE_DISPLAY;
+
+    Tokenizer::Token::Token(Types type, NOU::NOU_DAT_ALG::String8 raw, NOU::NOU_DAT_ALG::String8 value, NOU::sizeType currLine) :
+    m_type(type),
+    m_value(value),
+    m_raw(raw),
+    m_currLine(currLine) { }
+
+    // 
+    // Tokenizer
+    // 
+    const NOU::NOU_DAT_ALG::Vector<Tokenizer::Token>& Tokenizer::getToken() const
+    {
+        return m_token;
+    }
+
+    const Tokenizer::Token* const Tokenizer::nextToken()
+    {
+        if(m_pos < m_token.size())
+        {
+            return &m_token[m_pos];
+            m_pos++;
+        }
+        return nullptr;
+    }
+
+    void Tokenizer::reset()
+    {
+        m_pos = 0;
+    }
+
+    const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>& Tokenizer::getMessages() const
+    {
+        return m_messages;
+    }
+}
