@@ -97,6 +97,49 @@ namespace NOT
 
                 -BREAK:
                  Break defines a break. It behaves like the break everyone knows. It has no second attribute.
+
+                -CONTINUE:
+                 Continue defines the typically continue. It behaves like the continue everyone knows.
+                 It has no second attribute.
+
+                -WHILE:
+                 While defines the typically while loop. It has a COND child node, and no second attribute.
+
+                -COND:
+                 Cond defines the condition of a loop or an if statement. It has usually a operator as a child node.
+                 IT has no second attributes.
+
+                -If:
+                 If defines the typically if statement. It has a COND child node, and no second attribute.
+
+                -ELSE:
+                 Else defines the typically else statement. It has no second attribute.
+
+                -KEYWORD:
+                 Keyword defines a keyword for e.g a VAR_DEC and act's as a child node of it. It's second attribute
+                 is the actual keyword.
+
+                -ARR_DEF:
+                 Arr_def defines an array. It can have up to 3 child nodes two necessary (SIZE , TYPE) and the KEYWORD type
+                 It's second attribute is the array name.
+
+                -SIZE:
+                 Size defines a size and it's usually used as a child node of the ARR_DEF type.
+
+                -STRUCT_DEF:
+                 Struct_def defines a struct. It's second name is the name of the struct. It usually contains a BODY node.
+
+                -EXTERN:
+                 Extern defines an extern variable (in GLSL uniform). It has no second attribute.
+
+                -ID:
+                 Id defines the ID of the EXTERN node and is usually a child node of EXTERN.
+
+                -FOR:
+                 For defines the typically for loop. It has a COND child node, and no second attribute.
+
+                -RUN_VAR:
+                 Run_var defines the run variable. It has no second attribute.
                 */
                 enum class Types
                 {
@@ -124,7 +167,11 @@ namespace NOT
                     KEYWORD,
                     ARR_DEF,
                     SIZE,
-                    STRUCT_DEF
+                    STRUCT_DEF,
+                    EXTERN,
+                    ID,
+                    FOR,
+                    RUN_VAR
                 };
 
             private:
