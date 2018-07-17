@@ -6,26 +6,21 @@
 
 #include "nostrautils/NostraUtils.hpp"
 
-namespace NOT
+namespace NOE::NOE_MATSYS
 {
-    class NOE_FUNC Generator
+    class Generator
     {
     private:
-        NOT::AbstractSyntaxTree     m_ast;
 
-        NOU::NOU_FILE_MNGT::File    m_source;
-
-        NOU::boolean processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE);
+        virtual NOU::boolean processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) = 0;
 
     public:
 
-        Generator();
+        virtual ~Generator() = default;
 
-        const NOT::AbstractSyntaxTree & loadAbstractSyntaxTree();
+        virtual NOU::boolean processTree(NOT::AbstractSyntaxTree::ASTNode *m_ast) = 0;
 
-        NOU::boolean processTree(const NOT::AbstractSyntaxTree & AST);
-
-        NOU::boolean generateSource();
+        virtual NOU::boolean generateSource() = 0;
 
     };
 }
