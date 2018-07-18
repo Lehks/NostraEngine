@@ -8,6 +8,8 @@ project("NostraEngine"
 
 add_subdirectory("doc")
 
+configure_file("${CMAKE_SOURCE_DIR}/cmake/Config.hpp.in" "src/header/nostraengine/core/Config.hpp" @ONLY)
+
 file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
 add_library(NostraEngine SHARED ${NOE_NOE_SOURCE_FILES})
@@ -15,7 +17,8 @@ add_library(Nostra::Engine ALIAS NostraEngine)
 
 target_include_directories(NostraEngine 
 	PUBLIC 
-		"src/header")
+		"src/header"
+		"${CMAKE_CURRENT_BINARY_DIR}/src/header")
 
 target_link_libraries(NostraEngine 
 	PUBLIC 
@@ -50,3 +53,5 @@ install(TARGETS NostraEngine
 	INCLUDES DESTINATION "include")
 
 install(DIRECTORY "src/header/" DESTINATION "include")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/src/header/nostraengine/core/Config.hpp" 
+	DESTINATION "include/nostraengine/core")

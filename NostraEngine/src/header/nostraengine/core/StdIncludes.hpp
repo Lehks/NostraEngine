@@ -3,6 +3,8 @@
 
 #include "nostrautils/NostraUtils.hpp"
 
+#include "nostraengine/core/Config.hpp"
+
 /**
 \file core/StdIncludes.hpp
 
@@ -56,7 +58,8 @@
 \brief The current version of NOE.
 */
 #ifndef NOE_VERSION
-#define NOE_VERSION NOE_VERSION_0_0_1
+#define NOE_VERSION NOU_MAKE_VERSION(NOE_INTERNAL_VERSION_MAJOR, \
+													NOE_INTERNAL_VERSION_MINOR, NOE_INTERNAL_VERSION_PATCH)
 #endif
 
 /**

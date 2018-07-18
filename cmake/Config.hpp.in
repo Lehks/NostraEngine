@@ -1,0 +1,29 @@
+#ifndef NOE_CORE_CONFIG_HPP
+#define NOE_CORE_CONFIG_HPP
+
+/** 
+\file Config.hpp
+\author	 Lukas Reichmann
+\since   1.0.1
+\version @PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@
+\brief   This file will be configured by CMake and provides macros that put CMake defined variables for the
+         source code of NOE.
+*/
+
+#ifndef NOE_IS_CONFIG_FILE_PRESENT
+#define NOE_IS_CONFIG_FILE_PRESENT
+#endif
+
+#ifndef NOE_VERSION_MAJOR
+#define NOE_INTERNAL_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#endif
+
+#ifndef NOE_VERSION_MINOR
+#define NOE_INTERNAL_VERSION_MINOR @PROJECT_VERSION_MINOR@
+#endif
+
+#ifndef NOE_VERSION_PATCH
+#define NOE_INTERNAL_VERSION_PATCH @PROJECT_VERSION_PATCH@
+#endif
+
+#endif
