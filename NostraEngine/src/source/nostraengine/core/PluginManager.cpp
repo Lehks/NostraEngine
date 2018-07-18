@@ -237,7 +237,8 @@ namespace NOE::NOE_CORE
 		if (lib == nullptr)
 		{
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), 
-				PluginManager::ErrorCodes::COULD_NOT_LOAD_LIBRARY, "The plugin could not be loaded.");
+				PluginManager::ErrorCodes::COULD_NOT_LOAD_LIBRARY, "The plugin could not be loaded. "
+					"(the system call to load the shared library file failed)");
 
 			return false;
 		}
@@ -433,7 +434,11 @@ namespace NOE::NOE_CORE
 		
 		NOU::NOU_FILE_MNGT::Folder folder(m_loadPath);
 
+		std::cout << "===" << std::endl;
+
 		auto list = folder.listFiles();
+
+		std::cout << list.size() << std::endl;
 
 		for (auto &file : list)
 		{
@@ -508,7 +513,7 @@ namespace NOE::NOE_CORE
 
 		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths = listPluginFiles();
 
-		//+1 b/c of invalid plugin
+		//+1 b/c of invalid/engine plugin
 		m_idIndexMap = NOU::NOU_DAT_ALG::HashMap<NOU::uint32, 
 			NOU::NOU_MEM_MNGT::UniquePtr<EnginePlugin>>(paths.size() + 1);
 
@@ -516,6 +521,8 @@ namespace NOE::NOE_CORE
 			new EnginePlugin(), NOU::NOU_MEM_MNGT::defaultDeleter));
 
 		NOU::uint32 loadedPlugins = 0;
+
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Found ") + paths.size() + " plugins to load.");
 
 		for (auto path : paths)
 		{
@@ -541,7 +548,8 @@ namespace NOE::NOE_CORE
 				else
 				{
 					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file \"") + path.getName()
-						+ "\" could not be loaded.");
+						+ "\" could not be loaded. Aborting after " + loadedPlugins 
+						+ " of " + paths.size() + " plugins were loaded.");
 
 					m_createdPluginList = false;
 					return false;
@@ -554,7 +562,8 @@ namespace NOE::NOE_CORE
 
 		m_createdPluginList = true;
 
-		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " plugins.");
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " of " 
+			+ paths.size() + " plugins.");
 
 		return true;
 	}
