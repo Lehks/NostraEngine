@@ -414,11 +414,11 @@ static yyconst flex_int16_t yy_accept[7] =
 
 static yyconst YY_CHAR yy_ec[256] =
     {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -472,7 +472,7 @@ static yyconst flex_int16_t yy_chk[7] =
 /* Table of booleans, true if rule could match eol. */
 static yyconst flex_int32_t yy_rule_can_match_eol[3] =
     {   0,
-1, 0,     };
+0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -714,7 +714,7 @@ YY_DECL
 		}
 
 	{
-#line 11 "Tokenizer.l"
+#line 16 "Tokenizer.l"
 
 #line 720 "Tokenizer.cpp"
 
@@ -780,21 +780,20 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case 1:
-/* rule 1 can match eol */
 YY_RULE_SETUP
-#line 12 "Tokenizer.l"
+#line 17 "Tokenizer.l"
 { tmp = NOT_TOKEN(NOT_TYPE::OPERATOR, yytext, yytext, yylineno); return 1;};
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 13 "Tokenizer.l"
+#line 18 "Tokenizer.l"
 { tmp = NOT_TOKEN(NOT_TYPE::EOC, yytext); return 0; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 14 "Tokenizer.l"
+#line 19 "Tokenizer.l"
 ECHO;
 	YY_BREAK
-#line 798 "Tokenizer.cpp"
+#line 797 "Tokenizer.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1806,7 +1805,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 14 "Tokenizer.l"
+#line 19 "Tokenizer.l"
 
 
 
@@ -1814,9 +1813,28 @@ void yyfree (void * ptr )
 // THIS IS THE START METHOD OF THE TOKENIZER
 void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>& args)
 {
+    NOU::sizeType argc = args.size();
+    NOU::boolean debugMode = false;
+    for(NOU::sizeType i = 0; i < argc; i++)
+    {
+        if(args[i] == "debug")
+        {
+            debugMode = true;
+        }
+    }
+
+    YY_BUFFER_STATE bp;
+    bp = yy_scan_bytes(m_code.rawStr(),m_code.size());
+    yy_switch_to_buffer(bp);
+
+
     while(yylex())
     {
         m_token.emplaceBack(tmp);
+        if(debugMode)
+        {
+            printf("%i", static_cast<NOU::sizeType>(tmp.m_type));
+        }
     }
     m_token.emplaceBack(tmp);
 }
@@ -1870,4 +1888,19 @@ namespace NOT
     {
         return m_messages;
     }
+
+    Tokenizer::Tokenizer(NOU::NOU_FILE_MNGT::File& inputFile) :
+    m_pos(0)
+    {
+        if(inputFile.isCurrentlyOpen())
+        {
+            inputFile.close();
+        }
+        inputFile.open();
+        inputFile.read(m_code);
+        inputFile.close();
+    }
+        Tokenizer::Tokenizer(const NOU::NOU_DAT_ALG::String8& inputCode) :
+        m_pos(0),
+        m_code(inputCode){ }
 }
