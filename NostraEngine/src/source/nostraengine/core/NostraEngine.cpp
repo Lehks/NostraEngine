@@ -210,7 +210,8 @@ namespace NOE::NOE_CORE{
 
 	void NostraEngine::renderMain()
 	{
-		m_window->update();
+		if(m_window != nullptr)
+			m_window->update();
 	}
 
 	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)
