@@ -11,6 +11,7 @@ add_subdirectory("doc")
 file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
 add_library(NostraEngineDbg SHARED ${NOE_NOE_SOURCE_FILES})
+add_library(Nostra::EngineDbg ALIAS NostraEngineDbg)
 
 target_include_directories(NostraEngineDbg 
 	PUBLIC 
@@ -31,30 +32,54 @@ if(MSVC)
 		PRIVATE
 			"/wd4251"
 			"/WX")
+else()
+	target_compile_options(NostraEngineDbg
+		PRIVATE
+			"-Werror")
 endif()
 
-install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
-#[==[	
+install(TARGETS NostraEngineDbg 
+	RUNTIME DESTINATION "bin"
+	LIBRARY DESTINATION "lib"
+	ARCHIVE DESTINATION "lib"
+	INCLUDES DESTINATION "include")
+
+install(DIRECTORY "src/header/" DESTINATION "include")
+
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
 
-	include_directories("${NOE_NOE_INCLUDE_DIR}")
-	include_directories("${NOE_GLAD_INCLUDE_DIR}")
-	include_directories("${NOE_NOU_INCLUDE_DIR}")
-	include_directories("${CMAKE_SOURCE_DIR}")
-	
-	add_library("${NOE_NOE_LIB_NAME}" SHARED "${NOE_NOE_SOURCE_FILES}")
-	
-	target_link_libraries(${NOE_NOE_LIB_NAME} PRIVATE sqlite3::sqlite3)
+	add_library(NostraEngine SHARED ${NOE_NOE_SOURCE_FILES})
+	add_library(Nostra::EngineDbg ALIAS NostraEngine)
 
-	target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
-	#target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
-	target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
-	
-	add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
-	#add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
-	add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
+	target_include_directories(NostraEngine 
+		PUBLIC 
+			"src/header")
 
-	install(TARGETS "${NOE_NOE_LIB_NAME}" DESTINATION "${NOE_BINARY_INSTALL_DIR}")
+	target_link_libraries(NostraEngine 
+		PUBLIC 
+			Nostra::Utils
+		PRIVATE 
+			sqlite3)
+
+	target_compile_definitions(NostraEngine 
+		INTERFACE 
+			"NOE_DLL")
+
+	if(MSVC)
+		target_compile_options(NostraEngine
+			PRIVATE
+				"/wd4251"
+				"/WX")
+	else()
+		target_compile_options(NostraEngine
+			PRIVATE
+				"-Werror")
+	endif()
+
+	install(TARGETS NostraEngine 
+		RUNTIME DESTINATION "bin"
+		LIBRARY DESTINATION "lib"
+		ARCHIVE DESTINATION "lib"
+		INCLUDES DESTINATION "include")
 
 endif()
-#]==]
