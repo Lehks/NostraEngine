@@ -6,15 +6,9 @@ file(GLOB_RECURSE "files" "src/*.cpp")
 
 add_library(TestPlugin SHARED "${files}" "TestPluginPlugin.cpp")
 
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-	target_link_libraries(TestPlugin 
-		PRIVATE 
-			NostraEngineDbg)
-else()
-	target_link_libraries(TestPlugin 
-		PRIVATE 
-			NostraEngine)
-endif()
+target_link_libraries(TestPlugin 
+	PRIVATE 
+		Nostra::Engine)
 
 target_compile_definitions(TestPlugin 
 	PRIVATE

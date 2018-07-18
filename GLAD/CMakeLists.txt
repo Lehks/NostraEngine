@@ -9,8 +9,10 @@ target_compile_definitions(glad PRIVATE GLAD_GLAPI_EXPORT_BUILD)
 
 target_include_directories(glad PUBLIC "./include/")
 
-set_target_properties(glad PROPERTIES PREFIX "")
-
 #=== Install Targets
 #archive file is not required
-install(TARGETS glad LIBRARY DESTINATION "bin" RUNTIME DESTINATION "bin")
+install(TARGETS glad 
+	RUNTIME DESTINATION "bin"
+	LIBRARY DESTINATION "lib"
+	ARCHIVE DESTINATION "lib"
+	INCLUDES DESTINATION "include")

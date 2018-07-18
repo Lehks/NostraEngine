@@ -17,17 +17,10 @@ file(GLOB_RECURSE "files" "src/*.cpp")
 
 add_library(GLFWWindow SHARED "${files}" "GLFWWindowPlugin.cpp")
 
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-	target_link_libraries(GLFWWindow 
+target_link_libraries(GLFWWindow 
 		PRIVATE 
-			NostraEngineDbg
+			Nostra::Engine
 			glfw)
-else()
-	target_link_libraries(GLFWWindow 
-		PRIVATE 
-			NostraEngine
-			glfw)
-endif()
 
 target_compile_definitions(GLFWWindow 
 	PRIVATE
