@@ -18,6 +18,6 @@ set_target_properties(TestPlugin PROPERTIES PREFIX "")
 set_target_properties(TestPlugin PROPERTIES SUFFIX ".np")
 
 install(TARGETS TestPlugin
-	RUNTIME DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}" 
-	LIBRARY DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")
-install(FILES "TestPlugin.pconf" DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")
+	RUNTIME DESTINATION "bin/plugins" 
+	LIBRARY DESTINATION "bin/plugins")
+install(FILES "TestPlugin.pconf" DESTINATION "bin/plugins")
