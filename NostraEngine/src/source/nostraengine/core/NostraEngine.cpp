@@ -341,15 +341,7 @@ namespace NOE::NOE_CORE{
 
 	void NostraEngine::setActiveInstance(NostraEngine &instance)
 	{
-		if (&instance == nullptr)
-		{
-			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, 
-				"Cannot set the instance to a nullptr");
-		}
-		else
-		{
-			s_instance = &instance;
-		}
+		s_instance = &instance;
 	}
 
 	void NostraEngine::terminateEngine()
