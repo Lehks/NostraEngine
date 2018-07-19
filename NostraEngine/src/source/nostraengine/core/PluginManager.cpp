@@ -240,8 +240,14 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_LIBRARY, "The plugin could not be loaded. "
 					"(the system call to load the shared library file failed)");
 
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The .np file of plugin ") + getMetadata().getID() 
+				+ " could not be loaded.");
+
 			return false;
 		}
+
+		NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The .np file of plugin ") + getMetadata().getID() 
+			+ " was loaded successfully.");
 
 		EnginePlugin::FunctionStartup startupFunc =
 			getFuncAddress<EnginePlugin::FunctionStartup>(lib, EnginePlugin::PLUGIN_STARTUP_FUNCNAME);
@@ -266,7 +272,15 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
 				"The function \"noePluginStartup()\" could not be loaded.");
 
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::PLUGIN_STARTUP_FUNCNAME 
+					+ "() of plugin " + getMetadata().getID() + " could not be loaded.");
+
 			success = false;
+		}
+		else
+		{
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::PLUGIN_STARTUP_FUNCNAME 
+				+ "() of plugin " + getMetadata().getID() + " was loaded successfully.");
 		}
 
 		if (shutdownFunc == nullptr)
@@ -275,7 +289,15 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
 				"The function \"noePluginShutdown()\" could not be loaded.");
 
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME 
+					+ "() of plugin " + getMetadata().getID() + " could not be loaded.");
+
 			success = false;
+		}
+		else
+		{
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::PLUGIN_SHUTDOWN_FUNCNAME 
+				+ "() of plugin " + getMetadata().getID() + " was loaded successfully.");
 		}
 
 		if (receiveFunc == nullptr)
@@ -284,7 +306,15 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
 				"The function \"noePluginReceive()\" could not be loaded.");
 
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::PLUGIN_RECEIVE_FUNCNAME 
+					+ "() of plugin " + getMetadata().getID() + " could not be loaded.");
+
 			success = false;
+		}
+		else
+		{
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::PLUGIN_RECEIVE_FUNCNAME 
+				+ "() of plugin " + getMetadata().getID() + " was loaded successfully.");
 		}
 
 		if (initializeFunc == nullptr)
@@ -293,7 +323,15 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
 				"The function \"noePluginInitialize()\" could not be loaded.");
 
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::INITIALIZE_FUNCNAME 
+					+ "() of plugin " + getMetadata().getID() + " could not be loaded.");
+
 			success = false;
+		}
+		else
+		{
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::INITIALIZE_FUNCNAME 
+				+ "() of plugin " + getMetadata().getID() + " was loaded successfully.");
 		}
 
 		if (terminateFunc == nullptr)
@@ -302,7 +340,15 @@ namespace NOE::NOE_CORE
 				PluginManager::ErrorCodes::COULD_NOT_LOAD_FUNCTION,
 				"The function \"noePluginTerminate()\" could not be loaded.");
 
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::TERMINATE_FUNCNAME 
+					+ "() of plugin " + getMetadata().getID() + " could not be loaded.");
+
 			success = false;
+		}
+		else
+		{
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The function ") + EnginePlugin::TERMINATE_FUNCNAME 
+				+ "() of plugin " + getMetadata().getID() + " was loaded successfully.");
 		}
 
 		if (!success)
@@ -340,8 +386,17 @@ namespace NOE::NOE_CORE
 					PluginManager::ErrorCodes::COULD_NOT_FREE_LIBRARY,
 					"The system call to free the library failed.");
 
+				NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The .np file of plugin ") + getMetadata().getID() 
+					+ " could not be unloaded.");
+
 				return false;
 			}
+
+			NOU_LOG_DEBUG(NOU::NOU_DAT_ALG::String8("The .np file of plugin ") + getMetadata().getID() 
+				+ " was unloaded successfully.");
+
+			//to avoid that the constructor unloads again
+			m_library = nullptr;
 
 			return true;
 		}
@@ -505,7 +560,7 @@ namespace NOE::NOE_CORE
 
 	NOU::boolean PluginManager::createPluginList()
 	{
-		NOU_LOG_INFO("Loading plugins...");
+		NOU_LOG_INFO("Loading plugin configurations...");
 
 		NOU::NOU_DAT_ALG::Vector<NOU::NOU_FILE_MNGT::Path> paths = listPluginFiles();
 
@@ -518,7 +573,7 @@ namespace NOE::NOE_CORE
 
 		NOU::uint32 loadedPlugins = 0;
 
-		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Found ") + paths.size() + " plugins to load.");
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Found ") + paths.size() + " plugin configurations to load.");
 
 		for (auto path : paths)
 		{
@@ -537,14 +592,14 @@ namespace NOE::NOE_CORE
 					m_idIndexMap.map(id, NOU::NOU_CORE::move(plugin));
 					loadedPlugins++;
 
-					NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin \"") + 
+					NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded plugin configuration \"") + 
 						pluginPtr->getMetadata().getName()
 						+ "\" (ID: " + pluginPtr->getMetadata().getID() + ").");
 				}
 				else
 				{
-					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin from file \"") + path.getName()
-						+ "\" could not be loaded. Aborting after " + loadedPlugins 
+					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin configuration from file \"") 
+						+ path.getName() + "\" could not be loaded. Aborting after " + loadedPlugins 
 						+ " of " + paths.size() + " plugins were loaded.");
 
 					m_createdPluginList = false;
@@ -559,7 +614,7 @@ namespace NOE::NOE_CORE
 		m_createdPluginList = true;
 
 		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " of " 
-			+ paths.size() + " plugins.");
+			+ paths.size() + " plugin configurations.");
 
 		return true;
 	}
