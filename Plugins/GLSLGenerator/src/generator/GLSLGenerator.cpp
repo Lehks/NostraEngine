@@ -5,96 +5,98 @@ namespace GLSLGeneratorPlugin
 
         NOU::sizeType GLSLGenerator::processState(const NOT::AbstractSyntaxTree::ASTNode::Types &STATE)
         {
+            NOU::sizeType retVal = 0;
+
             switch(STATE)
             {
                 case NOT::AbstractSyntaxTree::ASTNode::Types::VAR_DEC:
-                    varDecState();
+                    retVal = varDecState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::BODY:
-                    bodyState();
+                    retVal = bodyState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::RET_TYPE:
-                    retTypeState();
+                    retVal = retTypeState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::VAR:
-                    varState();
+                    retVal = varState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::ARR_DEF:
-                    arrDefState();
+                    retVal = arrDefState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::ASSIGN:
-                    assignState();
+                    retVal = assignState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::BREAK:
-                    breakState();
+                    retVal = breakState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::COND:
-                    condState();
+                    retVal = condState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::CONST_VAL:
-                    constValueState();
+                    retVal = constValueState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::CONTINUE:
-                    continueState();
+                    retVal = continueState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::ELSE:
-                    elseState();
+                    retVal = elseState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::ENTRY:
-                    entryState();
+                    retVal = entryState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::EXTERN:
-                    externState();
+                    retVal = externState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::FOR:
-                    forState();
+                    retVal = forState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::FUNC_CALL:
-                    funcCallState();
+                    retVal = funcCallState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::FUNC_DEC:
-                    funcDecState();
+                    retVal = funcDecState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::ID:
-                    idState();
+                    retVal = idState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::IF:
-                    ifState();
+                    retVal = ifState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::OPERATOR:
-                    operatorState();
+                    retVal = operatorState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::PARAM:
-                    paramState();
+                    retVal = paramState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::PARAM_LIST:
-                    paramListState();
+                    retVal = paramListState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::RETURN:
-                    returnState();
+                    retVal = returnState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::RUN_VAR:
-                    runVarState();
+                    retVal = runVarState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::SIZE:
-                    sizeState();
+                    retVal = sizeState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::STRUCT_DEF:
-                    structDefState();
+                    retVal = structDefState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::VAR_CALL:
-                    varCallState();
+                    retVal = varCallState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::WHILE:
-                    whileState();
+                    retVal = whileState();
                     break;
                 case NOT::AbstractSyntaxTree::ASTNode::Types::STRUCT_CALL:
-                    structCallState();
+                    retVal = structCallState();
                     break;
                 default:
                     break;
             }
-            return true;
+            return retVal;
         }
 
     NOU::sizeType  GLSLGenerator::varDecState()
@@ -105,89 +107,89 @@ namespace GLSLGeneratorPlugin
             }else {
                 m_outputSourceString.append(currentNode->getChild(0)->getValue() + ";");
             }
+
+            return 1;
         }
 
-    NOU::sizeType  GLSLGenerator::bodyState()
-        {
-
-        }
-
-    NOU::sizeType  GLSLGenerator::retTypeState()
+        NOU::sizeType  GLSLGenerator::bodyState()
         {}
 
-    NOU::sizeType  GLSLGenerator::varState()
+        NOU::sizeType  GLSLGenerator::retTypeState()
         {}
 
-    NOU::sizeType  GLSLGenerator::arrDefState()
+        NOU::sizeType  GLSLGenerator::varState()
         {}
 
-    NOU::sizeType  GLSLGenerator::assignState()
+        NOU::sizeType  GLSLGenerator::arrDefState()
         {}
 
-    NOU::sizeType  GLSLGenerator::breakState()
+        NOU::sizeType  GLSLGenerator::assignState()
         {}
 
-    NOU::sizeType  GLSLGenerator::condState()
+        NOU::sizeType  GLSLGenerator::breakState()
         {}
 
-    NOU::sizeType  GLSLGenerator::constValueState()
+        NOU::sizeType  GLSLGenerator::condState()
         {}
 
-    NOU::sizeType  GLSLGenerator::continueState()
+        NOU::sizeType  GLSLGenerator::constValueState()
         {}
 
-    NOU::sizeType  GLSLGenerator::elseState()
+        NOU::sizeType  GLSLGenerator::continueState()
         {}
 
-    NOU::sizeType  GLSLGenerator::entryState()
+        NOU::sizeType  GLSLGenerator::elseState()
         {}
 
-    NOU::sizeType  GLSLGenerator::externState()
+        NOU::sizeType  GLSLGenerator::entryState()
         {}
 
-    NOU::sizeType  GLSLGenerator::forState()
+        NOU::sizeType  GLSLGenerator::externState()
         {}
 
-    NOU::sizeType  GLSLGenerator::funcCallState()
+        NOU::sizeType  GLSLGenerator::forState()
         {}
 
-    NOU::sizeType  GLSLGenerator::funcDecState()
+        NOU::sizeType  GLSLGenerator::funcCallState()
         {}
 
-    NOU::sizeType  GLSLGenerator::idState()
+        NOU::sizeType  GLSLGenerator::funcDecState()
         {}
 
-    NOU::sizeType  GLSLGenerator::ifState()
+        NOU::sizeType  GLSLGenerator::idState()
         {}
 
-    NOU::sizeType  GLSLGenerator::operatorState()
+        NOU::sizeType  GLSLGenerator::ifState()
         {}
 
-    NOU::sizeType  GLSLGenerator::paramState()
+        NOU::sizeType  GLSLGenerator::operatorState()
         {}
 
-    NOU::sizeType  GLSLGenerator::paramListState()
+        NOU::sizeType  GLSLGenerator::paramState()
         {}
 
-    NOU::sizeType  GLSLGenerator::returnState()
+        NOU::sizeType  GLSLGenerator::paramListState()
         {}
 
-    NOU::sizeType  GLSLGenerator::runVarState()
+        NOU::sizeType  GLSLGenerator::returnState()
         {}
 
-    NOU::sizeType  GLSLGenerator::sizeState()
+        NOU::sizeType  GLSLGenerator::runVarState()
         {}
 
-    NOU::sizeType  GLSLGenerator::structDefState()
+        NOU::sizeType  GLSLGenerator::sizeState()
         {}
 
-    NOU::sizeType  GLSLGenerator::varCallState()
+        NOU::sizeType  GLSLGenerator::structDefState()
         {}
 
-    NOU::sizeType  GLSLGenerator::whileState()
+        NOU::sizeType  GLSLGenerator::varCallState()
         {}
 
-    NOU::sizeType  GLSLGenerator::structCallState()
+        NOU::sizeType  GLSLGenerator::whileState()
+        {}
+
+        NOU::sizeType  GLSLGenerator::structCallState()
         {}
 
         GLSLGenerator::GLSLGenerator(NOT::AbstractSyntaxTree &ast) :
@@ -215,22 +217,28 @@ namespace GLSLGeneratorPlugin
 
         NOU::boolean GLSLGenerator::processTree(NOT::AbstractSyntaxTree::ASTNode *nextNode)
         {
-            NOU::boolean isFinished;
+            NOU::sizeType stateIsFinished;
 
             if(nextNode->isRoot())
             {
                 currentNode = nextNode;
-            }
-
-            for(NOU::sizeType i = 0; i < currentNode->getChildCount(); i++)
-            {
-                if(currentNode->isLeaf())
+                for(NOU::sizeType j = 0; j < currentNode->getChildCount(); j++)
                 {
-                    processState(currentNode->getChild(i)->getType());
-                    currentNode = currentNode->getChild(i);
-                    processTree(currentNode);
-                    prevNode = currentNode;
-                    currentNode = nextNode;
+                    processTree(currentNode->getChild(j));
+                }
+            } else{
+
+                currentNode = nextNode;
+                for(NOU::sizeType i = 0; i < currentNode->getChildCount(); i++)
+                {
+                    stateIsFinished = processState(currentNode->getType());
+                    if (stateIsFinished == 1)
+                    {
+                        break;
+                    } else
+                    {
+                        processTree(currentNode->getChild(i));
+                    }
                 }
             }
 

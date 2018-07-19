@@ -22,7 +22,6 @@ namespace GLSLGeneratorPlugin
     private:
         NOT::AbstractSyntaxTree::ASTNode    *m_root;
         NOT::AbstractSyntaxTree::ASTNode    *currentNode;
-        NOT::AbstractSyntaxTree::ASTNode    *prevNode;
         NOT::AbstractSyntaxTree             m_ast;
         NOU::NOU_FILE_MNGT::File            m_outputSourceFile;
         NOU::NOU_DAT_ALG::String8           m_outputSourceString;
