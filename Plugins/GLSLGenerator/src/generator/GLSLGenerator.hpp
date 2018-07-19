@@ -17,16 +17,15 @@
 // namespace GLSLGeneratorPlugin
 // {
 
-//     class GLSLGenerator : public NOE::NOE_MATSYS::Generator
-//     {
-//     private:
-//         NOT::AbstractSyntaxTree::ASTNode    *m_root;
-//         NOT::AbstractSyntaxTree::ASTNode    *currentNode;
-//         NOT::AbstractSyntaxTree::ASTNode    *prevNode;
-//         NOT::AbstractSyntaxTree             m_ast;
-//         NOU::NOU_FILE_MNGT::File            m_outputSourceFile;
-//         NOU::NOU_DAT_ALG::String8           m_outputSourceString;
-//         NOE_PLUGIN_FUNC NOU::sizeType processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) override;
+    class GLSLGenerator : public NOE::NOE_MATSYS::Generator
+    {
+    private:
+        NOT::AbstractSyntaxTree::ASTNode    *m_root;
+        NOT::AbstractSyntaxTree::ASTNode    *currentNode;
+        NOT::AbstractSyntaxTree             m_ast;
+        NOU::NOU_FILE_MNGT::File            m_outputSourceFile;
+        NOU::NOU_DAT_ALG::String8           m_outputSourceString;
+        NOE_PLUGIN_FUNC NOU::sizeType processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) override;
 
 //         NOE_PLUGIN_FUNC NOU::sizeType  varDecState();
 //         NOE_PLUGIN_FUNC NOU::sizeType  bodyState();
