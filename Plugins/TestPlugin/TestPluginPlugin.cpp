@@ -4,14 +4,14 @@ namespace TestPluginPlugin
 {
     NOE::NOE_CORE::Plugin::InitResult TestPluginPlugin::initialize(NOE::NOE_CORE::NostraEngine &engineInstance)
     {
-		std::cout << "TestPlugin::initialize()" << std::endl;
+		//std::cout << "TestPlugin::initialize()" << std::endl;
 
         return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
     }
 
 	NOE::NOE_CORE::Plugin::InitResult TestPluginPlugin::terminate(NOE::NOE_CORE::NostraEngine &engineInstance)
     {
-		std::cout << "TestPlugin::terminate()" << std::endl;
+		//std::cout << "TestPlugin::terminate()" << std::endl;
 
 		return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
     }
