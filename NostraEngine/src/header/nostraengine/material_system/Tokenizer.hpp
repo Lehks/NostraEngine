@@ -11,6 +11,7 @@ namespace NOT
 
         enum class Types{
             EOC, // End of Code -> if the m_Code input is done flex will return this
+            UNRECOGNIZED,
             IDENTIFIER,
             OPERATOR
         };

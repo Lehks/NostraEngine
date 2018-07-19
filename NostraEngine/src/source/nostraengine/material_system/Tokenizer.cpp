@@ -398,8 +398,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 2
-#define YY_END_OF_BUFFER 3
+#define YY_NUM_RULES 4
+#define YY_END_OF_BUFFER 5
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -407,18 +407,18 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[7] =
+static yyconst flex_int16_t yy_accept[8] =
     {   0,
-        0,    0,    3,    2,    1,    0
+        0,    0,    5,    3,    2,    1,    0
     } ;
 
 static yyconst YY_CHAR yy_ec[256] =
     {   0,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    3,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -444,35 +444,35 @@ static yyconst YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst YY_CHAR yy_meta[3] =
+static yyconst YY_CHAR yy_meta[4] =
     {   0,
-        1,    1
+        1,    1,    1
     } ;
 
-static yyconst flex_uint16_t yy_base[7] =
+static yyconst flex_uint16_t yy_base[8] =
     {   0,
-        0,    0,    3,    4,    4,    4
+        0,    0,    4,    5,    5,    5,    5
     } ;
 
-static yyconst flex_int16_t yy_def[7] =
+static yyconst flex_int16_t yy_def[8] =
     {   0,
-        6,    1,    6,    6,    6,    0
+        7,    1,    7,    7,    7,    7,    0
     } ;
 
-static yyconst flex_uint16_t yy_nxt[7] =
+static yyconst flex_uint16_t yy_nxt[9] =
     {   0,
-        4,    5,    6,    3,    6,    6
+        4,    5,    6,    7,    3,    7,    7,    7
     } ;
 
-static yyconst flex_int16_t yy_chk[7] =
+static yyconst flex_int16_t yy_chk[9] =
     {   0,
-        1,    1,    3,    6,    6,    6
+        1,    1,    1,    3,    7,    7,    7,    7
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static yyconst flex_int32_t yy_rule_can_match_eol[3] =
+static yyconst flex_int32_t yy_rule_can_match_eol[5] =
     {   0,
-0, 0,     };
+0, 1, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -494,9 +494,11 @@ char *yytext;
     #include "nostraengine/material_system/Tokenizer.hpp"
     #define NOT_TYPE NOT::Tokenizer::Types
     #define NOT_TOKEN NOT::Tokenizer::Token
+    #define NOT_CRT_TOK2(TYPE,VALUE) NOT_TOKEN(TYPE,VALUE,yytext,yylineno)
+    #define NOT_CRT_TOK1(TYPE) NOT_CRT_TOK2(TYPE,"")
 
     NOT_TOKEN tmp(NOT_TYPE::EOC, "");
-#line 500 "Tokenizer.cpp"
+#line 502 "Tokenizer.cpp"
 
 #define INITIAL 0
 
@@ -714,9 +716,9 @@ YY_DECL
 		}
 
 	{
-#line 16 "Tokenizer.l"
+#line 18 "Tokenizer.l"
 
-#line 720 "Tokenizer.cpp"
+#line 722 "Tokenizer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -743,13 +745,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 7 )
+				if ( yy_current_state >= 8 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 6 );
+		while ( yy_current_state != 7 );
 		yy_cp = (yy_last_accepting_cpos);
 		yy_current_state = (yy_last_accepting_state);
 
@@ -781,19 +783,30 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 17 "Tokenizer.l"
-{ tmp = NOT_TOKEN(NOT_TYPE::OPERATOR, yytext, yytext, yylineno); return 1;};
-	YY_BREAK
-case YY_STATE_EOF(INITIAL):
-#line 18 "Tokenizer.l"
-{ tmp = NOT_TOKEN(NOT_TYPE::EOC, yytext); return 0; }
+#line 19 "Tokenizer.l"
+{ tmp = NOT_CRT_TOK2(NOT_TYPE::OPERATOR, yytext); return 1;}
 	YY_BREAK
 case 2:
+/* rule 2 can match eol */
 YY_RULE_SETUP
-#line 19 "Tokenizer.l"
+#line 20 "Tokenizer.l"
+{ }
+	YY_BREAK
+case 3:
+YY_RULE_SETUP
+#line 21 "Tokenizer.l"
+{ tmp = NOT_CRT_TOK1(NOT_TYPE::UNRECOGNIZED); return 1; }
+	YY_BREAK
+case YY_STATE_EOF(INITIAL):
+#line 22 "Tokenizer.l"
+{ tmp = NOT_CRT_TOK1(NOT_TYPE::EOC); return 0; }
+	YY_BREAK
+case 4:
+YY_RULE_SETUP
+#line 23 "Tokenizer.l"
 ECHO;
 	YY_BREAK
-#line 797 "Tokenizer.cpp"
+#line 810 "Tokenizer.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1085,7 +1098,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 7 )
+			if ( yy_current_state >= 8 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1113,11 +1126,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 7 )
+		if ( yy_current_state >= 8 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 6);
+	yy_is_jam = (yy_current_state == 7);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1805,7 +1818,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 19 "Tokenizer.l"
+#line 23 "Tokenizer.l"
 
 
 
@@ -1813,15 +1826,8 @@ void yyfree (void * ptr )
 // THIS IS THE START METHOD OF THE TOKENIZER
 void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>& args)
 {
-    NOU::sizeType argc = args.size();
-    NOU::boolean debugMode = false;
-    for(NOU::sizeType i = 0; i < argc; i++)
-    {
-        if(args[i] == "debug")
-        {
-            debugMode = true;
-        }
-    }
+    // NOU::sizeType argc = args.size();
+
 
     YY_BUFFER_STATE bp;
     bp = yy_scan_bytes(m_code.rawStr(),m_code.size());
@@ -1831,12 +1837,10 @@ void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::Stri
     while(yylex())
     {
         m_token.emplaceBack(tmp);
-        if(debugMode)
-        {
-            printf("%i", static_cast<NOU::sizeType>(tmp.m_type));
-        }
     }
     m_token.emplaceBack(tmp);
+
+    yy_delete_buffer(bp);
 }
 
 

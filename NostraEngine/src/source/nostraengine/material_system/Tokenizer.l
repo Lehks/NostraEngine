@@ -4,6 +4,8 @@
     #include "nostraengine/material_system/Tokenizer.hpp"
     #define NOT_TYPE NOT::Tokenizer::Types
     #define NOT_TOKEN NOT::Tokenizer::Token
+    #define NOT_CRT_TOK2(TYPE,VALUE) NOT_TOKEN(TYPE,VALUE,yytext,yylineno)
+    #define NOT_CRT_TOK1(TYPE) NOT_CRT_TOK2(TYPE,"")
 
     NOT_TOKEN tmp(NOT_TYPE::EOC, "");
 %} 
@@ -14,23 +16,58 @@ NUMBER ([0-9])
 INTEGER ([NUMBER+])
 
 %%
-"+"    { tmp = NOT_TOKEN(NOT_TYPE::OPERATOR, yytext, yytext, yylineno); return 1;};
-<<EOF>> { tmp = NOT_TOKEN(NOT_TYPE::EOC, yytext); return 0; }
+/* Keywords */
+"in"    { }
+"out"   { }
+"struct"{ }
+"shared"{ }
+"const" { }
+"if"    { }
+"else"  { }
+"while" { }
+"for"   { }
+"extern"{ }
+
+/* Native types */
+"int"   { }
+"float" { }
+"bool"  { }
+"vec"[2-4]  { }
+"mat"[2-4]  { }
+
+/* Arithmetic */
+"+" { }
+"-" { }
+"*" { }
+"/" { }
+"%" { }
+
+/* Literals */
+[0-9]+  { } /* Integer */
+[0-0]+(("."[0-9]*["f"]?) | "f") { } /* Float */
+"true" | "false"    { } /* boolean */
+
+
+/* Misc */
+"{" { } /* Block begin */
+"}" { } /* Block end */
+"(" { } /* Paramblock begin */
+")" { } /* Paramblock end */
+("["[" "]*([0-9]+)*[" "]"]") {  } /*Array brackets with optional number inside*/
+
+
+
+[a-zA-Z]([a-zA-Z]* | [0-9]* | "_")* { } /* Identifier */
+.      { tmp = NOT_CRT_TOK1(NOT_TYPE::UNRECOGNIZED); return 1; }
+<<EOF>> { tmp = NOT_CRT_TOK1(NOT_TYPE::EOC); return 0; }
 %%
 
 
 // THIS IS THE START METHOD OF THE TOKENIZER
 void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8>& args)
 {
-    NOU::sizeType argc = args.size();
-    NOU::boolean debugMode = false;
-    for(NOU::sizeType i = 0; i < argc; i++)
-    {
-        if(args[i] == "debug")
-        {
-            debugMode = true;
-        }
-    }
+    // NOU::sizeType argc = args.size();
+
 
     YY_BUFFER_STATE bp;
     bp = yy_scan_bytes(m_code.rawStr(), m_code.size());
@@ -40,12 +77,10 @@ void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::Stri
     while(yylex())
     {
         m_token.emplaceBack(tmp);
-        if(debugMode)
-        {
-            printf("%i", static_cast<NOU::sizeType>(tmp.m_type));
-        }
     }
     m_token.emplaceBack(tmp);
+
+    yy_delete_buffer(bp);
 }
 
 
