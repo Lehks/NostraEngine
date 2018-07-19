@@ -406,7 +406,7 @@ namespace NOE::NOE_CORE
 			return nullptr;
 	}
 
-	const NOU::NOU_FILE_MNGT::Path PluginManager::DEFAULT_LOAD_PATH = "./Plugins";
+	const NOU::NOU_FILE_MNGT::Path PluginManager::DEFAULT_LOAD_PATH = "./plugins";
 
 	EnginePlugin& PluginManager::getPlugin(Plugin::ID id)
 	{
@@ -434,11 +434,7 @@ namespace NOE::NOE_CORE
 		
 		NOU::NOU_FILE_MNGT::Folder folder(m_loadPath);
 
-		std::cout << "===" << std::endl;
-
 		auto list = folder.listFiles();
-
-		std::cout << list.size() << std::endl;
 
 		for (auto &file : list)
 		{
