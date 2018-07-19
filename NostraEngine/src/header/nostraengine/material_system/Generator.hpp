@@ -12,7 +12,7 @@ namespace NOE::NOE_MATSYS
     {
     private:
 
-        virtual NOU::boolean processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) = 0;
+        virtual NOU::sizeType  processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) = 0;
 
     public:
 
