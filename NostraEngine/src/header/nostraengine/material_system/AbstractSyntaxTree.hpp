@@ -341,14 +341,16 @@ namespace NOT
                 \brief Appends a child node to the current node in the most right spot.
                 \param type The type of the newly created node.
                 \param value The value of the newly created node. Defaults to an empty string.
+
+                \return Pointer to the newly created node.
                 */
-                void appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
+                ASTNode* appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
 
                 /**
                 \brief Appends an allready existing Tree to the current node in the most right spot.
                 \param other An existring thee that will be appended.
                 */
-                void appendNode(const AbstractSyntaxTree& other);
+                // void appendNode(const AbstractSyntaxTree& other);
 
                 /**
                 \brief Checks if the type and value are equal.

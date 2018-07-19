@@ -138,7 +138,7 @@ namespace NOT
         return !hasParent();
     }
 
-    void NOT_AST::ASTNode::appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value)
+    NOT_AST::ASTNode* NOT_AST::ASTNode::appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value)
     {
         NOU::NOU_MEM_MNGT::UniquePtr<ASTNode> tmp(new ASTNode(type, value), NOU::NOU_MEM_MNGT::defaultDeleter);
         NOU::sizeType pos;
@@ -155,6 +155,7 @@ namespace NOT
         m_assignedTree->m_childPool[pos]->m_parent = m_ownIndex;
         m_assignedTree->m_childPool[pos]->m_assignedTree = m_assignedTree;
         m_children.emplaceBack(pos);
+        return m_assignedTree->m_childPool[pos].rawPtr();
     }
 
     NOU::boolean NOT_AST::ASTNode::operator==(const NOT_AST::ASTNode& other) const
