@@ -573,7 +573,7 @@ namespace NOE::NOE_CORE
 
 		NOU::uint32 loadedPlugins = 0;
 
-		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Found ") + paths.size() + " plugin configurations to load.");
+		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Found ") + NOU::uint64(paths.size()) + " plugin configurations to load.");
 
 		for (auto path : paths)
 		{
@@ -600,7 +600,7 @@ namespace NOE::NOE_CORE
 				{
 					NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("Plugin configuration from file \"") 
 						+ path.getName() + "\" could not be loaded. Aborting after " + loadedPlugins 
-						+ " of " + paths.size() + " plugins were loaded.");
+						+ " of " + NOU::uint64(paths.size()) + " plugins were loaded.");
 
 					m_createdPluginList = false;
 					return false;
@@ -614,7 +614,7 @@ namespace NOE::NOE_CORE
 		m_createdPluginList = true;
 
 		NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("Successfully loaded ") + loadedPlugins + " of " 
-			+ paths.size() + " plugin configurations.");
+			+ NOU::uint64(paths.size()) + " plugin configurations.");
 
 		return true;
 	}
