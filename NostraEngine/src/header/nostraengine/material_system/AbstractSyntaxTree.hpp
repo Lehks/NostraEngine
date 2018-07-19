@@ -162,7 +162,6 @@ namespace NOT
                  Struct_call defines a call to an allready defined struct variable or a member of a struct variable.
                  Its value is the name of the struct. 
                  If this node contains a childnode VAR_CALL its member variable will be called instead.
-                 
                 */
                 enum class Types
                 {
@@ -359,8 +358,6 @@ namespace NOT
             */
             const ASTNode* const getRoot() const;
     };
-
-    
 }
 
 
