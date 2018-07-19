@@ -2,6 +2,8 @@
 
 namespace NOE::NOE_SCENE
 {
+	NOU::NOU_DAT_ALG::Vector<NOE::NOE_RENDERER::RenderableImplFactory*> RenderableActor::m_factories;
+
 	RenderableActor::RenderableActor(NOU::sizeType identifier) :
 		m_renderingEnabled(false),
 		m_ptr(nullptr)

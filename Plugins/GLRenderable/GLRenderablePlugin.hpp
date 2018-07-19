@@ -3,11 +3,9 @@
 
 #include "nostraengine/NostraEngine.hpp"
 
-#include "src/renderer/RenderableImpl.hpp"
-
-namespace GLRenderableImplPlugin
+namespace GLRenderablePlugin
 {
-	class GLRenderableImplPlugin final : public NOE::NOE_CORE::Plugin
+	class GLRenderablePlugin final : public NOE::NOE_CORE::Plugin
 	{
 	public:
 		/**
