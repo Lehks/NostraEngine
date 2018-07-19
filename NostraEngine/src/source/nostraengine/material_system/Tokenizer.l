@@ -7,59 +7,78 @@
     #define NOT_CRT_TOK2(TYPE,VALUE) NOT_TOKEN(TYPE,VALUE,yytext,yylineno)
     #define NOT_CRT_TOK1(TYPE) NOT_CRT_TOK2(TYPE,"")
 
-    NOT_TOKEN tmp(NOT_TYPE::EOC, "");
-%} 
+    NOU::int16 setToken(NOT_TYPE type, NOU::NOU_DAT_ALG::String8 value = "");
 
-LETTER ([a-ZA-Z])
-WORD (LETTER+)
-NUMBER ([0-9])
-INTEGER ([NUMBER+])
+    NOT_TOKEN currToken(NOT_TYPE::EOC, "");
+%}
 
 %%
-/* Keywords */
-"in"    { }
-"out"   { }
-"struct"{ }
-"shared"{ }
-"const" { }
-"if"    { }
-"else"  { }
-"while" { }
-"for"   { }
-"extern"{ }
-
-/* Native types */
-"int"   { }
-"float" { }
-"bool"  { }
-"vec"[2-4]  { }
-"mat"[2-4]  { }
-
-/* Arithmetic */
-"+" { }
-"-" { }
-"*" { }
-"/" { }
-"%" { }
-
-/* Literals */
-[0-9]+  { } /* Integer */
-[0-0]+(("."[0-9]*["f"]?) | "f") { } /* Float */
-"true" | "false"    { } /* boolean */
+"in"    {return setToken(NOT_TYPE::IN); } /* Keywords */
+"out"   { return setToken(NOT_TYPE::OUT); }
+"struct" { return setToken(NOT_TYPE::STRUCT); }
+"shared" { return setToken(NOT_TYPE::SHARED); }
+"const" { return setToken(NOT_TYPE::CONST); }
+"if"    { return setToken(NOT_TYPE::IF); }
+"else"  { return setToken(NOT_TYPE::ELSE); }
+"while" { return setToken(NOT_TYPE::WHILE); }
+"for"   { return setToken(NOT_TYPE::WHILE); }
+"extern" { return setToken(NOT_TYPE::EXT); }
 
 
-/* Misc */
-"{" { } /* Block begin */
-"}" { } /* Block end */
-"(" { } /* Paramblock begin */
-")" { } /* Paramblock end */
-("["[" "]*([0-9]+)*[" "]"]") {  } /*Array brackets with optional number inside*/
+"int"   { return setToken(NOT_TYPE::NTYPE, yytext); } /* Native types */
+"float" { return setToken(NOT_TYPE::NTYPE, yytext); }
+"bool"  { return setToken(NOT_TYPE::NTYPE, yytext); }
+"vec"[2-4]  { return setToken(NOT_TYPE::NTYPE, yytext); }
+"mat"[2-4]  { return setToken(NOT_TYPE::NTYPE, yytext); }
 
 
+"+" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* Arithmetic */
+"-" { return setToken(NOT_TYPE::OPERATOR, yytext); }
+"*" { return setToken(NOT_TYPE::OPERATOR, yytext); }
+"/" { return setToken(NOT_TYPE::OPERATOR, yytext); }
+"%" { return setToken(NOT_TYPE::OPERATOR, yytext); }
 
-[a-zA-Z]([a-zA-Z]* | [0-9]* | "_")* { } /* Identifier */
-.      { tmp = NOT_CRT_TOK1(NOT_TYPE::UNRECOGNIZED); return 1; }
-<<EOF>> { tmp = NOT_CRT_TOK1(NOT_TYPE::EOC); return 0; }
+"+=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+"-=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+"*=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+"/=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+"%=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+
+"&&" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* AND */
+"!" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* NOT */
+"||" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* OR */
+"^" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* XOR */
+"==" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* EQUALS */
+"<" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* LESS */
+">" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* GREATER */
+"<=" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* LEQ */
+">=" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* GREQ */
+"!=" { return setToken(NOT_TYPE::OPERATOR, yytext); } /* NEQ */
+
+"&=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+"|=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+"^=" { return setToken(NOT_TYPE::OPASSIGN, yytext); }
+
+"=" { return setToken(NOT_TYPE::ASSIGN, yytext); }
+
+
+[0-9]+  { return setToken(NOT_TYPE::INTL, yytext); } /* Literals */ /* Integer */
+[0-0]+(("."[0-9]*["f"]?)|"f") { return setToken(NOT_TYPE::FLOATL, yytext); } /* Float */
+("true"|"false")    { return setToken(NOT_TYPE::BOOLL, yytext); } /* boolean */
+
+
+"{" { return setToken(NOT_TYPE::BLOCKB); } /* Misc */
+"}" { return setToken(NOT_TYPE::BLOCKE); } 
+"(" { return setToken(NOT_TYPE::PARAMB); } 
+")" { return setToken(NOT_TYPE::PARAME); } 
+("["[" "]*([0-9]+)*[" "]"]") { return setToken(NOT_TYPE::ARRAY, yytext); } /*Array brackets with optional number inside*/
+
+[a-zA-Z]([a-zA-Z]*|[0-9]*|"_")* { return setToken(NOT_TYPE::IDENTIFIER, yytext); } /* Identifier */
+
+
+.      { return setToken(NOT_TYPE::UNRECOGNIZED, yytext); }
+" "+    { }
+<<EOF>> { return setToken(NOT_TYPE::EOC); }
 %%
 
 
@@ -76,13 +95,36 @@ void NOT::Tokenizer::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::Stri
 
     while(yylex())
     {
-        m_token.emplaceBack(tmp);
+        m_token.emplaceBack(currToken);
     }
-    m_token.emplaceBack(tmp);
+    m_token.emplaceBack(currToken);
 
     yy_delete_buffer(bp);
 }
 
+
+NOU::int16 setToken(NOT_TYPE type, NOU::NOU_DAT_ALG::String8 value)
+{
+    currToken = NOT_CRT_TOK2(type, value);
+    NOU::NOU_DAT_ALG::String8 tmp;
+
+    switch(type)
+    {
+        case(NOT_TYPE::EOC):
+            return 0;    
+        break;
+        case(NOT_TYPE::ARRAY):
+            tmp = currToken.m_value;
+            tmp.replace(" ", "");
+            tmp.replace("[", "");
+            tmp.replace("]", "");
+            currToken.m_value = tmp;
+        default:
+            return 1;
+        break;
+    }
+
+}
 
 
 

@@ -12,8 +12,29 @@ namespace NOT
         enum class Types{
             EOC, // End of Code -> if the m_Code input is done flex will return this
             UNRECOGNIZED,
-            IDENTIFIER,
-            OPERATOR
+            IN,
+            OUT,
+            STRUCT,
+            SHARED,
+            CONST,
+            IF,
+            ELSE,
+            WHILE,
+            FOR,
+            EXT,
+            NTYPE,
+            OPERATOR,
+            ASSIGN,
+            OPASSIGN,
+            INTL,
+            FLOATL,
+            BOOLL,
+            BLOCKB,
+            BLOCKE,
+            PARAMB,
+            PARAME,
+            ARRAY,
+            IDENTIFIER
         };
 
         struct Token
