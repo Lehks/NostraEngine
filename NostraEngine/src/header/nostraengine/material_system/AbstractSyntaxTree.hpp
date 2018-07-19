@@ -45,101 +45,124 @@ namespace NOT
                  Entry defines the start of the tree, typically it is root.
 
                 -FUNC_DEC:
-                 Func_dec defines a function declaration. It's second attribute is the function name.
-                 usually it contains a BODY, RET_TYPE and a PARAM_LIST child node.
+                 Func_dec defines a function declaration. It's value attribute is the function name.
+                 In the same order its childnodes are: BODY, RET_TYPE, PARAM_LIST.
 
                 -PARAM_LIST:
-                 Param_list contains on or several other PARAM child nodes. It has no second attribute.
+                 Param_list contains one or several other PARAM child nodes.
 
                 -RET_TYPE:
-                 Ret_type defines the return type of the function (FUNC_DEC). It's second attribute
-                 is the actual return type (int, float, custom...).
+                 Ret_type defines the return type of the function (FUNC_DEC). It's value
+                 is the actual return type (int, float, custom, ...).
 
                 -TYPE:
-                 Type defines the type of an attribute. It's second attribute is usually
-                 the actual return type (int, float, custom...).
+                 Type defines the type of an attribute. It's value is
+                 the actual type (int, float, custom, ...).
 
                 -BODY:
                  Body defines the actual body of a function (FUNC_DEC). It's child node's are the body block of code.
-                 It has no second attribute.
+                 Each Expression/Statement is in the correct order from left to right as the original order from top to bottom.
 
                 -VAR_DEC:
-                 Var_dec defines a variable declaration. It contains a TYPE child node and
-                 maybe a KEYWORD (e.g const) node. It's second attribute is the variable name.
+                 Var_dec defines a variable declaration. It contains a TYPE child node in the first child position and
+                 maybe some KEYWORD (e.g. const) nodes. Its value is the variable name.
 
                 -ASSIGN:
-                 Assign defines a assign operation (=). It usually contains a VAR child node and a
-                 "passable value" node (e.g CONST_VALUE or VAR_CALL). It has no second attribute.
+                 Assign defines a assign operation (=). It contains a VAR child node in first position and a
+                 "passable value" node (e.g CONST_VALUE or VAR_CALL) in the second child node.
 
                 -VAR:
-                 Var defines a variable name the is mostly used as a child node of ASSIGN. It's second attribute is
+                 Var defines a variable name the is mostly used as a child node of ASSIGN. It's value is
                  the var name.
-                 NOTE that this node don't declare , defines or initialise a variable.
+                 NOTE that this node doesn't declare , define or initialise a variable.
 
                 -OPERATOR:
-                 Operator defines an operator operation (e.g += , + or -). It usually contains a VAR_CALL or CONST_VALUE
-                 child node. It's second attribute is the actual operator.
+                 Operator defines an operator operation (e.g. + or -). It usually contains a VAR_CALL or CONST_VALUE
+                 child node. It's value is the actual operator.
 
                 -VAR_CALL:
-                 Var_call defines a "variable call" similar to a function call or an rvalue. It's second attribute is
+                 Var_call defines a "variable call" similar to a function call or an lvalue in C++. Its value is
                  the actual name of the variable.
-                 NOTE that this node don't declare , defines or initialise a variable.
+                 NOTE that this node doesn't declare , define or initialise a variable.
 
                 -RETURN:
-                 Return defines the return type. IT can have different "passable value" child node's (e.g VAR_CALL or
-                 CONST_VALUE). It has no second attribute.
+                 Return defines the return value. IT can have one "passable value" child node (e.g VAR_CALL or
+                 CONST_VALUE).
 
                 -CONST_VALUE:
-                 Const_value defines a constant value. It' second type is the actual value (e.g '5' '463' "Hello").
+                 Const_value defines a constant value in terms either a constant variable call or a literal. 
+                 Its value is the actual value (e.g 12.0f, 1222).
 
                 -FUNC_CALL:
                  Func_call defines a "function call" similar to the variable call or a standard function call (c++, java).
+                 Its value is the name of the called function.
+                 Its childnodes are either CONST_VALUE, VAR_CALL, or FUNC_CALL nodes 
+                 in the same order as they appear in the corresponding FUNC_DEF PARAM_LIST node.
 
                 -BREAK:
-                 Break defines a break. It behaves like the break everyone knows. It has no second attribute.
+                 Represents the `break` keyword.
 
                 -CONTINUE:
-                 Continue defines the typically continue. It behaves like the continue everyone knows.
-                 It has no second attribute.
+                 Represents the `continue` keyword.
 
                 -WHILE:
-                 While defines the typically while loop. It has a COND child node, and no second attribute.
+                 While defines the typically while loop. In the following order its childnodes are:
+                 BODY, COND
 
                 -COND:
                  Cond defines the condition of a loop or an if statement. It has usually a operator as a child node.
-                 IT has no second attributes.
+                 This has to be evaluatable to either true or false.
 
                 -If:
-                 If defines the typically if statement. It has a COND child node, and no second attribute.
+                 If defines the typically if statement. In the following order its childnodes are:
+                 BODY, COND
 
                 -ELSE:
-                 Else defines the typically else statement. It has no second attribute.
+                 Else defines the typical else statement.It contains a single Node BODY.
 
                 -KEYWORD:
-                 Keyword defines a keyword for e.g a VAR_DEC and act's as a child node of it. It's second attribute
+                 Keyword defines a keyword for e.g a VAR_DEC and acts as a child node of it. Its value
                  is the actual keyword.
 
                 -ARR_DEF:
-                 Arr_def defines an array. It can have up to 3 child nodes two necessary (SIZE , TYPE) and the KEYWORD type
-                 It's second attribute is the array name.
+                 Arr_def defines an array. Its value is the name of the Array 
+                 In the following order its childnodes are:
+                 SIZE, TYPE, KEYWORD(optional)
 
                 -SIZE:
-                 Size defines a size and it's usually used as a child node of the ARR_DEF type.
+                 Size defines a size and its usually used as a child node of the ARR_DEF type.
 
                 -STRUCT_DEF:
-                 Struct_def defines a struct. It's second name is the name of the struct. It usually contains a BODY node.
+                 Struct_def defines a struct. Its value is the name of the struct. It usually contains a BODY node.
 
                 -EXTERN:
-                 Extern defines an extern variable (in GLSL uniform). It has no second attribute.
+                 Extern defines an extern variable (in GLSL uniform). Its value is the call name of the variable
+                 It contains a single child node ID.
 
                 -ID:
                  Id defines the ID of the EXTERN node and is usually a child node of EXTERN.
+                 Its value is the numeric id.
 
                 -FOR:
-                 For defines the typically for loop. It has a COND child node, and no second attribute.
+                 For defines the typically for loop. In the following order its childnodes are:
+                 BODY(Actual body of the loop),
+                 RUN_VAR(optional),
+                 COND(optional),
+                 ASSIGN(optional)
 
                 -RUN_VAR:
-                 Run_var defines the run variable. It has no second attribute.
+                 Run_var defines the run variable. In the following order its childnodes are:
+                 VAR_DEC(optional, only valid when ASSIGN also exists), ASSIGN(optional),
+
+                -ARRAY_CALL:
+                 Array_call defines a call to an array. Its value is the name of the called array.
+                 It has a single child node SIZE(the position where a member will be accessed).
+
+                -STRUCT_CALL:
+                 Struct_call defines a call to an allready defined struct variable or a member of a struct variable.
+                 Its value is the name of the struct. 
+                 If this node contains a childnode VAR_CALL its member variable will be called instead.
+                 
                 */
                 enum class Types
                 {
@@ -171,7 +194,9 @@ namespace NOT
                     EXTERN,
                     ID,
                     FOR,
-                    RUN_VAR
+                    RUN_VAR,
+                    ARRAY_CALL,
+                    STRUCT_CALL
                 };
 
             private:
