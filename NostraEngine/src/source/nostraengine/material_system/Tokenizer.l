@@ -71,13 +71,13 @@
 "}" { return setToken(NOT_TYPE::BLOCKE); } 
 "(" { return setToken(NOT_TYPE::PARAMB); } 
 ")" { return setToken(NOT_TYPE::PARAME); } 
-("["[" "]*([0-9]+)*[" "]"]") { return setToken(NOT_TYPE::ARRAY, yytext); } /*Array brackets with optional number inside*/
+("["[0-9]*"]") { return setToken(NOT_TYPE::ARRAY, yytext); }  /* HOTFIX CURRENTLY, DON'T FORGET TO CHANGE BACK SO " " CAN BE BETWEEN NUMBERS AND BRACKETS*/ /*Array brackets with optional number inside*/
 
-[a-zA-Z]([a-zA-Z]*|[0-9]*|"_")* { return setToken(NOT_TYPE::IDENTIFIER, yytext); } /* Identifier */
+("_")*[a-zA-Z]([a-zA-Z]|[0-9]|"_")* { return setToken(NOT_TYPE::IDENTIFIER, yytext); } /* Identifier */
 
-
-.      { return setToken(NOT_TYPE::UNRECOGNIZED, yytext); }
+";"     {return setToken(NOT_TYPE::SEMICOLON);}
 " "+    { }
+.      { return setToken(NOT_TYPE::UNRECOGNIZED, yytext); }
 <<EOF>> { return setToken(NOT_TYPE::EOC); }
 %%
 
@@ -114,11 +114,7 @@ NOU::int16 setToken(NOT_TYPE type, NOU::NOU_DAT_ALG::String8 value)
             return 0;    
         break;
         case(NOT_TYPE::ARRAY):
-            tmp = currToken.m_value;
-            tmp.replace(" ", "");
-            tmp.replace("[", "");
-            tmp.replace("]", "");
-            currToken.m_value = tmp;
+            currToken.m_value.preserve(1, currToken.m_value.size()-2);
         default:
             return 1;
         break;
