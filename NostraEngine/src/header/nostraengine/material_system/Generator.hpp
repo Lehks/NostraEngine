@@ -18,6 +18,8 @@ namespace NOE::NOE_MATSYS
 
         virtual ~Generator() = default;
 
+        virtual NOU::boolean start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &paramArgs) = 0;
+
         virtual NOU::boolean processTree(NOT::AbstractSyntaxTree::ASTNode *m_ast) = 0;
 
         virtual NOU::boolean generateSource() = 0;

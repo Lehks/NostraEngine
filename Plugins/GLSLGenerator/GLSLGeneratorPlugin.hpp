@@ -10,6 +10,7 @@ namespace GLSLGeneratorPlugin
     class GLSLGeneratorPlugin final : public NOE::NOE_CORE::Plugin
     {
 	private:
+		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_MEM_MNGT::UniquePtr<GLSLGenerator>> m_generatorPtr;
 
     public:
         /**
