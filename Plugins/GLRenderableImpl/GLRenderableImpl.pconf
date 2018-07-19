@@ -1,0 +1,17 @@
+[core]
+id="2"
+priority="0"
+enable="true"
+minversion.major="0"
+minversion.minor="0"
+minversion.patch="1"
+
+[meta]
+name="GLRenderableImpl"
+description="A implementation of the Nostra Engine RenderableImpl that uses GLAD internally."
+version.major="0"
+version.minor="0"
+version.patch="1"
+
+
+

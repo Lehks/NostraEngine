@@ -24,6 +24,16 @@ namespace NOE::NOE_RENDERER
 	{
 	protected:
 
+		/**
+		\tparam T			The type of the allocated pointer.
+		\tparam ARGS		The arguments types.
+
+		\param args			The passed arguments.
+
+		\return				A pointer to a RenderableImpl.
+
+		\brief				Allocates a pointer to a new RenderableImpl.
+		*/
 		template<typename T, typename... ARGS>
 		static RenderableImpl* allocate(ARGS&&... args);
 
@@ -34,6 +44,11 @@ namespace NOE::NOE_RENDERER
 		*/
 		virtual ~RenderableImplFactory() = default;
 
+		/**
+		\param ptr			The pointer that will be deallocated.
+
+		\brief				Deallocates the passed pointer.
+		*/
 		NOE_FUNC static void deallocate(RenderableImpl* ptr);
 
 		/**
