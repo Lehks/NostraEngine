@@ -20,46 +20,48 @@ namespace GLSLGeneratorPlugin
     class GLSLGenerator : public NOE::NOE_MATSYS::Generator
     {
     private:
-        NOT::AbstractSyntaxTree::ASTNode *m_root;
-        NOU::NOU_FILE_MNGT::File outputSourceFile;
-        NOU::NOU_DAT_ALG::String8 outputSourceString;
-        NOE_PLUGIN_FUNC virtual NOU::boolean processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) override;
+        NOT::AbstractSyntaxTree::ASTNode    *m_root;
+        NOT::AbstractSyntaxTree::ASTNode    *currentNode;
+        NOT::AbstractSyntaxTree::ASTNode    *prevNode;
+        NOT::AbstractSyntaxTree             m_ast;
+        NOU::NOU_FILE_MNGT::File            m_outputSourceFile;
+        NOU::NOU_DAT_ALG::String8           m_outputSourceString;
+        NOE_PLUGIN_FUNC NOU::sizeType processState(const NOT::AbstractSyntaxTree::ASTNode::Types & STATE) override;
 
-        NOE_PLUGIN_FUNC void varDecState();
-        NOE_PLUGIN_FUNC void bodyTypeState();
-        NOE_PLUGIN_FUNC void retTypeState();
-        NOE_PLUGIN_FUNC void varState();
-        NOE_PLUGIN_FUNC void arrDefState();
-        NOE_PLUGIN_FUNC void assignState();
-        NOE_PLUGIN_FUNC void breakState();
-        NOE_PLUGIN_FUNC void condState();
-        NOE_PLUGIN_FUNC void constValueState();
-        NOE_PLUGIN_FUNC void continueState();
-        NOE_PLUGIN_FUNC void elseState();
-        NOE_PLUGIN_FUNC void entryState();
-        NOE_PLUGIN_FUNC void externState();
-        NOE_PLUGIN_FUNC void forState();
-        NOE_PLUGIN_FUNC void funcCallState();
-        NOE_PLUGIN_FUNC void funcDecState();
-        NOE_PLUGIN_FUNC void idState();
-        NOE_PLUGIN_FUNC void ifState();
-        NOE_PLUGIN_FUNC void keywordState();
-        NOE_PLUGIN_FUNC void operatorState();
-        NOE_PLUGIN_FUNC void paramState();
-        NOE_PLUGIN_FUNC void paramListState();
-        NOE_PLUGIN_FUNC void returnState();
-        NOE_PLUGIN_FUNC void runVarState();
-        NOE_PLUGIN_FUNC void sizeState();
-        NOE_PLUGIN_FUNC void structDefState();
-        NOE_PLUGIN_FUNC void typeState();
-        NOE_PLUGIN_FUNC void varCallState();
-        NOE_PLUGIN_FUNC void whileState();
-        NOE_PLUGIN_FUNC void structCallState();
+        NOE_PLUGIN_FUNC NOU::sizeType  varDecState();
+        NOE_PLUGIN_FUNC NOU::sizeType  bodyState();
+        NOE_PLUGIN_FUNC NOU::sizeType  retTypeState();
+        NOE_PLUGIN_FUNC NOU::sizeType  varState();
+        NOE_PLUGIN_FUNC NOU::sizeType  arrDefState();
+        NOE_PLUGIN_FUNC NOU::sizeType  assignState();
+        NOE_PLUGIN_FUNC NOU::sizeType  breakState();
+        NOE_PLUGIN_FUNC NOU::sizeType  condState();
+        NOE_PLUGIN_FUNC NOU::sizeType  constValueState();
+        NOE_PLUGIN_FUNC NOU::sizeType  continueState();
+        NOE_PLUGIN_FUNC NOU::sizeType  elseState();
+        NOE_PLUGIN_FUNC NOU::sizeType  entryState();
+        NOE_PLUGIN_FUNC NOU::sizeType  externState();
+        NOE_PLUGIN_FUNC NOU::sizeType  forState();
+        NOE_PLUGIN_FUNC NOU::sizeType  funcCallState();
+        NOE_PLUGIN_FUNC NOU::sizeType  funcDecState();
+        NOE_PLUGIN_FUNC NOU::sizeType  idState();
+        NOE_PLUGIN_FUNC NOU::sizeType  ifState();
+        NOE_PLUGIN_FUNC NOU::sizeType  operatorState();
+        NOE_PLUGIN_FUNC NOU::sizeType  paramState();
+        NOE_PLUGIN_FUNC NOU::sizeType  paramListState();
+        NOE_PLUGIN_FUNC NOU::sizeType  returnState();
+        NOE_PLUGIN_FUNC NOU::sizeType  runVarState();
+        NOE_PLUGIN_FUNC NOU::sizeType  sizeState();
+        NOE_PLUGIN_FUNC NOU::sizeType  structDefState();
+        NOE_PLUGIN_FUNC NOU::sizeType  varCallState();
+        NOE_PLUGIN_FUNC NOU::sizeType  whileState();
+        NOE_PLUGIN_FUNC NOU::sizeType  structCallState();
 
     public:
-        NOE_PLUGIN_FUNC virtual NOU::boolean start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &paramArgs) override;
-        NOE_PLUGIN_FUNC virtual NOU::boolean processTree(NOT::AbstractSyntaxTree::ASTNode *m_ast) override;
-        NOE_PLUGIN_FUNC virtual NOU::boolean generateSource() override;
+        NOE_PLUGIN_FUNC GLSLGenerator(NOT::AbstractSyntaxTree &ast);
+        NOE_PLUGIN_FUNC NOU::boolean start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &paramArgs) override;
+        NOE_PLUGIN_FUNC NOU::boolean processTree(NOT::AbstractSyntaxTree::ASTNode *m_ast) override;
+        NOE_PLUGIN_FUNC NOU::boolean generateSource() override;
 
     };
 
