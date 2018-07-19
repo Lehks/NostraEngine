@@ -18,7 +18,7 @@ namespace NOT
             /**
             \brief Copy constructor of the Abstract Syntax Tree. Deleted function.
             */
-            AbstractSyntaxTree(const AbstractSyntaxTree& other) = delete;
+            AbstractSyntaxTree(const AbstractSyntaxTree& other);
 
             /**
             \brief Move constructor of the Abstract Syntax Tree.
@@ -31,6 +31,7 @@ namespace NOT
             class NOE_FUNC ASTNode{
                 friend AbstractSyntaxTree::AbstractSyntaxTree();
                 friend AbstractSyntaxTree::AbstractSyntaxTree(AbstractSyntaxTree&& other);
+                friend AbstractSyntaxTree::AbstractSyntaxTree(const AbstractSyntaxTree& other);
 
             public:
                 /**
@@ -235,9 +236,20 @@ namespace NOT
                 \param type The type of token that this Node will represent.
                 \param value The value assigned to this Node.
                 
-                \detail This constructor is set to private since it works closely together with the surrounding Abstract Syntax Tree class.
+                \detail This constructor is set to private since it works closely 
+                        together with the surrounding Abstract Syntax Tree class.
                 */
                 ASTNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
+
+                /**
+                \brief Copy constructor of the ASTNode class.
+                \param The other ASTNode from which will be copied.
+
+                \detail This constructor is private since it has to be used very carefully, 
+                        without proper external handling from/with an AST the created object 
+                        will be in an unusable state.
+                */
+                ASTNode(const ASTNode& other);
             public:
                 /**
                 \brief Getter for the m_type attribute.
@@ -333,6 +345,12 @@ namespace NOT
                 void appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
 
                 /**
+                \brief Appends an allready existing Tree to the current node in the most right spot.
+                \param other An existring thee that will be appended.
+                */
+                void appendNode(const AbstractSyntaxTree& other);
+
+                /**
                 \brief Checks if the type and value are equal.
                 \return True if both type and value are equal, false if not.
                 */
@@ -345,6 +363,7 @@ namespace NOT
             \brief A pool containing all children used in the tree.
             */
             NOU::NOU_DAT_ALG::Vector<NOU::NOU_MEM_MNGT::UniquePtr<ASTNode>>m_childPool;
+
         public:
             /**
             \brief Getter for the root node of this tree.

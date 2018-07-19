@@ -21,7 +21,17 @@ namespace NOT
         {
             m_childPool[i]->m_assignedTree = this;
         }
+    }
 
+    NOT_AST::AbstractSyntaxTree(const AbstractSyntaxTree& other)
+    {
+        for(NOU::sizeType i = 0; i < other.m_childPool.size(); i++)
+        {
+            m_childPool.emplaceBack(NOU::NOU_MEM_MNGT::UniquePtr<ASTNode>(
+                new ASTNode(*other.m_childPool[i]), 
+                NOU::NOU_MEM_MNGT::defaultDeleter));
+            m_childPool[i]->m_assignedTree = this;
+        }
     }
 
     NOT_AST::ASTNode* NOT_AST::getRoot()
@@ -37,6 +47,14 @@ namespace NOT
     m_type(type),
     m_value(value)
     { }
+
+    NOT_AST::ASTNode::ASTNode(const NOT_AST::ASTNode& other) : 
+    m_assignedTree(nullptr),
+    m_ownIndex(other.m_ownIndex),
+    m_parent(other.m_parent),
+    m_type(other.m_type),
+    m_value(other.m_value),
+    m_children(other.m_children) { }
 
     NOT_AST::ASTNode::Types NOT_AST::AbstractSyntaxTree::ASTNode::getType() const
     {
@@ -148,6 +166,8 @@ namespace NOT
 
         return b;
     }
+
+
 
 }
 
