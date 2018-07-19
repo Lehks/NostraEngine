@@ -1,12 +1,7 @@
 #ifndef PLUGIN_GLFW_MONITOR_HPP
 #define PLUGIN_GLFW_MONITOR_HPP
 
-#include "nostrautils/NostraUtils.hpp"
-
 #include "nostraengine/NostraEngine.hpp"
-#include "nostraengine/core/StdIncludes.hpp"
-
-#include "nostraengine/window/Monitor.hpp"
 
 /**
 \file window/GLFWMonitor.hpp

@@ -1,60 +1,57 @@
-cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR)
 
-project("${NOE_PROJECT_NAME}" 
-	VERSION "${NOE_PROJECT_VERSION}"
-	DESCRIPTION "${NOE_PROJECT_DESCRIPTION}"
-	#HOMEPAGE_URL "${NOE_PROJECT_HOMEPAGE}" 
+project("NostraEngine" 
+	VERSION "0.0.1"
+	DESCRIPTION "A real-time game engine."
+	#HOMEPAGE_URL "https://www.github.com/Lehks/NostraEngine" 
 	LANGUAGES C CXX)
 
 add_subdirectory("doc")
 
+configure_file("${CMAKE_SOURCE_DIR}/cmake/Config.hpp.in" "src/header/nostraengine/core/Config.hpp" @ONLY)
+
 file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
-add_library(NostraEngineDbg SHARED ${NOE_NOE_SOURCE_FILES})
+add_library(NostraEngine SHARED ${NOE_NOE_SOURCE_FILES})
+add_library(Nostra::Engine ALIAS NostraEngine)
 
-target_include_directories(NostraEngineDbg 
+target_include_directories(NostraEngine 
 	PUBLIC 
-		"src/header")
+		"src/header"
+		"${CMAKE_CURRENT_BINARY_DIR}/src/header")
 
-target_link_libraries(NostraEngineDbg 
+target_link_libraries(NostraEngine 
 	PUBLIC 
 		Nostra::Utils
 	PRIVATE 
-		sqlite3)
-		
-target_compile_definitions(NostraEngineDbg 
+		sqlite3
+		${CMAKE_DL_LIBS})
+
+target_compile_definitions(NostraEngine 
 	INTERFACE 
-		"NOE_DLL")
+		NOE_DLL)
+
+target_compile_features(NostraEngine
+	PUBLIC 
+		cxx_std_17)
 
 if(MSVC)
-	target_compile_options(NostraEngineDbg
+	target_compile_options(NostraEngine
 		PRIVATE
 			"/wd4251"
 			"/WX")
+else()
+	target_compile_options(NostraEngine
+		PRIVATE
+			"-Werror")
 endif()
 
-install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
-#[==[	
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+install(TARGETS NostraEngine 
+	RUNTIME DESTINATION "bin"
+	LIBRARY DESTINATION "lib"
+	ARCHIVE DESTINATION "lib"
+	INCLUDES DESTINATION "include")
 
-	include_directories("${NOE_NOE_INCLUDE_DIR}")
-	include_directories("${NOE_GLAD_INCLUDE_DIR}")
-	include_directories("${NOE_NOU_INCLUDE_DIR}")
-	include_directories("${CMAKE_SOURCE_DIR}")
-	
-	add_library("${NOE_NOE_LIB_NAME}" SHARED "${NOE_NOE_SOURCE_FILES}")
-	
-	target_link_libraries(${NOE_NOE_LIB_NAME} PRIVATE sqlite3::sqlite3)
-
-	target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
-	#target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
-	target_link_libraries("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
-	
-	add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_GLAD_LIB_NAME}")
-	#add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_SQLITE3_LIB_NAME}")
-	add_dependencies("${NOE_NOE_LIB_NAME}" "${NOE_NOU_LIB_NAME}")
-
-	install(TARGETS "${NOE_NOE_LIB_NAME}" DESTINATION "${NOE_BINARY_INSTALL_DIR}")
-
-endif()
-#]==]
+install(DIRECTORY "src/header/" DESTINATION "include")
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/src/header/nostraengine/core/Config.hpp" 
+	DESTINATION "include/nostraengine/core")

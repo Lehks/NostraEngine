@@ -177,27 +177,27 @@ namespace NOE::NOE_UTILITY
 
 			NOE_FUNC NOU::boolean isValid() const;
 			
-			NOE_FUNC void SQLStatement::bind(std::nullptr_t);
+			NOE_FUNC void bind(std::nullptr_t);
 
-			NOE_FUNC void SQLStatement::bind(NOU::int32 i);
+			NOE_FUNC void bind(NOU::int32 i);
 
-			NOE_FUNC void SQLStatement::bind(NOU::int32 *i);
+			NOE_FUNC void bind(NOU::int32 *i);
 
-			NOE_FUNC void SQLStatement::bind(NOU::int64 i);
+			NOE_FUNC void bind(NOU::int64 i);
 
-			NOE_FUNC void SQLStatement::bind(NOU::int64 *i);
+			NOE_FUNC void bind(NOU::int64 *i);
 
-			NOE_FUNC void SQLStatement::bind(NOU::float32 f);
+			NOE_FUNC void bind(NOU::float32 f);
 
-			NOE_FUNC void SQLStatement::bind(NOU::float32 *f);
+			NOE_FUNC void bind(NOU::float32 *f);
 
-			NOE_FUNC void SQLStatement::bind(NOU::float64 f);
+			NOE_FUNC void bind(NOU::float64 f);
 
-			NOE_FUNC void SQLStatement::bind(NOU::float64 *f);
+			NOE_FUNC void bind(NOU::float64 *f);
 
-			NOE_FUNC void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 &str);
+			NOE_FUNC void bind(const NOU::NOU_DAT_ALG::StringView8 &str);
 
-			NOE_FUNC void SQLStatement::bind(const NOU::NOU_DAT_ALG::StringView8 *str);
+			NOE_FUNC void bind(const NOU::NOU_DAT_ALG::StringView8 *str);
 
 			NOE_FUNC Row& next();
 

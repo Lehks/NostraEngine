@@ -10,4 +10,8 @@ target_include_directories(sqlite3 INTERFACE "include")
 target_compile_definitions(sqlite3 PUBLIC NOU_SQLITE3_EXPORT)
 target_compile_definitions(sqlite3 PUBLIC NOU_SQLITE3_EXPORT_BUILD)
 
-install(TARGETS sqlite3 DESTINATION bin)
+install(TARGETS sqlite3 
+	RUNTIME DESTINATION "bin"
+	LIBRARY DESTINATION "lib"
+	ARCHIVE DESTINATION "lib"
+	INCLUDES DESTINATION "include")

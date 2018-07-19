@@ -17,17 +17,10 @@ file(GLOB_RECURSE "files" "src/*.cpp")
 
 add_library(GLFWWindow SHARED "${files}" "GLFWWindowPlugin.cpp")
 
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-	target_link_libraries(GLFWWindow 
+target_link_libraries(GLFWWindow 
 		PRIVATE 
-			NostraEngineDbg
+			Nostra::Engine
 			glfw)
-else()
-	target_link_libraries(GLFWWindow 
-		PRIVATE 
-			NostraEngine
-			glfw)
-endif()
 
 target_compile_definitions(GLFWWindow 
 	PRIVATE
@@ -43,6 +36,6 @@ set_target_properties(GLFWWindow PROPERTIES PREFIX "")
 set_target_properties(GLFWWindow PROPERTIES SUFFIX ".np")
 
 install(TARGETS GLFWWindow
-	RUNTIME DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}" 
-	LIBRARY DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")
-install(FILES "GLFWWindow.pconf" DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")
+	RUNTIME DESTINATION "bin/plugins" 
+	LIBRARY DESTINATION "bin/plugins")
+install(FILES "GLFWWindow.pconf" DESTINATION "bin/plugins")

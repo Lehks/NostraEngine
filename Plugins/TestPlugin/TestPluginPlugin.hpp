@@ -1,3 +1,6 @@
+#ifndef	TEST_TEST_PLUGIN_HPP
+#define TEST_TEST_PLUGIN_HPP
+
 #include "nostraengine/NostraEngine.hpp"
 
 namespace TestPluginPlugin
@@ -22,5 +25,5 @@ namespace TestPluginPlugin
 	};
 }
 
-
+#endif
 
