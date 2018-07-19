@@ -22,6 +22,11 @@ namespace NOE::NOE_RENDERER
 	public:
 
 		/**
+		\brief			Default constructor.
+		*/
+		RenderableImpl() = default;
+
+		/**
 		\brief			Default destructor.
 		*/
 		virtual ~RenderableImpl() = default;
@@ -30,7 +35,7 @@ namespace NOE::NOE_RENDERER
 		virtual void bind() const = 0;
 
 		///todo doc
-		virtual NOU::boolean setAttribute(NOU::NOU_DAT_ALG::String8 str, void* ptr) const = 0;
+		virtual NOU::boolean setAttribute(NOU::NOU_DAT_ALG::String8 str, void* ptr) = 0;
 
 		virtual NOU::NOU_DAT_ALG::CompareResult compare(const RenderableImpl& other) const = 0;
 	};
