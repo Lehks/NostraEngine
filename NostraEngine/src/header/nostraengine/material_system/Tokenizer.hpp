@@ -35,7 +35,8 @@ namespace NOT
             PARAMB,
             PARAME,
             ARRAY,
-            IDENTIFIER
+            IDENTIFIER,
+            COMMENT
         };
 
         struct Token

@@ -168,6 +168,32 @@ namespace NOT
         return b;
     }
 
+    void NOT_AST::ASTNode::appendNode(const NOT_AST& other)
+    {
+        NOU::sizeType s(other.m_childPool.size()-1);
+        NOU::sizeType c;
+        const NOU::sizeType firstPos(m_assignedTree->m_childPool.size());
+        for(NOU::sizeType i = 0; i < s; i++)
+        {
+                m_assignedTree->m_childPool.emplaceBack(NOU::NOU_MEM_MNGT::UniquePtr<ASTNode>(
+                    new ASTNode(*other.m_childPool[i + 1]), 
+                    NOU::NOU_MEM_MNGT::defaultDeleter));
+
+                m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_assignedTree = m_assignedTree;
+
+                m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_ownIndex += firstPos;
+                m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_parent   += firstPos;
+                
+                c = m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_children.size();
+
+                for(NOU::sizeType j = 0; j < c; j++)
+                {
+                    m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_children[j] += firstPos;
+                }
+        }
+    }
+
+
 
 
 }

@@ -347,10 +347,14 @@ namespace NOT
                 ASTNode* appendNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
 
                 /**
-                \brief Appends an allready existing Tree to the current node in the most right spot.
+                \brief Appends an allready existing Tree to the current node in the most right spot.,
                 \param other An existring thee that will be appended.
+
+                \detail This function merges the root node of `other` with the current node. 
+                        This means every childnode of the root node of `other` will be appended 
+                        in correct order to the current node.
                 */
-                // void appendNode(const AbstractSyntaxTree& other);
+                void appendNode(const AbstractSyntaxTree& other);
 
                 /**
                 \brief Checks if the type and value are equal.
