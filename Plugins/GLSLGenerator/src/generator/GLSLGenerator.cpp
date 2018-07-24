@@ -1,7 +1,7 @@
-// #include "GLSLGenerator.hpp"
+#include "GLSLGenerator.hpp"
 
-// namespace GLSLGeneratorPlugin
-// {
+namespace GLSLGeneratorPlugin
+{
 
         NOU::sizeType GLSLGenerator::processState(const NOT::AbstractSyntaxTree::ASTNode::Types &STATE)
         {
@@ -111,109 +111,113 @@
             return 1;
         }
 
+        /* Each of the following one liners was missing a return statement -> compile error */
+
         NOU::sizeType  GLSLGenerator::bodyState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::retTypeState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::varState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::arrDefState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::assignState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::breakState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::condState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::constValueState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::continueState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::elseState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::entryState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::externState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::forState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::funcCallState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::funcDecState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::idState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::ifState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::operatorState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::paramState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::paramListState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::returnState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::runVarState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::sizeState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::structDefState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::varCallState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::whileState()
-        {}
+        { return 0; }
 
         NOU::sizeType  GLSLGenerator::structCallState()
-        {}
+        { return 0; }
 
-//         GLSLGenerator::GLSLGenerator(NOT::AbstractSyntaxTree &ast) :
-//         m_outputSourceFile(nullptr),
-//         m_outputSourceString("")
-//         {
-//             m_ast = NOU::NOU_CORE::move(ast);
+        GLSLGenerator::GLSLGenerator(NOT::AbstractSyntaxTree &ast) :
+        m_outputSourceFile(nullptr),
+        m_outputSourceString("")
+        {
+            // m_ast = NOU::NOU_CORE::move(ast); /* AST has no operator=, you can initialize with m_ast(NOU::NOU_CORE::move(ast)) */
 
-//         }
+        }
 
-//         NOU::boolean GLSLGenerator::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &paramArgs)
-//         {
-//             if(paramArgs.size() == 0)
-//             {
-//                 m_root = m_ast.getRoot();
-//                 m_outputSourceFile = NOU::NOU_FILE_MNGT::File(NOU::NOU_FILE_MNGT::Path::currentWorkingDirectory().getAbsolutePath());
-//                 processTree(m_root);
-//             }else if (paramArgs.size() == 1)
-//             {
-//                 m_root = m_ast.getRoot();
-//                 m_outputSourceFile = NOU::NOU_FILE_MNGT::File(paramArgs.at(0));
-//                 processTree(m_root);
-//             }
-//         }
+        NOU::boolean GLSLGenerator::start(const NOU::NOU_DAT_ALG::Vector<NOU::NOU_DAT_ALG::String8> &paramArgs)
+        {
+            if(paramArgs.size() == 0)
+            {
+                m_root = m_ast.getRoot();
+                // m_outputSourceFile = NOU::NOU_FILE_MNGT::File(NOU::NOU_FILE_MNGT::Path::currentWorkingDirectory().getAbsolutePath()); /* File cannot be reasigned, use a newly created File object or store the actual Path as attribute */
+                processTree(m_root);
+            }else if (paramArgs.size() == 1)
+            {
+                m_root = m_ast.getRoot();
+                // m_outputSourceFile = NOU::NOU_FILE_MNGT::File(paramArgs.at(0)); /* File cannot be reasigned, use a newly created File object or store the actual Path as attribute */
+                processTree(m_root);
+            }
+
+            return false; /* don't forget to return a value */
+        }
 
         NOU::boolean GLSLGenerator::processTree(NOT::AbstractSyntaxTree::ASTNode *nextNode)
         {
@@ -242,12 +246,12 @@
                 }
             }
 
-//             return true;
-//         }
+            return true;
+        }
 
-//         NOU::boolean GLSLGenerator::generateSource()
-//         {
-//             return true;
-//         }
+        NOU::boolean GLSLGenerator::generateSource()
+        {
+            return true;
+        }
 
-// }
+}
