@@ -75,9 +75,9 @@
 
 ("_")*[a-zA-Z]([a-zA-Z]|[0-9]|"_")* { return setToken(NOT_TYPE::IDENTIFIER, yytext); } /* Identifier */
 
-["//"].*\n  { }
-["/*"].*["*/"] { }
-";"     {return setToken(NOT_TYPE::SEMICOLON);}
+["//"].*\n          { }     /* Skip single line comment */
+^"/*"[^*]*|[*]*"*/" { }     /* Skip multiline comments */
+";"     { return setToken(NOT_TYPE::SEMICOLON); }
 " "+    { }
 .       { return setToken(NOT_TYPE::UNRECOGNIZED, yytext); }
 <<EOF>> { return setToken(NOT_TYPE::EOC); }
