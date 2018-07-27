@@ -45,8 +45,7 @@ namespace NOT
     
     NOT_AST::ASTNode::ASTNode(NOT_AST::ASTNode::Types type, const NOU::NOU_DAT_ALG::String8& value) :
     m_type(type),
-    m_value(value)
-    { }
+    m_value(value) { }
 
     NOT_AST::ASTNode::ASTNode(const NOT_AST::ASTNode& other) : 
     m_assignedTree(nullptr),
@@ -145,11 +144,6 @@ namespace NOT
 
         m_assignedTree->m_childPool.emplaceBack(NOU::NOU_CORE::move(tmp));
         pos = m_assignedTree->m_childPool.size()-1;
-        
-        //NOU::NOU_MEM_MGNT::UniquePtr<type> ptr(new type(), NOU::NOU_MEM_MGNT::defaultDeleter); 
-        //UniquePtr::rawPtr()
-        //ptr->someMethod()
-        //*ptr
 
         m_assignedTree->m_childPool[pos]->m_ownIndex = pos;
         m_assignedTree->m_childPool[pos]->m_parent = m_ownIndex;
@@ -170,26 +164,37 @@ namespace NOT
 
     void NOT_AST::ASTNode::appendNode(const NOT_AST& other)
     {
-        NOU::sizeType s(other.m_childPool.size()-1);
-        NOU::sizeType c;
-        const NOU::sizeType firstPos(m_assignedTree->m_childPool.size());
-        for(NOU::sizeType i = 0; i < s; i++)
+        NOU::sizeType newIdx, size, childCount;
+        ASTNode* tmp;
+        
+
+        newIdx = m_assignedTree->m_childPool.size();    // Getting start idx of the newly appended Nodes.
+        size = other.m_childPool.size();
+        auto& childPool = m_assignedTree->m_childPool;
+
+        for(NOU::sizeType i = 0; i < size; i++)
         {
-                m_assignedTree->m_childPool.emplaceBack(NOU::NOU_MEM_MNGT::UniquePtr<ASTNode>(
-                    new ASTNode(*other.m_childPool[i + 1]), 
-                    NOU::NOU_MEM_MNGT::defaultDeleter));
+            NOU::NOU_MEM_MNGT::UniquePtr<ASTNode> tmpPtr(new ASTNode(*other.m_childPool[i].rawPtr()),  NOU::NOU_MEM_MNGT::defaultDeleter);  // Copying each element from other.
+            childPool.emplaceBack(NOU::NOU_CORE::move(tmpPtr)); 
 
-                m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_assignedTree = m_assignedTree;
+            tmp = childPool[i + newIdx].rawPtr();       // newly added node.
 
-                m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_ownIndex += firstPos;
-                m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_parent   += firstPos;
-                
-                c = m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_children.size();
+            tmp->m_assignedTree = this->m_assignedTree;    // Setting the assigned tree accordingly.
+            tmp->m_parent += newIdx;  // Setting parents accordingly.
+            tmp->m_ownIndex += newIdx;    // Setting the own idx in the childpool.
+            
+            childCount = tmp->getChildCount();
+            for(NOU::sizeType j = 0; j < childCount; j++)
+            {
+                tmp->m_children[j] += newIdx;   // Setting the children indices to match them.
+            }
+        }
 
-                for(NOU::sizeType j = 0; j < c; j++)
-                {
-                    m_assignedTree->m_childPool[i + firstPos].rawPtr()->m_children[j] += firstPos;
-                }
+        size = other.getRoot()->getChildCount();
+        tmp = m_assignedTree->getRoot();
+        for(NOU::sizeType i = 0; i < size; i++)
+        {
+            tmp->m_children.emplaceBack(other.getRoot()->m_children[i] + newIdx); // Adding new root nodes to current root
         }
     }
 

@@ -241,16 +241,18 @@ namespace NOT
                 */
                 ASTNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
 
+				public:
+
                 /**
                 \brief Copy constructor of the ASTNode class.
                 \param The other ASTNode from which will be copied.
 
-                \detail This constructor is private since it has to be used very carefully, 
-                        without proper external handling from/with an AST the created object 
-                        will be in an unusable state.
+                \detail This cpy ctor has to be used very carefully 
+						since the newly created copy will not be in 
+						any order with any other nodes.
                 */
                 ASTNode(const ASTNode& other);
-            public:
+            
                 /**
                 \brief Getter for the m_type attribute.
                 \return The assigned type.
