@@ -360,6 +360,25 @@ namespace NOT
                 void appendNode(const AbstractSyntaxTree& other);
 
                 /**
+                \brief Appends a given node to the current node
+                \param other The to append node.
+                \return Pointer to the newly appended node or 
+                        nullptr if it was not possible to append 
+                        the node.
+                */
+
+                ASTNode* appendNode(const ASTNode& other);
+
+                /** 
+                \brief Constructs a Vector containing each node 
+                       that is reachable trough getChild(i) 
+                       from this node.
+                \note It is not guaranteed that this Vector has any particular order.
+                \return A vector containing all reachable Children from this node.
+                */
+                const NOU::NOU_DAT_ALG::Vector<ASTNode*> getAllChildren() const;
+
+                /**
                 \brief Checks if the type and value are equal.
                 \return True if both type and value are equal, false if not.
                 */

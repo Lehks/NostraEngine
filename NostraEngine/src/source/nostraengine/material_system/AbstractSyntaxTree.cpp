@@ -198,6 +198,39 @@ namespace NOT
         }
     }
 
+    NOT_AST::ASTNode* NOT_AST::ASTNode::appendNode(const NOT_AST::ASTNode& other)
+    {
+        if(other.m_type == NOT_ENTRY)   //Cant have multiple entry points
+        {
+            return nullptr;
+        }
+        return nullptr;
+
+    }
+
+    const NOU::NOU_DAT_ALG::Vector<NOT_AST::ASTNode*> NOT_AST::ASTNode::getAllChildren() const
+    {
+        NOU::NOU_DAT_ALG::Vector<NOT_AST::ASTNode*> ret;
+        NOU::NOU_DAT_ALG::FastQueue<NOU::sizeType> q;
+        ASTNode *tmp;
+        NOU::sizeType size;
+
+        q.push(m_ownIndex);
+
+        while(!q.empty())
+        {
+            tmp = m_assignedTree->m_childPool[q.pop()].rawPtr();
+            size = tmp->getChildCount();
+            for(NOU::sizeType i = 0; i < size; i++)
+            {
+                ret.emplaceBack(tmp->getChild(i));
+                q.push(tmp->getChild(i)->m_ownIndex);
+            }
+        }
+
+        return ret;
+    }
+
 
 
 
