@@ -49,3 +49,25 @@ install(FILES "CHANGELOG.md" DESTINATION ".")
 #Install README.md
 configure_file("INSTALL_README.md.in" "INSTALL_README.md")
 install(FILES "${CMAKE_BINARY_DIR}/INSTALL_README.md" DESTINATION "." RENAME "README.md")
+
+if(${CMAKE_SYSTEM} MATCHES "Linux")
+	#Install .conf file with path to .so files
+	configure_file("cmake/nostraengine.conf.in" "nostraengine.conf" @ONLY)
+	install(FILES "${CMAKE_BINARY_DIR}/nostraengine.conf" DESTINATION "/etc/ld.so.conf.d")
+
+	#Install uninstall script and required file(s)
+	install(FILES "${CMAKE_BINARY_DIR}/install_manifest.txt" DESTINATION ".")
+	configure_file("cmake/uninstall.in" "uninstall" COPYONLY)
+	install(FILES "${CMAKE_BINARY_DIR}/uninstall" 
+		PERMISSIONS
+			OWNER_WRITE
+			OWNER_READ
+			OWNER_EXECUTE
+			GROUP_READ
+			GROUP_EXECUTE
+			WORLD_READ
+			WORLD_EXECUTE
+		DESTINATION 
+			".")
+	install()
+endif()

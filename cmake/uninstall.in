@@ -1,0 +1,41 @@
+#!/bin/sh
+
+SUCCESS=0 #counts the files that were removed
+
+while read LINE; do
+    printf "Uninstalling \"$LINE\"... "
+    rm "$LINE" > /dev/null 2> /dev/null
+
+    if test $? -eq 0; then
+        printf "Done.\n"
+    else
+        printf "Error removing file $LINE. Command rm returned with code $?\n" 1>&2
+        SUCCESS=$(($SUCCESS + 1))
+    fi
+
+done < install_manifest.txt
+
+if test $SUCCESS -eq 0; then
+    printf "Removing files successful.\n"
+else
+    printf "Error(s) occured while removing files. $SUCCESS files were not removed.\n"
+fi
+
+printf "Updating shared library cache... "
+
+ldconfig > /dev/null 2> /dev/null
+
+if test $? -eq 0; then
+        printf "Done.\n"
+else
+    printf "Error updating cache. Command ldconfig returned with code $?\n" 1>&2
+    SUCCESS=$(($SUCCESS + 1)) #re-use SUCCESS, from here on 0 indicates success, anything != 0 error
+fi
+
+if test $SUCCESS -eq 0; then
+    printf "Uninstalling successful.\n"
+    exit 0
+else
+    printf "Error(s) occured while uninstalling.\n"
+    exit 1
+fi
