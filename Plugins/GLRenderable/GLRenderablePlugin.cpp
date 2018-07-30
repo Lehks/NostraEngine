@@ -20,3 +20,5 @@ namespace GLRenderablePlugin
 
 	}
 }
+
+NOE_SET_AS_ACTIVE_PLUGIN_CLASS(GLRenderablePlugin::GLRenderablePlugin);

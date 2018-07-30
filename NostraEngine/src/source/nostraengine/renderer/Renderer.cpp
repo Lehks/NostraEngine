@@ -53,12 +53,4 @@ namespace NOE::NOE_RENDERER
 	{
 		m_optimizer = optimizer;
 	}
-
-	NOU::int32 Renderer::comparable(NOE::NOE_SCENE::RenderableActor firstActor,
-		NOE::NOE_SCENE::RenderableActor secondActor)
-	{
-		//todo Implement comparison: compare the meshes and textures
-		
-		return 0;
-	}
 }

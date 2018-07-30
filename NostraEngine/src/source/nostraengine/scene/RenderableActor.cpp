@@ -33,7 +33,7 @@ namespace NOE::NOE_SCENE
 		m_renderingEnabled = enable;
 	}
 		
-	void RenderableActor::bind(const RenderableActor renderable) const
+	void RenderableActor::bind(const RenderableActor& renderable) const
 	{
 		//todo
 	}
@@ -73,5 +73,16 @@ namespace NOE::NOE_SCENE
 	NOU::boolean RenderableActor::operator < (const RenderableActor& other) const
 	{
 		return m_ptr->compare(*other.m_ptr) < 0;
+	}
+
+	NOU::int32 RenderableActor::compare(const RenderableActor& firstActor,
+		const RenderableActor& secondActor)
+	{
+		if (firstActor == secondActor)
+			return 0;
+		else if (firstActor < secondActor)
+			return -1;
+		else if (firstActor > secondActor)
+			return 1;
 	}
 }

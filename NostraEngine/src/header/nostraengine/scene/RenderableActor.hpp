@@ -83,7 +83,7 @@ namespace NOE::NOE_SCENE
 		\brief				Binds the meshes and textures to an renderable. If no change was made,
 							it uses the previous bind.
 		*/
-		NOE_FUNC void bind(const RenderableActor renderable) const;
+		NOE_FUNC void bind(const RenderableActor& renderable) const;
 
 		/**
 		\param factory		The factory that is passed.
@@ -108,7 +108,7 @@ namespace NOE::NOE_SCENE
 
 		\brief				Checks if the underlying RenderableImpl is the same.
 		*/
-		NOU::boolean operator == (const RenderableActor& other) const;
+		NOE_FUNC NOU::boolean operator == (const RenderableActor& other) const;
 
 		/**
 		\param other		The RenderableActor that will be compared.
@@ -117,7 +117,7 @@ namespace NOE::NOE_SCENE
 
 		\brief				Checks if the underlying RenderableImpl is smaller.
 		*/
-		NOU::boolean operator < (const RenderableActor& other) const;
+		NOE_FUNC NOU::boolean operator < (const RenderableActor& other) const;
 
 		/**
 		\param other		The RenderableActor that will be compared.
@@ -126,7 +126,18 @@ namespace NOE::NOE_SCENE
 
 		\brief				Checks if the underlying RenderableImpl is bigger.
 		*/
-		NOU::boolean operator > (const RenderableActor& other) const;
+		NOE_FUNC NOU::boolean operator > (const RenderableActor& other) const;
+
+		/**
+		\param firstActor	The first renderable.
+		\param secondActor	The second renderable.
+
+		\return				Returns the values -1 (smaller), 0 (equal) and 1 (bigger).
+
+		\brief				Compares two renderables and returns the result of the comparison.
+		*/
+		NOE_FUNC static NOU::int32 compare(const NOE::NOE_SCENE::RenderableActor& firstActor,
+			const NOE::NOE_SCENE::RenderableActor& secondActor);
 	};
 }
 

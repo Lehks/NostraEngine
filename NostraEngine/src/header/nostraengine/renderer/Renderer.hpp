@@ -142,17 +142,6 @@ namespace NOE::NOE_RENDERER
 
 		///todo doc
 		NOE_FUNC virtual void renderOptimized() const = 0;
-
-		/**
-		\param firstActor	The first renderable.
-		\param secondActor	The second renderable.
-
-		\return				Returns the values -1 (smaller), 0 (equal) and 1 (bigger).
-
-		\brief				Compares two renderables and returns the result of the comparison.
-		*/
-		NOE_FUNC static NOU::int32 comparable(NOE::NOE_SCENE::RenderableActor firstActor,
-			NOE::NOE_SCENE::RenderableActor secondActor);
 	};
 }
 
