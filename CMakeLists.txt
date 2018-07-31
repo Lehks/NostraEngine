@@ -2,6 +2,15 @@ cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 option(NOE_GENERATE_TEST_EXECUTABLE "Generate the target NostraEngineTest." OFF)
 
+#
+if(UNIX)
+	if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+		set(CMAKE_INSTALL_PREFIX "/opt/NostraEngine" CACHE PATH 
+											"Install path prefix, prepended onto install directories." FORCE)
+	endif()
+endif()
+#
+
 #Build GLAD
 add_subdirectory("GLAD")
 
@@ -29,17 +38,19 @@ install(TARGETS NostraEngineExe
 #===
 
 #=== Build Test target
-if(NOT EXISTS "${CMAKE_SOURCE_DIR}/testmain.cpp")
-	message(WARNING "NOE:  testmain.cpp was not found. No Test-Executable will be generated.")
-else()
-	add_executable(NostraEngineTest testmain.cpp)
+if(${NOE_GENERATE_TEST_EXECUTABLE})
+	if(NOT EXISTS "${CMAKE_SOURCE_DIR}/testmain.cpp")
+		message(WARNING "NOE:  testmain.cpp was not found. No Test-Executable will be generated.")
+	else()
+		add_executable(NostraEngineTest testmain.cpp)
 
-	target_link_libraries(NostraEngineTest 
-		PRIVATE 
-			Nostra::Engine)
-		
-	install(TARGETS NostraEngineTest 
-			DESTINATION bin)
+		target_link_libraries(NostraEngineTest 
+			PRIVATE 
+				Nostra::Engine)
+
+		install(TARGETS NostraEngineTest 
+				DESTINATION bin)
+	endif()
 endif()
 #=== 
 
