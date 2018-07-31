@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 
 option(NOE_GENERATE_TEST_EXECUTABLE "Generate the target NostraEngineTest." OFF)
 
-#
-if(UNIX)
-	if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+	if(UNIX)
 		set(CMAKE_INSTALL_PREFIX "/opt/NostraEngine" CACHE PATH 
+											"Install path prefix, prepended onto install directories." FORCE)
+	elseif(WIN32)
+		set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/NostraEngine" CACHE PATH 
 											"Install path prefix, prepended onto install directories." FORCE)
 	endif()
 endif()
-#
 
 #Build GLAD
 add_subdirectory("GLAD")

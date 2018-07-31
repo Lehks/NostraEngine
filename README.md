@@ -40,7 +40,7 @@ First, we need to cd into the directory where the configuration files should be 
 any directory, except for the directory that contains the source files. In the following, 
 ```/path/to/source/root``` will be used as a placeholder for the path to the root directory of the source
 tree and ```/path/to/build/root``` will be used as a placeholder for the path to the root directory of the
-build tree.
+build tree. Both paths may be absolute or abstract.
 
 To get to the root directory of the build tree, use:    
 1. ```mkdir /path/to/build/root```
@@ -57,11 +57,11 @@ The behavior of CMake can be altered by passing variables when configuring. Vari
 Common variables are:
 
 - CMAKE\_INSTALL\_PREFIX: The path to the directory that the engine will be installed in. By default, this is 
-  ````C:\Program Files\NostraEngine``` on Windows and ```/opt/NostraEngine``` on Unix and Linux.
+  ```C:\Program Files (x86)\NostraEngine``` on Windows and ```/opt/NostraEngine``` on Unix and Linux.
 
 - NOE\_GENERATE\_DOC: If enabled, Doxygen will be used to generate the documentation. Note: This requires 
   Doxygen to be installed. By default, this is set to ```ON``` and the only possible values are ```ON``` and
-  ```OF```. 
+  ```OFF```. 
 
 ### Build and Install
 
@@ -72,9 +72,9 @@ is used.
 Afterwards, the engine is installed by using the command
 ```cmake --build /path/to/build/root --target install```
 
-Note that, for the latter command, administrative/root privileges are usually required (On Windows, 
-administrative privileges are required if the engine is installed on the C:\ drive, on Linux root privileges
-are always required).
+Note that, for the latter command, administrative/root privileges are usually required (on Windows, 
+administrative privileges are required if the engine is installed on the C:\ partition, on Linux root 
+privileges are always required).
 
 **Linux only:** After the installation, the command ```ldconfig``` needs to be executed. This command
 requires root privileges.
