@@ -247,17 +247,18 @@ namespace NOT
                 */
                 ASTNode(Types type, const NOU::NOU_DAT_ALG::String8& value = "");
 
-				public:
-
                 /**
                 \brief Copy constructor of the ASTNode class.
                 \param The other ASTNode from which will be copied.
 
-                \detail This cpy ctor has to be used very carefully 
-						since the newly created copy will not be in 
-						any order with any other nodes.
+                \detail This cpy ctor should never be used outside 
+                        of any AST Class since the newly created 
+                        copy will not be in any order with any other 
+                        nodes. It needs additional processing.
                 */
                 ASTNode(const ASTNode& other);
+
+                public:
             
                 /**
                 \brief Getter for the m_type attribute.
@@ -363,6 +364,25 @@ namespace NOT
                         in correct order to the current node.
                 */
                 void appendNode(const AbstractSyntaxTree& other);
+
+                /**
+                \brief Appends a given node to the current node
+                \param other The to append node.
+                \return Pointer to the newly appended node or 
+                        nullptr if it was not possible to append 
+                        the node.
+                */
+
+                ASTNode* appendNode(const ASTNode& other);
+
+                /** 
+                \brief Constructs a Vector containing each node 
+                       that is reachable trough getChild(i) 
+                       from this node.
+                \note It is not guaranteed that this Vector has any particular order.
+                \return A vector containing all reachable Children from this node.
+                */
+                const NOU::NOU_DAT_ALG::Vector<ASTNode*> getAllChildren() const;
 
                 /**
                 \brief Checks if the type and value are equal.
