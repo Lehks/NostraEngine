@@ -17,16 +17,11 @@ namespace NOE::NOE_MATSYS
 		Program m_shader;
 
 		/**
-		\brief A boolean to check if the shader is already compiled or not.
-		*/
-		NOU::boolean alreadyCompiled;
-
-		/**
 		\brief A function to call the createShader() method.
 
 		\detail This method should be called in the constructor if there is a shader given as well as in loadMaterial().
 		*/
-		virtual NOU::boolean compileMaterial() = 0;
+		virtual NOU::boolean createShader() = 0;
 	public:
 		/**
 		\brief A default destructor.
@@ -34,9 +29,9 @@ namespace NOE::NOE_MATSYS
 		virtual ~Material() = default;
 
 		/**
-		\brief A Method to bin the material to the corresponding program.
+		\brief A Method to bin the shader of the material to the corresponding program.
 		*/
-		virtual NOU::boolean bindMaterial() = 0;
+		virtual NOU::boolean bindShader() = 0;
 
 		/**
 		\brief A Method to save a material.

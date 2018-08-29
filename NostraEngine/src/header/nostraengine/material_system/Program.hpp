@@ -16,6 +16,7 @@ namespace NOE::NOE_MATSYS
     class NOU_CLASS Program
     {
 	protected:
+
 		/**
 		\brief A String for the vertex shader source.
 		*/
@@ -33,6 +34,8 @@ namespace NOE::NOE_MATSYS
 		virtual NOU::boolean createVertexShader() = 0;
 		virtual NOU::boolean createFragmetShader() = 0;
 		virtual NOU::boolean createGeometryShader() = 0;
+
+		NOU::NOU_DAT_ALG::Hash
     public:
         enum class Variables
         {
@@ -64,6 +67,9 @@ namespace NOE::NOE_MATSYS
 		*/
         virtual NOU::boolean bind() = 0;
 		virtual NOU::boolean unbind() = 0;
+
+		virtual createUniform();
+		virtual loadUniformToShader();
     };
 }
 #endif
