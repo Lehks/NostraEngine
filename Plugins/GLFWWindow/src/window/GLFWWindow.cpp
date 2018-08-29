@@ -1,19 +1,42 @@
-#define GLAD_GLAPI_EXPORT //needed for exporting glad
-
 #include "GLFWWindow.hpp"
-
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 
 namespace GLFWWindowPlugin
 {
-	const NOU::NOU_DAT_ALG::Vector<GLFWMonitor> GLFWWindow::s_monitors;
+	NOU::NOU_CORE::Logger& windowLog = NOU::NOU_CORE::Logger::get();
 
-	const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> GLFWWindow::s_monitorPointer;
+	NOU::sizeType GLFWWindow::s_instanceCounter = 0;
+
+	const NOU::uint32 GLFWWindow::INITIALIZABLE_PRIORITY = 200;
+
+	const NOU::NOU_DAT_ALG::StringView8 GLFWWindow::CLASS_NAME = "GLFWWindow";
+
+	void GLFWWindow::windowCloseCallback(GLFWwindow *win)
+	{
+		if (glfwWindowShouldClose(win))
+		{
+			NOE::NOE_CORE::NostraEngine::get().terminateEngine();
+		}
+	}
 
 	GLFWWindow::GLFWWindow() :
+		Initializable(INITIALIZABLE_PRIORITY),
 		m_window(nullptr)
-	{}
+	{
+		if (s_instanceCounter == 0)
+		{
+			s_instanceCounter++;
+		}
+	}
+
+	GLFWWindow::~GLFWWindow()
+	{
+		s_instanceCounter--;
+		if (s_instanceCounter == 0)
+		{
+			s_monitorPointer.clear();
+			s_monitors.clear();
+		}
+	}
 
 	void GLFWWindow::createWindow(NOU::sizeType width, NOU::sizeType height,
 		const NOU::NOU_DAT_ALG::String8& title, const NOE::NOE_WINDOW::Monitor* monitor)
@@ -35,11 +58,15 @@ namespace GLFWWindowPlugin
 			closeWindow();
 			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(),
 				ErrorCodes::WINDOW_INITIALIZATION_FAILED, "Could not initialize the window!");
+
 			NOU_LOG_DEBUG("Window initialization failed!");
 		}
 
 		glfwMakeContextCurrent(reinterpret_cast<GLFWwindow*>(m_window));
 		glfwSwapInterval(1);
+
+		glfwSetWindowCloseCallback(reinterpret_cast<GLFWwindow*>(m_window),
+			GLFWWindow::windowCloseCallback);
 	}
 
 	void GLFWWindow::setTitle(const NOU::NOU_DAT_ALG::String8& title)
@@ -115,57 +142,45 @@ namespace GLFWWindowPlugin
 
 		for (int i = 0; i < size; i++)
 		{
-			if (const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
-				(GLFWWindow::getMonitors()).empty() == true)
+			if (s_monitors.empty())
 			{
 				for (int j = 0; j < size; j++)
 				{
-					const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
-						(GLFWWindow::getMonitors()).pushBack(glfwMonitors[j]);
+					s_monitors.pushBack(glfwMonitors[j]);
 
 					NOU_LOG_DEBUG("Added new monitor to the monitor vector.");
 				}
 			}
-			else if (const_cast<GLFWmonitor*>(reinterpret_cast<const GLFWmonitor*>
-				(GLFWWindow::getMonitors().at(i).getUnderlying())) != glfwMonitors[i])
+			else if (reinterpret_cast<const GLFWmonitor*>
+				(s_monitors.at(i).getUnderlying()) != glfwMonitors[i])
 			{
-				const_cast<NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>&>(
-					GLFWWindow::getMonitorPointer()).remove(i);
+				s_monitorPointer.remove(i);
 
 				NOU_LOG_DEBUG("Removed pointer to a monitor in the monitor pointer vector.");
 
-				const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors()).remove(i);
+				s_monitors.remove(i);
 
 				NOU_LOG_DEBUG("Removed a monitor in the monitor vector.");
 
-				const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>
-					(GLFWWindow::getMonitors()).pushBack(glfwMonitors[i]);
+				s_monitors.pushBack(glfwMonitors[i]);
 
 				NOU_LOG_DEBUG("Added new monitor to the monitor vector.");
 
-				const_cast<NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>&>
-					(GLFWWindow::getMonitorPointer()).pushBack(
-						&const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(
-						GLFWWindow::getMonitors())[GLFWWindow::getMonitors().size() - 1]);
+				s_monitorPointer.pushBack(&s_monitors[s_monitors.size() - 1]);
 
 				NOU_LOG_DEBUG("Added pointer to a monitor to the monitor pointer vector.");
 			}
-			
 		}
 
-		if (const_cast<NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>&>(
-			GLFWWindow::getMonitorPointer()).empty() == true)
+		if (s_monitorPointer.empty())
 		{
 			for (int i = 0; i < size; i++)
 			{
-				const_cast<NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>&>(
-					GLFWWindow::getMonitorPointer()).pushBack(
-						&const_cast<NOU::NOU_DAT_ALG::Vector<GLFWMonitor>&>(GLFWWindow::getMonitors())[i]);
+				s_monitorPointer.pushBack(&s_monitors[i]);
 
 				NOU_LOG_DEBUG("Added pointer to a monitor to the monitor pointer vector.");
 			}
 		}
-
 		
 		return s_monitorPointer;
 	}
@@ -175,14 +190,20 @@ namespace GLFWWindowPlugin
 		return m_title;
 	}
 
-	const NOU::NOU_DAT_ALG::Vector<GLFWMonitor>& GLFWWindow::getMonitors() 
+	const NOU::NOU_DAT_ALG::StringView8& GLFWWindow::getName() const
 	{
-		return s_monitors;
+		return CLASS_NAME;
+	}
+	
+	NOE::NOE_CORE::Initializable::ExitCode GLFWWindow::initialize()
+	{
+		createWindow();
+		return NOE::NOE_CORE::Initializable::ExitCode::SUCCESS;
 	}
 
-	const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& GLFWWindow::getMonitorPointer()
+	void GLFWWindow::terminate()
 	{
-		return s_monitorPointer;
+		closeWindow();
 	}
 
 #ifndef NOU_WINDOW_MAKE_ERROR
@@ -207,5 +228,7 @@ namespace GLFWWindowPlugin
 
 			return m_errors + index;
 		}
+
+		return nullptr;
 	}
 }

@@ -1,28 +1,32 @@
+#ifndef PLUGIN_GLFW_WINDOW_PLUGIN_HPP
+#define PLUGIN_GLFW_WINDOW_PLUGIN_HPP
+
 #include "nostraengine/NostraEngine.hpp"
 
 #include "src/window/GLFWWindow.hpp"
 
 namespace GLFWWindowPlugin
 {
-    class NOU_CLASS GLFWWindowPlugin final : public NOE::NOE_CORE::Plugin 
+    class GLFWWindowPlugin final : public NOE::NOE_CORE::Plugin
     {
 	private:
-		NOU::NOU_DAT_ALG::Uninitialized<GLFWWindow> m_window;
+		NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_MEM_MNGT::UniquePtr<GLFWWindow>> m_windowPtr;
 
     public:
         /**
          * Initializes the plugin.
          */
-        virtual NOE::NOE_CORE::Plugin::InitResult initialize(NOE::NOE_CORE::NostraEngine &engineInstance) override;
+		NOE_PLUGIN_FUNC virtual NOE::NOE_CORE::Plugin::InitResult initialize(NOE::NOE_CORE::NostraEngine &engineInstance) override;
 
         /**
          * Terminates the plugin.
          */
-		virtual NOE::NOE_CORE::Plugin::InitResult terminate(NOE::NOE_CORE::NostraEngine &engineInstance) override;
+		NOE_PLUGIN_FUNC virtual NOE::NOE_CORE::Plugin::InitResult terminate(NOE::NOE_CORE::NostraEngine &engineInstance) override;
         
         /**
          * Receives messages from other plugins or the engine itself.
          */
-		virtual void receive(NOE::NOE_CORE::Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags) override;
+		NOE_PLUGIN_FUNC virtual void receive(NOE::NOE_CORE::Plugin::ID source, void *data, NOU::sizeType size, NOU::uint32 flags) override;
 	};
 }
+#endif

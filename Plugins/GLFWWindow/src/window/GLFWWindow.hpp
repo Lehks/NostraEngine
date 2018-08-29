@@ -1,17 +1,20 @@
-#ifndef NOE_WINDOW_GLFWWINDOW_HPP
-#define NOE_WINDOW_GLFWWINDOW_HPP
+#ifndef PLUGIN_GLFW_WINDOW_HPP
+#define PLUGIN_GLFW_WINDOW_HPP
 
 #include "nostrautils/NostraUtils.hpp"
 
+#include "nostraengine/NostraEngine.hpp"
 #include "nostraengine/core/StdIncludes.hpp"
 
 #include "nostraengine/window/Window.hpp"
 #include "GLFWMonitor.hpp"
 
+#include "../../GLFW/include/GLFW/glfw3.h"
+
 /**
 \file window/GLFWWindow.hpp
 
-\author  Lukas Gross
+\author  Lukas Gross 
 \version 0.0.1
 \since   0.0.1
 
@@ -23,7 +26,7 @@ namespace GLFWWindowPlugin
 	\brief				A class that implements the provided functions of the Window class. The
 						behavior of all functions is defined in the Window class.
 	*/
-	class NOU_CLASS GLFWWindow final : public NOE::NOE_WINDOW::Window
+	class GLFWWindow final : public NOE::NOE_WINDOW::Window, public NOE::NOE_CORE::Initializable
 	{
 	private:
 
@@ -38,58 +41,68 @@ namespace GLFWWindowPlugin
 		NOU::NOU_DAT_ALG::String8 m_title;
 
 		/**
-		\brief			The const vector that stores the monitors as GLFWMonitors.
+		\brief			Stores the count of GLFW instances.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
+		static NOU::sizeType s_instanceCounter;
 
 		/**
-		\brief			The const vector that stores the monitors as Monitor pointers.
+		\brief			The vector that stores the monitors as GLFWMonitors.
 		*/
-		static const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
+		NOU::NOU_DAT_ALG::Vector<GLFWMonitor> s_monitors;
+
+		/**
+		\brief			The vector that stores the monitors as Monitor pointers.
+		*/
+		NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*> s_monitorPointer;
+
+		/**
+		\brief			A constant that stores the priority of the class.
+		*/
+		static const NOU::uint32 INITIALIZABLE_PRIORITY;
+
+		/**
+		\brief			A constant that stores the name of the class.
+		*/
+		static const NOU::NOU_DAT_ALG::StringView8 CLASS_NAME;
 
 	public:
-
+		/**
+		\brief The callback that is called by GLFW when the window should be closed.
+		*/
+		static void windowCloseCallback(GLFWwindow *win);
+		
 		/**
 		\brief			Checks if the instance counter is 0, increases the counter and initializes GLFW.
 		*/
-		GLFWWindow();
+		NOE_PLUGIN_FUNC GLFWWindow();
 
 		/**
 		\brief			Decreases the instance counter and terminates GLFW.
 		*/
-		virtual void createWindow(NOU::sizeType width, NOU::sizeType height,
-			const NOU::NOU_DAT_ALG::String8& title, 
+		NOE_PLUGIN_FUNC virtual ~GLFWWindow();
+		NOE_PLUGIN_FUNC virtual void createWindow(NOU::sizeType width = 500, NOU::sizeType height = 500,
+			const NOU::NOU_DAT_ALG::String8& title = "Window Name",
 			const NOE::NOE_WINDOW::Monitor* monitor = nullptr) override;
-		virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
-		virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
-		virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
-		virtual void closeWindow() override;
-		virtual void minimize() override;
-		virtual void maximize()	override;
-		virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
+		NOE_PLUGIN_FUNC virtual void setTitle(const NOU::NOU_DAT_ALG::String8& title) override;
+		NOE_PLUGIN_FUNC virtual void setSize(NOU::sizeType width, NOU::sizeType height) override;
+		NOE_PLUGIN_FUNC virtual void setPosition(NOU::sizeType xpos, NOU::sizeType ypos) override;
+		NOE_PLUGIN_FUNC virtual void closeWindow() override;
+		NOE_PLUGIN_FUNC virtual void minimize() override;
+		NOE_PLUGIN_FUNC virtual void maximize()	override;
+		NOE_PLUGIN_FUNC virtual void makeWindowed(NOU::sizeType xpos = 50, NOU::sizeType ypos = 50, 
 			NOU::sizeType width = 480, NOU::sizeType height = 480, NOU::sizeType refreshRate = 60) override;
-		virtual void setFullscreen(const NOE::NOE_WINDOW::Monitor* handle) override;
-		virtual void update() override;
-		virtual void* getUnderlying() override;
-		virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
-		virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& 
+		NOE_PLUGIN_FUNC virtual void setFullscreen(const NOE::NOE_WINDOW::Monitor* handle) override;
+		NOE_PLUGIN_FUNC virtual void update() override;
+		NOE_PLUGIN_FUNC virtual void* getUnderlying() override;
+		NOE_PLUGIN_FUNC virtual const NOE::NOE_WINDOW::Monitor* getPrimaryMonitor() override;
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& 
 			getConnectedMonitors() override;
-		virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::String8& getTitle() override;
 
-		/**
-		\return			The s_monitor vector as a const reference.
-
-		\brief			Returns the s_monitor vector.
-		*/
-		static const NOU::NOU_DAT_ALG::Vector<GLFWMonitor>& getMonitors();
-
-		/**
-		\return			The s_monitorPointer vector as a const reference.
-
-		\brief			Returns the s_monitorPointer vector.
-		*/
-		static const NOU::NOU_DAT_ALG::Vector<const NOE::NOE_WINDOW::Monitor*>& getMonitorPointer();
-		
+		//Functions of the Initializable class
+		NOE_PLUGIN_FUNC virtual const NOU::NOU_DAT_ALG::StringView8& getName() const override;
+		NOE_PLUGIN_FUNC virtual NOE::NOE_CORE::Initializable::ExitCode initialize() override;
+		NOE_PLUGIN_FUNC virtual void terminate() override;
 	};
 
 	/**

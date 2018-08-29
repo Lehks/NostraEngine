@@ -1,6 +1,5 @@
 #include "GLFWWindowPlugin.hpp"
 
-#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace GLFWWindowPlugin
@@ -18,19 +17,27 @@ namespace GLFWWindowPlugin
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-			m_window = GLFWWindow();
+			m_windowPtr = NOU::NOU_MEM_MNGT::UniquePtr<GLFWWindow>(new GLFWWindow(), 
+				NOU::NOU_MEM_MNGT::defaultDeleter);
+			NOE::NOE_CORE::NostraEngine::get().setWindowPointer(m_windowPtr->rawPtr());
 
-			//set window in main
+			NOU_LOG_DEBUG("GLFW initialization successful!");
 
 			return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
 		}
 		else
+		{
+			NOU_LOG_DEBUG("GLFW initialization failed!");
+			
 			return NOE::NOE_CORE::Plugin::InitResult::FAILED;
+		}
     }
 
 	NOE::NOE_CORE::Plugin::InitResult GLFWWindowPlugin::terminate(NOE::NOE_CORE::NostraEngine &engineInstance)
     {
 		glfwTerminate();
+		
+		NOU_LOG_DEBUG("GLFW successfully terminated!");
 
 		return NOE::NOE_CORE::Plugin::InitResult::SUCCESS;
     }

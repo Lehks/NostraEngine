@@ -1,5 +1,50 @@
 # Changelog
 
+## Version 1.0.1
+
+### Features
+
+- **Additions**
+    - Added NOU_EXPORT_FUNC and NOU_IMPORT_FUNC.
+    - Added functionality to remove a folder.
+    - Added functionality to check if a folder exists.
+    - Added String::getEmptyString() which returns an empty string which is stored on static memory.
+
+- **Deletions**
+    - Removed NOU_CLASS.
+    - Removed NOU\::NOU_DAT_ALG::AllocationCallback.
+
+- **Deprecations**
+    - None
+
+### Improvements
+- Improved logging queue process.
+- Improved Hash function support for arrays.
+- Improved HashMap support for only movable/copyable classes.
+- Improved CMake build process. The library should now work better when build as a sub-project of another 
+  project.
+- Improved String Replace and Insert method's.
+- Changed the return type of NOU\::NOU_FILE_MGNT\::Folder\::listFiles(). The function now returns a vector of
+  files instead of folders.
+- Improved the allocation callback system. The page "Allocation Callback system" provides more information
+  on that new system.
+
+### Fixes
+- Fixed a wrong attribute type that resulted in an incorrect display of logging messages.
+- Fixed pure virtual method call when terminating all applications using the logging system.
+- Fixed a bug where the HashMap seemed to return random values.
+- Fixed an issue where the fast queue would crash when memory allocation failed.
+- Fixed an issue where the replace function didn't do what it supposed to do.
+- Fixed an issue where the trim method in the string didn't recognized some spaces.
+- Fixed an issue where the path in the Folder wasn't correct 
+- Fixed an issue where the quicksort wouldn't work with comparators.
+- Fixed an issue, where the returned values of NOU\::NOU_FILE_MGNT\::Folder\::listFiles() and ::listFolders() 
+  would have the wrong path.
+- Fixed an issue where Folder::listFiles() would not work on POSIX systems.
+- Fixed an issue that caused the class INIFile to incorrectly read strings and that would crash the program 
+  when reading empty strings.
+
+
 ## Version 1.0.0
 
 ### Features
