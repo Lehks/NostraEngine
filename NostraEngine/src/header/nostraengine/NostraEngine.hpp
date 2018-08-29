@@ -22,6 +22,7 @@
 
 #include "nostraengine/material_system/Material.hpp"
 #include "nostraengine/material_system/Program.hpp"
+#include "nostraengine/material_system/Texture.hpp"
 
 #include "nostraengine/window/Monitor.hpp"
 #include "nostraengine/window/Window.hpp"

@@ -2,20 +2,34 @@
 #define NOE_MATSYS_TEXTURE_HPP
 
 #include "nostrautils/NostraUtils.hpp"
+
 #include "nostraengine/core/StdIncludes.hpp"
+
+/**
+\author	 Dennis Franz
+\version 1.0.0
+\since   1.0.0
+*/
 
 namespace NOE::NOE_MATSYS
 {
 	class Texture
 	{
 	private:
+		NOU::sizeType m_ID;
+
+		NOU::NOU_DAT_ALG::String8 m_pathToTexture;
 
 	public:
-		virtual ~Texture() = default;
+		Texture(NOU::sizeType ID);
+		Texture(NOU::sizeType ID, const NOU::NOU_DAT_ALG::String8 &pathToTexture);
 
-		virtual bind() = 0;
+		NOU::boolean bind();
+		NOU::boolean unbind();
 
-		virtual loadTexture() = 0;
+		NOU::boolean loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture = nullptr);
+
+		NOU::sizeType getID();
 	};
 
 }
