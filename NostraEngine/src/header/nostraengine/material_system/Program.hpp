@@ -28,10 +28,11 @@ namespace NOE::NOE_MATSYS
 		\brief A String for the geometry shader source.
 		*/
 		NOU::NOU_DAT_ALG::String8 m_gShaderSource;
-		/**
-		\brief A boolean to check if the shader is already compiled or not.
-		*/
-		NOU::boolean alreadyCompiled;
+
+		virtual NOU::boolean linkShader() = 0;
+		virtual NOU::boolean createVertexShader() = 0;
+		virtual NOU::boolean createFragmetShader() = 0;
+		virtual NOU::boolean createGeometryShader() = 0;
     public:
         enum class Variables
         {
@@ -58,11 +59,11 @@ namespace NOE::NOE_MATSYS
 		\brief A Method to create a Shader.
 		*/
         virtual NOU::boolean createShader() = 0;
-
 		/**
 		\brief A Method to bind a Shader to the corresponding program.
 		*/
         virtual NOU::boolean bind() = 0;
+		virtual NOU::boolean unbind() = 0;
     };
 }
 #endif
