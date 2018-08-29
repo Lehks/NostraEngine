@@ -1,5 +1,5 @@
-#ifndef NOE_NOSTRA_ENGINE_HPP
-#define NOE_NOSTRA_ENGINE_HPP
+#ifndef NOE_CORE_NOSTRA_ENGINE_HPP
+#define NOE_CORE_NOSTRA_ENGINE_HPP
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -117,6 +117,24 @@ namespace NOE
 		*/
 		const NOU::uint32& getFrameTime();
 
+		/**
+		\brief Returns the version of the engine.
+		\return NOU::NOU_CORE::Version Type
+		*/
+		const NOU::NOU_DAT_ALG::String8 & getVersion();
+
+		/**
+		\brief Returns the window pointer
+		\return NOU::NOU_WINDOW::Window* (window pointer)
+		*/
+		NOE::NOE_WINDOW::Window* getWindowPointer();
+
+		/**
+		\brief Set's the pointer for the window
+
+		\param ptr_window		the new window pointer.
+		*/
+		void setWindowPointer(NOE::NOE_WINDOW::Window* ptr_window);
 	};
 }
 
