@@ -21,21 +21,6 @@ namespace NOE::NOE_MATSYS
 		virtual NOU::boolean createVertexShader() = 0;
 		virtual NOU::boolean createFragmetShader() = 0;
 		virtual NOU::boolean createGeometryShader() = 0;
-	public:
-		enum class Variables
-		{
-			INT,
-			FLOAT,
-			BOOLEAN,
-			VEC1,
-			VEC2,
-			VEC3,
-			VEC4,
-			MAT1,
-			MAT2,
-			MAT3,
-			MAT4
-		};
 
 	public:
 		virtual ~Program() = default;

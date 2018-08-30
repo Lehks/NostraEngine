@@ -28,36 +28,34 @@ namespace NOE::NOE_MATSYS
 		NOU::NOU_MATH::Color32f m_specularColor;
 		NOU::NOU_MATH::Color32f m_emissionColor;
 
-		NOU::boolean m_parrallaxMappingisActive;
-		NOU::boolean m_normalMappingisActive;
-		NOU::boolean m_bumpMappingisActive;
+		NOU::boolean m_normalMappingIsActive;
+		NOU::boolean m_parrallaxMappingIsActive;
 
-		NOU::boolean createShader();
-		NOU::boolean createTexture();
-	public:
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName);
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader);
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture);
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture, const NOU::NOU_MATH::Color32f &color);
+		NOU::boolean m_lightningIsActive;
+		NOU::boolean m_mipMappingIsActive;
 
 		NOU::boolean bindShader();
 		NOU::boolean unbindShader();
 
 		NOU::boolean bindTexture();
 		NOU::boolean unbindTexture();
+	public:
+		Material(const NOU::NOU_DAT_ALG::String8 &materialName);
+		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader);
+		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture);
+		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture, const NOU::NOU_MATH::Color32f &color);
 
-		NOU::boolean createUniform();
-		NOU::boolean setUniform();
+		NOU::boolean bindMaterial();
+		NOU::boolean unbindMaterial();
 
-		NOU::boolean enableParrallaxMapping();
-		NOU::boolean enableNormalMapping();
-		NOU::boolean enableBumpMapping();
+		NOU::boolean enableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap);
+		NOU::boolean enableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap);
 
 		NOU::boolean enableLightning();
 
 		NOU::boolean generateMipmap();
 
-		NOU::boolean saveMaterial();
+		NOU::boolean saveMaterial(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
 		NOU::boolean loadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
 
 		void setMaterialName(const NOU::NOU_DAT_ALG::String8 &materialName);
@@ -84,6 +82,8 @@ namespace NOE::NOE_MATSYS
 		NOU::NOU_MATH::Color32f getDiffuseColor();
 		NOU::NOU_MATH::Color32f getSpecularColor();
 		NOU::NOU_MATH::Color32f getEmissionColor();
+
+		NOE::NOE_MATSYS::Program getProgram();
 	};
 }
 #endif
