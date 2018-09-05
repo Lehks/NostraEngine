@@ -360,7 +360,8 @@ namespace NOT
                 void appendNode(const AbstractSyntaxTree& other);
 
                 /**
-                \brief Appends a given node to the current node
+                \brief Appends a given node with all its 
+                       subnodes/children to the current node.
                 \param other The to append node.
                 \return Pointer to the newly appended node or 
                         nullptr if it was not possible to append 

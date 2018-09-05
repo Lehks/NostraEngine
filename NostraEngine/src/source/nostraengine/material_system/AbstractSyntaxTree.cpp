@@ -2,6 +2,10 @@
 #include "nostrautils/NostraUtils.hpp"
 #define NOT_AST AbstractSyntaxTree
 #define NOT_ENTRY NOT_AST::ASTNode::Types::ENTRY
+
+NOU_DEFINE_PAIR(NodeAppendReference, oldPos, newPos)
+
+
 namespace NOT
 {
     NOT_AST::AbstractSyntaxTree()
@@ -204,8 +208,38 @@ namespace NOT
         {
             return nullptr;
         }
-        return nullptr;
 
+        // NOU::sizeType s, newIdx, childrenSize;
+        // ASTNode *internal, *external;
+        // NOU::NOU_DAT_ALG::FastQueue<NodeAppendReference<NOU::sizeType, NOU::sizeType>> q;
+        // NOU::NOU_DAT_ALG::Vector<NodeAppendReference<NOU::sizeType, NOU::sizeType>> tuples;
+        // NodeAppendReference<NOU::sizeType, NOU::sizeType> tmpTuple(0,0);
+        // auto toAppendNodes = other.getAllChildren();
+        // auto& childPool = m_assignedTree->m_childPool;
+
+        // newIdx = childPool.size();
+
+        // childPool.emplaceBack(other);
+        // tmpTuple.oldPos = other.m_ownIndex;
+        // tmpTuple.newPos = newIdx;
+        // tuples.emplaceBack(tmpTuple);
+        // q.push(tmpTuple);
+
+        // for(NOU::sizeType i = 0; i < s; i++)
+        // {
+        //     external = other.m_assignedTree->m_childPool[i]
+        //     childrenSize = other.m_assignedTree->m_childPool[q.peek().oldPos].rawPtr()->getChildCount();
+        //     for(NOU::sizeType j = 0; j < childrenSize; j++)
+        //     {
+                
+        //     }
+        // }
+        
+
+
+
+
+        return nullptr;
     }
 
     const NOU::NOU_DAT_ALG::Vector<NOT_AST::ASTNode*> NOT_AST::ASTNode::getAllChildren() const
