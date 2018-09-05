@@ -7,6 +7,7 @@ project("${NOE_PROJECT_NAME}"
 	LANGUAGES C CXX)
 
 add_subdirectory("doc")
+add_subdirectory("src/source/nostraengine/material_system")
 
 file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
