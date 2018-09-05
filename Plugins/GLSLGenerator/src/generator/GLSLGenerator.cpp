@@ -3,7 +3,7 @@
 namespace GLSLGeneratorPlugin
 {
 
-    NOU::sizeType GLSLGenerator::processState(const NOT::AbstractSyntaxTree::ASTNode::Types &STATE)
+    NOU::sizeType GLSLGenerator::processState(const NOT::AbstractSyntaxTree::ASTNode::Types &STATE) // Read the conventions!
     {
         NOU::sizeType retVal = 0;
 
@@ -58,7 +58,7 @@ namespace GLSLGeneratorPlugin
                 retVal = ifState();
                 break;
             case NOT::AbstractSyntaxTree::ASTNode::Types::OPERATOR:
-                retVal = operatorState();
+                // retVal = operatorState();
                 break;
             case NOT::AbstractSyntaxTree::ASTNode::Types::RETURN:
                 retVal = returnState();
@@ -224,7 +224,7 @@ namespace GLSLGeneratorPlugin
 		m_outputSourceString.append("(");
 		m_outputSourceString.append(currentNode->getChild(0)->getChild(0)->getValue() + " ");
 		m_outputSourceString.append(currentNode->getChild(0)->getValue() + " ");
-		m_outputSourceString.append(currentNode->getChild(1)->getChild(1)->getValue + "; ");
+		// m_outputSourceString.append(currentNode->getChild(1)->getChild(1)->getValue + "; ");
 		return 1; 
 	}
 
