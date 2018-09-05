@@ -1,11 +1,25 @@
-# CMAKE_MINIMUM_REQUIRED(VERSION 3.8.2)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.8.2)
 
-# find_package(FLEX)
-# if(NOT FLEX_FOUND)
-#     message(SEND_ERROR "Flex not found")
-# endif()
+set(GENERATE_FLEX_BISON FALSE CACHE BOOL "Wether CMake should generate Flex/Bison Header/Source files.")
 
-# find_package(BISON)
-# if(NOT BISON_FOUND)
-#     message(SEND_ERROR "Bison not found")
-# endif()
+if(GENERATE_FLEX_BISON)
+    find_package(FLEX)
+    if(NOT FLEX_FOUND)
+        message(SEND_ERROR "Flex not found")
+    endif()
+
+    find_package(BISON)
+    if(NOT BISON_FOUND)
+        message(SEND_ERROR "Bison not found")
+    endif()
+
+    BISON_TARGET(MATERIAL_PARSER Parser.ypp ${CMAKE_CURRENT_BINARY_DIR}/MaterialParser.cpp)
+    FLEX_TARGET(MATERIAL_TOKENIZER Tokenizer.l  ${CMAKE_CURRENT_BINARY_DIR}/MaterialTokenizer.cpp)
+    ADD_FLEX_BISON_DEPENDENCY(MATERIAL_TOKENIZER MATERIAL_PARSER)
+
+    add_library(compilerfrontend STATIC 
+        ${FLEX_MATERIAL_TOKENIZER_OUTPUTS}
+        ${BISON_MATERIAL_PARSER_OUTPUTS}
+    )
+
+endif()
