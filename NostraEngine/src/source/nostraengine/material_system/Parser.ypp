@@ -1,0 +1,64 @@
+%language "C++"
+%defines
+%define parser_class_name "MaterialParser"
+
+%{
+#include "nostraengine/material_system/Tokenizer.hpp"
+#include <stdio.h>
+extern  int yylex (YYSTYPE * yylval_param , yyscan_t yyscanner);
+extern  int  yyerror(char *);
+extern NOT::Tokenizer::Token currToken;
+%}
+
+%union {
+int i;
+float f;
+char* s;
+char c;
+double d;
+long l;
+bool b;
+}
+
+
+%token EOC // End of Code -> if the m_Code input is done flex will return this
+%token unrecognized
+%token semicolon
+%token in
+%token out
+%token struct
+%token shared
+%token const
+%token if
+%token else
+%token while
+%token for
+%token ext
+%token<s> ntype
+%token<s> operator
+%token assign
+%token<s> opassign
+%token<i> intl
+%token<f> floatl
+%token<b> booll
+%token blockb
+%token blocke
+%token paramb
+%token parame
+%token<i> array
+%token<s> identifier
+
+
+
+
+%%
+
+
+S : blockb blocke { printf("Works"); }
+
+
+%%
+
+int yyerror(char* msg){
+    fprintf(stderr, msg);
+}

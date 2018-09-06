@@ -1,4 +1,4 @@
-%option noyywrap nounistd never-interactive yylineno
+%option noyywrap nounistd never-interactive outfile="Tokenizer.cpp" yylineno
 
 %{
     #include "nostraengine/material_system/Tokenizer.hpp"
