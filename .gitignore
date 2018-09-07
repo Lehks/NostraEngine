@@ -14,3 +14,12 @@ cmake-build-debug/
 NostraEngine/doc/Warnings.txt
 
 CMakeSettings.json
+
+# Flex/Bison specific files
+# Bison
+*.tab.*
+stack.hh
+position.hh
+location.hh
+# Flex
+Tokenizer.cpp

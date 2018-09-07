@@ -2,6 +2,7 @@
 %defines
 %define parser_class_name "MaterialParser"
 
+
 %{
 #include "nostraengine/material_system/Tokenizer.hpp"
 #include <stdio.h>
