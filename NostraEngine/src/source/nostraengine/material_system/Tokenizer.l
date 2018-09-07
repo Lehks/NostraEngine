@@ -1,6 +1,7 @@
 %option noyywrap nounistd never-interactive yylineno outfile="Tokenizer.cpp"
 
 %{
+    #include "Parser.tab.hpp"
     #include "nostraengine/material_system/Tokenizer.hpp"
     #define NOT_TYPE NOT::Tokenizer::Types
     #define NOT_TOKEN NOT::Tokenizer::Token

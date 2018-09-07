@@ -16,10 +16,5 @@ NostraEngine/doc/Warnings.txt
 CMakeSettings.json
 
 # Flex/Bison specific files
-# Bison
-*.tab.*
-stack.hh
-position.hh
-location.hh
-# Flex
-Tokenizer.cpp
+NostraEngine/src/header/nostraengine/flex_bison/*
+NostraEngine/src/source/nostraengine/flex_bison/*

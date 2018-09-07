@@ -15,7 +15,8 @@ add_library(NostraEngineDbg SHARED ${NOE_NOE_SOURCE_FILES})
 
 target_include_directories(NostraEngineDbg 
 	PUBLIC 
-		"src/header")
+		"src/header"
+		"src/header/nostraengine/flex_bison")
 
 target_link_libraries(NostraEngineDbg 
 	PUBLIC 
