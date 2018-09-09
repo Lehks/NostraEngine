@@ -63,7 +63,7 @@ namespace NOE::NOE_RENDERER
 
 		\brief				Sets the identifier of the factory to the passed value.
 		*/
-		virtual void setIdentifier(NOU::sizeType identifier) const = 0;
+		virtual void setIdentifier(NOU::sizeType identifier) = 0;
 
 		/**
 		\return				The identifier of the factory.
