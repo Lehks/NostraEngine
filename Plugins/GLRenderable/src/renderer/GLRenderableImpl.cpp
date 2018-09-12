@@ -1,11 +1,11 @@
-#include "GLRenderableImpl.hpp"
+	#include "GLRenderableImpl.hpp"
 
 #include "nostraengine/scene/RenderableActor.hpp"
 
 namespace GLRenderablePlugin
 {
 
-	GLRenderableImpl::GLRenderableImpl(NOU::NOU_DAT_ALG::String8 str, void* ptr) :
+	GLRenderableImpl::GLRenderableImpl(const NOU::NOU_DAT_ALG::String8& str, void* ptr) :
 		m_ptr(ptr),
 		m_renderableIdentifier(str)
 	{}
@@ -15,7 +15,7 @@ namespace GLRenderablePlugin
 		//todo
 	}
 
-	NOU::boolean GLRenderableImpl::setAttribute(NOU::NOU_DAT_ALG::String8 str, void* ptr)
+	NOU::boolean GLRenderableImpl::setAttribute(const NOU::NOU_DAT_ALG::String8& str, void* ptr)
 	{
 		//todo
 	}

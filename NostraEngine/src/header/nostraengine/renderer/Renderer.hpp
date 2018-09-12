@@ -38,7 +38,7 @@ namespace NOE::NOE_RENDERER
 		\brief				Optimizes the renderable to be rendered or not.
 		*/
 		virtual NOU::NOU_DAT_ALG::Vector<NOE::NOE_SCENE::RenderableActor>
-			optimize(NOE::NOE_SCENE::RenderableActor renderable) const = 0;
+			optimize(const NOE::NOE_SCENE::RenderableActor& renderable) const = 0;
 	};
 
 	/**
@@ -82,7 +82,7 @@ namespace NOE::NOE_RENDERER
 		\brief				Adds a new renderable into the RenderableList. This function ensures that all
 							added renderables are always in a sorted order.
 		*/
-		NOE_FUNC void insertSorted(NOE::NOE_SCENE::RenderableActor renderable);
+		NOE_FUNC void insertSorted(const NOE::NOE_SCENE::RenderableActor& renderable);
 
 		/**
 		\brief				Removes all elements in the RenderableList.

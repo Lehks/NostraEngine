@@ -16,7 +16,7 @@ namespace NOE::NOE_RENDERER
 		return m_renderables.at(index);
 	}
 
-	void RenderableList::insertSorted(NOE::NOE_SCENE::RenderableActor renderable)
+	void RenderableList::insertSorted(const NOE::NOE_SCENE::RenderableActor& renderable)
 	{
 		NOU::int64 insertionIndex;
 		

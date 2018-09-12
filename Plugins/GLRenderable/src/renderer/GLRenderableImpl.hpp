@@ -34,7 +34,7 @@ namespace GLRenderablePlugin
 
 		\details			ptr is default set to nullptr.
 		*/
-		NOE_PLUGIN_FUNC GLRenderableImpl(NOU::NOU_DAT_ALG::String8 str, void* ptr = nullptr);
+		NOE_PLUGIN_FUNC GLRenderableImpl(const NOU::NOU_DAT_ALG::String8& str, void* ptr = nullptr);
 
 		/**
 		\brief				Default destructor.
@@ -45,7 +45,7 @@ namespace GLRenderablePlugin
 		NOE_PLUGIN_FUNC virtual void bind() const override;
 
 		///todo doc
-		NOE_PLUGIN_FUNC virtual NOU::boolean setAttribute(NOU::NOU_DAT_ALG::String8 str, void* ptr) override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean setAttribute(const NOU::NOU_DAT_ALG::String8& str, void* ptr) override;
 
 		/**
 		\param other		The RenderableImpl you want to compare with.
