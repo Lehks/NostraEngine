@@ -56,14 +56,14 @@ namespace NOE::NOE_RENDERER
 
 		\brief				Creates a new instance of a RenderableImpl.
 		*/
-		virtual RenderableImpl* build() const = 0;
+		virtual RenderableImpl* build() = 0;
 
 		/**
 		\param identifier	The identifier of the factory.
 
 		\brief				Sets the identifier of the factory to the passed value.
 		*/
-		virtual void setIdentifier(NOU::sizeType factoryIdentifier) = 0;
+		virtual void setFactoryIdentifier(NOU::sizeType factoryIdentifier) = 0;
 
 		/**
 		\return				The identifier of the factory.

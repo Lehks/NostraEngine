@@ -16,10 +16,21 @@ namespace GLRenderablePlugin
 	{
 	private:
 
+		/**
+		\brief				A pointer to the renderable.
+		*/
+		NOE::NOE_RENDERER::RenderableImpl* m_renderableImplPtr;
+
+		/**
+		\brief				The identifier of the factory.
+		*/
 		NOU::sizeType m_factoryIdentifier;
 
 	public:
 
+		/**
+		\brief				Default constructor.
+		*/
 		GLRenderableImplFactory() = default;
 
 		/**
@@ -32,14 +43,14 @@ namespace GLRenderablePlugin
 
 		\brief				Creates a new instance of a RenderableImpl.
 		*/
-		virtual NOE::NOE_RENDERER::RenderableImpl* build() const override;
+		virtual NOE::NOE_RENDERER::RenderableImpl* build() override;
 
 		/**
 		\param identifier	The identifier of the factory.
 
 		\brief				Sets the identifier of the factory to the passed value.
 		*/
-		virtual void setIdentifier(NOU::sizeType factoryIdentifier) override;
+		virtual void setFactoryIdentifier(NOU::sizeType factoryIdentifier) override;
 
 		/**
 		\return				The identifier of the factory.

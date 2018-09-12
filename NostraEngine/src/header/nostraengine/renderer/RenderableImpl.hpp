@@ -41,7 +41,7 @@ namespace NOE::NOE_RENDERER
 
 		virtual void* getPtr() const = 0;
 
-		virtual NOU::NOU_DAT_ALG::String8 getRenderableIdentificator() const = 0;
+		virtual NOU::NOU_DAT_ALG::String8 getRenderableIdentifier() const = 0;
 	};
 }
 

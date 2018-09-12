@@ -14,16 +14,25 @@ namespace GLRenderablePlugin
 	{
 	private:
 
+		/**
+		\brief				A void pointer to an object. Is not needed for the core functionality.
+		*/
 		void* m_ptr;
 
-		NOU::NOU_DAT_ALG::String8 m_renderableIdentificator;
+		/**
+		\brief				The Identifier of the renderable. 
+		*/
+		NOU::NOU_DAT_ALG::String8 m_renderableIdentifier;
 
 	public:
 
 		/**
-		\param str			The identificator of the GLRenderableImpl.
+		\param str			The identifier of the GLRenderableImpl.
+		\param ptr			A pointer to any object.
 
 		\brief				The constructor.
+
+		\details			ptr is default set to nullptr.
 		*/
 		NOE_PLUGIN_FUNC GLRenderableImpl(NOU::NOU_DAT_ALG::String8 str, void* ptr = nullptr);
 
@@ -55,11 +64,11 @@ namespace GLRenderablePlugin
 		NOE_PLUGIN_FUNC virtual void* getPtr() const override;
 
 		/**
-		\return			The identificator of the GLRenderableImpl.
+		\return			The identifier of the GLRenderableImpl.
 
 		\brief			Returns a string that represents the identification of the GLRenderableImpl.
 		*/
-		NOE_PLUGIN_FUNC virtual NOU::NOU_DAT_ALG::String8 getRenderableIdentificator() const override;
+		NOE_PLUGIN_FUNC virtual NOU::NOU_DAT_ALG::String8 getRenderableIdentifier() const override;
 	};
 }
 

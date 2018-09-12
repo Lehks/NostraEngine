@@ -2,11 +2,14 @@
 
 namespace GLRenderablePlugin
 {
-	NOE::NOE_RENDERER::RenderableImpl* GLRenderableImplFactory::build() const
+	NOE::NOE_RENDERER::RenderableImpl* GLRenderableImplFactory::build()
 	{
+		m_renderableImplPtr = &GLRenderableImpl::GLRenderableImpl("");///todo what renderable identificator?
+
+		return m_renderableImplPtr;
 	}
 
-	void GLRenderableImplFactory::setIdentifier(NOU::sizeType factoryIdentifier)
+	void GLRenderableImplFactory::setFactoryIdentifier(NOU::sizeType factoryIdentifier)
 	{
 		m_factoryIdentifier = factoryIdentifier;
 	}
