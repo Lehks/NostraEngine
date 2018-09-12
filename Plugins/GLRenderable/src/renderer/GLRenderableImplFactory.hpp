@@ -8,13 +8,15 @@
 
 #include "nostraengine/renderer/RenderableImplFactory.hpp"
 
+#include "GLRenderableImpl.hpp"
+
 namespace GLRenderablePlugin
 {
 	class GLRenderableImplFactory final : public NOE::NOE_RENDERER::RenderableImplFactory
 	{
 	private:
 
-		NOU::sizeType m_identifier;
+		NOU::sizeType m_factoryIdentifier;
 
 	public:
 
@@ -37,14 +39,14 @@ namespace GLRenderablePlugin
 
 		\brief				Sets the identifier of the factory to the passed value.
 		*/
-		virtual void setIdentifier(NOU::sizeType identifier) override;
+		virtual void setIdentifier(NOU::sizeType factoryIdentifier) override;
 
 		/**
 		\return				The identifier of the factory.
 
 		\brief				Returns the identifier of the factory.
 		*/
-		virtual NOU::sizeType getIdentifier() const override;
+		virtual NOU::sizeType getFactoryIdentifier() const override;
 	};
 }
 

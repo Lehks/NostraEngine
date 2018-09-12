@@ -16,17 +16,16 @@ namespace GLRenderablePlugin
 
 		void* m_ptr;
 
-		NOU::NOU_DAT_ALG::String8 m_identificator;
+		NOU::NOU_DAT_ALG::String8 m_renderableIdentificator;
 
 	public:
 
 		/**
 		\param str			The identificator of the GLRenderableImpl.
-		\param ptr			The pointer to the renderable.
 
 		\brief				The constructor.
 		*/
-		NOE_PLUGIN_FUNC GLRenderableImpl(NOU::NOU_DAT_ALG::String8 str, void* ptr);
+		NOE_PLUGIN_FUNC GLRenderableImpl(NOU::NOU_DAT_ALG::String8 str, void* ptr = nullptr);
 
 		/**
 		\brief				Default destructor.
@@ -54,6 +53,13 @@ namespace GLRenderablePlugin
 		\brief			Returns the void* of the GLRenderableImpl.
 		*/
 		NOE_PLUGIN_FUNC virtual void* getPtr() const override;
+
+		/**
+		\return			The identificator of the GLRenderableImpl.
+
+		\brief			Returns a string that represents the identification of the GLRenderableImpl.
+		*/
+		NOE_PLUGIN_FUNC virtual NOU::NOU_DAT_ALG::String8 getRenderableIdentificator() const override;
 	};
 }
 

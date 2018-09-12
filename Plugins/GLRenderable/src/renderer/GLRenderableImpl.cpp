@@ -7,7 +7,7 @@ namespace GLRenderablePlugin
 
 	GLRenderableImpl::GLRenderableImpl(NOU::NOU_DAT_ALG::String8 str, void* ptr) :
 		m_ptr(ptr),
-		m_identificator(str)
+		m_renderableIdentificator(str)
 	{}
 
 	void GLRenderableImpl::bind() const
@@ -34,5 +34,10 @@ namespace GLRenderablePlugin
 	void* GLRenderableImpl::getPtr() const
 	{
 		return m_ptr;
+	}
+
+	NOU::NOU_DAT_ALG::String8 GLRenderableImpl::getRenderableIdentificator() const
+	{
+		return m_renderableIdentificator;
 	}
 }

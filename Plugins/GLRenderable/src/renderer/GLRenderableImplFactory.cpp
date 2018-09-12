@@ -4,16 +4,15 @@ namespace GLRenderablePlugin
 {
 	NOE::NOE_RENDERER::RenderableImpl* GLRenderableImplFactory::build() const
 	{
-
 	}
 
-	void GLRenderableImplFactory::setIdentifier(NOU::sizeType identifier)
+	void GLRenderableImplFactory::setIdentifier(NOU::sizeType factoryIdentifier)
 	{
-		m_identifier = identifier;
+		m_factoryIdentifier = factoryIdentifier;
 	}
 	
-	NOU::sizeType GLRenderableImplFactory::getIdentifier() const
+	NOU::sizeType GLRenderableImplFactory::getFactoryIdentifier() const
 	{
-		return m_identifier;
+		return m_factoryIdentifier;
 	}
 } 

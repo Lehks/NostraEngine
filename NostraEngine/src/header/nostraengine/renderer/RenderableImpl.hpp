@@ -40,6 +40,8 @@ namespace NOE::NOE_RENDERER
 		virtual NOU::NOU_DAT_ALG::CompareResult compare(const RenderableImpl& other) const = 0;
 
 		virtual void* getPtr() const = 0;
+
+		virtual NOU::NOU_DAT_ALG::String8 getRenderableIdentificator() const = 0;
 	};
 }
 

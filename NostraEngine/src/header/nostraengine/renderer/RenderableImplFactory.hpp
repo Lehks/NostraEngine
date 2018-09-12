@@ -63,14 +63,14 @@ namespace NOE::NOE_RENDERER
 
 		\brief				Sets the identifier of the factory to the passed value.
 		*/
-		virtual void setIdentifier(NOU::sizeType identifier) = 0;
+		virtual void setIdentifier(NOU::sizeType factoryIdentifier) = 0;
 
 		/**
 		\return				The identifier of the factory.
 
 		\brief				Returns the identifier of the factory.
 		*/
-		virtual NOU::sizeType getIdentifier() const = 0;
+		virtual NOU::sizeType getFactoryIdentifier() const = 0;
 	};
 
 	template<typename T, typename... ARGS>
