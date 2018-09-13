@@ -33,6 +33,9 @@ add_subdirectory("GLAD")
 #Build SQLite3
 add_subdirectory("SQLite3")
 
+#Build Flex/Bison
+add_subdirectory("materialcompiler")
+
 #Build Nostra Engine
 add_subdirectory("NostraEngine")
 
@@ -69,6 +72,12 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 		target_link_libraries(NostraEngineTest 
 			PRIVATE 
 				NostraEngineDbg)
+		if(GENERATE_FLEX_BISON)
+			target_link_libraries(NostraEngineTest
+			PRIVATE
+				NostraEngineCompiler
+			)
+		endif()
 	endif()
 	#=== 
 

@@ -7,7 +7,6 @@ project("${NOE_PROJECT_NAME}"
 	LANGUAGES C CXX)
 
 add_subdirectory("doc")
-add_subdirectory("src/source/nostraengine/material_system")
 
 file(GLOB_RECURSE NOE_NOE_SOURCE_FILES "${CMAKE_SOURCE_DIR}/NostraEngine/src/source/nostraengine/*.cpp")
 
@@ -25,9 +24,9 @@ target_link_libraries(NostraEngineDbg
 		sqlite3)
 
 if(GENERATE_FLEX_BISON)
-	target_link_libraries(NostraEngineDbg
-		PRIVATE
-			compilerfrontend)
+#	target_link_libraries(NostraEngineDbg
+#		PRIVATE
+#			compilerfrontend)
 endif()
 		
 target_compile_definitions(NostraEngineDbg 
@@ -39,6 +38,7 @@ if(MSVC)
 		PRIVATE
 			"/wd4251"
 			"/wd4005"
+			"/wd4065"
 			"/WX")
 endif()
 install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
