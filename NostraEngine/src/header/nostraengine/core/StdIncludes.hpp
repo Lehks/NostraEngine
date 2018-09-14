@@ -41,6 +41,13 @@
 #define NOE_WINDOW window
 #endif
 
+/*
+\brief The name of the namespace that contains all scene related components.
+*/
+#ifndef NOE_SCENE
+#define NOE_SCENE scene
+#endif
+
 #ifndef NOE_PLUGIN_FUNC
 #define NOE_PLUGIN_FUNC NOU_EXPORT_FUNC
 #endif
