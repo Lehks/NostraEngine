@@ -3,12 +3,12 @@
 namespace NOE::NOE_MATSYS
 {
 	Texture::Texture(NOU::sizeType ID) :
-		ID(ID)
+		m_ID(ID) // ID -> m_ID
 	{}
 
 	Texture::Texture(NOU::sizeType ID, const NOU::NOU_DAT_ALG::String8 &pathToTexture) :
-		ID(ID),
-		pathToTexture(pathToTexture)
+		m_ID(ID), // ID -> m_ID
+		m_pathToTexture(pathToTexture) // pathoToTexture -> m_pathToTexture
 	{}
 
 	NOU::boolean Texture::loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture)
