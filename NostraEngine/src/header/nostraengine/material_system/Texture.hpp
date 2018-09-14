@@ -3,6 +3,7 @@
 
 #include "nostrautils/NostraUtils.hpp"
 #include "nostraengine/NostraEngine.hpp"
+#include "nostraengine/core/StdIncludes.hpp"
 
 /**
 \author	 Dennis Franz
@@ -14,7 +15,6 @@ namespace NOE::NOE_MATSYS
 {
 	class Texture
 	{
-	private:
 		NOU::sizeType m_ID;
 
 		NOU::NOU_DAT_ALG::String8 m_pathToTexture;

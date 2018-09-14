@@ -18,6 +18,7 @@ namespace NOE::NOE_MATSYS
 
 	NOU::sizeType Texture::getID()
 	{
+		
 		return this->m_ID;
 	}
 
