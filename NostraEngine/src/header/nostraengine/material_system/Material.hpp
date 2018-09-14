@@ -23,7 +23,7 @@ namespace NOE::NOE_MATSYS
 		virtual NOU::boolean bindTexture() = 0;
 		virtual NOU::boolean unbindTexture() = 0;
 	public:
-		virtual ~Monitor() = default;
+		virtual ~Material() = default;
 
 		virtual NOU::boolean bindMaterial() = 0;
 		virtual NOU::boolean unbindMaterial() = 0;
