@@ -67,11 +67,10 @@ ARRITH_EXPR : intl {  }
          | ARRITH_EXPR op ARRITH_EXPR { PRINTLN("ARR_EXPR"); }
          ;
 
-BLOCK : blockb blocke { PRINTLN("BLOCK"); }
-      ;
-
 VAR_DEC : ntype identifier semicolon{ PRINTLN("VAR_DEC"); }
         ;
+
+ /* FUNCTIONS */
 
 PARAM_DEF : ntype identifier { PRINTLN("PARAM_DEF"); }
           ;
@@ -85,11 +84,16 @@ PARAM_BLOCK : paramb PARAM_LIST parame { PRINTLN("PARAM_BLOCK"); }
 FUNC_DEF : ntype identifier PARAM_BLOCK BLOCK { PRINTLN("FUNC_DEF"); }
          ;
 
+/* STATEMENTS EXPRESSIONS CODEBLOCKS*/
+
 STATEMENT : VAR_DEC { PRINTLN("STATEMENT"); }
+          ;
 
-STMNT_LIST : STMNT_LIST STATEMENT
-
+STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST")}
+           ;
  
+BLOCK : blockb blocke { PRINTLN("BLOCK"); }
+      ;
 
 %%
 
