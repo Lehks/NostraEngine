@@ -19,6 +19,8 @@
 
 "+" { RET(op); } /* Arithmetic */
 
+"="  { RET(assign); }
+
 
 
 -?[0-9]+                       { RET(intl); } /* Literals */ /* Integer */
