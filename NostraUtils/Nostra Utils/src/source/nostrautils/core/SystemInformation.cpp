@@ -47,6 +47,8 @@ namespace NOU::NOU_CORE
 				return usage.ru_maxrss; // bytes
 			else
 				return 0;
+#else
+			return 0;
 #endif
 		}
 	}

@@ -17,73 +17,53 @@ namespace NOE::NOE_MATSYS
 	class Material
 	{
 	private:
-		NOU::NOU_DAT_ALG::String8 m_materialName;
+		virtual NOU::boolean bindShader() = 0;
+		virtual NOU::boolean unbindShader() = 0;
 
-		Program *m_shader;
-		Texture *m_texture;
-
-		NOU::NOU_MATH::Color32f m_color;
-		NOU::NOU_MATH::Color32f m_ambientColor;
-		NOU::NOU_MATH::Color32f m_diffuseColor;
-		NOU::NOU_MATH::Color32f m_specularColor;
-		NOU::NOU_MATH::Color32f m_emissionColor;
-
-		NOU::boolean m_normalMappingIsActive;
-		NOU::boolean m_parrallaxMappingIsActive;
-
-		NOU::boolean m_lightningIsActive;
-		NOU::boolean m_mipMappingIsActive;
-
-		NOU::boolean bindShader();
-		NOU::boolean unbindShader();
-
-		NOU::boolean bindTexture();
-		NOU::boolean unbindTexture();
+		virtual NOU::boolean bindTexture() = 0;
+		virtual NOU::boolean unbindTexture() = 0;
 	public:
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName);
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader);
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture);
-		Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture, const NOU::NOU_MATH::Color32f &color);
+		virtual ~Monitor() = default;
 
-		NOU::boolean bindMaterial();
-		NOU::boolean unbindMaterial();
+		virtual NOU::boolean bindMaterial() = 0;
+		virtual NOU::boolean unbindMaterial() = 0;
 
-		NOU::boolean enableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap);
-		NOU::boolean enableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap);
+		virtual NOU::boolean enableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap) = 0;
+		virtual NOU::boolean enableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap) = 0;
 
-		NOU::boolean enableLightning();
+		virtual NOU::boolean enableLightning() = 0;
 
-		NOU::boolean generateMipmap();
+		virtual NOU::boolean generateMipmap() = 0;
 
-		NOU::boolean saveMaterial(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
-		NOU::boolean loadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
+		virtual NOU::boolean saveMaterial(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &pathToMaterial) = 0;
+		virtual NOU::boolean loadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial) = 0;
 
-		void setMaterialName(const NOU::NOU_DAT_ALG::String8 &materialName);
+		virtual void setMaterialName(const NOU::NOU_DAT_ALG::String8 &materialName) = 0;
 
-		void setShader(const NOE::NOE_MATSYS::Program &shader);
-		void setTexture(const NOE::NOE_MATSYS::Texture &texture);
+		virtual void setShader(const NOE::NOE_MATSYS::Program &shader) = 0;
+		virtual void setTexture(const NOE::NOE_MATSYS::Texture &texture) = 0;
 
-		void setColor(const NOU::NOU_MATH::Color32f &color);
-		void setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a = 255);
+		virtual void setColor(const NOU::NOU_MATH::Color32f &color) = 0;
+		virtual void setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a = 255) = 0;
 
-		void setAmbientColor(const NOU::NOU_MATH::Color32f &color);
-		void setAmbientColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
-		void setDiffuseColor(const NOU::NOU_MATH::Color32f &color);
-		void setDiffuseColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
-		void setSpecularColor(const NOU::NOU_MATH::Color32f &color);
-		void setSpecularColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
-		void setEmissionColor(const NOU::NOU_MATH::Color32f &color);
-		void setEmissionColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		virtual void setAmbientColor(const NOU::NOU_MATH::Color32f &color) = 0;
+		virtual void setAmbientColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255) = 0;
+		virtual void setDiffuseColor(const NOU::NOU_MATH::Color32f &color) = 0;
+		virtual void setDiffuseColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255) = 0;
+		virtual void setSpecularColor(const NOU::NOU_MATH::Color32f &color) = 0;
+		virtual void setSpecularColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255) = 0;
+		virtual void setEmissionColor(const NOU::NOU_MATH::Color32f &color) = 0;
+		virtual void setEmissionColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255) = 0;
 
-		NOU::NOU_DAT_ALG::String8 getMaterialName();
+		virtual NOU::NOU_DAT_ALG::String8 getMaterialName() const = 0;
 
-		NOU::NOU_MATH::Color32f getColor();
-		NOU::NOU_MATH::Color32f getAmbientColor();
-		NOU::NOU_MATH::Color32f getDiffuseColor();
-		NOU::NOU_MATH::Color32f getSpecularColor();
-		NOU::NOU_MATH::Color32f getEmissionColor();
+		virtual NOU::NOU_MATH::Color32f getColor() const = 0;
+		virtual NOU::NOU_MATH::Color32f getAmbientColor() const  = 0;
+		virtual NOU::NOU_MATH::Color32f getDiffuseColor() const = 0;
+		virtual NOU::NOU_MATH::Color32f getSpecularColor() const = 0;
+		virtual NOU::NOU_MATH::Color32f getEmissionColor() const = 0;
 
-		NOE::NOE_MATSYS::Program getProgram();
+		virtual NOE::NOE_MATSYS::Program getProgram() const = 0;
 	};
 }
 #endif

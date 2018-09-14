@@ -16,7 +16,7 @@ namespace NOE::NOE_MATSYS
 {
 	class Program
 	{
-	protected:
+	private:
 		virtual NOU::boolean linkShader() = 0;
 		virtual NOU::boolean createVertexShader() = 0;
 		virtual NOU::boolean createFragmetShader() = 0;

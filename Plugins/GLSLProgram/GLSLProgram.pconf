@@ -1,0 +1,14 @@
+[core]
+id="11"
+priority="2"
+enable="true"
+minversion.major="0"
+minversion.minor="0"
+minversion.patch="1"
+
+[meta]
+name="GLSLProgram"
+description="A implementation of the Nostra Engine GLSL Shader Program."
+version.major="0"
+version.minor="0"
+version.patch="1"
