@@ -27,6 +27,11 @@
 #define NOE_CORE core
 #endif
 
+#ifndef NOE_SCENE
+#define NOE_SCENE scene
+#endif
+
+
 /**
 \brief The name of the utility namespace of the Nostra Engine.
 */
