@@ -7,76 +7,34 @@
     #include "MaterialParser.h" 
     #include <stdio.h>
     #include <stdlib.h>
+    #define CONV_STR(ARG) (#ARG)
+    #define RET(ARG) printf("Matched: %s\n",CONV_STR(ARG));return ARG
 %}
 
 %%
-"in"     { return inkw; } /* Keywords */
-"out"    { return outkw; }
-"struct" { return structkw; }
-"shared" { return sharedkw; }
-"const"  { return constkw; }
-"if"     { return ifkw; }
-"else"   { return elsekw; }
-"while"  { return whilekw; }
-"for"    { return forkw; }
-"extern" { return extkw; }
+
+"void" { RET(voidt); }
+"int" { RET(ntype); }
 
 
-"int"       { return ntype; } /* Native types */
-"float"     { return ntype; }
-"bool"      { return ntype; }
-"vec"[2-4]  { return ntype; }
-"mat"[2-4]  { return ntype; }
+"+" { RET(op); } /* Arithmetic */
 
 
-"+" { return op; } /* Arithmetic */
-"-" { return op; }
-"*" { return op; }
-"/" { return op; }
-"%" { return op; }
 
-"+=" { return opassign; }
-"-=" { return opassign; }
-"*=" { return opassign; }
-"/=" { return opassign; }
-"%=" { return opassign; }
+-?[0-9]+                       { RET(intl); } /* Literals */ /* Integer */
 
-"&&" { return op; } /* AND */
-"!"  { return op; } /* NOT */
-"||" { return op; } /* OR  */
-"^"  { return op; } /* XOR */
-"==" { return op; } /* EQUALS  */
-"<"  { return op; } /* LESS    */
-">"  { return op; } /* GREATER */
-"<=" { return op; } /* LEQ  */
-">=" { return op; } /* GREQ */
-"!=" { return op; } /* NEQ  */
+"{"             { RET(blockb); }
+"}"             { RET(blocke); }
+"("             { RET(paramb); } 
+")"             { RET(parame); } 
 
-"&=" { return opassign; }
-"|=" { return opassign; }
-"^=" { return opassign; }
-
-"="  { return assign; }
-
-
--?[0-9]+                       { return intl; } /* Literals */ /* Integer */
-[0-0]+(("."[0-9]*["f"]?)|"f") { return floatl; } /* Float */
-("true"|"false")              { return booll; } /* boolean */
-
-
-"{"             { return blockb; } /* Misc */
-"}"             { return blocke; } 
-"("             { return paramb; } 
-")"             { return parame; } 
-("["[0-9]*"]")  { return array; }  /* HOTFIX CURRENTLY, DON'T FORGET TO CHANGE BACK SO " " CAN BE BETWEEN NUMBERS AND BRACKETS*/ /*Array brackets with optional number inside*/
-
-("_")*[a-zA-Z]([a-zA-Z]|[0-9]|"_")* { return identifier; } /* Identifier */
+([a-z]|[A-Z]|"_")(([a-z]|[A-Z]|"_"|[0-9])+)? { RET(identifier); }
 
 ["//"].*\n          { }     /* Skip single line comment */
 ^"/*"[^*]*|[*]*"*/" { }     /* Skip multiline comments */
-";"     { return semicolon; }
-" "+    { }
-.       { return unrecognized; }
+";"     { RET(semicolon); }
+","     { RET(seperator); }
+" "+    {  }
 %%
 
 void setupLex(char* filename){

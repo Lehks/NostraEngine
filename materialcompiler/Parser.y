@@ -11,6 +11,8 @@
 int yylex(void);
 int yyerror(char*);
 extern int yylineno;
+#define PRINT(ARG) printf(ARG);
+#define PRINTLN(ARG) printf("Reduced: %s\n", ARG);
 %}
 
 %union {
@@ -49,23 +51,52 @@ int b;
 %token parame
 %token<i> array
 %token<s> identifier
+%token voidt
+%token seperator
 
 
 
 
 %%
 
+S : FUNC_DEF { printf("%s\n", "ACCEPTED"); }
+  ;
 
-ARR_EXPR : intl op intl { printf("ARR_EXPR"); }
-         | floatl op floatl { printf("ARR_EXPR"); }
-         | intl op floatl { printf("ARR_EXPR"); }
-         | floatl op intl { printf("ARR_EXPR"); }
-         ; 
+ARRITH_EXPR : intl {  }
+         | floatl {  }
+         | ARRITH_EXPR op ARRITH_EXPR { PRINTLN("ARR_EXPR"); }
+         ;
 
+BLOCK : blockb blocke { PRINTLN("BLOCK"); }
+      ;
+
+VAR_DEC : ntype identifier semicolon{ PRINTLN("VAR_DEC"); }
+        ;
+
+PARAM_DEF : ntype identifier { PRINTLN("PARAM_DEF"); }
+          ;
+
+PARAM_LIST : PARAM_LIST seperator PARAM_DEF { PRINTLN("PARAM_LIST1"); }
+           | PARAM_DEF { PRINTLN("PARAM_LIST2"); }
+
+PARAM_BLOCK : paramb PARAM_LIST parame { PRINTLN("PARAM_BLOCK"); }
+            ;
+
+FUNC_DEF : ntype identifier PARAM_BLOCK BLOCK { PRINTLN("FUNC_DEF"); }
+         ;
+
+STATEMENT : VAR_DEC { PRINTLN("STATEMENT"); }
+
+STMNT_LIST : STMNT_LIST STATEMENT
+
+ 
 
 %%
+
+
+
 
 int yyerror(char* msg){
-    fprintf(stderr, msg);
+    fprintf(stderr, "%s\n", msg);
     return 1;
 }
