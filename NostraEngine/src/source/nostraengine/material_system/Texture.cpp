@@ -18,8 +18,12 @@ namespace NOE::NOE_MATSYS
 
 	NOU::sizeType Texture::getID()
 	{
-		
 		return this->m_ID;
+	}
+
+	NOU::NOU_DAT_ALG::String8 Texture::getTexture()
+	{
+			return m_Texture;
 	}
 
 }
