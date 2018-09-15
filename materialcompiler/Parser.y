@@ -61,7 +61,7 @@ int b;
 
 %%
 
-S : IF { printf("%s\n", "ACCEPTED"); }
+S : STATEMENT { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -126,7 +126,8 @@ MODIFIER : inkw { PRINTLN("MODIFIER1"); }
 STATEMENT : VAR_DEC semicolon { PRINTLN("STATEMENT1"); }
           | VAR_INIT semicolon { PRINTLN("STATEMENT2"); }
           | FUNC_CALL semicolon { PRINTLN("STATEMENT3"); }
-          | ASSIGN semicolon
+          | ASSIGN semicolon { PRINTLN("STATEMENT4"); }
+          | IF_ELSE { PRINTLN("STATEMENT5"); }
           ;
 
 STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
@@ -209,9 +210,17 @@ WHILE_LOOP : whilekw WHILE_HEAD BLOCK { PRINTLN("WHILE_LOOP1"); }
 IF_HEAD : paramb COND parame { PRINTLN("IF_HEAD"); }
         ;
 
-IF : ifkw IF_HEAD BLOCK { PRINTLN("IF"); }
-   | ifkw IF_HEAD STATEMENT { PRINTLN("IF"); }
+IF : ifkw IF_HEAD BLOCK { PRINTLN("IF1"); }
+   | ifkw IF_HEAD STATEMENT { PRINTLN("IF2"); }
    ;
+
+ELSE : elsekw BLOCK { PRINTLN("ELSE1"); }
+     | elsekw STATEMENT { PRINTLN("ELSE2"); }
+     ;
+
+IF_ELSE : IF ELSE { PRINTLN("IF_ELSE1"); }
+        | IF { PRINTLN("IF_ELSE2"); }
+        ;
 
 %%
 
