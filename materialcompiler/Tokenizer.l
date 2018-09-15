@@ -13,6 +13,14 @@
 
 %%
 
+"in"     { RET(inkw); } /* Keywords */
+"out"    { RET(outkw); }
+"shared" { RET(sharedkw); }
+"const"  { RET(constkw); }
+"while"  { RET(whilekw); }
+"for"    { RET(forkw); }
+"extern" { RET(extkw); }
+
 "void" { RET(voidt); }
 "int" { RET(ntype); }
 
