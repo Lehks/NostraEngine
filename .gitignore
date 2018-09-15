@@ -15,6 +15,9 @@ NostraEngine/doc/Warnings.txt
 
 CMakeSettings.json
 
+# test shader
+/Shader/testshader
+
 # Flex/Bison specific files
 NostraEngine/src/header/nostraengine/flex_bison/*
 NostraEngine/src/source/nostraengine/flex_bison/*
