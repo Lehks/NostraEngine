@@ -61,7 +61,7 @@ int b;
 
 %%
 
-S : WHILE_LOOP { printf("%s\n", "ACCEPTED"); }
+S : IF { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -190,7 +190,7 @@ FOR_HEAD : paramb FOR_INIT semicolon COND semicolon FOR_UPDT parame { PRINTLN("F
          ;
 
 FOR_LOOP : forkw FOR_HEAD BLOCK { PRINTLN("FOR_LOOP"); }
-    	 :
+    	 : forkw FOR_HEAD STATEMENT { PRINTLN("FOR_LOOP);") }
          ;
 
 

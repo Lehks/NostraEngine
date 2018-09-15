@@ -17,6 +17,7 @@
 "out"    { RET(outkw); }
 "shared" { RET(sharedkw); }
 "const"  { RET(constkw); }
+"if"     { RET(ifkw); }
 "while"  { RET(whilekw); }
 "for"    { RET(forkw); }
 "extern" { RET(extkw); }
