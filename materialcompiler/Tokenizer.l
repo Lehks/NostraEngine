@@ -8,7 +8,8 @@
     #include <stdio.h>
     #include <stdlib.h>
     #define CONV_STR(ARG) (#ARG)
-    #define RET(ARG) printf("Matched: %s\n",CONV_STR(ARG));return ARG
+    #define PRINTLN(ARG) printf("Matched: %s\n", ARG)
+    #define RET(ARG) PRINTLN(CONV_STR(ARG));return ARG
 %}
 
 %%
@@ -42,8 +43,8 @@
 
 ([a-z]|[A-Z]|"_")(([a-z]|[A-Z]|"_"|[0-9])+)? { RET(identifier); }
 
-["//"].*\n          { }     /* Skip single line comment */
-^"/*"[^*]*|[*]*"*/" { }     /* Skip multiline comments */
+["//"].*          { PRINTLN(yytext); }     /* Skip single line comment */
+^"/*"[^*]*|[*]*"*/" { PRINTLN(yytext); }     /* Skip multiline comments */
 ";"     { RET(semicolon); }
 ","     { RET(seperator); }
 " "+    {  }

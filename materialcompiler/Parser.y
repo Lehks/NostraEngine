@@ -61,7 +61,7 @@ int b;
 
 %%
 
-S : STATEMENT { printf("%s\n", "ACCEPTED"); }
+S : GLOB { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -75,6 +75,7 @@ PARAM_LIST : PARAM_LIST seperator PARAM_DEF { PRINTLN("PARAM_LIST1"); }
            | PARAM_DEF { PRINTLN("PARAM_LIST2"); }
 
 PARAM_BLOCK : paramb PARAM_LIST parame { PRINTLN("PARAM_BLOCK"); }
+            | paramb parame { PRINTLN("PARAM_BLOCK"); }
             ;
 
 FUNC_DEF : ntype identifier PARAM_BLOCK BLOCK { PRINTLN("FUNC_DEF"); }
@@ -87,9 +88,9 @@ FUNC_CALL : identifier EXPR_BLOCK {PRINTLN("FUNC_CALL"); }
 /* Variables */
 
 
-VAR_DEC : UNMOD_VAR_DEC { PRINTLN("VAR_DEC1"); }
-        | CONST_VAR_DEC { PRINTLN("VAR_DEC2"); }
-        | MOD_VAR_DEC   { PRINTLN("VAR_DEC3"); }
+VAR_DEC : UNMOD_VAR_DEC semicolon { PRINTLN("VAR_DEC1"); }
+        | CONST_VAR_DEC semicolon { PRINTLN("VAR_DEC2"); }
+        | MOD_VAR_DEC   semicolon { PRINTLN("VAR_DEC3"); }
         ;
 
 CONST_VAR_DEC : constkw ntype identifier{ PRINTLN("CONST_VAR_DEC"); }
@@ -123,11 +124,12 @@ MODIFIER : inkw { PRINTLN("MODIFIER1"); }
 /* STATEMENTS */
 
 
-STATEMENT : VAR_DEC semicolon { PRINTLN("STATEMENT1"); }
+STATEMENT : VAR_DEC { PRINTLN("STATEMENT1"); }
           | VAR_INIT semicolon { PRINTLN("STATEMENT2"); }
           | FUNC_CALL semicolon { PRINTLN("STATEMENT3"); }
           | ASSIGN semicolon { PRINTLN("STATEMENT4"); }
           | IF_ELSE { PRINTLN("STATEMENT5"); }
+          | LOOP { PRINTLN("STATEMENT6")}
           ;
 
 STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
@@ -173,18 +175,19 @@ COND : ARRITH_EXPR { PRINTLN("COND"); }
 /* For loop */
 
 
-FOR_UPDT : ARRITH_EXPR { PRINTLN("FOR_UPDT"); }
+FOR_UPDT : EXPRESSION { PRINTLN("FOR_UPDT"); }
          ;
 
-FOR_INIT : UNMOD_VAR_DEC assign EXPRESSION { PRINTLN("FOR_INIT"); }
-         | ASSIGN
+FOR_INIT : UNMOD_VAR_DEC { PRINTLN("FOR_INIT"); }
+         | UNMOD_VAR_INIT { PRINTLN("FOR_INIT"); }
+         | ASSIGN semicolon { PRINTLN("FOR_INIT"); }
          ;
 
-FOR_HEAD : paramb FOR_INIT semicolon COND semicolon FOR_UPDT parame { PRINTLN("FOR_HEAD1"); }
+FOR_HEAD : paramb FOR_INIT COND semicolon FOR_UPDT parame { PRINTLN("FOR_HEAD1"); }
          | paramb semicolon COND semicolon FOR_UPDT parame { PRINTLN("FOR_HEAD1"); }
-         | paramb FOR_INIT semicolon semicolon FOR_UPDT parame { PRINTLN("FOR_HEAD1"); }
-         | paramb FOR_INIT semicolon COND semicolon parame { PRINTLN("FOR_HEAD1"); }
-         | paramb FOR_INIT semicolon semicolon parame { PRINTLN("FOR_HEAD1"); }
+         | paramb FOR_INIT semicolon FOR_UPDT parame { PRINTLN("FOR_HEAD1"); }
+         | paramb FOR_INIT COND semicolon parame { PRINTLN("FOR_HEAD1"); }
+         | paramb FOR_INIT semicolon parame { PRINTLN("FOR_HEAD1"); }
          | paramb semicolon COND semicolon parame { PRINTLN("FOR_HEAD1"); } 
          | paramb semicolon semicolon FOR_UPDT parame { PRINTLN("FOR_HEAD1"); }
          | paramb semicolon semicolon parame { PRINTLN("FOR_HEAD1"); }
@@ -222,12 +225,29 @@ IF_ELSE : IF ELSE { PRINTLN("IF_ELSE1"); }
         | IF { PRINTLN("IF_ELSE2"); }
         ;
 
+
+/* Misc */
+
+LOOP : FOR_LOOP { PRINTLN("LOOP1"); }
+     | WHILE_LOOP { PRINTLN("LOOP2"); }
+     ;
+
+GLOB_STMNT : VAR_DEC { PRINTLN("GLOB_STMNT1"); }
+           | FUNC_DEF { PRINTLN("GLOB_STMNT2") }
+           ; 
+
+GLOB_LIST : GLOB_STMNT { PRINTLN("GLOB_LIST1"); }
+          | GLOB_LIST GLOB_STMNT { PRINTLN("GLOB_LIST2"); }
+          ;
+
+GLOB : GLOB_LIST {  }
+     ;
 %%
 
 
 
 
 int yyerror(char* msg){
-    fprintf(stderr, "%s\n", msg);
+    fprintf(stderr, "Error(%s) in line %i\n", msg, yylineno);
     return 1;
 }
