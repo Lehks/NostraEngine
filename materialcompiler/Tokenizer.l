@@ -28,13 +28,17 @@
 "int" { RET(ntype); }
 
 
-"+" { RET(op); } /* Arithmetic */
+"+" { RET(opl); } /* Arithmetic */
+"-" { RET(negation); }
+"*" { RET(opm); }
+"/" { RET(opm); }
+"%" { RET(oph); }
 
 "="  { RET(assign); }
 
 
 
--?[0-9]+                       { RET(intl); } /* Literals */ /* Integer */
+[0-9]+                       { yylval.i = atoi(yytext); RET(intl); } /* Literals */ /* Integer */
 
 "{"             { RET(blockb); }
 "}"             { RET(blocke); }
@@ -56,11 +60,12 @@ void setupLex(char* filename){
     fseek(f, 0, SEEK_END);
     long fsize = ftell(f);
     fseek(f, 0, SEEK_SET);  //same as rewind(f)
-
+    fsize++;
     char *string = malloc(fsize + 1);
     fread(string, fsize, 1, f);
     fclose(f);
 
+    string[fsize-1] = ' ';
     string[fsize] = 0;
 
     YY_BUFFER_STATE bp;

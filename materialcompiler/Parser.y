@@ -41,7 +41,11 @@ int b;
 %token forkw
 %token extkw
 %token<s> ntype
-%token<s> op
+%token<s> oph
+%token<s> opm
+%token<s> opl
+%token<s> opc
+%token<s> negation
 %token assign
 %token<s> opassign
 %token<i> intl
@@ -61,7 +65,7 @@ int b;
 
 %%
 
-S : GLOB { printf("%s\n", "ACCEPTED"); }
+S : EXPR_LOW { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -129,7 +133,7 @@ STATEMENT : VAR_DEC { PRINTLN("STATEMENT1"); }
           | FUNC_CALL semicolon { PRINTLN("STATEMENT3"); }
           | ASSIGN semicolon { PRINTLN("STATEMENT4"); }
           | IF_ELSE { PRINTLN("STATEMENT5"); }
-          | LOOP { PRINTLN("STATEMENT6")}
+          | LOOP { PRINTLN("STATEMENT6"); }
           ;
 
 STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
@@ -147,12 +151,9 @@ BLOCK : blockb STMNT_LIST blocke { PRINTLN("BLOCK1"); }
       | blockb blocke { PRINTLN("BLOCK2"); }
       ;
 
+
 /* EXPRESSIONS */
 
-EXPRESSION : ARRITH_EXPR { PRINTLN("EXPRESSION1"); }
-           | identifier { PRINTLN("EXPRESSION2"); }
-           | FUNC_CALL { PRINTLN("EXPRESSION3");}
-           ;
 
 EXPR_LIST : EXPR_LIST seperator EXPRESSION { PRINTLN("EXPR_LIST1"); }
           | EXPRESSION { PRINTLN("EXPR_LIST2"); }
@@ -161,14 +162,43 @@ EXPR_LIST : EXPR_LIST seperator EXPRESSION { PRINTLN("EXPR_LIST1"); }
 EXPR_BLOCK : paramb EXPR_LIST parame { PRINTLN ("EXPR_BLOCK"); }
            ;
 
-ARRITH_EXPR : intl {  }
-            | floatl {  }
-            | identifier {  }
-            | FUNC_CALL { }
-            | ARRITH_EXPR op ARRITH_EXPR { PRINTLN("ARR_EXPR"); }
-            ;
+OPERAND : intl {  }
+        | floatl { }
+        | identifier { }
+        | FUNC_CALL { }
+        ;
 
-COND : ARRITH_EXPR { PRINTLN("COND"); }
+EXPR_SPEC : paramb EXPR_LOW parame { PRINTLN("EXPR_SPEC"); }
+          ;
+
+
+EXPR_LOW : EXPR_MID { PRINTLN("EXPR_LOW1"); }
+         | EXPR_LOW opl EXPR_MID { PRINTLN("EXPR_LOW2"); }
+         | EXPR_LOW negation EXPR_MID { PRINTLN("EXPR_LOW3"); }
+         | paramb EXPR_LOW parame { PRINTLN("EXPR_LOW4"); }
+         ;
+
+EXPR_MID : EXPR_HIGH { PRINTLN("EXPR_MID1"); }
+         | EXPR_MID opm EXPR_HIGH { PRINTLN("EXPR_MID2"); }
+         ;
+
+EXPR_HIGH : EXPR_NEG { PRINTLN("EXPR_HIGH1"); }
+          | EXPR_HIGH oph EXPR_NEG { PRINTLN("EXPR_HIGH2"); }
+          | EXPR_SPEC { PRINTLN("EXPR_HIGH3"); }
+          | EXPR_HIGH oph EXPR_SPEC{ PRINTLN("EXPR_HIGH"); }
+          ;
+  
+EXPR_NEG : paramb negation OPERAND parame { PRINTLN("EXPR_NEG1"); }
+         | OPERAND { PRINTLN("EXPR_NEG2") }
+         ;
+
+
+EXPRESSION : EXPR_LOW { PRINTLN("EXPRESSION1"); }
+           ;
+
+
+
+COND : EXPRESSION { PRINTLN("COND"); }
      ;
 
 
@@ -194,7 +224,7 @@ FOR_HEAD : paramb FOR_INIT COND semicolon FOR_UPDT parame { PRINTLN("FOR_HEAD1")
          ;
 
 FOR_LOOP : forkw FOR_HEAD BLOCK { PRINTLN("FOR_LOOP"); }
-    	 | forkw FOR_HEAD STATEMENT { PRINTLN("FOR_LOOP);") }
+    	 | forkw FOR_HEAD STATEMENT { PRINTLN("FOR_LOOP)"); }
          ;
 
 
@@ -233,7 +263,7 @@ LOOP : FOR_LOOP { PRINTLN("LOOP1"); }
      ;
 
 GLOB_STMNT : VAR_DEC { PRINTLN("GLOB_STMNT1"); }
-           | FUNC_DEF { PRINTLN("GLOB_STMNT2") }
+           | FUNC_DEF { PRINTLN("GLOB_STMNT2"); }
            ; 
 
 GLOB_LIST : GLOB_STMNT { PRINTLN("GLOB_LIST1"); }
