@@ -29,6 +29,8 @@ namespace NOE::NOE_SCENE
 
         const NOU::NOU_MATH::Vec3& getScale() const;
         NOU::NOU_MATH::Vec3& getScale();
+
+		NOU::NOU_MATH::Mat3 toRotationMatrix() const;
     };
 }
 
