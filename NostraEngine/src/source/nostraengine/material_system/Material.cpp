@@ -137,7 +137,7 @@ namespace NOE::NOE_MATSYS
 	NOU::boolean Material::enableLightning()
 	{
 		m_lightningIsActive = true;
-		m_shader->enableLightning;
+		m_shader->enableLightning();
 		return true;
 	}
 
@@ -219,12 +219,12 @@ namespace NOE::NOE_MATSYS
 		this->m_color = color;
 	}
 
-	void Material::setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a = 255)
+	void Material::setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.red = r;
-		tmpColor.green = g;
-		tmpColor.blue = b;
+		tmpColor.setRed = r;
+		tmpColor.setGreen = g;
+		tmpColor.setBlue = b;
 		tmpColor.setAlpha = a;
 		this->setColor = tmpColor;
 	}
@@ -233,15 +233,14 @@ namespace NOE::NOE_MATSYS
 	void Material::setAmbientColorMaterial(const NOU::NOU_MATH::Color32f &color)
 	{
 		this->m_ambientColorMaterial = color;
-
 	}
 
-	void Material::setAmbientColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255)
+	void Material::setAmbientColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.red = r;
-		tmpColor.green = g;
-		tmpColor.blue = b;
+		tmpColor.setRed = r;
+		tmpColor.setGreen = g;
+		tmpColor.setBlue = b;
 		tmpColor.setAlpha = a;
 		this->m_ambientColorMaterial = tmpColor;
 	}
@@ -252,12 +251,12 @@ namespace NOE::NOE_MATSYS
 
 	}
 
-	void Material::setEmissionColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255)
+	void Material::setEmissionColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.red = r;
-		tmpColor.green = g;
-		tmpColor.blue = b;
+		tmpColor.setRed = r;
+		tmpColor.setGreen = g;
+		tmpColor.setBlue = b;
 		tmpColor.setAlpha = a;
 		this->m_emissionColorMaterial = tmpColor;
 	}
@@ -269,12 +268,12 @@ namespace NOE::NOE_MATSYS
 
 	}
 
-	void Material::setAmbientColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255)
+	void Material::setAmbientColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.red = r;
-		tmpColor.green = g;
-		tmpColor.blue = b;
+		tmpColor.setRed = r;
+		tmpColor.setGreen = g;
+		tmpColor.setBlue = b;
 		tmpColor.setAlpha = a;
 		this->m_ambientColorLightning = tmpColor;
 	}
@@ -285,12 +284,12 @@ namespace NOE::NOE_MATSYS
 
 	}
 
-	void Material::setDiffuseColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255)
+	void Material::setDiffuseColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.red = r;
-		tmpColor.green = g;
-		tmpColor.blue = b;
+		tmpColor.setRed = r;
+		tmpColor.setGreen = g;
+		tmpColor.setBlue = b;
 		tmpColor.setAlpha = a;
 		this->m_diffuseColorLightning = tmpColor;
 	}
@@ -301,12 +300,12 @@ namespace NOE::NOE_MATSYS
 
 	}
 
-	void Material::setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255)
+	void Material::setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.red = r;
-		tmpColor.green = g;
-		tmpColor.blue = b;
+		tmpColor.setRed = r;
+		tmpColor.setGreen = g;
+		tmpColor.setBlue = b;
 		tmpColor.setAlpha = a;
 		this->m_specularColorLightning = tmpColor;
 	}

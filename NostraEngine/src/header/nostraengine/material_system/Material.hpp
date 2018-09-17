@@ -113,7 +113,7 @@ namespace NOE::NOE_MATSYS
 	  	NOU::NOU_MATH::Color32f getSpecularColorLightning() const;
 		NOU::NOU_MATH::Color32f getEmissionColorLightning() const;
 
-	  	Program* getProgram() const;
+		Program* getProgram() const;
 		Texture* getTexture() const;
 
 	};

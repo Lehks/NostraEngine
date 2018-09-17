@@ -53,7 +53,7 @@ namespace GLSLProgramPlugin
     NOU::boolean GLSLProgram::loadVertexShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
     {
         NOU::NOU_FILE_MNGT::File file(shaderSource);
-        file.open(NOU::NOU_FILE_MNGT::File::AccessMode.READ);
+        file.open(NOU::NOU_FILE_MNGT::AccessMode::READ);
         m_vertexShader = file.read();
         file.close();
         return true;
@@ -62,7 +62,7 @@ namespace GLSLProgramPlugin
     NOU::boolean GLSLProgram::loadFragmentShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
     {
         NOU::NOU_FILE_MNGT::File file(shaderSource);
-        file.open(NOU::NOU_FILE_MNGT::File::AccessMode.READ);
+        file.open(NOU::NOU_FILE_MNGT::AccessMode::READ);
         m_fragmentShader = file.read();
         file.close();
         return true;
@@ -71,13 +71,13 @@ namespace GLSLProgramPlugin
     NOU::boolean GLSLProgram::loadGeometryShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
     {
         NOU::NOU_FILE_MNGT::File file(shaderSource);
-        file.open(NOU::NOU_FILE_MNGT::File::AccessMode.READ);
+        file.open(NOU::NOU_FILE_MNGT::AccessMode::READ);
         m_geometryShader = file.read();
         file.close();
         return true;
     }
 
-    NOU::boolean GLSLProgram::~Program() {}
+    GLSLProgram::~GLSLProgram() {}
 
     NOU::boolean GLSLProgram::createShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource)
     {
@@ -160,7 +160,7 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvlaue, NOU::float32 yvalue)
+    NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvalue, NOU::float32 yvalue)
     {
         glUniform1i(m_uniforms.get(name), xvalue, yvalue);
         return true;
@@ -168,7 +168,7 @@ namespace GLSLProgramPlugin
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec2 &vec)
     {
-        glUniform1i(m_uniforms.get(name), vec.Value[0], vec.Value[1]);
+        glUniform1i(m_uniforms.get(name), vec[0], vec[1]);
         return true;
     }
 
@@ -180,7 +180,7 @@ namespace GLSLProgramPlugin
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec3 &vec)
     {
-        glUniform1i(m_uniforms.get(name), vec.Value[0], vec.Value[1], vec.Value[2]);
+        glUniform1i(m_uniforms.get(name), vec[0], vec[1], vec[2]);
         return true;
     }
 
@@ -192,7 +192,7 @@ namespace GLSLProgramPlugin
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec4 &vec)
     {
-        glUniform1i(m_uniforms.get(), vec.Value[0], vec.Value[1], vec.Value[2], vec.Value[3]);
+        glUniform1i(m_uniforms.get(name), vec[0], vec[1], vec[2], vec[3]);
         return true;
     }
 
@@ -214,7 +214,7 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-	NOU::boolean GLSLProgram::enabnleLightning()
+	NOU::boolean GLSLProgram::enableLightning()
 	{
 		return true;
 	}

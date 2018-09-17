@@ -3,8 +3,6 @@
 
 #include "nostrautils/NostraUtils.hpp"
 #include "nostraengine/NostraEngine.hpp"
-#include "nostraengine/core/StdIncludes.hpp"
-
 /**
 \author	 Dennis Franz
 \version 1.0.0
