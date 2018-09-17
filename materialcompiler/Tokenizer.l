@@ -23,6 +23,7 @@
 "while"  { RET(whilekw); }
 "for"    { RET(forkw); }
 "extern" { RET(extkw); }
+"struct" { RET(structkw); }
 
 "void" { RET(voidt); }
 "int" { RET(ntype); }
@@ -48,6 +49,8 @@
 "}"             { RET(blocke); }
 "("             { RET(paramb); } 
 ")"             { RET(parame); } 
+"["             { RET(arrayb); } 
+"]"             { RET(arraye); }
 
 ([a-z]|[A-Z]|"_")(([a-z]|[A-Z]|"_"|[0-9])+)? { RET(identifier); }
 
@@ -55,6 +58,7 @@
 ^"/*"[^*]*|[*]*"*/" { PRINTLN(yytext); }     /* Skip multiline comments */
 ";"     { RET(semicolon); }
 ","     { RET(seperator); }
+"\n"    {  }
 " "+    {  }
 %%
 

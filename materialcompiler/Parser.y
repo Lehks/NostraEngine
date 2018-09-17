@@ -57,7 +57,8 @@ int b;
 %token blocke
 %token paramb
 %token parame
-%token<i> array
+%token arrayb
+%token arraye
 %token<s> identifier
 %token voidt
 %token seperator
@@ -67,11 +68,11 @@ int b;
 
 %%
 
-S : EXPR_COND { printf("%s\n", "ACCEPTED"); }
+S : EXPR_LOW { printf("%s\n", "ACCEPTED"); }
   ;
 
 
- /* FUNCTIONS */
+ /* Function */
 
 
 PARAM_DEF : ntype identifier { PRINTLN("PARAM_DEF"); }
@@ -120,6 +121,11 @@ UNMOD_VAR_INIT : UNMOD_VAR_DEC assign EXPRESSION { PRINTLN("UNMOD_VAR_INIT"); }
 VAR_INIT : VAR_DEC assign EXPRESSION { PRINTLN("VAR_INIT"); }
          ;
 
+VAR_LIST : UNMOD_VAR_DEC semicolon { PRINTLN("VAR_LIST1"); }
+         | VAR_LIST UNMOD_VAR_DEC semicolon { PRINTLN("VAR_LIST2"); }
+         ;
+
+
 
 MODIFIER : inkw { PRINTLN("MODIFIER1"); }
          | outkw { PRINTLN("MODIFIER2"); }
@@ -127,15 +133,38 @@ MODIFIER : inkw { PRINTLN("MODIFIER1"); }
          | extkw { PRINTLN("MODIFIER4"); }
          ;
 
-/* STATEMENTS */
+
+/* Array */
+
+ARRAY_OP : arrayb EXPR_LOW arraye { PRINTLN("ARRAY_OP"); }
+         ;
+
+UNMOD_ARR_DEC : UNMOD_VAR_DEC ARRAY_OP { PRINTLN("UNMOD_ARR_DEC"); }
+              ;
+
+MOD_ARR_DEC : MOD_VAR_DEC ARRAY_OP{ PRINTLN("MOD_ARR_DEC"); }
+            ;
+
+ARR_DEC : UNMOD_ARR_DEC semicolon{ PRINTLN("ARR_DEC1"); }
+        | MOD_ARR_DEC semicolon { PRINTLN("ARR_DEC2"); }
+        ;
+
+ARR_ACC : identifier ARRAY_OP{ PRINTLN("ARR_ACC"); }
+        ;
 
 
-STATEMENT : VAR_DEC { PRINTLN("STATEMENT1"); }
-          | VAR_INIT semicolon { PRINTLN("STATEMENT2"); }
-          | FUNC_CALL semicolon { PRINTLN("STATEMENT3"); }
-          | ASSIGN semicolon { PRINTLN("STATEMENT4"); }
-          | IF_ELSE { PRINTLN("STATEMENT5"); }
-          | LOOP { PRINTLN("STATEMENT6"); }
+/* Statement */
+
+
+STATEMENT : CONST_VAR_DEC semicolon { PRINTLN("STATEMENT1"); }
+          | UNMOD_VAR_DEC semicolon { PRINTLN("STATEMENT2")}
+          | CONST_VAR_INIT semicolon { PRINTLN("STATEMENT3"); }
+          | UNMOD_VAR_INIT semicolon { PRINTLN("STATEMENT4"); }
+          | FUNC_CALL semicolon { PRINTLN("STATEMENT5"); }
+          | ASSIGN semicolon { PRINTLN("STATEMENT6"); }
+          | IF_ELSE { PRINTLN("STATEMENT7"); }
+          | LOOP { PRINTLN("STATEMENT8"); }
+          | UNMOD_ARR_DEC semicolon{PRINTLN("STATEMENT9"); }
           ;
 
 STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
@@ -143,18 +172,21 @@ STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
            ;
 
 ASSIGN : identifier assign EXPRESSION { PRINTLN("ASSIGN"); }
+       ;
 
 
 
-/* CODE BLOCKS */
+/* Code block */
 
 
 BLOCK : blockb STMNT_LIST blocke { PRINTLN("BLOCK1"); }
       | blockb blocke { PRINTLN("BLOCK2"); }
       ;
 
+BLOCK_DEC : blockb 
 
-/* EXPRESSIONS */
+
+/* Expression */
 
 
 EXPR_LIST : EXPR_LIST seperator EXPRESSION { PRINTLN("EXPR_LIST1"); }
@@ -168,6 +200,7 @@ OPERAND : intl {  }
         | floatl { }
         | identifier { }
         | FUNC_CALL { }
+        | ARR_ACC { }
         ;
 
 EXPR_COND : EXPR_COND_B { PRINTLN("EPXR_COND1"); } /* && ||  */
@@ -202,7 +235,7 @@ EXPR_NEG : paramb negation OPERAND parame { PRINTLN("EXPR_NEG1"); }
          ;
 
 
-EXPRESSION : EXPR_LOW { PRINTLN("EXPRESSION1"); }
+EXPRESSION : EXPR_COND { PRINTLN("EXPRESSION1"); }
            ;
 
 
@@ -264,6 +297,10 @@ IF_ELSE : IF ELSE { PRINTLN("IF_ELSE1"); }
         | IF { PRINTLN("IF_ELSE2"); }
         ;
 
+/* Structs */
+
+STRUCT_DEF : structkw identifier blockb VAR_LIST blocke { PRINTLN("STRUCT_DEC"); }
+           ;
 
 /* Misc */
 
@@ -273,7 +310,9 @@ LOOP : FOR_LOOP { PRINTLN("LOOP1"); }
 
 GLOB_STMNT : VAR_DEC { PRINTLN("GLOB_STMNT1"); }
            | FUNC_DEF { PRINTLN("GLOB_STMNT2"); }
-           ; 
+           | STRUCT_DEF { PRINTLN("GLOB_STMNT3"); }
+           | ARR_DEC { PRINTLN("GLOB_STMNT4"); }
+           ;
 
 GLOB_LIST : GLOB_STMNT { PRINTLN("GLOB_LIST1"); }
           | GLOB_LIST GLOB_STMNT { PRINTLN("GLOB_LIST2"); }
