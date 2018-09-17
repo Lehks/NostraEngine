@@ -17,6 +17,7 @@ else()
 	target_link_libraries(GLSLProgram
 		PRIVATE
 			NostraEngine
+			glad
 			)
 endif()
 
