@@ -19,6 +19,7 @@ namespace NOE::NOE_SCENE
 		{
 			NOU::sizeType index = 0;
 
+            //search for actor in vector
 			for (NOU::sizeType i = 0; i < m_actors.size(); i++)
 				if (actor == m_actors[i])
 					index = i;
@@ -47,4 +48,20 @@ namespace NOE::NOE_SCENE
 	{
 		return &m_rootActor;
 	}
+
+    NOE_CORE::Initializable::ExitCode Scene::initialize()
+    {
+        return NOE_CORE::Initializable::ExitCode::SUCCESS;
+    }
+
+   void Scene::terminate()
+    {
+       for (auto &actor: m_actors)
+           deallocateActor(actor);
+    }
+
+   void Scene::update(NOU::uint32 delta)
+   {
+       //update actor tree
+   }
 }

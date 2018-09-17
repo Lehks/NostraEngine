@@ -5,10 +5,11 @@
 
 #include "nostraengine/scene/Actor.hpp"
 #include "nostrautils/dat_alg/Vector.hpp"
+#include "nostraengine/core/Initializable.hpp"
 
 namespace NOE::NOE_SCENE
 {
-	class Scene
+	class Scene final : public NOE_CORE::Initializable
 	{
 	public:
 		using UID = Actor::UID;
@@ -21,7 +22,7 @@ namespace NOE::NOE_SCENE
 		UID m_nextUid;
 
 		template<typename ACTOR, typename... ARGS>
-		Actor* allocateActor(ARGS &&args);
+		Actor* allocateActor(ARGS&&... args);
 
 		void deallocateActor(Actor *actor);
 
@@ -29,7 +30,7 @@ namespace NOE::NOE_SCENE
 		UID generateUID();
 
 		template<typename ACTOR, typename... ARGS>
-		Actor* addActor(ARGS &&args);
+		Actor* addActor(ARGS&&... args);
 
 		void removeActor(UID uid);
 
@@ -38,16 +39,22 @@ namespace NOE::NOE_SCENE
 		const NOU::NOU_DAT_ALG::Vector<Actor*>& getActors() const;
 
 		Actor* getRoot();
+
+        virtual NOE_CORE::Initializable::ExitCode initialize() override;
+
+        virtual void terminate() override;
+
+        void update(NOU::uint32 delta);
 	};
 
 	template<typename ACTOR, typename... ARGS>
-	Actor* Scene::allocateActor(ARGS &&args)
+	Actor* Scene::allocateActor(ARGS&&... args)
 	{
 		return new ACTOR(NOU_CORE::forward<ARGS>(args)...);
 	}
 
 	template<typename ACTOR, typename... ARGS>
-	Actor* Scene::addActor(ARGS &&args)
+	Actor* Scene::addActor(ARGS&&... args)
 	{
 		Actor *actor = allocateActor(NOU_CORE::forward<ARGS>(args)...);
 
