@@ -28,11 +28,15 @@
 "int" { RET(ntype); }
 
 
-"+" { RET(opl); } /* Arithmetic */
 "-" { RET(negation); }
+
+"+" { RET(opl); } /* Arithmetic */
 "*" { RET(opm); }
 "/" { RET(opm); }
 "%" { RET(oph); }
+
+"==" { RET(opcb); }
+"&&" { RET (opc); }
 
 "="  { RET(assign); }
 

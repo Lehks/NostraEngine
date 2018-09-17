@@ -1,4 +1,5 @@
 %defines
+%error-verbose
 
 
 %{
@@ -45,6 +46,7 @@ int b;
 %token<s> opm
 %token<s> opl
 %token<s> opc
+%token<s> opcb
 %token<s> negation
 %token assign
 %token<s> opassign
@@ -65,7 +67,7 @@ int b;
 
 %%
 
-S : EXPR_LOW { printf("%s\n", "ACCEPTED"); }
+S : EXPR_COND { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -168,9 +170,13 @@ OPERAND : intl {  }
         | FUNC_CALL { }
         ;
 
-EXPR_SPEC : paramb EXPR_LOW parame { PRINTLN("EXPR_SPEC"); }
+EXPR_COND : EXPR_COND_B { PRINTLN("EPXR_COND1"); } /* && ||  */
+          | EXPR_COND opc EXPR_COND_B { PRINTLN("EXPR_COND2"); }
           ;
 
+EXPR_COND_B : EXPR_LOW opcb EXPR_LOW { PRINTLN("EXPR_COND_B1"); } /* == != < >  */
+            | EXPR_LOW { PRINTLN("EXPR_COND_B2"); }
+            ;
 
 EXPR_LOW : EXPR_MID { PRINTLN("EXPR_LOW1"); }
          | EXPR_LOW opl EXPR_MID { PRINTLN("EXPR_LOW2"); }
@@ -186,6 +192,9 @@ EXPR_HIGH : EXPR_NEG { PRINTLN("EXPR_HIGH1"); }
           | EXPR_HIGH oph EXPR_NEG { PRINTLN("EXPR_HIGH2"); }
           | EXPR_SPEC { PRINTLN("EXPR_HIGH3"); }
           | EXPR_HIGH oph EXPR_SPEC{ PRINTLN("EXPR_HIGH"); }
+          ;
+
+EXPR_SPEC : paramb EXPR_LOW parame { PRINTLN("EXPR_SPEC"); }
           ;
   
 EXPR_NEG : paramb negation OPERAND parame { PRINTLN("EXPR_NEG1"); }
