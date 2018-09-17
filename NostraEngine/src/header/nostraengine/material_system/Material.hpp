@@ -1,9 +1,8 @@
 #ifndef NOE_MATSYS_MATERIAL_HPP
 #define NOE_MATSYS_MATERIAL_HPP
 
-#include "nostrautils/NostraUtils.hpp"
 #include "nostraengine/NostraEngine.hpp"
-
+#include "nostrautils/NostraUtils.hpp"
 /**
 \file material_system/GLMaterial.hpp
 
@@ -25,10 +24,12 @@ namespace NOE::NOE_MATSYS
 		Texture *m_texture;
 
 		NOU::NOU_MATH::Color32f m_color;
-		NOU::NOU_MATH::Color32f m_ambientColor;
-		NOU::NOU_MATH::Color32f m_diffuseColor;
-		NOU::NOU_MATH::Color32f m_specularColor;
-		NOU::NOU_MATH::Color32f m_emissionColor;
+		NOU::NOU_MATH::Color32f m_ambientColorMaterial;
+		NOU::NOU_MATH::Color32f m_emissionColorMaterial;
+		NOU::NOU_MATH::Color32f m_ambientColorLightning;
+		NOU::NOU_MATH::Color32f m_diffuseColorLightning;
+		NOU::NOU_MATH::Color32f m_specularColorLightning;
+		NOU::NOU_MATH::Color32f m_emissionColorLightning;
 
 		NOU::boolean m_normalMappingIsActive;
 		NOU::boolean m_parrallaxMappingIsActive;
@@ -43,51 +44,78 @@ namespace NOE::NOE_MATSYS
 	 	NOU::boolean unbindTexture();
 	public:
 		Material(const NOU::NOU_DAT_ALG::String8 &materialName);
-	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader);
-	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture);
-	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, const Program &shader, const Texture &texture, const NOU::NOU_MATH::Color32f &color);
+	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, Program *shader);
+	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, Program *shader, Texture *texture);
+	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, Program *shader, Texture *texture, const NOU::NOU_MATH::Color32f &color);
 
      	~Material();
 
 	 	NOU::boolean bindMaterial();
 	 	NOU::boolean unbindMaterial();
 
-		NOU::boolean enableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap);
-	 	NOU::boolean enableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap);
-
 	 	NOU::boolean enableLightning();
+		NOU::boolean disableLightning();
 
-	 	NOU::boolean generateMipmap();
+		//Texture
+	 	NOU::boolean GenerateMipmap(NOU::boolean mbool);
+		NOU::boolean FlipTexture(NOU::boolean mbool);
 
-	 	NOU::boolean saveMaterial(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
+		NOU::boolean enableNormalMapping(const Texture &normalMap);
+		NOU::boolean enableParrallaxMapping(const Texture &displacementMap);
+
+	 	NOU::boolean saveMaterial(const NOU::NOU_DAT_ALG::String8 &pathToSave);
 	 	NOU::boolean loadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
 
 	 	void setMaterialName(const NOU::NOU_DAT_ALG::String8 &materialName);
 
-	 	void setShader(const NOE::NOE_MATSYS::Program &shader);
-	 	void setTexture(const NOE::NOE_MATSYS::Texture &texture);
+	 	void setShader(Program *shader);
+	 	void setTexture(Texture *texture);
 
 		void setColor(const NOU::NOU_MATH::Color32f &color);
 	 	void setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a = 255);
 
-	    void setAmbientColor(const NOU::NOU_MATH::Color32f &color);
-	 	void setAmbientColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
-	  	void setDiffuseColor(const NOU::NOU_MATH::Color32f &color);
-	  	void setDiffuseColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
-	 	void setSpecularColor(const NOU::NOU_MATH::Color32f &color);
-		void setSpecularColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
-	  	void setEmissionColor(const NOU::NOU_MATH::Color32f &color);
-	  	void setEmissionColor(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		//Material / Mesh
+	    void setAmbientColorMaterial(const NOU::NOU_MATH::Color32f &color);
+	 	void setAmbientColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+	  	void setEmissionColorMaterial(const NOU::NOU_MATH::Color32f &color);
+		void setEmissionColorMaterial (NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+
+		//Lightning
+		void setAmbientColorLightning(const NOU::NOU_MATH::Color32f &color);
+		void setAmbientColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		void setDiffuseColorLightning(const NOU::NOU_MATH::Color32f &color);
+		void setDiffuseColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		void setSpecularColorLightning(const NOU::NOU_MATH::Color32f &color);
+		void setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+
+		NOU::boolean createUniform(const NOU::NOU_DAT_ALG::String8 &name);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::boolean value);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::sizeType value);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 value);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvalue, NOU::float32 yvalue);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec2 &vec);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvalue, NOU::float32 yvalue, NOU::float32 zvalue);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec3 &vec);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvalue, NOU::float32 yvalue, NOU::float32 zvalue, NOU::float32 wvalue);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec4 &vec);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat2 &mat);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat3 &mat);
+		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat4 &mat);
 
 	  	NOU::NOU_DAT_ALG::String8 getMaterialName() const;
 
 	  	NOU::NOU_MATH::Color32f getColor() const;
-	  	NOU::NOU_MATH::Color32f getAmbientColor() const;
-	  	NOU::NOU_MATH::Color32f getDiffuseColor() const;
-	  	NOU::NOU_MATH::Color32f getSpecularColor() const;
-	  	NOU::NOU_MATH::Color32f getEmissionColor() const;
+	  	NOU::NOU_MATH::Color32f getAmbientColorMaterial() const;
+		NOU::NOU_MATH::Color32f getEmissionColorMaterial() const;
 
-	  	NOE::NOE_MATSYS::Program getProgram() const;
+		NOU::NOU_MATH::Color32f getAmbientColorLightning() const;
+	  	NOU::NOU_MATH::Color32f getDiffuseColorLightning() const;
+	  	NOU::NOU_MATH::Color32f getSpecularColorLightning() const;
+		NOU::NOU_MATH::Color32f getEmissionColorLightning() const;
+
+	  	Program* getProgram() const;
+		Texture* getTexture() const;
+
 	};
 }
 #endif

@@ -54,6 +54,8 @@ namespace GLSLProgramPlugin
 		NOE_PLUGIN_FUNC virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat2 &mat)override;
 	    NOE_PLUGIN_FUNC virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat3 &mat)override;
 		NOE_PLUGIN_FUNC virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat4 &mat)override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean enableLightning() override;
+		NOE_PLUGIN_FUNC virtual NOu::boolean disableLightning() override;
 	};
 }
 #endif

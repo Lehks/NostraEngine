@@ -72,7 +72,7 @@ namespace GLSLProgramPlugin
     {
         NOU::NOU_FILE_MNGT::File file(shaderSource);
         file.open(NOU::NOU_FILE_MNGT::File::AccessMode.READ);
-        m_fragmentShader = file.read();
+        m_geometryShader = file.read();
         file.close();
         return true;
     }
@@ -213,4 +213,14 @@ namespace GLSLProgramPlugin
         //glUniform1i(m_uniforms.get(),value);
         return true;
     }
+
+	NOU::boolean GLSLProgram::enabnleLightning()
+	{
+		return true;
+	}
+
+	NOU::boolean GLSLProgram::disableLightning()
+	{
+		return true;
+	}
 }

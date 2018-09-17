@@ -20,11 +20,20 @@ namespace NOE::NOE_MATSYS
 		NOU::NOU_DAT_ALG::String8 m_pathToTexture;
 		NOU::NOU_DAT_ALG::String8 m_Texture;
 
+		NOU::boolean m_activateMipmaps;
+		NOU::boolean m_textureIsFliped;
+
 	public:
 		Texture(NOU::sizeType ID);
 		Texture(NOU::sizeType ID, const NOU::NOU_DAT_ALG::String8 &pathToTexture);
 
-		NOU::boolean loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture = m_pathToTexture);
+		NOU::boolean bind();
+		NOU::boolean unbind();
+
+		NOU::boolean GenerateMipmap(NOU::boolean mbool);
+		NOU::boolean FlipTexture(NOU::boolean mbool);
+
+		NOU::boolean loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture);
 
 		NOU::NOU_DAT_ALG::String8 getTexture();
 

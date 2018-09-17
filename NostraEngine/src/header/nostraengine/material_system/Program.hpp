@@ -40,6 +40,8 @@ namespace NOE::NOE_MATSYS
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat2 &mat) = 0;
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat3 &mat) = 0;
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat4 &mat) = 0;
+		virtual NOU::boolean enableLightning() = 0;
+		virtual NOU::boolean disableLightning() = 0;
 	};
 }
 #endif
