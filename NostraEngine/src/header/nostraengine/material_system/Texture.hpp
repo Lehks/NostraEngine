@@ -13,29 +13,20 @@ namespace NOE::NOE_MATSYS
 {
 	class Texture
 	{
-		NOU::sizeType m_ID;
-
-		NOU::NOU_DAT_ALG::String8 m_pathToTexture;
-		NOU::NOU_DAT_ALG::String8 m_Texture;
-
-		NOU::boolean m_activateMipmaps;
-		NOU::boolean m_textureIsFliped;
-
 	public:
-		Texture(NOU::sizeType ID);
-		Texture(NOU::sizeType ID, const NOU::NOU_DAT_ALG::String8 &pathToTexture);
+		virtual ~Texture() = default;
 
-		NOU::boolean bind();
-		NOU::boolean unbind();
+		virtual NOU::boolean bind() = 0;
+		virtual NOU::boolean unbind() = 0;
 
-		NOU::boolean GenerateMipmap(NOU::boolean mbool);
-		NOU::boolean FlipTexture(NOU::boolean mbool);
+		virtual NOU::boolean GenerateMipmap(NOU::boolean mbool) = 0;
+		virtual NOU::boolean FlipTexture(NOU::boolean mbool) = 0;
 
-		NOU::boolean loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture);
+		virtual NOU::boolean loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture, NOU::sizeType width, NOU::sizeType heigth) = 0;
 
-		NOU::NOU_DAT_ALG::String8 getTexture();
+		virtual NOU::NOU_DAT_ALG::String8 getTexture() = 0;
 
-		NOU::sizeType getID();
+		virtual NOU::sizeType getID() = 0;
 	};
 
 }

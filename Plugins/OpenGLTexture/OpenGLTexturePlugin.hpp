@@ -1,18 +1,14 @@
-#ifndef PLUGIN_GLSL_PROGRAM_PLUGIN_HPP
-#define PLUGIN_GLSL_PROGRAM_PLUGIN_HPP
+#ifndef PLUGIN_OPENGL_TEXTURE_PLUGIN_HPP
+#define PLUGIN_OPENGL_TEXTURE_PLUGIN_HPP
 
 #include "nostraengine/NostraEngine.hpp"
 
-#include "src/material_system/GLSLProgram.hpp"
+#include "src/material_system/OpenGLTexture.hpp"
 
-namespace GLSLProgramPlugin
+namespace OpenGLTexturePlugin
 {
-    class GLSLProgramPlugin final : public NOE::NOE_CORE::Plugin
+    class OpenGLTexturePlugin final : public NOE::NOE_CORE::Plugin
     {
-	private:
-        //TODO
-		//NOU::NOU_DAT_ALG::Uninitialized<NOU::NOU_MEM_MNGT::UniquePtr<GLSLProgram>> m_programPtr;
-
     public:
         /**
          * Initializes the plugin.

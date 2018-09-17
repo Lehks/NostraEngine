@@ -4,6 +4,8 @@
 #include "nostraengine/NostraEngine.hpp"
 #include "nostrautils/NostraUtils.hpp"
 
+#include "../../../GLAD/include/glad/glad.h"
+
 /**
 \file material_system/GLSLProgram.hpp
 
@@ -38,6 +40,9 @@ namespace GLSLProgramPlugin
 	public:
 		NOE_PLUGIN_FUNC GLSLProgram(NOU::sizeType mapSize = 100);
 		NOE_PLUGIN_FUNC virtual ~GLSLProgram() = default;
+		NOE_PLUGIN_FUNC NOU::boolean GLSLProgram::loadVertexShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
+		NOE_PLUGIN_FUNC NOU::boolean GLSLProgram::loadFragmentShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
+		NOE_PLUGIN_FUNC NOU::boolean GLSLProgram::loadGeometryShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
 		NOE_PLUGIN_FUNC virtual NOU::boolean createShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource = nullptr) override;
 		NOE_PLUGIN_FUNC virtual NOU::boolean bind() override;
 		NOE_PLUGIN_FUNC virtual NOU::boolean unbind() override;

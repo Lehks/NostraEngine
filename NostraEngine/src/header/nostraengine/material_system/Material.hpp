@@ -20,8 +20,8 @@ namespace NOE::NOE_MATSYS
 	private:
 		NOU::NOU_DAT_ALG::String8 m_materialName;
 
-		Program *m_shader;
-		Texture *m_texture;
+		NOE::NOE_MATSYS::Program *m_shader;
+		NOE::NOE_MATSYS::Texture *m_texture;
 
 		NOU::NOU_MATH::Color32f m_color;
 		NOU::NOU_MATH::Color32f m_ambientColorMaterial;
@@ -44,9 +44,9 @@ namespace NOE::NOE_MATSYS
 	 	NOU::boolean unbindTexture();
 	public:
 		Material(const NOU::NOU_DAT_ALG::String8 &materialName);
-	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, Program *shader);
-	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, Program *shader, Texture *texture);
-	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, Program *shader, Texture *texture, const NOU::NOU_MATH::Color32f &color);
+	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, NOE::NOE_MATSYS::Program *shader);
+	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, NOE::NOE_MATSYS::Program *shader, NOE::NOE_MATSYS::Texture *texture);
+	 	Material(const NOU::NOU_DAT_ALG::String8 &materialName, NOE::NOE_MATSYS::Program *shader, NOE::NOE_MATSYS::Texture *texture, const NOU::NOU_MATH::Color32f &color);
 
      	~Material();
 
@@ -60,16 +60,16 @@ namespace NOE::NOE_MATSYS
 	 	NOU::boolean GenerateMipmap(NOU::boolean mbool);
 		NOU::boolean FlipTexture(NOU::boolean mbool);
 
-		NOU::boolean enableNormalMapping(const Texture &normalMap);
-		NOU::boolean enableParrallaxMapping(const Texture &displacementMap);
+		NOU::boolean enableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap);
+		NOU::boolean enableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap);
 
 	 	NOU::boolean saveMaterial(const NOU::NOU_DAT_ALG::String8 &pathToSave);
 	 	NOU::boolean loadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
 
 	 	void setMaterialName(const NOU::NOU_DAT_ALG::String8 &materialName);
 
-	 	void setShader(Program *shader);
-	 	void setTexture(Texture *texture);
+	 	void setShader(NOE::NOE_MATSYS::Program *shader);
+		void setTexture(NOE::NOE_MATSYS::Texture *texture);
 
 		void setColor(const NOU::NOU_MATH::Color32f &color);
 	 	void setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a = 255);
@@ -113,8 +113,8 @@ namespace NOE::NOE_MATSYS
 	  	NOU::NOU_MATH::Color32f getSpecularColorLightning() const;
 		NOU::NOU_MATH::Color32f getEmissionColorLightning() const;
 
-		Program* getProgram() const;
-		Texture* getTexture() const;
+		NOE::NOE_MATSYS::Program* getProgram() const;
+		NOE::NOE_MATSYS::Texture* getTexture() const;
 
 	};
 }

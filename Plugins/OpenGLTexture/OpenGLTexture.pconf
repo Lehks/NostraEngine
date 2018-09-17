@@ -1,0 +1,14 @@
+[core]
+id="12"
+priority="3"
+enable="true"
+minversion.major="0"
+minversion.minor="0"
+minversion.patch="1"
+
+[meta]
+name="OpenGLTexture"
+description="A implementation of the Nostra Engine OpenGL Texture."
+version.major="0"
+version.minor="0"
+version.patch="1"

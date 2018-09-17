@@ -133,7 +133,7 @@ namespace GLSLProgramPlugin
 
     NOU::boolean GLSLProgram::createUniform(const NOU::NOU_DAT_ALG::String8 &name)
     {
-        NOU::sizeType uniformLocation = glGetUniformLocation(m_ID, name);
+        NOU::sizeType uniformLocation = glGetUniformLocation(m_ID, name.rawStr());
         if(uniformLocation == 0)
         {
             return false;
@@ -156,43 +156,43 @@ namespace GLSLProgramPlugin
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 value)
     {
-        glUniform1i(m_uniforms.get(name), value);
+        glUniform1f(m_uniforms.get(name), value);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvalue, NOU::float32 yvalue)
     {
-        glUniform1i(m_uniforms.get(name), xvalue, yvalue);
+        glUniform2f(m_uniforms.get(name), xvalue, yvalue);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec2 &vec)
     {
-        glUniform1i(m_uniforms.get(name), vec[0], vec[1]);
+        glUniform2f(m_uniforms.get(name), vec[0], vec[1]);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvalue, NOU::float32 yvalue, NOU::float32 zvalue)
     {
-        glUniform1i(m_uniforms.get(name), xvalue, yvalue, zvalue);
+        glUniform3f(m_uniforms.get(name), xvalue, yvalue, zvalue);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec3 &vec)
     {
-        glUniform1i(m_uniforms.get(name), vec[0], vec[1], vec[2]);
+        glUniform3f(m_uniforms.get(name), vec[0], vec[1], vec[2]);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 xvalue, NOU::float32 yvalue, NOU::float32 zvalue, NOU::float32 wvalue)
     {
-        glUniform1i(m_uniforms.get(name), xvalue, yvalue, zvalue, wvalue);
+        glUniform4f(m_uniforms.get(name), xvalue, yvalue, zvalue, wvalue);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Vec4 &vec)
     {
-        glUniform1i(m_uniforms.get(name), vec[0], vec[1], vec[2], vec[3]);
+        glUniform4f(m_uniforms.get(name), vec[0], vec[1], vec[2], vec[3]);
         return true;
     }
 
