@@ -6,7 +6,13 @@ file(GLOB_RECURSE "files" "src/*.cpp")
 
 add_library(IniConfiguration SHARED "${files}" "IniConfigurationPlugin.cpp")
 
-target_link_libraries(IniConfiguration PRIVATE NostraEngineDbg)
+target_link_libraries(IniConfiguration 
+    PRIVATE 
+        Nostra::Engine)
+
+target_compile_definitions(IniConfiguration 
+    PRIVATE
+        NOE_PLUGIN)
 
 set_target_properties(IniConfiguration PROPERTIES PREFIX "")
 set_target_properties(IniConfiguration PROPERTIES SUFFIX ".np")
