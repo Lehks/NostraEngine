@@ -43,10 +43,17 @@
 "/" { RET(opm); }
 "%" { RET(oph); }
 
+"+=" { RET(opassign); }
+"-=" { RET(opassign); }
+"*=" { RET( opassign); }
+"/=" { RET( opassign); }
+"%=" { RET( opassign); }
+
+"!" { RET(opnot); }
 "==" { RET(opcb); }
 "&&" { RET (opc); }
 
-"+=" { RET(opassign); }
+
 
 "="  { RET(assign); }
 

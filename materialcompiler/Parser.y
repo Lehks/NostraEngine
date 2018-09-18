@@ -49,6 +49,7 @@ int b;
 %token<s> opl
 %token<s> opc
 %token<s> opcb
+%token<s> opnot
 %token<s> negation
 %token assign
 %token<s> opassign
@@ -72,8 +73,7 @@ int b;
 
 
 %%
-
-S : GLOB { printf("%s\n", "ACCEPTED"); }
+S : EXPRESSION { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -240,9 +240,17 @@ EXPR_COND : EXPR_COND_B { PRINTLN("EPXR_COND1"); } /* && ||  */
           | EXPR_COND opc EXPR_COND_B { PRINTLN("EXPR_COND2"); }
           ;
 
+EXPR_NOT : { PRINTLN("EXPR_NOT1"); }
+         ;
+
 EXPR_COND_B : EXPR_LOW opcb EXPR_LOW { PRINTLN("EXPR_COND_B1"); } /* == != < >  */
             | EXPR_LOW { PRINTLN("EXPR_COND_B2"); }
             ;
+
+EXPR_NEG : paramb negation OPERAND parame { PRINTLN("EXPR_NEG1"); }
+         | OPERAND { PRINTLN("EXPR_NEG2"); }
+         ;
+
 
 EXPR_LOW : EXPR_MID { PRINTLN("EXPR_LOW1"); }
          | EXPR_LOW opl EXPR_MID { PRINTLN("EXPR_LOW2"); }
@@ -263,9 +271,6 @@ EXPR_HIGH : EXPR_NEG { PRINTLN("EXPR_HIGH1"); }
 EXPR_SPEC : paramb EXPR_LOW parame { PRINTLN("EXPR_SPEC"); }
           ;
   
-EXPR_NEG : paramb negation OPERAND parame { PRINTLN("EXPR_NEG1"); }
-         | OPERAND { PRINTLN("EXPR_NEG2"); }
-         ;
 
 OP_ASSIGN : identifier opassign EXPRESSION { PRINTLN("OP_ASSIGN1"); }
           | STRUCT_ACC opassign EXPRESSION { PRINTLN("OP_ASSIGN2"); }
