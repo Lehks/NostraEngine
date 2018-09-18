@@ -68,7 +68,7 @@ int b;
 
 %%
 
-S : EXPR_LOW { printf("%s\n", "ACCEPTED"); }
+S : GLOB { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -139,11 +139,21 @@ MODIFIER : inkw { PRINTLN("MODIFIER1"); }
 ARRAY_OP : arrayb EXPR_LOW arraye { PRINTLN("ARRAY_OP"); }
          ;
 
-UNMOD_ARR_DEC : UNMOD_VAR_DEC ARRAY_OP { PRINTLN("UNMOD_ARR_DEC"); }
+UNMOD_ARR_DEC : UNMOD_VAR_DEC ARRAY_OP { PRINTLN("UNMOD_ARR_DEC1"); }
+              | UNMOD_VAR_DEC arrayb arraye { PRINTLN("UNMOD_ARR_DEC2"); }
               ;
 
+UNMOD_ARR_INIT_I : UNMOD_VAR_DEC arrayb arraye assign ntype ARRAY_OP{ PRINTLN("UNMOD_ARR_INIT_I"); }
+                 ;
+
 MOD_ARR_DEC : MOD_VAR_DEC ARRAY_OP{ PRINTLN("MOD_ARR_DEC"); }
+            | MOD_VAR_DEC arrayb arraye{ PRINTLN("MOD_ARR_DEC"); }
             ;
+
+MOD_ARR_INIT_I : MOD_VAR_DEC arrayb arraye assign ntype ARRAY_OP{ PRINTLN("MOD_ARR_INIT_I"); }
+               ;
+
+ARR_INIT : identifier assign ntype ARRAY_OP { PRINTLN("ARR_INIT"); }
 
 ARR_DEC : UNMOD_ARR_DEC semicolon{ PRINTLN("ARR_DEC1"); }
         | MOD_ARR_DEC semicolon { PRINTLN("ARR_DEC2"); }
@@ -165,6 +175,8 @@ STATEMENT : CONST_VAR_DEC semicolon { PRINTLN("STATEMENT1"); }
           | IF_ELSE { PRINTLN("STATEMENT7"); }
           | LOOP { PRINTLN("STATEMENT8"); }
           | UNMOD_ARR_DEC semicolon{PRINTLN("STATEMENT9"); }
+          | ARR_INIT semicolon {PRINTLN("STATEMENT10"); }
+          |UNMOD_ARR_INIT_I semicolon {PRINTLN("STATEMENT11"); }
           ;
 
 STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
