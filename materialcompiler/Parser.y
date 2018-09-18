@@ -62,13 +62,14 @@ int b;
 %token<s> identifier
 %token voidt
 %token seperator
+%token accop
 
 
 
 
 %%
 
-S : GLOB { printf("%s\n", "ACCEPTED"); }
+S : STMNT_LIST { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -176,7 +177,8 @@ STATEMENT : CONST_VAR_DEC semicolon { PRINTLN("STATEMENT1"); }
           | LOOP { PRINTLN("STATEMENT8"); }
           | UNMOD_ARR_DEC semicolon{PRINTLN("STATEMENT9"); }
           | ARR_INIT semicolon {PRINTLN("STATEMENT10"); }
-          |UNMOD_ARR_INIT_I semicolon {PRINTLN("STATEMENT11"); }
+          | UNMOD_ARR_INIT_I semicolon {PRINTLN("STATEMENT11"); }
+          | STRUCT_ASSIGN semicolon {PRINTLN("STATEMENT12"); }
           ;
 
 STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
@@ -213,6 +215,7 @@ OPERAND : intl {  }
         | identifier { }
         | FUNC_CALL { }
         | ARR_ACC { }
+        | STRUCT_ACC { }
         ;
 
 EXPR_COND : EXPR_COND_B { PRINTLN("EPXR_COND1"); } /* && ||  */
@@ -313,6 +316,12 @@ IF_ELSE : IF ELSE { PRINTLN("IF_ELSE1"); }
 
 STRUCT_DEF : structkw identifier blockb VAR_LIST blocke { PRINTLN("STRUCT_DEC"); }
            ;
+
+STRUCT_ACC : identifier accop identifier { PRINTLN("STRUCT_ACC"); }
+           ;
+
+STRUCT_ASSIGN : identifier accop identifier assign EXPRESSION{ PRINTLN("STRUCT_ASSIGN"); }
+              ;
 
 /* Misc */
 

@@ -58,6 +58,7 @@
 ^"/*"[^*]*|[*]*"*/" { PRINTLN(yytext); }     /* Skip multiline comments */
 ";"     { RET(semicolon); }
 ","     { RET(seperator); }
+"."     { RET(accop); }
 "\n"    {  }
 " "+    {  }
 %%
