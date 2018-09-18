@@ -42,6 +42,8 @@ int b;
 %token forkw
 %token extkw
 %token<s> ntype
+%token<i> vectype
+%token<i> mattype
 %token<s> oph
 %token<s> opm
 %token<s> opl
@@ -53,6 +55,7 @@ int b;
 %token<i> intl
 %token<f> floatl
 %token<b> booll
+%token sizeop
 %token blockb
 %token blocke
 %token paramb
@@ -138,8 +141,19 @@ MODIFIER : inkw { PRINTLN("MODIFIER1"); }
 /* Array */
 
 
-ARRAY_OP : arrayb EXPR_LOW arraye { PRINTLN("ARRAY_OP"); }
+ARRAY_OP : arrayb EXPR_LOW arraye { PRINTLN("ARRAY_OP1"); }
+         | ARRAY_OP arrayb EXPR_LOW arraye { PRINTLN("ARRAY_OP2"); }
          ;
+
+SIZE_OP_LIST : arrayb arraye { PRINTLN("SIZE_OP_LIST1"); }
+             | SIZE_OP_LIST arrayb arraye { PRINTLN("SIZE_OP_LIST2"); }
+             ;
+
+SIZE_OP : arrayb sizeop arraye { PRINTLN("SIZEOP1"); }
+        | SIZE_OP_LIST arrayb sizeop arraye { PRINTLN("SIZEOP2"); }
+        ;
+
+ARR_SIZE : identifier SIZE_OP { PRINTLN("ARR_SIZE"); }
 
 UNMOD_ARR_DEC : UNMOD_VAR_DEC ARRAY_OP { PRINTLN("UNMOD_ARR_DEC1"); }
               | UNMOD_VAR_DEC arrayb arraye { PRINTLN("UNMOD_ARR_DEC2"); }
@@ -219,6 +233,7 @@ OPERAND : intl {  }
         | FUNC_CALL { }
         | ARR_ACC { }
         | STRUCT_ACC { }
+        | ARR_SIZE { }
         ;
 
 EXPR_COND : EXPR_COND_B { PRINTLN("EPXR_COND1"); } /* && ||  */
@@ -339,7 +354,9 @@ STRUCT_ASSIGN : STRUCT_ACC assign EXPRESSION{ PRINTLN("STRUCT_ASSIGN"); }
 RETURN : returnkw EXPRESSION{ PRINTLN("RETURN"); };
 
 TYPE : ntype { PRINTLN("TYPE1"); }
-     | USR_TYPE { PRINTLN("TYPE2"); }
+     | mattype { PRINTLN("TYPE2"); }
+     | vectype { PRINTLN("TYPE3"); }
+     | USR_TYPE { PRINTLN("Type4"); }
      ;
 
 USR_TYPE : identifier { PRINTLN("USR_TYPE"); }

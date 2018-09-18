@@ -16,6 +16,7 @@
 
 "in"     { RET(inkw); } /* Keywords */
 "out"    { RET(outkw); }
+"struct" { RET(structkw); }
 "shared" { RET(sharedkw); }
 "const"  { RET(constkw); }
 "if"     { RET(ifkw); }
@@ -23,12 +24,17 @@
 "while"  { RET(whilekw); }
 "for"    { RET(forkw); }
 "extern" { RET(extkw); }
-"struct" { RET(structkw); }
+
 "return" { RET(returnkw); }
 
 "void" { RET(voidt); }
 "int" { RET(ntype); }
+"float" { RET(ntype); }
+"bool" { RET(ntype); }
+"vec"[2-4] {RET(vectype); }
+"mat"[2-4] {RET(mattype); }
 
+"?" {RET(sizeop); }
 
 "-" { RET(negation); }
 
