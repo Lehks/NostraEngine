@@ -70,7 +70,7 @@ int b;
 
 %%
 
-S : STATEMENT { printf("%s\n", "ACCEPTED"); }
+S : GLOB { printf("%s\n", "ACCEPTED"); }
   ;
 
 
@@ -87,7 +87,8 @@ PARAM_BLOCK : paramb PARAM_LIST parame { PRINTLN("PARAM_BLOCK"); }
             | paramb parame { PRINTLN("PARAM_BLOCK"); }
             ;
 
-FUNC_DEF : TYPE identifier PARAM_BLOCK BLOCK { PRINTLN("FUNC_DEF"); }
+FUNC_DEF : TYPE identifier PARAM_BLOCK BLOCK { PRINTLN("FUNC_DEF1"); }
+         | voidt identifier PARAM_BLOCK BLOCK {PRINTLN("FUNC_DEF2"); }
          ;
 
 FUNC_CALL : identifier EXPR_BLOCK {PRINTLN("FUNC_CALL"); }
@@ -127,8 +128,6 @@ VAR_LIST : UNMOD_VAR_DEC semicolon { PRINTLN("VAR_LIST1"); }
          | VAR_LIST UNMOD_VAR_DEC semicolon { PRINTLN("VAR_LIST2"); }
          ;
 
-
-
 MODIFIER : inkw { PRINTLN("MODIFIER1"); }
          | outkw { PRINTLN("MODIFIER2"); }
          | sharedkw { PRINTLN("MODIFIER3"); }
@@ -137,6 +136,7 @@ MODIFIER : inkw { PRINTLN("MODIFIER1"); }
 
 
 /* Array */
+
 
 ARRAY_OP : arrayb EXPR_LOW arraye { PRINTLN("ARRAY_OP"); }
          ;
@@ -256,11 +256,8 @@ OP_ASSIGN : identifier opassign EXPRESSION { PRINTLN("OP_ASSIGN1"); }
           | STRUCT_ACC opassign EXPRESSION { PRINTLN("OP_ASSIGN2"); }
           ;
 
-
 EXPRESSION : EXPR_COND { PRINTLN("EXPRESSION1"); }
            ;
-
-
 
 COND : EXPRESSION { PRINTLN("COND"); }
      ;
@@ -302,7 +299,9 @@ WHILE_LOOP : whilekw WHILE_HEAD BLOCK { PRINTLN("WHILE_LOOP1"); }
            | whilekw WHILE_HEAD STATEMENT { PRINTLN("WHILE_LOOP2"); }
            ;
 
+
 /* If else */
+
 
 IF_HEAD : paramb COND parame { PRINTLN("IF_HEAD"); }
         ;
@@ -319,11 +318,12 @@ IF_ELSE : IF ELSE { PRINTLN("IF_ELSE1"); }
         | IF { PRINTLN("IF_ELSE2"); }
         ;
 
+
 /* Structs */
+
 
 STRUCT_DEF : structkw identifier blockb VAR_LIST blocke { PRINTLN("STRUCT_DEC"); }
            ;
-
 
 STRUCT_ACC : identifier accop identifier{ PRINTLN("STRUCT_ACC1"); }
            | STRUCT_ACC accop identifier { PRINTLN("STRUCT_ACC2"); }
@@ -332,7 +332,9 @@ STRUCT_ACC : identifier accop identifier{ PRINTLN("STRUCT_ACC1"); }
 STRUCT_ASSIGN : STRUCT_ACC assign EXPRESSION{ PRINTLN("STRUCT_ASSIGN"); }
               ;
 
+
 /* Misc */
+
 
 RETURN : returnkw EXPRESSION{ PRINTLN("RETURN"); };
 
@@ -359,6 +361,8 @@ GLOB_LIST : GLOB_STMNT { PRINTLN("GLOB_LIST1"); }
 
 GLOB : GLOB_LIST {  }
      ;
+
+
 %%
 
 

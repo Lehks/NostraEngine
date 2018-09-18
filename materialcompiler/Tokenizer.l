@@ -57,7 +57,7 @@
 
 ([a-z]|[A-Z]|"_")(([a-z]|[A-Z]|"_"|[0-9])+)? { RET(identifier); }
 
-["//"].*          { PRINTLN(yytext); }     /* Skip single line comment */
+"//".*          { printf("Ignored: %s\n", yytext); }     /* Skip single line comment */
 ^"/*"[^*]*|[*]*"*/" { PRINTLN(yytext); }     /* Skip multiline comments */
 ";"     { RET(semicolon); }
 ","     { RET(seperator); }
