@@ -24,6 +24,7 @@
 "for"    { RET(forkw); }
 "extern" { RET(extkw); }
 "struct" { RET(structkw); }
+"return" { RET(returnkw); }
 
 "void" { RET(voidt); }
 "int" { RET(ntype); }
@@ -38,6 +39,8 @@
 
 "==" { RET(opcb); }
 "&&" { RET (opc); }
+
+"+=" { RET(opassign); }
 
 "="  { RET(assign); }
 

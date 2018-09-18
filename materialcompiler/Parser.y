@@ -63,20 +63,21 @@ int b;
 %token voidt
 %token seperator
 %token accop
+%token returnkw
 
 
 
 
 %%
 
-S : STMNT_LIST { printf("%s\n", "ACCEPTED"); }
+S : STATEMENT { printf("%s\n", "ACCEPTED"); }
   ;
 
 
  /* Function */
 
 
-PARAM_DEF : ntype identifier { PRINTLN("PARAM_DEF"); }
+PARAM_DEF : TYPE identifier { PRINTLN("PARAM_DEF"); }
           ;
 
 PARAM_LIST : PARAM_LIST seperator PARAM_DEF { PRINTLN("PARAM_LIST1"); }
@@ -86,14 +87,14 @@ PARAM_BLOCK : paramb PARAM_LIST parame { PRINTLN("PARAM_BLOCK"); }
             | paramb parame { PRINTLN("PARAM_BLOCK"); }
             ;
 
-FUNC_DEF : ntype identifier PARAM_BLOCK BLOCK { PRINTLN("FUNC_DEF"); }
+FUNC_DEF : TYPE identifier PARAM_BLOCK BLOCK { PRINTLN("FUNC_DEF"); }
          ;
 
 FUNC_CALL : identifier EXPR_BLOCK {PRINTLN("FUNC_CALL"); }
           ;
 
 
-/* Variables */
+/* Variable */
 
 
 VAR_DEC : UNMOD_VAR_DEC semicolon { PRINTLN("VAR_DEC1"); }
@@ -101,19 +102,19 @@ VAR_DEC : UNMOD_VAR_DEC semicolon { PRINTLN("VAR_DEC1"); }
         | MOD_VAR_DEC   semicolon { PRINTLN("VAR_DEC3"); }
         ;
 
-CONST_VAR_DEC : constkw ntype identifier{ PRINTLN("CONST_VAR_DEC"); }
+CONST_VAR_DEC : constkw TYPE identifier{ PRINTLN("CONST_VAR_DEC"); }
               ;
 
 CONST_VAR_INIT : CONST_VAR_DEC assign EXPRESSION { PRINTLN("CONST_VAR_INIT"); }
                ;
 
-MOD_VAR_DEC : MODIFIER ntype identifier{ PRINTLN("MOD_VAR_DEC"); }
+MOD_VAR_DEC : MODIFIER TYPE identifier{ PRINTLN("MOD_VAR_DEC"); }
             ;
 
 MOD_VAR_INIT : MOD_VAR_DEC assign EXPRESSION { PRINTLN("CONST_VAR_INIT"); }
              ;
 
-UNMOD_VAR_DEC : ntype identifier{ PRINTLN("UNMOD_VAR_DEC"); }
+UNMOD_VAR_DEC : TYPE identifier{ PRINTLN("UNMOD_VAR_DEC"); }
               ;
 
 UNMOD_VAR_INIT : UNMOD_VAR_DEC assign EXPRESSION { PRINTLN("UNMOD_VAR_INIT"); }
@@ -144,17 +145,17 @@ UNMOD_ARR_DEC : UNMOD_VAR_DEC ARRAY_OP { PRINTLN("UNMOD_ARR_DEC1"); }
               | UNMOD_VAR_DEC arrayb arraye { PRINTLN("UNMOD_ARR_DEC2"); }
               ;
 
-UNMOD_ARR_INIT_I : UNMOD_VAR_DEC arrayb arraye assign ntype ARRAY_OP{ PRINTLN("UNMOD_ARR_INIT_I"); }
+UNMOD_ARR_INIT_I : UNMOD_VAR_DEC arrayb arraye assign TYPE ARRAY_OP{ PRINTLN("UNMOD_ARR_INIT_I"); }
                  ;
 
 MOD_ARR_DEC : MOD_VAR_DEC ARRAY_OP{ PRINTLN("MOD_ARR_DEC"); }
             | MOD_VAR_DEC arrayb arraye{ PRINTLN("MOD_ARR_DEC"); }
             ;
 
-MOD_ARR_INIT_I : MOD_VAR_DEC arrayb arraye assign ntype ARRAY_OP{ PRINTLN("MOD_ARR_INIT_I"); }
+MOD_ARR_INIT_I : MOD_VAR_DEC arrayb arraye assign TYPE ARRAY_OP{ PRINTLN("MOD_ARR_INIT_I"); }
                ;
 
-ARR_INIT : identifier assign ntype ARRAY_OP { PRINTLN("ARR_INIT"); }
+ARR_INIT : identifier assign TYPE ARRAY_OP { PRINTLN("ARR_INIT"); }
 
 ARR_DEC : UNMOD_ARR_DEC semicolon{ PRINTLN("ARR_DEC1"); }
         | MOD_ARR_DEC semicolon { PRINTLN("ARR_DEC2"); }
@@ -168,7 +169,7 @@ ARR_ACC : identifier ARRAY_OP{ PRINTLN("ARR_ACC"); }
 
 
 STATEMENT : CONST_VAR_DEC semicolon { PRINTLN("STATEMENT1"); }
-          | UNMOD_VAR_DEC semicolon { PRINTLN("STATEMENT2")}
+          | UNMOD_VAR_DEC semicolon { PRINTLN("STATEMENT2"); }
           | CONST_VAR_INIT semicolon { PRINTLN("STATEMENT3"); }
           | UNMOD_VAR_INIT semicolon { PRINTLN("STATEMENT4"); }
           | FUNC_CALL semicolon { PRINTLN("STATEMENT5"); }
@@ -179,6 +180,8 @@ STATEMENT : CONST_VAR_DEC semicolon { PRINTLN("STATEMENT1"); }
           | ARR_INIT semicolon {PRINTLN("STATEMENT10"); }
           | UNMOD_ARR_INIT_I semicolon {PRINTLN("STATEMENT11"); }
           | STRUCT_ASSIGN semicolon {PRINTLN("STATEMENT12"); }
+          | RETURN semicolon {PRINTLN("STATEMENT13"); }
+          | OP_ASSIGN semicolon {PRINTLN("STATEMENT14"); }
           ;
 
 STMNT_LIST : STMNT_LIST STATEMENT { PRINTLN("STMNT_LIST1"); }
@@ -246,8 +249,12 @@ EXPR_SPEC : paramb EXPR_LOW parame { PRINTLN("EXPR_SPEC"); }
           ;
   
 EXPR_NEG : paramb negation OPERAND parame { PRINTLN("EXPR_NEG1"); }
-         | OPERAND { PRINTLN("EXPR_NEG2") }
+         | OPERAND { PRINTLN("EXPR_NEG2"); }
          ;
+
+OP_ASSIGN : identifier opassign EXPRESSION { PRINTLN("OP_ASSIGN1"); }
+          | STRUCT_ACC opassign EXPRESSION { PRINTLN("OP_ASSIGN2"); }
+          ;
 
 
 EXPRESSION : EXPR_COND { PRINTLN("EXPRESSION1"); }
@@ -317,13 +324,24 @@ IF_ELSE : IF ELSE { PRINTLN("IF_ELSE1"); }
 STRUCT_DEF : structkw identifier blockb VAR_LIST blocke { PRINTLN("STRUCT_DEC"); }
            ;
 
-STRUCT_ACC : identifier accop identifier { PRINTLN("STRUCT_ACC"); }
+
+STRUCT_ACC : identifier accop identifier{ PRINTLN("STRUCT_ACC1"); }
+           | STRUCT_ACC accop identifier { PRINTLN("STRUCT_ACC2"); }
            ;
 
-STRUCT_ASSIGN : identifier accop identifier assign EXPRESSION{ PRINTLN("STRUCT_ASSIGN"); }
+STRUCT_ASSIGN : STRUCT_ACC assign EXPRESSION{ PRINTLN("STRUCT_ASSIGN"); }
               ;
 
 /* Misc */
+
+RETURN : returnkw EXPRESSION{ PRINTLN("RETURN"); };
+
+TYPE : ntype { PRINTLN("TYPE1"); }
+     | USR_TYPE { PRINTLN("TYPE2"); }
+     ;
+
+USR_TYPE : identifier { PRINTLN("USR_TYPE"); }
+         ;
 
 LOOP : FOR_LOOP { PRINTLN("LOOP1"); }
      | WHILE_LOOP { PRINTLN("LOOP2"); }
