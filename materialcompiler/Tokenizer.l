@@ -48,11 +48,20 @@
 "*=" { RET( opassign); }
 "/=" { RET( opassign); }
 "%=" { RET( opassign); }
+"&=" { RET( opassign); }
+"|=" { RET( opassign); }
 
 "!" { RET(opnot); }
-"==" { RET(opcb); }
 "&&" { RET (opc); }
+"||" { RET (opc); }
 
+"==" { RET(opcb); }
+"!=" { RET(opcb); }
+"<" { RET(opcb); }
+">" { RET(opcb); }
+"<=" { RET(opcb); }
+">=" { RET(opcb); }
+"^" { RET(opcb); }
 
 
 "="  { RET(assign); }
