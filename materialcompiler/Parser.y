@@ -237,18 +237,33 @@ OPERAND : intl {  }
         ;
 
 EXPR_COND : EXPR_COND_B { PRINTLN("EPXR_COND1"); } /* && ||  */
-          | EXPR_COND opc EXPR_COND_B { PRINTLN("EXPR_COND2"); }
+          | EXPR_NOT { PRINTLN("EXPR_COND2")}
+          | EXPR_COND opc EXPR_COND_B { PRINTLN("EXPR_COND3"); }
+          | EXPR_COND opc EXPR_NOT { PRINTLN("EXPR_COND4"); }
           ;
 
-EXPR_NOT : { PRINTLN("EXPR_NOT1"); }
-         ;
+
+
+EXPR_SPECIAL_COND : paramb EXPR_COND parame ; 
 
 EXPR_COND_B : EXPR_LOW opcb EXPR_LOW { PRINTLN("EXPR_COND_B1"); } /* == != < >  */
             | EXPR_LOW { PRINTLN("EXPR_COND_B2"); }
+            | EXPR_SPECIAL_COND opcb EXPR_SPECIAL_COND { PRINTLN("EXPR_COND_B3"); }
+            | EXPR_SPECIAL_COND opcb EXPR_LOW { PRINTLN("EXPR_COND_B3"); }
+            | EXPR_LOW opcb EXPR_SPECIAL_COND { PRINTLN("EXPR_COND_B4"); }
+            | EXPR_LOW opcb EXPR_NOT { PRINTLN("EXPR_COND_B5"); }
+            | EXPR_SPECIAL_COND opcb EXPR_NOT {PRINTLN("EXPR_COND_B6"); }
+            | EXPR_NOT opcb EXPR_LOW { PRINTLN("EXPR_COND_B7"); }
+            | EXPR_NOT opcb EXPR_SPECIAL_COND { PRINTLN("EXPR_COND_B8")}
             ;
+
+EXPR_NOT : EXPR_LOW { PRINTLN("EXPR_NEG2"); }
+         | paramb opnot EXPR_SPEC parame {PRINTLN("EXPR_NEG3"); }
+         ;
 
 EXPR_NEG : paramb negation OPERAND parame { PRINTLN("EXPR_NEG1"); }
          | OPERAND { PRINTLN("EXPR_NEG2"); }
+         | paramb negation EXPR_SPEC parame{PRINTLN("EXPR_NEG3"); }
          ;
 
 
@@ -268,7 +283,7 @@ EXPR_HIGH : EXPR_NEG { PRINTLN("EXPR_HIGH1"); }
           | EXPR_HIGH oph EXPR_SPEC{ PRINTLN("EXPR_HIGH"); }
           ;
 
-EXPR_SPEC : paramb EXPR_LOW parame { PRINTLN("EXPR_SPEC"); }
+EXPR_SPEC : paramb EXPR_COND parame { PRINTLN("EXPR_SPEC"); }
           ;
   
 
