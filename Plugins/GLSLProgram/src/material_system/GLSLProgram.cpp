@@ -199,7 +199,7 @@ namespace GLSLProgramPlugin
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat2 &mat)
     {
-        //glUniform1i(m_uniforms.get(), value, );
+        //glUniformMatrix2fv(m_uniforms.get(name), mat);
         return true;
     }
 
