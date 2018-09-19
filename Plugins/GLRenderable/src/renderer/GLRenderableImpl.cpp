@@ -1,4 +1,4 @@
-	#include "GLRenderableImpl.hpp"
+#include "GLRenderableImpl.hpp"
 
 #include "nostraengine/scene/RenderableActor.hpp"
 
@@ -17,7 +17,8 @@ namespace GLRenderablePlugin
 
 	NOU::boolean GLRenderableImpl::setAttribute(const NOU::NOU_DAT_ALG::String8& str, void* ptr)
 	{
-		//todo
+		m_renderableIdentifier = str;
+		m_ptr = ptr;
 	}
 
 	NOU::NOU_DAT_ALG::CompareResult GLRenderableImpl::compare(

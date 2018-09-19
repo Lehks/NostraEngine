@@ -26,6 +26,8 @@ namespace GLRenderablePlugin
 		*/
 		NOU::sizeType m_factoryIdentifier;
 
+		static const NOU::NOU_DAT_ALG::String8 IMPL_IDENTIFIER;
+
 	public:
 
 		/**
