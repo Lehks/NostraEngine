@@ -5,6 +5,7 @@ namespace GLSLProgramPlugin
     NOU::boolean GLSLProgram::linkShader()
     {
         glLinkProgram(m_ID);
+        return true;
     }
 
     NOU::boolean GLSLProgram::createVertexShader()
@@ -77,8 +78,6 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    GLSLProgram::~GLSLProgram() {}
-
     NOU::boolean GLSLProgram::createShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource)
     {
         loadVertexShader(vertexShaderSource);
@@ -124,11 +123,13 @@ namespace GLSLProgramPlugin
     NOU::boolean GLSLProgram::bind()
     {
         glUseProgram(m_ID);
+        return true;
     }
 
     NOU::boolean GLSLProgram::unbind()
     {
         glUseProgram(0);
+        return true;
     }
 
     NOU::boolean GLSLProgram::createUniform(const NOU::NOU_DAT_ALG::String8 &name)
@@ -198,19 +199,19 @@ namespace GLSLProgramPlugin
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat2 &mat)
     {
-        //glUniform1i(m_uniforms.get(), value, );
+        //TODO: glUniformMatrix2fv(m_uniforms.get(name), mat);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat3 &mat)
     {
-        //glUniform1i(m_uniforms.get(),value);
+        //TODO: glUniform1i(m_uniforms.get(),value);
         return true;
     }
 
     NOU::boolean GLSLProgram::setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat4 &mat)
     {
-        //glUniform1i(m_uniforms.get(),value);
+        //TODO: glUniform1i(m_uniforms.get(),value);
         return true;
     }
 

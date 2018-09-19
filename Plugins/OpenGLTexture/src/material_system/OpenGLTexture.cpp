@@ -18,11 +18,12 @@ namespace OpenGLTexturePlugin
 	NOU::boolean OpenGLTexture::bind()
 	{
 		glBindTexture(GL_TEXTURE_2D, m_ID);
+		return true;
 	}
 
 	NOU::boolean OpenGLTexture::unbind()
 	{
-
+		return true;
 	}
 
 	NOU::boolean OpenGLTexture::GenerateMipmap(NOU::boolean mbool)
