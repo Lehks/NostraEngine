@@ -114,5 +114,8 @@ if (MSVC)
     target_compile_definitions(glfw PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
 
-install(TARGETS glfw EXPORT glfwTargets DESTINATION "bin")
+install(TARGETS glfw EXPORT glfwTargets 
+    RUNTIME DESTINATION "bin"
+    LIBRARY DESTINATION "lib"
+    ARCHIVE DESTINATION "lib")
 

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR)
 
+option(NOE_GENERATE_DOC "Generate Doxygen-Documentation." ON)
+
 if(${NOE_GENERATE_DOC})
 	
 	message(STATUS "NOE:  Attempting to generate Doxygen-Doc.")
