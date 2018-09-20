@@ -54,7 +54,7 @@ namespace NOE::NOE_RENDERER
 		/**
 		\brief				The vector that stores all renderables.
 		*/
-		NOU::NOU_DAT_ALG::Vector<NOE::NOE_SCENE::RenderableActor> m_renderables;
+		NOU::NOU_DAT_ALG::Vector<NOE::NOE_SCENE::RenderableActor*> m_renderables;
 
 	public:
 		/**
@@ -97,7 +97,7 @@ namespace NOE::NOE_RENDERER
 	\details				Provides the functionality for rendering Actors and transferring the renderables
 							to the GPU.
 	*/
-	class Renderer
+	class Renderer final
 	{
 	private:
 

@@ -239,11 +239,11 @@ namespace NOU::NOU_FILE_MNGT
 			open();
 		}
 
-		sizeType oldPos = ftell(m_data);
+		long oldPos = ftell(m_data);
 
 		fseek(m_data, 0, SEEK_END);
 
-		sizeType ret = ftell(m_data);
+		sizeType ret = sizeType(ftell(m_data));
 
 		fseek(m_data, oldPos, SEEK_SET);
 
@@ -252,7 +252,7 @@ namespace NOU::NOU_FILE_MNGT
 			close();
 		}
 
-		return ret;
+		return sizeType(ret);
 	}
 
 	boolean File::exists()
