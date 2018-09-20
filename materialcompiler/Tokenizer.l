@@ -16,7 +16,7 @@
 
 "in"     { RET(inkw); } /* Keywords */
 "out"    { RET(outkw); }
-"struct" { RET(structkw); }
+"struct" {  RET(structkw); }
 "shared" { RET(sharedkw); }
 "const"  { RET(constkw); }
 "if"     { RET(ifkw); }
@@ -106,6 +106,14 @@ void setupLex(char* filename){
     bp = yy_scan_bytes(string, fsize - 1);
     yy_switch_to_buffer(bp);
 
+}
+
+void setInput(char* source)
+{
+    YY_BUFFER_STATE bp;
+
+    bp = yy_scan_bytes(source, strlen(source));
+    yy_switch_to_buffer(bp);
 }
 
 /*

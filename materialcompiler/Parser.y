@@ -73,7 +73,7 @@ int b;
 
 
 %%
-S : EXPRESSION { printf("%s\n", "ACCEPTED"); }
+S : GLOB { printf("%s\n", "ACCEPTED"); }
   ;
 
 
