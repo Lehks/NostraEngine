@@ -3,7 +3,7 @@
 namespace GLRenderablePlugin
 {
 
-	static const NOU::NOU_DAT_ALG::String8 IMPL_IDENTIFIER = "MESH_RENDERABLE";
+	const NOU::NOU_DAT_ALG::String8 GLRenderableImplFactory::IMPL_IDENTIFIER = "MESH";
 
 	NOE::NOE_RENDERER::RenderableImpl* GLRenderableImplFactory::build()
 	{

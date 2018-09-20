@@ -11,12 +11,12 @@ namespace NOE::NOE_RENDERER
 		clear();
 	}
 
-	NOE::NOE_SCENE::RenderableActor RenderableList::at(NOU::int32 index) const
+	NOE::NOE_SCENE::RenderableActor* RenderableList::at(NOU::int32 index) const
 	{
 		return m_renderables.at(index);
 	}
 
-	void RenderableList::insertSorted(const NOE::NOE_SCENE::RenderableActor& renderable)
+	void RenderableList::insertSorted(NOE::NOE_SCENE::RenderableActor* renderable)
 	{
 		NOU::int64 insertionIndex;
 		

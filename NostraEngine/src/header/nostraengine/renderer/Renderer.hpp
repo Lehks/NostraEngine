@@ -74,7 +74,7 @@ namespace NOE::NOE_RENDERER
 
 		\brief				Returns the renderable at the position of the index.
 		*/
-		NOE_FUNC NOE::NOE_SCENE::RenderableActor at(NOU::int32 index) const;
+		NOE_FUNC NOE::NOE_SCENE::RenderableActor* at(NOU::int32 index) const;
 
 		/**
 		\param renderable	The renderable that will be inserted.
@@ -82,7 +82,7 @@ namespace NOE::NOE_RENDERER
 		\brief				Adds a new renderable into the RenderableList. This function ensures that all
 							added renderables are always in a sorted order.
 		*/
-		NOE_FUNC void insertSorted(const NOE::NOE_SCENE::RenderableActor& renderable);
+		NOE_FUNC void insertSorted(NOE::NOE_SCENE::RenderableActor* renderable);
 
 		/**
 		\brief				Removes all elements in the RenderableList.
@@ -97,7 +97,7 @@ namespace NOE::NOE_RENDERER
 	\details				Provides the functionality for rendering Actors and transferring the renderables
 							to the GPU.
 	*/
-	class Renderer final
+	class Renderer : public NOE::NOE_CORE::Initializable
 	{
 	private:
 
@@ -121,7 +121,7 @@ namespace NOE::NOE_RENDERER
 		/**
 		\brief				Destructor of the Renderer.
 		*/
-		NOE_FUNC ~Renderer();
+		NOE_FUNC virtual ~Renderer();
 
 		/**
 		\return				All renderables.

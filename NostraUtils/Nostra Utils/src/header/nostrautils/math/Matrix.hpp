@@ -310,8 +310,8 @@ namespace NOU::NOU_MATH
 		The amount of values must match the size of the matrix. This means that the inner initializer list
 		must have \p C values and the outer one \p R values.
 		*/
-		Matrix(const typename MatrixBase<T, R, C>::template InitializerList<typename 
-			MatrixBase<T, R, C>::template InitializerList<T>> &values);
+		Matrix(const typename MatrixBase<T, 2, 2>::template InitializerList<typename 
+			MatrixBase<T, 2, 2>::template InitializerList<T>> &values);
 
 		/**
 		\param other The matrix to add.
@@ -912,8 +912,8 @@ namespace NOU::NOU_MATH
 	}
 
 	template<typename T, sizeType R, sizeType C>
-	Matrix<T, R, C>::Matrix(const typename MatrixBase<T, R, C>::template InitializerList<
-		typename MatrixBase<T, R, C>::template InitializerList<T>> &values) :
+	Matrix<T, R, C>::Matrix(const typename MatrixBase<T, 2, 2>::template InitializerList<
+		typename MatrixBase<T, 2, 2>::template InitializerList<T>> &values) :
 		MatrixBase<T, R, C>(values)
 	{}
 

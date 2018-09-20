@@ -10,7 +10,7 @@ namespace NOE::NOE_SCENE
 	{
 		for (NOE::NOE_RENDERER::RenderableImplFactory* elem : m_factories)
 		{
-			if (elem->getIdentifier() == identifier)
+			if (elem->getFactoryIdentifier() == identifier)
 			{
 				m_ptr = elem->build();
 				break;
@@ -44,7 +44,7 @@ namespace NOE::NOE_SCENE
 		NOU::boolean found = false;
 		for (NOE::NOE_RENDERER::RenderableImplFactory* elem : m_factories)
 		{
-			if (elem->getIdentifier() == identifier)
+			if (elem->getFactoryIdentifier() == identifier)
 			{
 				found = true;
 			}
@@ -52,7 +52,7 @@ namespace NOE::NOE_SCENE
 
 		if (!found)
 		{
-			factory->setIdentifier(identifier);
+			factory->setFactoryIdentifier(identifier);
 			m_factories.pushBack(factory);
 
 			return true;
@@ -82,7 +82,7 @@ namespace NOE::NOE_SCENE
 			return 0;
 		else if (firstActor < secondActor)
 			return -1;
-		else if (firstActor > secondActor)
+		else
 			return 1;
 	}
 }
