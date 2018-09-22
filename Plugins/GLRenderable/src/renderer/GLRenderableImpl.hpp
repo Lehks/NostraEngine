@@ -40,11 +40,6 @@ namespace GLRenderablePlugin
 		NOU::uint32 m_VBO;
 
 		/**
-		\brief				Pointer to an array of vertices.
-		*/
-		const NOU::float32* m_vertices;
-
-		/**
 		\brief				Status of the wireframe.
 		*/
 		NOU::boolean m_wireframeEnabled;
@@ -69,7 +64,9 @@ namespace GLRenderablePlugin
 		/**
 		\brief				Binds the vertices in the vertex array and vertex buffer.
 		*/
-		NOE_PLUGIN_FUNC virtual void bind() const override;
+		NOE_PLUGIN_FUNC virtual void bind(const NOE::NOE_SCENE::RenderableActor &renderable) const override;
+
+		NOE_PLUGIN_FUNC virtual void draw() const override;
 
 		///todo doc
 		NOE_PLUGIN_FUNC virtual NOU::boolean setAttribute(const NOU::NOU_DAT_ALG::String8& str, void* ptr) override;

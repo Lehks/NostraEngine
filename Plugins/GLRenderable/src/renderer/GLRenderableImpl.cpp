@@ -21,13 +21,22 @@ namespace GLRenderablePlugin
 		glDeleteBuffers(1, &m_VBO);
 	}
 
-	void GLRenderableImpl::bind() const
+	void GLRenderableImpl::bind(const NOE::NOE_SCENE::RenderableActor &renderable) const
 	{
+		//will be replaced by mesh
+		NOU::float32 m_vertices[] =
+		{
+			-0.5f, -0.5f, 0.0f,	//left
+			 0.5f, -0.5f, 0.0f, //right
+			 0.0f,  0.5f, 0.0f  //top
+		};
+
 		glBindVertexArray(m_VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(NOU::float32), (void*)0);
+		glEnableVertexAttribArray(0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -37,6 +46,11 @@ namespace GLRenderablePlugin
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
+	}
+
+	void GLRenderableImpl::draw() const
+	{
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 
 	NOU::boolean GLRenderableImpl::setAttribute(const NOU::NOU_DAT_ALG::String8& str, void* ptr)

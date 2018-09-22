@@ -15,11 +15,17 @@ namespace GLRenderablePlugin
 
 	GLRenderer::~GLRenderer()
 	{
+
 	}
 
 	void GLRenderer::renderOptimized() const
 	{
+		const NOE::NOE_RENDERER::RenderableList &renderables = Renderer::getRenderables();
 
+		for (auto &r : renderables.getRenderables())
+		{
+			r->draw();
+		}
 	}
 
 #ifndef NOU_RENDERER_MAKE_ERROR

@@ -49,6 +49,9 @@ namespace NOE::NOE_RENDERER
 	*/
 	class RenderableList
 	{
+	public:
+		using ListType = NOU::NOU_DAT_ALG::Vector<NOE::NOE_SCENE::RenderableActor*>;
+
 	private:
 
 		/**
@@ -89,6 +92,12 @@ namespace NOE::NOE_RENDERER
 		*/
 		NOE_FUNC void clear();
 
+		/**
+		\return				Returns the renderables.
+
+		\brief				Returns a list of all renderables.
+		*/
+		NOE_FUNC const ListType& getRenderables() const;
 	};
 
 	/**
@@ -128,7 +137,7 @@ namespace NOE::NOE_RENDERER
 
 		\brief				A function that retuns all renderables in the Renderer.
 		*/
-		NOE_FUNC RenderableList getRenderables() const;
+		NOE_FUNC const RenderableList& getRenderables() const;
 
 		/**
 		\brief				Transfers the enabled renderables to the GPU for rendering.

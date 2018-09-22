@@ -35,9 +35,14 @@ namespace NOE::NOE_SCENE
 		
 	void RenderableActor::bind(const RenderableActor& renderable) const
 	{
-		//todo
+		m_ptr->bind(renderable);
 	}
-		
+
+	void RenderableActor::draw() const
+	{
+		m_ptr->draw();
+	}
+
 	NOU::boolean RenderableActor::addFactory(NOE::NOE_RENDERER::RenderableImplFactory* factory,
 		NOU::sizeType identifier)
 	{

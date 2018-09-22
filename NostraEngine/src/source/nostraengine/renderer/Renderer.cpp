@@ -30,6 +30,11 @@ namespace NOE::NOE_RENDERER
 		m_renderables.clear();
 	}
 
+	const RenderableList::ListType& RenderableList::getRenderables() const
+	{
+		return m_renderables;
+	}
+
 	Renderer::Renderer() :
 		m_optimizer(nullptr)
 	{}
@@ -39,7 +44,7 @@ namespace NOE::NOE_RENDERER
 		m_renderableList.clear();
 	}
 
-	RenderableList Renderer::getRenderables() const
+	const RenderableList& Renderer::getRenderables() const
 	{
 		return m_renderableList;
 	}

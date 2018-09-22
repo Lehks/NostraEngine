@@ -86,6 +86,11 @@ namespace NOE::NOE_SCENE
 		NOE_FUNC void bind(const RenderableActor& renderable) const;
 
 		/**
+		\brief				Draws the renderable.
+		*/
+		NOE_FUNC void draw() const;
+
+		/**
 		\param factory		The factory that is passed.
 		\param identifier	The identifier of the factory.
 
