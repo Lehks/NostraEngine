@@ -69,13 +69,13 @@ namespace OpenGLTexturePlugin
 	 * 
 	 * brief Binds the texture to the corresponding program.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean bind() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean Bind() override;
 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief Unbinds the texture to the corresponding program.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean unbind() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean Unbind() override;
 
 	/**
 	 * param	NOU::boolean mbool.
@@ -103,7 +103,7 @@ namespace OpenGLTexturePlugin
 	 * 
 	 * brief Function that loads a texture in a string.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture, NOU::sizeType width, NOU::sizeType heigth) override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean LoadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture, NOU::sizeType width, NOU::sizeType heigth) override;
 
 	/**
 	 * return	NOU::NOU_DAT_ALG::String8.

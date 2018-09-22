@@ -15,13 +15,13 @@ namespace OpenGLTexturePlugin
 		m_textureIsFliped(true)
 	{}
 
-	NOU::boolean OpenGLTexture::bind()
+	NOU::boolean OpenGLTexture::Bind()
 	{
 		glBindTexture(GL_TEXTURE_2D, m_ID);
 		return true;
 	}
 
-	NOU::boolean OpenGLTexture::unbind()
+	NOU::boolean OpenGLTexture::Unbind()
 	{
 		return true;
 	}
@@ -52,7 +52,7 @@ namespace OpenGLTexturePlugin
 		}
 	}
 
-	NOU::boolean OpenGLTexture::loadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture, NOU::sizeType width, NOU::sizeType heigth)
+	NOU::boolean OpenGLTexture::LoadTexture(const NOU::NOU_DAT_ALG::String8 &pathToTexture, NOU::sizeType width, NOU::sizeType heigth)
 	{
 		NOU::char32 *data = nullptr;
 

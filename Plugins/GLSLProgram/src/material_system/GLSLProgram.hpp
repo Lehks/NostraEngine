@@ -53,32 +53,32 @@ namespace GLSLProgramPlugin
 	/**
 	 * brief Hash map dor storing the uniform names as a key and theier locations.
 	 */
-		NOU::NOU_DAT_ALG::HashMap<NOU::char32, NOU::sizeType> m_uniforms;
+		NOU::NOU_DAT_ALG::HashMap<const NOU::NOU_DAT_ALG::String8 &, NOU::sizeType> m_uniforms;
 
 	/**
 	 * return 	NOU::boolean.
 	 * 
 	 * brief Method to link the different shader programs.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean linkShader() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean LinkShader() override;
 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief Method to create the vertex shader.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean createVertexShader() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean CreateVertexShader() override;
 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief Method to create the fragment shader.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean createFragmetShader() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean CreateFragmetShader() override;
 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief Method to create the geometry shader.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean createGeometryShader() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean CreateGeometryShader() override;
 
 	public:
 	/**
@@ -98,7 +98,7 @@ namespace GLSLProgramPlugin
 	 * 
 	 * brief A Function for loading the shader in the m_vertexshader variable.
 	 */
-		NOE_PLUGIN_FUNC NOU::boolean loadVertexShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
+		NOE_PLUGIN_FUNC NOU::boolean LoadVertexShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
 	/**
 	 * param	const NOU::NOU_DAT_ALG::String8 &shadersource, the path to the shader source.
 	 * 
@@ -106,7 +106,7 @@ namespace GLSLProgramPlugin
 	 * 
 	 * brief A Function for loading the shader in the m_fragmentshader variable.
 	 */
-		NOE_PLUGIN_FUNC NOU::boolean loadFragmentShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
+		NOE_PLUGIN_FUNC NOU::boolean LoadFragmentShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
 	/**
 	 * param	const NOU::NOU_DAT_ALG::String8 &shadersource, the path to the shader source.
 	 * 
@@ -114,7 +114,7 @@ namespace GLSLProgramPlugin
 	 * 
 	 * brief A Function for loading the shader in the m_geometryshader variable.
 	 */
-		NOE_PLUGIN_FUNC NOU::boolean loadGeometryShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
+		NOE_PLUGIN_FUNC NOU::boolean LoadGeometryShader(const NOU::NOU_DAT_ALG::String8 &shaderSource);
 	/**
 	 * param	const NOU::NOU_DAT_ALG::String8 &vertexshadersource, the path to the vertx shader source.
 	 * param	const NOU::NOU_DAT_ALG::String8 &fragmenthadersource, the path to the fragment shader source.
@@ -124,19 +124,19 @@ namespace GLSLProgramPlugin
 	 * 
 	 * brief This function creats the shader and calls the different loadfunction aswell as the creat and link methods.
 	 */
-		NOE_PLUGIN_FUNC virtual NOU::boolean createShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource = nullptr) override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean CreateShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource = nullptr) override;
 	/** 
 	 * return	NOU::boolean.
 	 * 
 	 * brief Bind's the shader to the corresponding program.
 	 */	
-		NOE_PLUGIN_FUNC virtual NOU::boolean bind() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean Bind() override;
 	/** 
 	 * return	NOU::boolean.
 	 * 
 	 * brief Unbind's the shader from the corresponding program.
 	 */	
-		NOE_PLUGIN_FUNC virtual NOU::boolean unbind() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean Unbind() override;
 	/** 
 	 * param	const NOU::NOU_DAT_ALG::String8 &name, the name of the uniform.
 	 * 
@@ -144,7 +144,7 @@ namespace GLSLProgramPlugin
 	 * 
 	 * brief This function creates the uniform with the given name and stores their <name,location> values in the map.
 	 */	
-		NOE_PLUGIN_FUNC virtual NOU::boolean createUniform(const NOU::NOU_DAT_ALG::String8 &name) override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean CreateUniform(const NOU::NOU_DAT_ALG::String8 &name) override;
 	/**
 	 * param	const NOU::NOU_DAT_ALG::String8 &name, the name of the uniform.
 	 * param	NOU::boolean value, the value that the uniform should get.
@@ -264,13 +264,13 @@ namespace GLSLProgramPlugin
 	 * 
 	 * brief This function enables lightning.
 	 */	
-		NOE_PLUGIN_FUNC virtual NOU::boolean enableLightning() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean EnableLightning() override;
 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief This function disables lightning.
 	 */	
-		NOE_PLUGIN_FUNC virtual NOU::boolean disableLightning() override;
+		NOE_PLUGIN_FUNC virtual NOU::boolean DisableLightning() override;
 	};
 }
 #endif

@@ -2,15 +2,15 @@
 
 namespace GLSLProgramPlugin
 {
-    NOU::boolean GLSLProgram::linkShader()
+    NOU::boolean GLSLProgram::LinkShader()
     {
         glLinkProgram(m_ID);
         return true;
     }
 
-    NOU::boolean GLSLProgram::createVertexShader()
+    NOU::boolean GLSLProgram::CreateVertexShader()
     {
-        m_vertexShaderId = createShader(m_vertexShader, GL_VERTEX_SHADER);
+        m_vertexShaderId = CreateShader(m_vertexShader, GL_VERTEX_SHADER);
         if(m_vertexShaderId == 0)
         {
             return false;
@@ -19,9 +19,9 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    NOU::boolean GLSLProgram::createFragmetShader()
+    NOU::boolean GLSLProgram::CreateFragmetShader()
     {
-        m_fragmentShaderId = createShader(m_fragmentShader, GL_FRAGMENT_SHADER);
+        m_fragmentShaderId = CreateShader(m_fragmentShader, GL_FRAGMENT_SHADER);
         if(m_fragmentShaderId == 0)
         {
             return false;
@@ -30,9 +30,9 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    NOU::boolean GLSLProgram::createGeometryShader()
+    NOU::boolean GLSLProgram::CreateGeometryShader()
     {
-        m_geometryShaderId = createShader(m_geometryShader, GL_GEOMETRY_SHADER);
+        m_geometryShaderId = CreateShader(m_geometryShader, GL_GEOMETRY_SHADER);
         if(m_geometryShaderId == 0)
         {
             return false;
@@ -51,7 +51,7 @@ namespace GLSLProgramPlugin
         m_geometryShader(nullptr)
     {}
 
-    NOU::boolean GLSLProgram::loadVertexShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
+    NOU::boolean GLSLProgram::LoadVertexShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
     {
         NOU::NOU_FILE_MNGT::File file(shaderSource);
         file.open(NOU::NOU_FILE_MNGT::AccessMode::READ);
@@ -60,7 +60,7 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    NOU::boolean GLSLProgram::loadFragmentShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
+    NOU::boolean GLSLProgram::LoadFragmentShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
     {
         NOU::NOU_FILE_MNGT::File file(shaderSource);
         file.open(NOU::NOU_FILE_MNGT::AccessMode::READ);
@@ -69,7 +69,7 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    NOU::boolean GLSLProgram::loadGeometryShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
+    NOU::boolean GLSLProgram::LoadGeometryShader(const NOU::NOU_DAT_ALG::String8 &shaderSource)
     {
         NOU::NOU_FILE_MNGT::File file(shaderSource);
         file.open(NOU::NOU_FILE_MNGT::AccessMode::READ);
@@ -78,20 +78,20 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    NOU::boolean GLSLProgram::createShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource)
+    NOU::boolean GLSLProgram::CreateShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource)
     {
-        loadVertexShader(vertexShaderSource);
-        loadFragmentShader(fragmentShaderSource);
+        LoadVertexShader(vertexShaderSource);
+        LoadFragmentShader(fragmentShaderSource);
         if(geometryShaderSource != nullptr)
         {
-            loadGeometryShader(geometryShaderSource);
+            LoadGeometryShader(geometryShaderSource);
         }
 
-        createVertexShader();
-        createFragmetShader();
+        CreateVertexShader();
+        CreateFragmetShader();
         if(geometryShaderSource != nullptr)
         {
-            createGeometryShader();
+            CreateGeometryShader();
         }
 
         glCompileShader(m_vertexShaderId);
@@ -108,7 +108,7 @@ namespace GLSLProgramPlugin
             glAttachShader(m_ID, m_geometryShaderId);
         }
 
-        linkShader();
+        LinkShader();
 
         glDeleteShader(m_vertexShaderId);
         glDeleteShader(m_fragmentShaderId);
@@ -120,19 +120,19 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-    NOU::boolean GLSLProgram::bind()
+    NOU::boolean GLSLProgram::Bind()
     {
         glUseProgram(m_ID);
         return true;
     }
 
-    NOU::boolean GLSLProgram::unbind()
+    NOU::boolean GLSLProgram::Unbind()
     {
         glUseProgram(0);
         return true;
     }
 
-    NOU::boolean GLSLProgram::createUniform(const NOU::NOU_DAT_ALG::String8 &name)
+    NOU::boolean GLSLProgram::CreateUniform(const NOU::NOU_DAT_ALG::String8 &name)
     {
         NOU::sizeType uniformLocation = glGetUniformLocation(m_ID, name.rawStr());
         if(uniformLocation == 0)
@@ -215,12 +215,12 @@ namespace GLSLProgramPlugin
         return true;
     }
 
-	NOU::boolean GLSLProgram::enableLightning()
+	NOU::boolean GLSLProgram::EnableLightning()
 	{
 		return true;
 	}
 
-	NOU::boolean GLSLProgram::disableLightning()
+	NOU::boolean GLSLProgram::DisableLightning()
 	{
 		return true;
 	}

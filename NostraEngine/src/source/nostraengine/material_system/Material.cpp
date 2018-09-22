@@ -2,25 +2,25 @@
 
 namespace NOE::NOE_MATSYS
 {
-	NOU::boolean Material::bindShader()
+	NOU::boolean Material::BindShader()
 	{
 		m_shader->bind();
 		return true;
 	}
 
-	NOU::boolean Material::unbindShader()
+	NOU::boolean Material::UnbindShader()
 	{
 		m_shader->unbind();
 		return true;
 	}
 
-	NOU::boolean Material::bindTexture()
+	NOU::boolean Material::BindTexture()
 	{
 		m_texture->bind();
 		return true;
 	}
 
-	NOU::boolean Material::unbindTexture()
+	NOU::boolean Material::UnbindTexture()
 	{
 		m_texture->unbind();
 		return true;
@@ -28,25 +28,25 @@ namespace NOE::NOE_MATSYS
 
 	NOU::boolean Material::Init()
 	{
-		setColorUniform();
+		RefreshColorUniform();
 
-		setAmbientColorLightningUniform();
-		setEmissionColorLightningUniform();
-		setSpecularColorLightningUniform();
-		setDiffuseColorLightningUniform();
+		RefreshAmbientColorLightningUniform();
+		RefreshEmissionColorLightningUniform();
+		RefreshSpecularColorLightningUniform();
+		RefreshDiffuseColorLightningUniform();
 
-		setAmbientColorMaterialUniform();
-		setEmissionColorMaterialUniform();
+		RefreshAmbientColorMaterialUniform();
+		RefreshEmissionColorMaterialUniform();
 		return true;
 	}
 
-	NOU::boolean Material::setTextureUniform()
+	NOU::boolean Material::RefreshTextureUniform()
 	{
 
 		return true;
 	}
 
-	NOU::boolean Material::setColorUniform()
+	NOU::boolean Material::RefreshColorUniform()
 	{
 		NOU::NOU_DAT_ALG::String8 uname("m_color");
 		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
@@ -54,42 +54,42 @@ namespace NOE::NOE_MATSYS
 
 	}
 
-	NOU::boolean Material::setAmbientColorMaterialUniform()
+	NOU::boolean Material::RefreshAmbientColorMaterialUniform()
 	{
 		NOU::NOU_DAT_ALG::String8 uname("m_ambientColorMaterial");
 		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
 		return true;
 	}
 
-	NOU::boolean Material::setEmissionColorMaterialUniform()
+	NOU::boolean Material::RefreshEmissionColorMaterialUniform()
 	{
 		NOU::NOU_DAT_ALG::String8 uname("m_emissionColorMaterial");
 		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
 		return true;
 	}
 
-	NOU::boolean Material::setAmbientColorLightningUniform()
+	NOU::boolean Material::RefreshAmbientColorLightningUniform()
 	{
 		NOU::NOU_DAT_ALG::String8 uname("m_ambientColorLightning");
 		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
 		return true;
 	}
 
-	NOU::boolean Material::setEmissionColorLightningUniform()
+	NOU::boolean Material::RefreshEmissionColorLightningUniform()
 	{
 		NOU::NOU_DAT_ALG::String8 uname("m_emissionColorLightning");
 		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
 		return true;
 	}
 
-	NOU::boolean Material::setSpecularColorLightningUniform()
+	NOU::boolean Material::RefreshSpecularColorLightningUniform()
 	{
 		NOU::NOU_DAT_ALG::String8 uname("m_specularColorLightning");
 		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
 		return true;
 	}
 
-	NOU::boolean Material::setDiffuseColorLightningUniform()
+	NOU::boolean Material::RefreshDiffuseColorLightningUniform()
 	{
 		NOU::NOU_DAT_ALG::String8 uname("m_diffuseColorLightning");
 		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
@@ -122,15 +122,15 @@ namespace NOE::NOE_MATSYS
 		this->m_diffuseColorLightning = tmpColor;
 		this->m_specularColorLightning = tmpColor;
 
-		createUniform("m_texture");
+		CreateUniform("m_texture");
 
-		createUniform("m_color");
-		createUniform("m_ambientColorMaterial");
-		createUniform("m_emissionColorMaterial");
-		createUniform("m_ambientColorLightning");
-		createUniform("m_emissionColorLightning");
-		createUniform("m_specularColorLightning");
-		createUniform("m_diffuesColorLightning");
+		CreateUniform("m_color");
+		CreateUniform("m_ambientColorMaterial");
+		CreateUniform("m_emissionColorMaterial");
+		CreateUniform("m_ambientColorLightning");
+		CreateUniform("m_emissionColorLightning");
+		CreateUniform("m_specularColorLightning");
+		CreateUniform("m_diffuesColorLightning");
 
 		Init();
 
@@ -161,15 +161,15 @@ namespace NOE::NOE_MATSYS
 		this->m_diffuseColorLightning = tmpColor;
 		this->m_specularColorLightning = tmpColor;
 
-		createUniform("m_texture");
+		CreateUniform("m_texture");
 
-		createUniform("m_color");
-		createUniform("m_ambientColorMaterial");
-		createUniform("m_emissionColorMaterial");
-		createUniform("m_ambientColorLightning");
-		createUniform("m_emissionColorLightning");
-		createUniform("m_specularColorLightning");
-		createUniform("m_diffuesColorLightning");
+		CreateUniform("m_color");
+		CreateUniform("m_ambientColorMaterial");
+		CreateUniform("m_emissionColorMaterial");
+		CreateUniform("m_ambientColorLightning");
+		CreateUniform("m_emissionColorLightning");
+		CreateUniform("m_specularColorLightning");
+		CreateUniform("m_diffuesColorLightning");
 
 		Init();
 
@@ -200,15 +200,15 @@ namespace NOE::NOE_MATSYS
 		this->m_diffuseColorLightning = tmpColor;
 		this->m_specularColorLightning = tmpColor;
 
-		createUniform("m_texture");
+		CreateUniform("m_texture");
 
-		createUniform("m_color");
-		createUniform("m_ambientColorMaterial");
-		createUniform("m_emissionColorMaterial");
-		createUniform("m_ambientColorLightning");
-		createUniform("m_emissionColorLightning");
-		createUniform("m_specularColorLightning");
-		createUniform("m_diffuesColorLightning");
+		CreateUniform("m_color");
+		CreateUniform("m_ambientColorMaterial");
+		CreateUniform("m_emissionColorMaterial");
+		CreateUniform("m_ambientColorLightning");
+		CreateUniform("m_emissionColorLightning");
+		CreateUniform("m_specularColorLightning");
+		CreateUniform("m_diffuesColorLightning");
 
 		Init();
 
@@ -238,15 +238,15 @@ namespace NOE::NOE_MATSYS
 		this->m_diffuseColorLightning = tmpColor;
 		this->m_specularColorLightning = tmpColor;
 
-		createUniform("m_texture");
+		CreateUniform("m_texture");
 
-		createUniform("m_color");
-		createUniform("m_ambientColorMaterial");
-		createUniform("m_emissionColorMaterial");
-		createUniform("m_ambientColorLightning");
-		createUniform("m_emissionColorLightning");
-		createUniform("m_specularColorLightning");
-		createUniform("m_diffuesColorLightning");
+		CreateUniform("m_color");
+		CreateUniform("m_ambientColorMaterial");
+		CreateUniform("m_emissionColorMaterial");
+		CreateUniform("m_ambientColorLightning");
+		CreateUniform("m_emissionColorLightning");
+		CreateUniform("m_specularColorLightning");
+		CreateUniform("m_diffuesColorLightning");
 
 		Init();
 	}
@@ -254,7 +254,7 @@ namespace NOE::NOE_MATSYS
 	Material::~Material() 
 	{}
 
-	NOU::boolean Material::bindMaterial()
+	NOU::boolean Material::BindMaterial()
 	{
 		
 		if (m_texture == nullptr && m_shader == nullptr)
@@ -263,17 +263,17 @@ namespace NOE::NOE_MATSYS
 		}
 		else if(m_texture == nullptr)
 		{
-			bindShader();
+			BindShader();
 			return true;
 		}
 		else {
-			bindShader();
-			bindTexture();
+			BindShader();
+			BindTexture();
 			return true;
 		}
 	}
 
-	NOU::boolean Material::unbindMaterial()
+	NOU::boolean Material::UnbindMaterial()
 	{
 		if (m_texture == nullptr && m_shader == nullptr)
 		{
@@ -281,27 +281,27 @@ namespace NOE::NOE_MATSYS
 		}
 		else if (m_texture == nullptr)
 		{
-			unbindShader();
+			UnbindShader();
 			return true;
 		}
 		else {
-			unbindShader();
-			unbindTexture();
+			UnbindShader();
+			UnbindTexture();
 			return true;
 		}
 	}
 
-	NOU::boolean Material::enableLightning()
+	NOU::boolean Material::EnableLightning()
 	{
 		m_lightningIsActive = true;
-		m_shader->enableLightning();
+		m_shader->EnableLightning();
 		return true;
 	}
 
-	NOU::boolean Material::disableLightning()
+	NOU::boolean Material::DisableLightning()
 	{
 		m_lightningIsActive = false;
-		m_shader->disableLightning();
+		m_shader->DisableLightning();
 		return true;
 	}
 
@@ -332,26 +332,26 @@ namespace NOE::NOE_MATSYS
 
 	}
 
-	NOU::boolean Material::enableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap)
+	NOU::boolean Material::EnableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap)
 	{
 		m_normalMappingIsActive = true;
 		m_parrallaxMappingIsActive = false;
 		return true;
 	}
 
-	NOU::boolean Material::enableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap)
+	NOU::boolean Material::EnableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap)
 	{
 		m_normalMappingIsActive = false;
 		m_parrallaxMappingIsActive = true;
 		return true;
 	}
 
-	NOU::boolean Material::saveMaterial(const NOU::NOU_DAT_ALG::String8 &pathToSave)
+	NOU::boolean Material::SaveMaterial(const NOU::NOU_DAT_ALG::String8 &pathToSave)
 	{
 		return true;
 	}
 
-	NOU::boolean Material::loadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial)
+	NOU::boolean Material::LoadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial)
 	{
 		return true;
 	}
@@ -385,7 +385,7 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setAlpha(a);
 		this->m_color = tmpColor;
 
-		setColorUniform();
+		RefreshColorUniform();
 	}
 
 	//Material / Mesh
@@ -393,7 +393,7 @@ namespace NOE::NOE_MATSYS
 	{
 		this->m_ambientColorMaterial = color;
 
-		setAmbientColorMaterialUniform();
+		RefreshAmbientColorMaterialUniform();
 	}
 
 	void Material::setAmbientColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -405,14 +405,14 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setAlpha(a);
 		this->m_ambientColorMaterial = tmpColor;
 
-		setAmbientColorMaterialUniform();
+		RefreshAmbientColorMaterialUniform();
 	}
 
 	void Material::setEmissionColorMaterial(const NOU::NOU_MATH::Color32f &color)
 	{
 		this->m_emissionColorMaterial = color;
 
-		setEmissionColorMaterialUniform();
+		RefreshEmissionColorMaterialUniform();
 	}
 
 	void Material::setEmissionColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -424,7 +424,7 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setAlpha(a);
 		this->m_emissionColorMaterial = tmpColor;
 
-		setEmissionColorMaterialUniform();
+		RefreshEmissionColorMaterialUniform();
 
 	}
 
@@ -433,7 +433,7 @@ namespace NOE::NOE_MATSYS
 	{
 		this->m_ambientColorLightning = color;
 
-		setAmbientColorLightningUniform();
+		RefreshAmbientColorLightningUniform();
 	}
 
 	void Material::setAmbientColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -445,7 +445,7 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setAlpha(a);
 		this->m_ambientColorLightning = tmpColor;
 
-		setAmbientColorLightningUniform();
+		RefreshAmbientColorLightningUniform();
 
 	}
 
@@ -453,7 +453,7 @@ namespace NOE::NOE_MATSYS
 	{
 		this->m_diffuseColorLightning = color;
 
-		setDiffuseColorLightningUniform();
+		RefreshDiffuseColorLightningUniform();
 
 	}
 
@@ -466,7 +466,7 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setAlpha(a);
 		this->m_diffuseColorLightning = tmpColor;
 
-		setDiffuseColorLightningUniform();
+		RefreshDiffuseColorLightningUniform();
 
 	}
 
@@ -474,7 +474,7 @@ namespace NOE::NOE_MATSYS
 	{
 		this->m_specularColorLightning = color;
 
-		setSpecularColorLightningUniform();
+		RefreshSpecularColorLightningUniform();
 	}
 
 	void Material::setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -486,13 +486,13 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setAlpha(a);
 		this->m_specularColorLightning = tmpColor;
 
-		setSpecularColorLightningUniform();
+		RefreshSpecularColorLightningUniform();
 
 	}
 
-	NOU::boolean Material::createUniform(const NOU::NOU_DAT_ALG::String8 &name)
+	NOU::boolean Material::CreateUniform(const NOU::NOU_DAT_ALG::String8 &name)
 	{
-		this->m_shader->createUniform(name);
+		this->m_shader->CreateUniform(name);
 		return true;
 	}
 

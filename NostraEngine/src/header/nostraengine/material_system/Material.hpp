@@ -85,37 +85,37 @@ namespace NOE::NOE_MATSYS
 	 * 
 	 * brief A function that binds the shader.
 	 */
-	 	NOU::boolean bindShader();
+	 	NOU::boolean BindShader();
 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief A function that unbinds the shader.
 	 */
-	 	NOU::boolean unbindShader();
+	 	NOU::boolean UnbindShader();
 
 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief A function that binds the texture.
 	 */
-	 	NOU::boolean bindTexture();
+	 	NOU::boolean BindTexture();
 		 	/**
 	 * return	NOU::boolean.
 	 * 
 	 * brief A function that unbinds the texture.
 	 */
-	 	NOU::boolean unbindTexture();
+	 	NOU::boolean UnbindTexture();
 		
 		NOU::boolean Init();
 
-		NOU::boolean setTextureUniform();
-		NOU::boolean setColorUniform();
-		NOU::boolean setAmbientColorMaterialUniform();
-		NOU::boolean setAmbientColorLightningUniform();
-		NOU::boolean setEmissionColorMaterialUniform();
-		NOU::boolean setEmissionColorLightningUniform();
-		NOU::boolean setDiffuseColorLightningUniform();
-		NOU::boolean setSpecularColorLightningUniform();
+		NOU::boolean RefreshTextureUniform();
+		NOU::boolean RefreshColorUniform();
+		NOU::boolean RefreshAmbientColorMaterialUniform();
+		NOU::boolean RefreshAmbientColorLightningUniform();
+		NOU::boolean RefreshEmissionColorMaterialUniform();
+		NOU::boolean RefreshEmissionColorLightningUniform();
+		NOU::boolean RefreshDiffuseColorLightningUniform();
+		NOU::boolean RefreshSpecularColorLightningUniform();
 
 	public:
 	/**
@@ -154,21 +154,21 @@ namespace NOE::NOE_MATSYS
 	 */
      	~Material();
 
-	 	NOU::boolean bindMaterial();
-	 	NOU::boolean unbindMaterial();
+	 	NOU::boolean BindMaterial();
+	 	NOU::boolean UnbindMaterial();
 
-	 	NOU::boolean enableLightning();
-		NOU::boolean disableLightning();
+	 	NOU::boolean EnableLightning();
+		NOU::boolean DisableLightning();
 
 		//Texture
 	 	NOU::boolean GenerateMipmap(NOU::boolean mbool);
 		NOU::boolean FlipTexture(NOU::boolean mbool);
 
-		NOU::boolean enableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap);
-		NOU::boolean enableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap);
+		NOU::boolean EnableNormalMapping(const NOE::NOE_MATSYS::Texture &normalMap);
+		NOU::boolean EnableParrallaxMapping(const NOE::NOE_MATSYS::Texture &displacementMap);
 
-	 	NOU::boolean saveMaterial(const NOU::NOU_DAT_ALG::String8 &pathToSave);
-	 	NOU::boolean loadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
+	 	NOU::boolean SaveMaterial(const NOU::NOU_DAT_ALG::String8 &pathToSave);
+	 	NOU::boolean LoadMaterial(const NOU::NOU_DAT_ALG::String8 &pathToMaterial);
 
 	 	void setMaterialName(const NOU::NOU_DAT_ALG::String8 &materialName);
 
@@ -192,7 +192,7 @@ namespace NOE::NOE_MATSYS
 		void setSpecularColorLightning(const NOU::NOU_MATH::Color32f &color);
 		void setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
 
-		NOU::boolean createUniform(const NOU::NOU_DAT_ALG::String8 &name);
+		NOU::boolean CreateUniform(const NOU::NOU_DAT_ALG::String8 &name);
 		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::boolean value);
 		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::sizeType value);
 		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 value);

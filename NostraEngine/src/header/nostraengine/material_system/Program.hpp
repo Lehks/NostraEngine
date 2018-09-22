@@ -15,17 +15,17 @@ namespace NOE::NOE_MATSYS
 	class Program
 	{
 	private:
-		virtual NOU::boolean linkShader() = 0;
-		virtual NOU::boolean createVertexShader() = 0;
-		virtual NOU::boolean createFragmetShader() = 0;
-		virtual NOU::boolean createGeometryShader() = 0;
+		virtual NOU::boolean LinkShader() = 0;
+		virtual NOU::boolean CreateVertexShader() = 0;
+		virtual NOU::boolean CreateFragmetShader() = 0;
+		virtual NOU::boolean CreateGeometryShader() = 0;
 
 	public:
 		virtual ~Program() = default;
-		virtual NOU::boolean createShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource = nullptr) = 0;
-		virtual NOU::boolean bind() = 0;
-		virtual NOU::boolean unbind() = 0;
-		virtual NOU::boolean createUniform(const NOU::NOU_DAT_ALG::String8 &name)  = 0;
+		virtual NOU::boolean CreateShader(const NOU::NOU_DAT_ALG::String8 &vertexShaderSource, const NOU::NOU_DAT_ALG::String8 &fragmentShaderSource, const NOU::NOU_DAT_ALG::String8 &geometryShaderSource = nullptr) = 0;
+		virtual NOU::boolean Bind() = 0;
+		virtual NOU::boolean Unbind() = 0;
+		virtual NOU::boolean CreateUniform(const NOU::NOU_DAT_ALG::String8 &name)  = 0;
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::boolean value) = 0;
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::sizeType value) = 0;
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::float32 value) = 0;
@@ -38,8 +38,8 @@ namespace NOE::NOE_MATSYS
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat2 &mat) = 0;
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat3 &mat) = 0;
 		virtual NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, const NOU::NOU_MATH::Mat4 &mat) = 0;
-		virtual NOU::boolean enableLightning() = 0;
-		virtual NOU::boolean disableLightning() = 0;
+		virtual NOU::boolean EnableLightning() = 0;
+		virtual NOU::boolean DisableLightning() = 0;
 	};
 }
 #endif
