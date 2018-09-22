@@ -26,6 +26,75 @@ namespace NOE::NOE_MATSYS
 		return true;
 	}
 
+	NOU::boolean Material::Init()
+	{
+		setColorUniform();
+
+		setAmbientColorLightningUniform();
+		setEmissionColorLightningUniform();
+		setSpecularColorLightningUniform();
+		setDiffuseColorLightningUniform();
+
+		setAmbientColorMaterialUniform();
+		setEmissionColorMaterialUniform();
+		return true;
+	}
+
+	NOU::boolean Material::setTextureUniform()
+	{
+
+		return true;
+	}
+
+	NOU::boolean Material::setColorUniform()
+	{
+		NOU::NOU_DAT_ALG::String8 uname("m_color");
+		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
+		return true;
+
+	}
+
+	NOU::boolean Material::setAmbientColorMaterialUniform()
+	{
+		NOU::NOU_DAT_ALG::String8 uname("m_ambientColorMaterial");
+		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
+		return true;
+	}
+
+	NOU::boolean Material::setEmissionColorMaterialUniform()
+	{
+		NOU::NOU_DAT_ALG::String8 uname("m_emissionColorMaterial");
+		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
+		return true;
+	}
+
+	NOU::boolean Material::setAmbientColorLightningUniform()
+	{
+		NOU::NOU_DAT_ALG::String8 uname("m_ambientColorLightning");
+		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
+		return true;
+	}
+
+	NOU::boolean Material::setEmissionColorLightningUniform()
+	{
+		NOU::NOU_DAT_ALG::String8 uname("m_emissionColorLightning");
+		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
+		return true;
+	}
+
+	NOU::boolean Material::setSpecularColorLightningUniform()
+	{
+		NOU::NOU_DAT_ALG::String8 uname("m_specularColorLightning");
+		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
+		return true;
+	}
+
+	NOU::boolean Material::setDiffuseColorLightningUniform()
+	{
+		NOU::NOU_DAT_ALG::String8 uname("m_diffuseColorLightning");
+		setUniform(uname, this->m_color.getRed(), this->m_color.getGreen(), this->m_color.getBlue(), this->m_color.getAlpha());
+		return true;
+	}
 	//-------------------- public ---------------------
 
 	Material::Material(const NOU::NOU_DAT_ALG::String8 &materialName) :
@@ -36,7 +105,36 @@ namespace NOE::NOE_MATSYS
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
 		m_mipMappingIsActive(false)
-	{}
+	{
+		NOU::NOU_MATH::Color32f tmpColor;
+		tmpColor.setRed(255);
+		tmpColor.setGreen(255);
+		tmpColor.setBlue(255);
+		tmpColor.setAlpha(255);
+
+		this->m_color = tmpColor;
+
+		this->m_emissionColorMaterial = tmpColor;
+		this->m_ambientColorMaterial = tmpColor;
+
+		this->m_emissionColorLightning = tmpColor;
+		this->m_ambientColorLightning = tmpColor;
+		this->m_diffuseColorLightning = tmpColor;
+		this->m_specularColorLightning = tmpColor;
+
+		createUniform("m_texture");
+
+		createUniform("m_color");
+		createUniform("m_ambientColorMaterial");
+		createUniform("m_emissionColorMaterial");
+		createUniform("m_ambientColorLightning");
+		createUniform("m_emissionColorLightning");
+		createUniform("m_specularColorLightning");
+		createUniform("m_diffuesColorLightning");
+
+		Init();
+
+	}
 
 	Material::Material(const NOU::NOU_DAT_ALG::String8 &materialName, NOE::NOE_MATSYS::Program *shader) :
 		m_materialName(materialName),
@@ -46,7 +144,37 @@ namespace NOE::NOE_MATSYS
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
 		m_mipMappingIsActive(false)
-	{}
+	{
+		NOU::NOU_MATH::Color32f tmpColor;
+		tmpColor.setRed(255);
+		tmpColor.setGreen(255);
+		tmpColor.setBlue(255);
+		tmpColor.setAlpha(255);
+
+		this->m_color = tmpColor;
+
+		this->m_emissionColorMaterial = tmpColor;
+		this->m_ambientColorMaterial = tmpColor;
+
+		this->m_emissionColorLightning = tmpColor;
+		this->m_ambientColorLightning = tmpColor;
+		this->m_diffuseColorLightning = tmpColor;
+		this->m_specularColorLightning = tmpColor;
+
+		createUniform("m_texture");
+
+		createUniform("m_color");
+		createUniform("m_ambientColorMaterial");
+		createUniform("m_emissionColorMaterial");
+		createUniform("m_ambientColorLightning");
+		createUniform("m_emissionColorLightning");
+		createUniform("m_specularColorLightning");
+		createUniform("m_diffuesColorLightning");
+
+		Init();
+
+	}
+
 	Material::Material(const NOU::NOU_DAT_ALG::String8 &materialName, NOE::NOE_MATSYS::Program *shader, NOE::NOE_MATSYS::Texture *texture) :
 		m_materialName(materialName),
 		m_shader(shader),
@@ -55,7 +183,37 @@ namespace NOE::NOE_MATSYS
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
 		m_mipMappingIsActive(false)
-	{}
+	{
+		NOU::NOU_MATH::Color32f tmpColor;
+		tmpColor.setRed(255);
+		tmpColor.setGreen(255);
+		tmpColor.setBlue(255);
+		tmpColor.setAlpha(255);
+
+		this->m_color = tmpColor;
+
+		this->m_emissionColorMaterial = tmpColor;
+		this->m_ambientColorMaterial = tmpColor;
+
+		this->m_emissionColorLightning = tmpColor;
+		this->m_ambientColorLightning = tmpColor;
+		this->m_diffuseColorLightning = tmpColor;
+		this->m_specularColorLightning = tmpColor;
+
+		createUniform("m_texture");
+
+		createUniform("m_color");
+		createUniform("m_ambientColorMaterial");
+		createUniform("m_emissionColorMaterial");
+		createUniform("m_ambientColorLightning");
+		createUniform("m_emissionColorLightning");
+		createUniform("m_specularColorLightning");
+		createUniform("m_diffuesColorLightning");
+
+		Init();
+
+	}
+
 	Material::Material(const NOU::NOU_DAT_ALG::String8 &materialName, NOE::NOE_MATSYS::Program *shader, NOE::NOE_MATSYS::Texture *texture, const NOU::NOU_MATH::Color32f &color) :
 		m_materialName(materialName),
 		m_shader(shader),
@@ -65,7 +223,33 @@ namespace NOE::NOE_MATSYS
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
 		m_mipMappingIsActive(false)
-	{}
+	{
+		NOU::NOU_MATH::Color32f tmpColor;
+		tmpColor.setRed(255);
+		tmpColor.setGreen(255);
+		tmpColor.setBlue(255);
+		tmpColor.setAlpha(255);
+
+		this->m_emissionColorMaterial = tmpColor;
+		this->m_ambientColorMaterial = tmpColor;
+
+		this->m_emissionColorLightning = tmpColor;
+		this->m_ambientColorLightning = tmpColor;
+		this->m_diffuseColorLightning = tmpColor;
+		this->m_specularColorLightning = tmpColor;
+
+		createUniform("m_texture");
+
+		createUniform("m_color");
+		createUniform("m_ambientColorMaterial");
+		createUniform("m_emissionColorMaterial");
+		createUniform("m_ambientColorLightning");
+		createUniform("m_emissionColorLightning");
+		createUniform("m_specularColorLightning");
+		createUniform("m_diffuesColorLightning");
+
+		Init();
+	}
 
 	Material::~Material() 
 	{}
@@ -200,12 +384,16 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setBlue(b);
 		tmpColor.setAlpha(a);
 		this->m_color = tmpColor;
+
+		setColorUniform();
 	}
 
 	//Material / Mesh
 	void Material::setAmbientColorMaterial(const NOU::NOU_MATH::Color32f &color)
 	{
 		this->m_ambientColorMaterial = color;
+
+		setAmbientColorMaterialUniform();
 	}
 
 	void Material::setAmbientColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -216,12 +404,15 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setBlue(b);
 		tmpColor.setAlpha(a);
 		this->m_ambientColorMaterial = tmpColor;
+
+		setAmbientColorMaterialUniform();
 	}
 
 	void Material::setEmissionColorMaterial(const NOU::NOU_MATH::Color32f &color)
 	{
 		this->m_emissionColorMaterial = color;
 
+		setEmissionColorMaterialUniform();
 	}
 
 	void Material::setEmissionColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -232,6 +423,9 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setBlue(b);
 		tmpColor.setAlpha(a);
 		this->m_emissionColorMaterial = tmpColor;
+
+		setEmissionColorMaterialUniform();
+
 	}
 
 	//Lightning
@@ -239,6 +433,7 @@ namespace NOE::NOE_MATSYS
 	{
 		this->m_ambientColorLightning = color;
 
+		setAmbientColorLightningUniform();
 	}
 
 	void Material::setAmbientColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -249,11 +444,16 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setBlue(b);
 		tmpColor.setAlpha(a);
 		this->m_ambientColorLightning = tmpColor;
+
+		setAmbientColorLightningUniform();
+
 	}
 
 	void Material::setDiffuseColorLightning(const NOU::NOU_MATH::Color32f &color)
 	{
 		this->m_diffuseColorLightning = color;
+
+		setDiffuseColorLightningUniform();
 
 	}
 
@@ -265,12 +465,16 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setBlue(b);
 		tmpColor.setAlpha(a);
 		this->m_diffuseColorLightning = tmpColor;
+
+		setDiffuseColorLightningUniform();
+
 	}
 
 	void Material::setSpecularColorLightning(const NOU::NOU_MATH::Color32f &color)
 	{
 		this->m_specularColorLightning = color;
 
+		setSpecularColorLightningUniform();
 	}
 
 	void Material::setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
@@ -281,6 +485,9 @@ namespace NOE::NOE_MATSYS
 		tmpColor.setBlue(b);
 		tmpColor.setAlpha(a);
 		this->m_specularColorLightning = tmpColor;
+
+		setSpecularColorLightningUniform();
+
 	}
 
 	NOU::boolean Material::createUniform(const NOU::NOU_DAT_ALG::String8 &name)

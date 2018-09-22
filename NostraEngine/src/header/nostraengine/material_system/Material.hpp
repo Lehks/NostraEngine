@@ -105,6 +105,18 @@ namespace NOE::NOE_MATSYS
 	 * brief A function that unbinds the texture.
 	 */
 	 	NOU::boolean unbindTexture();
+		
+		NOU::boolean Init();
+
+		NOU::boolean setTextureUniform();
+		NOU::boolean setColorUniform();
+		NOU::boolean setAmbientColorMaterialUniform();
+		NOU::boolean setAmbientColorLightningUniform();
+		NOU::boolean setEmissionColorMaterialUniform();
+		NOU::boolean setEmissionColorLightningUniform();
+		NOU::boolean setDiffuseColorLightningUniform();
+		NOU::boolean setSpecularColorLightningUniform();
+
 	public:
 	/**
 	 * param	const NOU::NOU_DAT_ALG::String8 &materialName, the name of the material.

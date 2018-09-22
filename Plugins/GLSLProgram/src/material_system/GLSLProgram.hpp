@@ -53,7 +53,7 @@ namespace GLSLProgramPlugin
 	/**
 	 * brief Hash map dor storing the uniform names as a key and theier locations.
 	 */
-		NOU::NOU_DAT_ALG::HashMap<NOU::NOU_DAT_ALG::String8, NOU::sizeType> m_uniforms;
+		NOU::NOU_DAT_ALG::HashMap<NOU::char32, NOU::sizeType> m_uniforms;
 
 	/**
 	 * return 	NOU::boolean.
