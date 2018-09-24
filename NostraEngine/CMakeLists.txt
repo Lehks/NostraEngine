@@ -24,9 +24,9 @@ target_link_libraries(NostraEngineDbg
 		sqlite3)
 
 if(GENERATE_FLEX_BISON)
-#	target_link_libraries(NostraEngineDbg
-#		PRIVATE
-#			compilerfrontend)
+	target_link_libraries(NostraEngineDbg
+		PRIVATE
+		NostraEngineCompiler)
 endif()
 		
 target_compile_definitions(NostraEngineDbg 

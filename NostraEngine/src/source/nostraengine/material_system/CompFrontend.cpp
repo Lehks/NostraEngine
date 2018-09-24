@@ -69,9 +69,9 @@ namespace NOT
 
         char* codeRaw = const_cast<char*>(code.rawStr());
 
-        // setInput(codeRaw);
+        setInput(codeRaw);
 
-        // yyparse();
+        yyparse();
 
 
         return m_errors.empty();
