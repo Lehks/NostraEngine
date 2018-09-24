@@ -42,6 +42,11 @@ if(MSVC)
 			"/WX")
 endif()
 install(TARGETS NostraEngineDbg DESTINATION "bin" INCLUDES DESTINATION "include")
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+	target_compile_definitions(NostraEngineDbg PRIVATE NOE_DEBUG=1)
+endif()
+
 #[==[	
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
 

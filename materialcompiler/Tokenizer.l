@@ -7,16 +7,23 @@
     #include "MaterialParser.h" 
     #include <stdio.h>
     #include <stdlib.h>
-    #define CONV_STR(ARG) (#ARG)
-    #define PRINTLN(ARG) printf("Matched: %s\n", ARG)
-    #define RET(ARG) PRINTLN(CONV_STR(ARG));return ARG
+
+    
+    #define NOE_CONV_STR(ARG) (#ARG)
+
+    #ifdef NOE_DEBUG
+    #   define NOE_DBG_PRINTLN(ARG) printf("Matched: %s\n", ARG)
+    #else
+    #   define NOE_DBG_PRINTLN(ARG)
+    #endif
+    #define RET(ARG) NOE_DBG_PRINTLN(NOE_CONV_STR(ARG));return ARG
 %}
 
 %%
 
 "in"     { RET(inkw); } /* Keywords */
 "out"    { RET(outkw); }
-"struct" {  RET(structkw); }
+"struct" { RET(structkw); }
 "shared" { RET(sharedkw); }
 "const"  { RET(constkw); }
 "if"     { RET(ifkw); }
@@ -80,7 +87,7 @@
 ([a-z]|[A-Z]|"_")(([a-z]|[A-Z]|"_"|[0-9])+)? { RET(identifier); }
 
 "//".*          { printf("Ignored: %s\n", yytext); }     /* Skip single line comment */
-^"/*"[^*]*|[*]*"*/" { PRINTLN(yytext); }     /* Skip multiline comments */
+^"/*"[^*]*|[*]*"*/" { NOE_DBG_PRINTLN(yytext); }     /* Skip multiline comments */
 ";"     { RET(semicolon); }
 ","     { RET(seperator); }
 "."     { RET(accop); }
