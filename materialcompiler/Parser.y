@@ -79,7 +79,7 @@ char* syntaxErrorMsg;
 
 
 %%
-S : GLOB { printf("%s\n", "ACCEPTED"); }
+S : GLOB { }
   ;
 
 
