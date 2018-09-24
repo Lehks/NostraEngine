@@ -20,18 +20,17 @@ namespace NOT
         Path m_source;
         Vector<String> m_options;
         Vector<String> m_errors;
+        NOU::boolean m_errorsFetched;
         AbstractSyntaxTree m_ast;
 
-        CompFrontend()
-        { }
+        CompFrontend();
 
-        CompFrontend(Path &source, Vector<String> &options) :
-            m_options(options),
-            m_source(source)
-        { }
+        CompFrontend(Path &source, Vector<String> &options);
 
         CompFrontend(const CompFrontend& other) = delete;
         CompFrontend(CompFrontend&& other) = delete;
+
+        void fetchErrors();
     public:
 
         static CompFrontend& getInstance();
@@ -54,5 +53,9 @@ namespace NOT
 
     };
 }
+// Adaptor functions to Flex/Bison
+#ifndef __cplusplus
+
+#endif
 
 #endif

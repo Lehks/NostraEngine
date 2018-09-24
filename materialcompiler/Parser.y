@@ -22,6 +22,7 @@ extern int yylineno;
 #   define NOE_DBG_PRINTLN(ARG) 
 #endif
 
+char* syntaxErrorMsg;
 %}
 
 %union {
@@ -416,6 +417,22 @@ GLOB : GLOB_LIST {  }
 
 
 int yyerror(char* msg){
-    fprintf(stderr, "Error(%s) in line %i\n", msg, yylineno);
+    int lengthMsg = strlen(msg) + 2;
+
+    if(syntaxErrorMsg == 0){
+        syntaxErrorMsg = (char*) malloc(lengthMsg);
+        strcpy(syntaxErrorMsg, msg);
+        syntaxErrorMsg[lengthMsg - 2] = '|';
+        syntaxErrorMsg[lengthMsg - 1] = 0;
+    } else {
+        int lengthNew = strlen(syntaxErrorMsg) + lengthMsg;
+        char* newMsg = malloc(lengthNew * sizeof(char));
+        strcpy(newMsg, syntaxErrorMsg);
+        strcat(newMsg, msg);
+        newMsg[lengthNew - 2] = '|';
+        newMsg[lengthNew - 1] = 0;
+        free(syntaxErrorMsg);
+        syntaxErrorMsg = newMsg;
+    }
     return 1;
 }
