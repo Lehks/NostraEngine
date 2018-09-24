@@ -416,7 +416,13 @@ GLOB : GLOB_LIST {  }
 
 
 
-int yyerror(char* msg){
+int yyerror(char* incomingMsg){
+    
+
+    char* msg[1024];
+    sprintf(msg, "(line %i): \0", yylineno);
+    strcat(msg, incomingMsg);
+    
     int lengthMsg = strlen(msg) + 2;
 
     if(syntaxErrorMsg == 0){
