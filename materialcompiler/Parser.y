@@ -6,6 +6,7 @@
 #include "MaterialParser.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int yylex(void);
 int yyerror(char*);
@@ -23,6 +24,9 @@ extern int yylineno;
 #endif
 
 char* syntaxErrorMsg;
+
+void strcpyOwn(char * dest, size_t destsz, const char * src);
+void strcatOwn(char * dest, size_t destsz, const char * src);
 %}
 
 %union {
@@ -414,13 +418,20 @@ GLOB : GLOB_LIST {  }
 %%
 
 
+void strcpyOwn(char * dest, size_t destsz, const char * src){
+
+}
+void strcatOwn(char * dest, size_t destsz, const char * src){
+    
+}
+
 
 
 int yyerror(char* incomingMsg){
     
 
-    char* msg[1024];
-    sprintf(msg, "(line %i): \0", yylineno);
+    char msg[1024];
+    sprintf_s(msg, 1024, "(line %d): \0", yylineno);
     strcat(msg, incomingMsg);
     
     int lengthMsg = strlen(msg) + 2;

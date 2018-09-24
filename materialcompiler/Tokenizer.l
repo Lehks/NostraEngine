@@ -95,26 +95,6 @@
 " "+    {  }
 %%
 
-void setupLex(char* filename){
-
-    FILE *f = fopen(filename, "rb");
-    fseek(f, 0, SEEK_END);
-    long fsize = ftell(f);
-    fseek(f, 0, SEEK_SET);  //same as rewind(f)
-    fsize++;
-    char *string = malloc(fsize + 1);
-    fread(string, fsize, 1, f);
-    fclose(f);
-
-    string[fsize-1] = ' ';
-    string[fsize] = 0;
-
-    YY_BUFFER_STATE bp;
-    bp = yy_scan_bytes(string, fsize - 1);
-    yy_switch_to_buffer(bp);
-
-}
-
 void setInput(char* source)
 {
     YY_BUFFER_STATE bp;
