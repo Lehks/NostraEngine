@@ -104,24 +104,15 @@ namespace NOE::NOE_MATSYS
 		m_normalMappingIsActive(true),
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
-		m_mipMappingIsActive(false)
+		m_mipMappingIsActive(false),
+		m_color(STANDARD_VARIABLE),
+		m_emissionColorMaterial(STANDARD_VARIABLE),
+		m_ambientColorMaterial(STANDARD_VARIABLE),
+		m_emissionColorLightning(STANDARD_VARIABLE),
+		m_ambientColorLightning(STANDARD_VARIABLE),
+		m_diffuseColorLightning(STANDARD_VARIABLE),
+		m_specularColorLightning(STANDARD_VARIABLE)
 	{
-		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.setRed(255);
-		tmpColor.setGreen(255);
-		tmpColor.setBlue(255);
-		tmpColor.setAlpha(255);
-
-		this->m_color = tmpColor;
-
-		this->m_emissionColorMaterial = tmpColor;
-		this->m_ambientColorMaterial = tmpColor;
-
-		this->m_emissionColorLightning = tmpColor;
-		this->m_ambientColorLightning = tmpColor;
-		this->m_diffuseColorLightning = tmpColor;
-		this->m_specularColorLightning = tmpColor;
-
 		CreateUniform("m_texture");
 
 		CreateUniform("m_color");
@@ -143,24 +134,15 @@ namespace NOE::NOE_MATSYS
 		m_normalMappingIsActive(true),
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
-		m_mipMappingIsActive(false)
+		m_mipMappingIsActive(false),
+		m_color(STANDARD_VARIABLE),
+		m_emissionColorMaterial(STANDARD_VARIABLE),
+		m_ambientColorMaterial(STANDARD_VARIABLE),
+		m_emissionColorLightning(STANDARD_VARIABLE),
+		m_ambientColorLightning(STANDARD_VARIABLE),
+		m_diffuseColorLightning(STANDARD_VARIABLE),
+		m_specularColorLightning(STANDARD_VARIABLE)
 	{
-		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.setRed(255);
-		tmpColor.setGreen(255);
-		tmpColor.setBlue(255);
-		tmpColor.setAlpha(255);
-
-		this->m_color = tmpColor;
-
-		this->m_emissionColorMaterial = tmpColor;
-		this->m_ambientColorMaterial = tmpColor;
-
-		this->m_emissionColorLightning = tmpColor;
-		this->m_ambientColorLightning = tmpColor;
-		this->m_diffuseColorLightning = tmpColor;
-		this->m_specularColorLightning = tmpColor;
-
 		CreateUniform("m_texture");
 
 		CreateUniform("m_color");
@@ -182,24 +164,15 @@ namespace NOE::NOE_MATSYS
 		m_normalMappingIsActive(true),
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
-		m_mipMappingIsActive(false)
+		m_mipMappingIsActive(false),
+		m_color(STANDARD_VARIABLE),
+		m_emissionColorMaterial(STANDARD_VARIABLE),
+		m_ambientColorMaterial(STANDARD_VARIABLE),
+		m_emissionColorLightning(STANDARD_VARIABLE),
+		m_ambientColorLightning(STANDARD_VARIABLE),
+		m_diffuseColorLightning(STANDARD_VARIABLE),
+		m_specularColorLightning(STANDARD_VARIABLE)
 	{
-		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.setRed(255);
-		tmpColor.setGreen(255);
-		tmpColor.setBlue(255);
-		tmpColor.setAlpha(255);
-
-		this->m_color = tmpColor;
-
-		this->m_emissionColorMaterial = tmpColor;
-		this->m_ambientColorMaterial = tmpColor;
-
-		this->m_emissionColorLightning = tmpColor;
-		this->m_ambientColorLightning = tmpColor;
-		this->m_diffuseColorLightning = tmpColor;
-		this->m_specularColorLightning = tmpColor;
-
 		CreateUniform("m_texture");
 
 		CreateUniform("m_color");
@@ -218,26 +191,18 @@ namespace NOE::NOE_MATSYS
 		m_materialName(materialName),
 		m_shader(shader),
 		m_texture(texture),
-		m_color(color),
 		m_normalMappingIsActive(true),
 		m_parrallaxMappingIsActive(false),
 		m_lightningIsActive(false),
-		m_mipMappingIsActive(false)
+		m_mipMappingIsActive(false),
+		m_color(STANDARD_VARIABLE),
+		m_emissionColorMaterial(STANDARD_VARIABLE),
+		m_ambientColorMaterial(STANDARD_VARIABLE),
+		m_emissionColorLightning(STANDARD_VARIABLE),
+		m_ambientColorLightning(STANDARD_VARIABLE),
+		m_diffuseColorLightning(STANDARD_VARIABLE),
+		m_specularColorLightning(STANDARD_VARIABLE)
 	{
-		NOU::NOU_MATH::Color32f tmpColor;
-		tmpColor.setRed(255);
-		tmpColor.setGreen(255);
-		tmpColor.setBlue(255);
-		tmpColor.setAlpha(255);
-
-		this->m_emissionColorMaterial = tmpColor;
-		this->m_ambientColorMaterial = tmpColor;
-
-		this->m_emissionColorLightning = tmpColor;
-		this->m_ambientColorLightning = tmpColor;
-		this->m_diffuseColorLightning = tmpColor;
-		this->m_specularColorLightning = tmpColor;
-
 		CreateUniform("m_texture");
 
 		CreateUniform("m_color");
@@ -376,7 +341,7 @@ namespace NOE::NOE_MATSYS
 		this->m_color = color;
 	}
 
-	void Material::setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a)
+	void Material::setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
 		tmpColor.setRed(r);
@@ -396,7 +361,7 @@ namespace NOE::NOE_MATSYS
 		RefreshAmbientColorMaterialUniform();
 	}
 
-	void Material::setAmbientColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
+	void Material::setAmbientColorMaterial(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
 		tmpColor.setRed(r);
@@ -415,7 +380,7 @@ namespace NOE::NOE_MATSYS
 		RefreshEmissionColorMaterialUniform();
 	}
 
-	void Material::setEmissionColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
+	void Material::setEmissionColorMaterial(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
 		tmpColor.setRed(r);
@@ -436,7 +401,7 @@ namespace NOE::NOE_MATSYS
 		RefreshAmbientColorLightningUniform();
 	}
 
-	void Material::setAmbientColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
+	void Material::setAmbientColorLightning(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
 		tmpColor.setRed(r);
@@ -457,7 +422,7 @@ namespace NOE::NOE_MATSYS
 
 	}
 
-	void Material::setDiffuseColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
+	void Material::setDiffuseColorLightning(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
 		tmpColor.setRed(r);
@@ -477,7 +442,7 @@ namespace NOE::NOE_MATSYS
 		RefreshSpecularColorLightningUniform();
 	}
 
-	void Material::setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a)
+	void Material::setSpecularColorLightning(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a)
 	{
 		NOU::NOU_MATH::Color32f tmpColor;
 		tmpColor.setRed(r);

@@ -18,6 +18,7 @@ namespace NOE::NOE_MATSYS
 	class Material
 	{
 	private:
+		const static NOU::NOU_MATH::Color32f STANDARD_VARIABLE; 
 	/**
 	 * brief The name of the material.
 	 */
@@ -176,21 +177,21 @@ namespace NOE::NOE_MATSYS
 		void setTexture(NOE::NOE_MATSYS::Texture *texture);
 
 		void setColor(const NOU::NOU_MATH::Color32f &color);
-	 	void setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::byte a = 255);
+	 	void setColor(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a = 1);
 
 		//Material / Mesh
 	    void setAmbientColorMaterial(const NOU::NOU_MATH::Color32f &color);
-	 	void setAmbientColorMaterial(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+	 	void setAmbientColorMaterial(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a = 1);
 	  	void setEmissionColorMaterial(const NOU::NOU_MATH::Color32f &color);
-		void setEmissionColorMaterial (NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		void setEmissionColorMaterial (NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a = 1);
 
 		//Lightning
 		void setAmbientColorLightning(const NOU::NOU_MATH::Color32f &color);
-		void setAmbientColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		void setAmbientColorLightning(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a = 1);
 		void setDiffuseColorLightning(const NOU::NOU_MATH::Color32f &color);
-		void setDiffuseColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		void setDiffuseColorLightning(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a = 1);
 		void setSpecularColorLightning(const NOU::NOU_MATH::Color32f &color);
-		void setSpecularColorLightning(NOU::byte r, NOU::byte g, NOU::byte b, NOU::byte a = 255);
+		void setSpecularColorLightning(NOU::float32 r, NOU::float32 g, NOU::float32 b, NOU::float32 a = 1);
 
 		NOU::boolean CreateUniform(const NOU::NOU_DAT_ALG::String8 &name);
 		NOU::boolean setUniform(const NOU::NOU_DAT_ALG::String8 &name, NOU::boolean value);

@@ -13,6 +13,8 @@ namespace NOE::NOE_CORE{
 	NostraEngine* NostraEngine::s_instance = nullptr;
 	NOU::uint8 NostraEngine::s_instanceCount = 0;
 
+	NOE::NOE_MATSYS::Material::STANDARD_VARIABLE = NOU::NOU_MATH::Color32f(1.0f,1.0f,1.0f,1.0f);
+
 	//CONSTRUCTOR
 	NostraEngine::NostraEngine() :
 		m_runState(0),
