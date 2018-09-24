@@ -85,6 +85,7 @@ PARAM_DEF : TYPE identifier { PRINTLN("PARAM_DEF"); }
 
 PARAM_LIST : PARAM_LIST seperator PARAM_DEF { PRINTLN("PARAM_LIST1"); }
            | PARAM_DEF { PRINTLN("PARAM_LIST2"); }
+           ;
 
 PARAM_BLOCK : paramb PARAM_LIST parame { PRINTLN("PARAM_BLOCK"); }
             | paramb parame { PRINTLN("PARAM_BLOCK"); }
@@ -170,6 +171,7 @@ MOD_ARR_INIT_I : MOD_VAR_DEC arrayb arraye assign TYPE ARRAY_OP{ PRINTLN("MOD_AR
                ;
 
 ARR_INIT : identifier assign TYPE ARRAY_OP { PRINTLN("ARR_INIT"); }
+         ;
 
 ARR_DEC : UNMOD_ARR_DEC semicolon{ PRINTLN("ARR_DEC1"); }
         | MOD_ARR_DEC semicolon { PRINTLN("ARR_DEC2"); }
@@ -215,6 +217,7 @@ BLOCK : blockb STMNT_LIST blocke { PRINTLN("BLOCK1"); }
       ;
 
 BLOCK_DEC : blockb 
+          ;
 
 
 /* Expression */
@@ -244,7 +247,8 @@ EXPR_COND : EXPR_COND_B { PRINTLN("EPXR_COND1"); } /* && ||  */
 
 
 
-EXPR_SPECIAL_COND : paramb EXPR_COND parame ; 
+EXPR_SPECIAL_COND : paramb EXPR_COND parame
+                  ;
 
 EXPR_COND_B : EXPR_LOW opcb EXPR_LOW { PRINTLN("EXPR_COND_B1"); } /* == != < >  */
             | EXPR_LOW { PRINTLN("EXPR_COND_B2"); }
@@ -371,7 +375,8 @@ STRUCT_ASSIGN : STRUCT_ACC assign EXPRESSION{ PRINTLN("STRUCT_ASSIGN"); }
 /* Misc */
 
 
-RETURN : returnkw EXPRESSION{ PRINTLN("RETURN"); };
+RETURN : returnkw EXPRESSION{ PRINTLN("RETURN"); }
+       ;
 
 TYPE : ntype { PRINTLN("TYPE1"); }
      | mattype { PRINTLN("TYPE2"); }
