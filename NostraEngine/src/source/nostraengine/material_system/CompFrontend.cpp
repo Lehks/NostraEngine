@@ -24,12 +24,6 @@ namespace NOT
 {
     CompFrontend* CompFrontend::m_instance = nullptr;
 
-    CompFrontend::CompFrontend(Path &source, Vector<String> &options) :
-            m_options(options),
-            m_source(source)
-            {
-            }
-
     CompFrontend::CompFrontend()
     {
     }
@@ -40,22 +34,6 @@ namespace NOT
             m_instance = new CompFrontend();
         }
         return *m_instance;
-    }
-
-    CompFrontend& CompFrontend::getInstance(Path &source, Vector<String> &options)
-    {
-        createInstance(source, options);
-        return *m_instance;
-    }
-
-    void CompFrontend::createInstance(Path &source, Vector<String> &options)
-    {
-        if(!m_instance){
-            delete m_instance;
-        }
-
-        m_instance = new CompFrontend(source, options);
-
     }
 
     Path& CompFrontend::getSource()
