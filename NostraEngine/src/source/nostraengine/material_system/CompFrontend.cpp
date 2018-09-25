@@ -69,10 +69,17 @@ namespace NOT
 
         setInput(codeRaw);
 
+        if(syntaxErrorMsg != 0){
+            free(syntaxErrorMsg);
+        }
+        syntaxErrorMsg = reinterpret_cast<char*>(malloc(sizeof(char)));
+        syntaxErrorMsg[0] = 0;
+
+
         yyparse();
 
 
-        return syntaxErrorMsg == 0;
+        return NOU::NOU_DAT_ALG::StringView8(syntaxErrorMsg).size() == 0;
     }
 
     const AbstractSyntaxTree& CompFrontend::getAbstractSyntaxTree()

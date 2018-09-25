@@ -7,6 +7,60 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+
+
+#ifndef NOU_OS_WINDOWS
+#define NOU_OS_WINDOWS 0
+#endif
+
+#ifndef NOU_OS_LINUX
+#define NOU_OS_LINUX 1
+#endif
+
+#ifndef NOU_OS_UNIX
+#define NOU_OS_UNIX 2
+#endif
+
+#ifndef NOU_OS_MAC
+#define NOU_OS_MAC 2
+#endif
+
+#ifndef NOU_OS_UNKNOWN
+#define NOU_OS_UNKNOWN 3
+#endif
+
+#ifndef NOU_OS_DOXYGEN    
+#define NOU_OS_DOXYGEN 4
+#endif
+
+#ifndef NOU_OS
+#    ifdef _WIN32
+#    define NOU_OS NOU_OS_WINDOWS
+
+#    elif defined __linux__
+#    define NOU_OS NOU_OS_LINUX
+
+#    elif defined __unix__
+#    define NOU_OS NOU_OS_UNIX
+
+#    elif defined __APPLE__
+#    define NOU_OS NOU_OS_MAC
+
+#    elif defined __DOXYGEN__ //__DOXYGEN__ is defined in the Doxyfile
+#    define NOU_OS NOU_OS_DOXYGEN
+
+#    else
+#    define NOU_OS NOU_OS_UNKNOWN
+
+#    endif
+#endif
+
+
+
+
+
+
 
 int yylex(void);
 int yyerror(char*);
@@ -24,9 +78,6 @@ extern int yylineno;
 #endif
 
 char* syntaxErrorMsg;
-
-void strcpyOwn(char * dest, size_t destsz, const char * src);
-void strcatOwn(char * dest, size_t destsz, const char * src);
 %}
 
 %union {
@@ -418,38 +469,23 @@ GLOB : GLOB_LIST {  }
 %%
 
 
-void strcpyOwn(char * dest, size_t destsz, const char * src){
+int yyerror(char* msg){
+    size_t newLen = strlen(msg) + strlen(syntaxErrorMsg) + 2 + 9;
 
-}
-void strcatOwn(char * dest, size_t destsz, const char * src){
-    
-}
+    newLen += (size_t) floor(log10(abs(yylineno))) + 1;
+
+    char *newMsg = (char*)malloc(newLen * sizeof(char));
+
+    const char format[] = "%s(line %d): %s|\0";
+
+    #if NOU_OS == NOU_OS_WINDOWS
+        sprintf_s(newMsg, newLen, format, syntaxErrorMsg, yylineno, msg);
+    #else
+        sprintf(newMsg, format, syntaxErrorMsg, yylineno, msg);
+    #endif
 
 
-
-int yyerror(char* incomingMsg){
-    
-
-    char msg[1024];
-    sprintf_s(msg, 1024, "(line %d): \0", yylineno);
-    strcat(msg, incomingMsg);
-    
-    int lengthMsg = strlen(msg) + 2;
-
-    if(syntaxErrorMsg == 0){
-        syntaxErrorMsg = (char*) malloc(lengthMsg);
-        strcpy(syntaxErrorMsg, msg);
-        syntaxErrorMsg[lengthMsg - 2] = '|';
-        syntaxErrorMsg[lengthMsg - 1] = 0;
-    } else {
-        int lengthNew = strlen(syntaxErrorMsg) + lengthMsg;
-        char* newMsg = malloc(lengthNew * sizeof(char));
-        strcpy(newMsg, syntaxErrorMsg);
-        strcat(newMsg, msg);
-        newMsg[lengthNew - 2] = '|';
-        newMsg[lengthNew - 1] = 0;
-        free(syntaxErrorMsg);
-        syntaxErrorMsg = newMsg;
-    }
+    free(syntaxErrorMsg);
+    syntaxErrorMsg = newMsg;
     return 1;
 }
