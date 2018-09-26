@@ -544,7 +544,7 @@ namespace NOE::NOE_CORE
 	{
 	public:
 		/**
-		\brief A singleton class that contains all of the error codes that are used by the plugin system.
+		\brief An enumeration that contains all of the error codes that are used by the plugin system.
 		*/
 		class ErrorCodes
 		{

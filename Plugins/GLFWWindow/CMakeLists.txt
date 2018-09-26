@@ -42,6 +42,10 @@ target_include_directories(GLFWWindow
 set_target_properties(GLFWWindow PROPERTIES PREFIX "")
 set_target_properties(GLFWWindow PROPERTIES SUFFIX ".np")
 
+get_target_property(PROP_INCLUDE GLFWWindow INCLUDE_DIRECTORIES)
+
+message(STATUS ${PROP_INCLUDE})
+
 install(TARGETS GLFWWindow
 	RUNTIME DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}" 
 	LIBRARY DESTINATION "${NOE_PLUGIN_INSTALL_PREFIX}")
