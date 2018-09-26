@@ -28,5 +28,11 @@ if(GENERATE_FLEX_BISON)
 
 	target_include_directories(NostraEngineCompiler
 		PUBLIC
-			"${CMAKE_CURRENT_BINARY_DIR}")
+            "${CMAKE_CURRENT_BINARY_DIR}")
+            
+    if(UNIX)
+        target_compile_definitions(NostraEngineCompiler 
+            PRIVATE 
+                "-fPIC")
+    endif()
 endif()
