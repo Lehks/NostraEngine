@@ -20,13 +20,18 @@ target_include_directories(NostraEngine
 		"src/header"
 		"${CMAKE_CURRENT_BINARY_DIR}/src/header")
 
+if(GENERATE_FLEX_BISON)
+	target_link_libraries(NostraEngine
+		PRIVATE
+		NostraEngineCompiler)
+endif()
+
 target_link_libraries(NostraEngine 
 	PUBLIC 
 		Nostra::Utils
 	PRIVATE 
 		sqlite3
-		${CMAKE_DL_LIBS}
-		NostraEngineCompiler)
+		${CMAKE_DL_LIBS})
 
 target_compile_definitions(NostraEngine 
 	INTERFACE 
@@ -47,10 +52,6 @@ else()
 	target_compile_options(NostraEngine
 		PRIVATE
 			"-Werror")
-endif()
-
-if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-	target_compile_definitions(NostraEngine PRIVATE NOE_DEBUG=1)
 endif()
 
 install(TARGETS NostraEngine 

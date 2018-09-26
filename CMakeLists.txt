@@ -18,11 +18,11 @@ add_subdirectory("GLAD")
 #Build SQLite3
 add_subdirectory("SQLite3")
 
-#Build Flex/Bison
-add_subdirectory("materialcompiler")
-
 #Build Nostra Utils
 add_subdirectory("NostraUtils")
+
+#Build Flex/Bison
+add_subdirectory("materialcompiler")
 
 #Build Nostra Engine
 add_subdirectory("NostraEngine")
@@ -35,7 +35,8 @@ add_executable(NostraEngineExe main.cpp)
 
 target_link_libraries(NostraEngineExe 
 	PRIVATE
-		Nostra::Engine)
+		Nostra::Engine
+		NostraEngineCompiler)
 
 install(TARGETS NostraEngineExe 
 	DESTINATION bin)
