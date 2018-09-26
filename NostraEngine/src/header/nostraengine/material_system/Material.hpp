@@ -3,6 +3,9 @@
 
 #include "nostraengine/NostraEngine.hpp"
 #include "nostrautils/NostraUtils.hpp"
+
+#include "nostraengine/core/StdIncludes.hpp"
+
 /**
 \file material_system/GLMaterial.hpp
 

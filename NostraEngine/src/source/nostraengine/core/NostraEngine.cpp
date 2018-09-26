@@ -20,8 +20,12 @@ namespace NOE::NOE_CORE{
 		m_runState(0),
 		m_version(0, 0, 1),
 		m_initializedObjects(0),
-		m_preInitializedObjects(0)
-	{}
+		m_preInitializedObjects(0),
+		prg("/home/dennis/Project/NostraEngine/Shader/VertexShader.vs", "/home/dennis/Project/NostraEngine/Shader/FragmentShader.fs"),
+		mat("Test")
+	{
+		mat.setShader(prg);
+	}
 
 	void NostraEngine::updateFrameInformations(const NOU::uint64 begin, const NOU::uint64 end)
 	{
@@ -115,6 +119,7 @@ namespace NOE::NOE_CORE{
 			}
 			m_initializedObjects++;
 		}
+		
 
 		return Initializable::ExitCode::SUCCESS;
 	}
@@ -217,6 +222,8 @@ namespace NOE::NOE_CORE{
 	{
 		if(m_window != nullptr)
 			m_window->update();
+
+		mat.bind();
 	}
 
 	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)

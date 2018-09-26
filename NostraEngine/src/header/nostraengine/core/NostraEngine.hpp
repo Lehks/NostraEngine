@@ -36,6 +36,8 @@ namespace NOE::NOE_CORE
 
 	private:
 
+		NOE::NOE_MATSYS::Program prg;
+		NOE::NOE_MATSYS::Material mat;
 		/**
 		\brief A pointer to a window Object.
 		*/
