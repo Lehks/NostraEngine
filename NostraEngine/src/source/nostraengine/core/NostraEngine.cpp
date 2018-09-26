@@ -72,20 +72,23 @@ namespace NOE::NOE_CORE{
 			switch (result)
 			{
 			case Plugin::InitResult::SUCCESS:
-				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
-					+ "\" (ID: " + plugin->getMetadata().getID() + ") was successful.");
+				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") 
+					+ plugin->getMetadata().getName() + "\" (ID: " + plugin->getMetadata().getID() 
+					+ ") was successful.");
 				m_preInitializedObjects++;
 				break;
 			case Plugin::InitResult::WARNING:
-				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
-					+ "\" (ID: " + plugin->getMetadata().getID() + ") has finished with a warning.");
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") 
+					+ plugin->getMetadata().getName() + "\" (ID: " + plugin->getMetadata().getID() 
+					+ ") has finished with a warning.");
 
 				ret = Initializable::ExitCode::WARNING;
 				m_preInitializedObjects++;
 				break;
 			case Plugin::InitResult::FAILED:
-				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") + plugin->getMetadata().getName()
-					+ "\" (ID: " + plugin->getMetadata().getID() + ") has failed.");
+				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") 
+					+ plugin->getMetadata().getName() + "\" (ID: " + plugin->getMetadata().getID() 
+					+ ") has failed.");
 				return Initializable::ExitCode::ERROR;
 			}
 		}
@@ -210,7 +213,8 @@ namespace NOE::NOE_CORE{
 
 	void NostraEngine::renderMain()
 	{
-		m_window->update();
+		if(m_window != nullptr)
+			m_window->update();
 	}
 
 	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)
@@ -337,15 +341,7 @@ namespace NOE::NOE_CORE{
 
 	void NostraEngine::setActiveInstance(NostraEngine &instance)
 	{
-		if (&instance == nullptr)
-		{
-			NOU_PUSH_ERROR(NOU::NOU_CORE::getErrorHandler(), NOU::NOU_CORE::ErrorCodes::INVALID_STATE, 
-				"Cannot set the instance to a nullptr");
-		}
-		else
-		{
-			s_instance = &instance;
-		}
+		s_instance = &instance;
 	}
 
 	void NostraEngine::terminateEngine()
