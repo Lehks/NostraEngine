@@ -2,9 +2,9 @@
 ## Version 0.0.2
 
 ### Features
-- Added a shader program interface as well as GLSL shader program plugin
+- Added a shader program interface as well as a GLSL shader program plugin
 - Added a vertex and fragment shader
-- Added a texture interface as well as a OpenGL texture plugin
+- Added a texture interface as well as an OpenGL texture plugin
 - Added a material class
 
 ### Improvements
