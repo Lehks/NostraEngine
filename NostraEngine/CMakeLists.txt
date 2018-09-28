@@ -20,6 +20,12 @@ target_include_directories(NostraEngine
 		"src/header"
 		"${CMAKE_CURRENT_BINARY_DIR}/src/header")
 
+if(GENERATE_FLEX_BISON)
+	target_link_libraries(NostraEngine
+		PRIVATE
+		NostraEngineCompiler)
+endif()
+
 target_link_libraries(NostraEngine 
 	PUBLIC 
 		Nostra::Utils
@@ -39,6 +45,8 @@ if(MSVC)
 	target_compile_options(NostraEngine
 		PRIVATE
 			"/wd4251"
+			"/wd4005"
+			"/wd4065"
 			"/WX")
 else()
 	target_compile_options(NostraEngine

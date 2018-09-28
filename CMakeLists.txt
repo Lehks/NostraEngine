@@ -21,6 +21,9 @@ add_subdirectory("SQLite3")
 #Build Nostra Utils
 add_subdirectory("NostraUtils")
 
+#Build Flex/Bison
+add_subdirectory("materialcompiler")
+
 #Build Nostra Engine
 add_subdirectory("NostraEngine")
 
@@ -32,7 +35,8 @@ add_executable(NostraEngineExe main.cpp)
 
 target_link_libraries(NostraEngineExe 
 	PRIVATE
-		Nostra::Engine)
+		Nostra::Engine
+		NostraEngineCompiler)
 
 install(TARGETS NostraEngineExe 
 	DESTINATION bin)
@@ -48,6 +52,12 @@ if(${NOE_GENERATE_TEST_EXECUTABLE})
 		target_link_libraries(NostraEngineTest 
 			PRIVATE 
 				Nostra::Engine)
+
+		if(GENERATE_FLEX_BISON)
+			target_link_libraries(NostraEngineTest
+				PRIVATE
+					NostraEngineCompiler)
+		endif()
 
 		install(TARGETS NostraEngineTest 
 				DESTINATION bin)

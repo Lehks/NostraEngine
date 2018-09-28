@@ -1,0 +1,17 @@
+[core]
+id="6"
+priority="0"
+enable="true"
+minversion.major="0"
+minversion.minor="0"
+minversion.patch="1"
+
+[meta]
+name="GLSLGenerator"
+description="A implementation of a GLSL generator."
+version.major="0"
+version.minor="0"
+version.patch="1"
+
+
+

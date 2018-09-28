@@ -13,6 +13,7 @@ namespace NOE::NOE_CORE{
 	NostraEngine* NostraEngine::s_instance = nullptr;
 	NOU::uint8 NostraEngine::s_instanceCount = 0;
 
+<<<<<<< HEAD
 	NOE::NOE_MATSYS::Material::STANDARD_VARIABLE = NOU::NOU_MATH::Color32f(1.0f,1.0f,1.0f,1.0f);
 
 	//CONSTRUCTOR
@@ -185,6 +186,173 @@ namespace NOE::NOE_CORE{
 				if (ret != Initializable::ExitCode::ERROR)
 					ret = Initializable::ExitCode::WARNING;
 
+=======
+	//CONSTRUCTOR
+	NostraEngine::NostraEngine() :
+		m_runState(0),
+		m_version(0, 0, 1),
+		m_initializedObjects(0),
+		m_preInitializedObjects(0)
+	{}
+
+	void NostraEngine::updateFrameInformations(const NOU::uint64 begin, const NOU::uint64 end)
+	{
+		m_frameTime = end - begin;
+		m_currFPS = NOU::uint64(1000) / 
+									((m_frameTime != NOU::uint64(0)) ? m_frameTime : NOU::uint64(1));
+	}
+
+	void NostraEngine::fpsLimitStart()
+	{
+		if (getMaxFPS() > 0)
+		{
+			NOU::uint64 minFrameTime, timeDiff;
+			NOU::uint64 currFPS = getCurrFPS();
+			minFrameTime = 1000 / ((currFPS != 0) ? currFPS : 1);
+			if (getFrameTime() < minFrameTime)
+			{
+				timeDiff = minFrameTime - getFrameTime();
+				std::chrono::milliseconds msDuration(timeDiff);
+				std::this_thread::sleep_for<>(msDuration);
+			}
+		}
+	}
+
+	Initializable::ExitCode NostraEngine::preInitialize()
+	{
+		Initializable::ExitCode ret = Initializable::ExitCode::SUCCESS;
+
+		if (!PluginManager::get().createPluginList())
+		{
+			NOU_LOG_ERROR("Failed to create the plugin list.");
+			return Initializable::ExitCode::ERROR;
+		}
+
+		NOU::sizeType s = PluginManager::get().getPlugins().size();
+
+		for (NOU::sizeType i = 0; i < s; i++)
+		{
+			EnginePlugin *plugin = PluginManager::get().getPlugins()[i];
+
+			if (!PluginManager::get().getPlugins()[i]->load())
+			{
+				NOU_LOG_ERROR(NOU::NOU_DAT_ALG::String8("The plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") could not be loaded.");
+				return Initializable::ExitCode::ERROR;
+			}
+
+			Plugin::InitResult result = plugin->initialize(*this);
+
+			switch (result)
+			{
+			case Plugin::InitResult::SUCCESS:
+				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") 
+					+ plugin->getMetadata().getName() + "\" (ID: " + plugin->getMetadata().getID() 
+					+ ") was successful.");
+				m_preInitializedObjects++;
+				break;
+			case Plugin::InitResult::WARNING:
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") 
+					+ plugin->getMetadata().getName() + "\" (ID: " + plugin->getMetadata().getID() 
+					+ ") has finished with a warning.");
+
+				ret = Initializable::ExitCode::WARNING;
+				m_preInitializedObjects++;
+				break;
+			case Plugin::InitResult::FAILED:
+				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The initialization of the plugin \"") 
+					+ plugin->getMetadata().getName() + "\" (ID: " + plugin->getMetadata().getID() 
+					+ ") has failed.");
+				return Initializable::ExitCode::ERROR;
+			}
+		}
+
+		if(m_initializables.size() > 0)
+			m_initializables.sort();
+
+		return ret;
+	}
+
+	Initializable::ExitCode NostraEngine::initialize()
+	{
+		setMaxFPS();		//disable the FPS limiter
+
+		NOU::sizeType initSize = m_initializables.size();
+
+		for (NOU::sizeType i = 0; i < initSize; i++)
+		{
+			if(m_initializables[i]->initialize() == Initializable::ExitCode::ERROR)
+			{
+				return Initializable::ExitCode::ERROR;
+			}
+			m_initializedObjects++;
+		}
+
+		return Initializable::ExitCode::SUCCESS;
+	}
+
+	Initializable::ExitCode NostraEngine::postInitialize()
+	{
+		NOU::sizeType initSize = m_initializables.size();
+
+		if(m_initializedObjects != initSize)
+		{
+			return Initializable::ExitCode::ERROR;
+		}
+
+		for (NOU::sizeType i = 0; i < initSize; i++)
+		{
+			m_initializables[i]->postInitialize();
+		}
+		return Initializable::ExitCode::SUCCESS;
+	}
+
+	Initializable::ExitCode NostraEngine::terminate()
+	{
+
+		if (m_initializables.size() == 0)
+		{
+			return Initializable::ExitCode::SUCCESS;
+		}
+
+		if(m_initializedObjects == 0)
+		{
+			return Initializable::ExitCode::SUCCESS;
+		}
+
+		for (NOU::sizeType i = 0; i < m_initializedObjects; i++)
+		{
+			m_initializables[m_initializedObjects - i - 1]->terminate();
+		}
+
+		return Initializable::ExitCode::SUCCESS;
+	}
+
+	Initializable::ExitCode NostraEngine::postTerminate()
+	{
+		Initializable::ExitCode ret = Initializable::ExitCode::SUCCESS;
+
+		//iterate over all plugins that were initialized
+		for (NOU::sizeType i = m_preInitializedObjects - 1; i != -1; i--)
+		{
+			EnginePlugin *plugin = PluginManager::get().getPlugins()[i];
+
+			Plugin::InitResult result = plugin->terminate(*this);
+
+			switch (result)
+			{
+			case Plugin::InitResult::SUCCESS:
+				NOU_LOG_INFO(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") was successful.");
+				break;
+			case Plugin::InitResult::WARNING:
+				NOU_LOG_WARNING(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName() 
+					+ "\" (ID: " + plugin->getMetadata().getID() + ") has finished with a warning.");
+
+				if (ret != Initializable::ExitCode::ERROR)
+					ret = Initializable::ExitCode::WARNING;
+
+>>>>>>> material_system_compiler_imp
 				break;
 			case Plugin::InitResult::FAILED:
 				NOU_LOG_FATAL(NOU::NOU_DAT_ALG::String8("The termination of the plugin \"") + plugin->getMetadata().getName()
@@ -214,6 +382,7 @@ namespace NOE::NOE_CORE{
 
 
 	void NostraEngine::logicMain()
+<<<<<<< HEAD
 	{
 		updateUpdatables();
 	}
@@ -232,6 +401,24 @@ namespace NOE::NOE_CORE{
 		return true;
 	}
 
+=======
+	{
+		updateUpdatables();
+	}
+
+	void NostraEngine::renderMain()
+	{
+		if(m_window != nullptr)
+			m_window->update();
+	}
+
+	NOU::boolean NostraEngine::addUpdatable(Updatable *updt)
+	{
+		m_updatables.emplaceBack(updt);
+		return true;
+	}
+
+>>>>>>> material_system_compiler_imp
 	NOU::boolean NostraEngine::addInitializable(Initializable *init)
 	{
 		m_initializables.emplaceBack(init);
