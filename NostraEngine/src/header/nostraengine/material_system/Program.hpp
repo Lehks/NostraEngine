@@ -2,7 +2,6 @@
 #define NOE_MATSYS_PROGRAM_HPP
 
 #include "nostrautils/NostraUtils.hpp"
-#include "nostraengine/NostraEngine.hpp"
 
 #include "nostraengine/core/StdIncludes.hpp"
 

@@ -1,9 +1,10 @@
 #ifndef NOE_MATSYS_MATERIAL_HPP
 #define NOE_MATSYS_MATERIAL_HPP
 
-#include "nostraengine/NostraEngine.hpp"
 #include "nostrautils/NostraUtils.hpp"
 
+#include "Program.hpp"
+#include "Texture.hpp"
 #include "nostraengine/core/StdIncludes.hpp"
 
 /**

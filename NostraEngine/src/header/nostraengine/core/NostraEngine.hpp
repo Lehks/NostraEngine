@@ -9,6 +9,9 @@
 #include "nostraengine/core/Initializable.hpp"
 #include "nostraengine/core/Updatable.hpp"
 #include "nostraengine/window/Window.hpp"
+#include "nostraengine/material_system/Material.hpp"
+#include "nostraengine/material_system/Program.hpp"
+#include "nostraengine/material_system/Texture.hpp"
 
 /**
 \file core/NostraEngine
