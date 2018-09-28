@@ -1,6 +1,20 @@
 # Changelog
+## Version 0.0.2
 
-## Version 1.0.0
+### Features
+- Added a shader program interface as well as GLSL shader program plugin
+- Added a vertex and fragment shader
+- Added a texture interface as well as a OpenGL texture plugin
+- Added a material class
+
+### Improvements
+- Rewrite of the CMakeLists
+
+### Fixes
+- None
+
+
+## Version 0.0.1
 
 ### Features
 - Added a plugin system
