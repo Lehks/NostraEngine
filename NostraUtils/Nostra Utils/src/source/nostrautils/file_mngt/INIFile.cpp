@@ -54,8 +54,8 @@ namespace NOU::NOU_FILE_MNGT
 
 	INIFile::NouString INIFile::parseStringValue(const NouString & line, const int32 quoteType) const
 	{
-		int32 posQuoteFirst;
-		int32 posQuoteLast;
+		sizeType posQuoteFirst;
+		sizeType posQuoteLast;
 		char quote;
 
 		// Clean line
@@ -96,8 +96,8 @@ namespace NOU::NOU_FILE_MNGT
 
 	int32 INIFile::parseValueQuote(const NouString & line) const
 	{
-		int32 posQuoteDbl = line.firstIndexOf('"');
-		int32 posQuoteSin = line.firstIndexOf('\'');
+		sizeType posQuoteDbl = line.firstIndexOf('"');
+		sizeType posQuoteSin = line.firstIndexOf('\'');
 
 		// Return INI_QUOTE_NONE if no quotes
 		if (posQuoteDbl == posQuoteSin) {
@@ -118,8 +118,8 @@ namespace NOU::NOU_FILE_MNGT
 	{
 		NouString lineLft;
 		NouString lineRgt;
-		int32 posEq;
-		int32 quoteType;
+		sizeType posEq;
+		sizeType quoteType;
 
 		// Get position of the first equal symbol
 		posEq = line.firstIndexOf('=');
@@ -153,7 +153,7 @@ namespace NOU::NOU_FILE_MNGT
 		}
 
 		// Add string
-		this->setString(this->parseKey(lineLft), this->parseStringValue(lineRgt, quoteType), section);
+		this->setString(this->parseKey(lineLft), this->parseStringValue(lineRgt, int32(quoteType)), section);
 	}
 
 
@@ -218,8 +218,8 @@ namespace NOU::NOU_FILE_MNGT
 
 		std::ofstream inifile;
 		NouString key_section;
-		int32 pos_dot;
-		int32 pos_sec;
+		sizeType pos_dot;
+		sizeType pos_sec;
 
 		// Open file stream
 		if (filename.size()) {
@@ -234,7 +234,7 @@ namespace NOU::NOU_FILE_MNGT
 		}
 
 		// Loop through all the sections
-		for (int32 isec = (sectionKeys.size() - 1); isec >= 0; isec--)
+		for (sizeType isec = (sectionKeys.size() - 1); isec >= 0; isec--)
 		{
 			// Write section
 			if (*sectionValues.at(isec) > 0) {
@@ -425,11 +425,11 @@ namespace NOU::NOU_FILE_MNGT
 		NOU::NOU_DAT_ALG::Vector<const NouString *> floatKeys = m_dataFloat.keySet();
 
 		NouString key_section;
-		int32 pos_dot;
-		int32 pos_sec;
+		sizeType pos_dot;
+		sizeType pos_sec;
 
 		// Loop through all the sections
-		for (int32 isec = (sectionKeys.size() - 1); isec >= 0; isec--)
+		for (sizeType isec = (sectionKeys.size() - 1); isec >= 0; isec--)
 		{
 			// Save string size for later
 			pos_sec = sectionKeys.at(isec)->size();
@@ -505,7 +505,7 @@ namespace NOU::NOU_FILE_MNGT
 		NouString key, section;
 
 		// Loop through all the keys
-		for (int32 i = (keys.size() - 1); i >= 0; i--)
+		for (sizeType i = (keys.size() - 1); i >= 0; i--)
 		{
 			key = keys.at(i)->rawStr();
 			section = sections.at(i)->rawStr();

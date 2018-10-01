@@ -42,6 +42,20 @@ brief The name of the namespace that contains all tools
 #endif
 
 /**
+\brief The name of the namespace that contains all scene components.
+*/
+#ifndef NOE_SCENE
+#define NOE_SCENE scene
+#endif
+
+/*
+\brief The name of the namespace that contains all rendering components.
+*/
+#ifndef NOE_RENDERER
+#define NOE_RENDERER renderer
+#endif
+
+/**
 \brief The name of the namespace that contains all core components.
 */
 #ifndef NOE_MATSYS

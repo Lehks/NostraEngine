@@ -243,7 +243,7 @@ namespace NOU::NOU_FILE_MNGT
 
 		fseek(m_data, 0, SEEK_END);
 
-		sizeType ret = ftell(m_data);
+		sizeType ret = sizeType(ftell(m_data));
 
 		fseek(m_data, static_cast<long>(oldPos), SEEK_SET);
 
@@ -252,7 +252,7 @@ namespace NOU::NOU_FILE_MNGT
 			close();
 		}
 
-		return ret;
+		return sizeType(ret);
 	}
 
 	boolean File::exists()
