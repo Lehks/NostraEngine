@@ -13,7 +13,7 @@
 \version 0.0.1
 \since   0.0.1
 
-\brief A interface for the factory that provides a instance of a renderable.
+\brief A interface for the factory	that provides a instance of a renderable.
 */
 namespace NOE::NOE_RENDERER
 {

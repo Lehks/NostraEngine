@@ -10,8 +10,17 @@
 
 #include "glad/glad.h"
 
+/**
+\author Lukas Gross
+
+\version 0.0.1
+\since   0.0.1
+*/
 namespace GLRenderablePlugin
 {
+	/**
+	\brief			A implementation of the Renderer class with glad.
+	*/
 	class GLRenderer : public NOE::NOE_RENDERER::Renderer
 	{
 	private:

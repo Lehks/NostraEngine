@@ -8,12 +8,17 @@
 
 #include "nostraengine/renderer/RenderableImpl.hpp"
 
+/**
+\author Lukas Gross
+
+\version 0.0.1
+\since   0.0.1
+*/
 namespace GLRenderablePlugin
 {
 	/**
-	@author					Lukas Gross
 
-	\brief					A implementation of the Renderer class with glad.
+	\brief					A implementation of the RenderableImpl class with glad.
 	*/
 	class GLRenderableImpl final : public NOE::NOE_RENDERER::RenderableImpl
 	{
@@ -66,9 +71,10 @@ namespace GLRenderablePlugin
 		*/
 		NOE_PLUGIN_FUNC virtual void bind(const NOE::NOE_SCENE::RenderableActor &renderable) const override;
 
+		///todo add doc
 		NOE_PLUGIN_FUNC virtual void draw() const override;
 
-		///todo doc
+		///todo add doc
 		NOE_PLUGIN_FUNC virtual NOU::boolean setAttribute(const NOU::NOU_DAT_ALG::String8& str, void* ptr) override;
 
 		/**

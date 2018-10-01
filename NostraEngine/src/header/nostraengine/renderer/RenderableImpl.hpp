@@ -22,6 +22,9 @@ namespace NOE::NOE_SCENE
 
 namespace NOE::NOE_RENDERER
 {
+	/**
+	\brief				A pure virtual class that provides the basic functionality of a RenderableImpl.
+	*/
 	class RenderableImpl
 	{
 	public:
@@ -36,12 +39,13 @@ namespace NOE::NOE_RENDERER
 		*/
 		virtual ~RenderableImpl() = default;
 
-		///todo doc
+		///todo add doc
 		virtual void bind(const NOE_SCENE::RenderableActor& renderable) const = 0;
 
+		///todo add doc
 		virtual void draw() const = 0;
 
-		///todo doc
+		///todo add doc
 		virtual NOU::boolean setAttribute(const NOU::NOU_DAT_ALG::String8& str, void* ptr) = 0;
 
 		/**

@@ -10,8 +10,17 @@
 
 #include "GLRenderableImpl.hpp"
 
+/**
+\author Lukas Gross
+
+\version 0.0.1
+\since   0.0.1
+*/
 namespace GLRenderablePlugin
 {
+	/**
+	\brief			A implementation of the RenderableImplFactory class with glad.
+	*/
 	class GLRenderableImplFactory final : public NOE::NOE_RENDERER::RenderableImplFactory
 	{
 	private:
